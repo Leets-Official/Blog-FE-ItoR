@@ -1,22 +1,6 @@
 import styled from "styled-components";
 
-const StyledButton = styled.button<{
-    width: string;
-    height: string;
-    fontSize: string;
-    color: string;
-    backgroundColor: string;
-}>`
-    cursor: pointer;
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
-    font-size: ${(props) => props.fontSize};
-    color: ${(props) => props.color};
-    background-color: ${(props) => props.backgroundColor};
-`;
-
-
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     onClick: () => void;
     disabled: boolean;
@@ -25,7 +9,30 @@ interface ButtonProps {
     fontSize: string;
     backgroundColor: string;
     color: string;
+    hoverColor: string;
+    hoverBackgroundColor: string;
 }
+
+const StyledButton = styled.button<{
+    width: string;
+    height: string;
+    fontSize: string;
+    color: string;
+    backgroundColor: string;
+    hoverColor: string;
+    hoverBackgroundColor: string;
+}>`
+    cursor: pointer;
+    width: ${(props) => props.width};
+    height: ${(props) => props.height};
+    font-size: ${(props) => props.fontSize};
+    color: ${(props) => props.color};
+    background-color: ${(props) => props.backgroundColor};
+    &:hover {
+        color: ${(props) => props.hoverColor};
+        background-color: ${(props) => props.hoverBackgroundColor};
+    }
+`;
 
 const Button = ({
     children,
@@ -36,6 +43,8 @@ const Button = ({
     fontSize,
     backgroundColor,
     color,
+    hoverColor,
+    hoverBackgroundColor,
     ...rest
 }: ButtonProps) => {
     return (
@@ -45,11 +54,13 @@ const Button = ({
             fontSize={fontSize}
             color={color}
             backgroundColor={backgroundColor}
+            hoverColor={hoverColor}
+            hoverBackgroundColor={hoverBackgroundColor}
             onClick={onClick}
             disabled={disabled}
             {...rest}
         >
-            {children}  
+            {children}
         </StyledButton>
     )
 }

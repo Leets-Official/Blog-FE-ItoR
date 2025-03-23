@@ -1,4 +1,6 @@
-import Button from "./components/Button";
+import Button from "./components/ui/Button";
+import Image from "./components/ui/Image";
+import test_Img from "./assets/test_Img.jpg";
 
 function App() {
   return (
@@ -9,11 +11,14 @@ function App() {
         fontSize="10px" 
         color="white"
         backgroundColor="black"
+        hoverColor="black"
+        hoverBackgroundColor="white"
         onClick={() => {}}
         disabled={false}
       >
         버튼
       </Button>
+      <Image src={test_Img} alt="chat image" width="300px" height="300px" $objectFit="cover" />
       <h1>HI</h1>
     </>
   )
