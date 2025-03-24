@@ -9,8 +9,8 @@ const StyledInput = styled.input`
   border-radius: 5px;
 `;
 
-const Input = ({ width, height, fontSize }) => {
-  return <StyledInput width={width} height={height} fontSize ={fontSize} />
+const Input = ({ width, height, fontSize, placeholder }) => {
+  return <StyledInput width={width} height={height} fontSize ={fontSize} placeholder = {placeholder} />
 };
 
 export default Input;
