@@ -11,7 +11,7 @@ export default [
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 'latest',
       globals: globals.browser,
       parserOptions: {
         ecmaVersion: 'latest',
@@ -28,15 +28,19 @@ export default [
     rules: {
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      ...react.configs.recommended.rules,  // React 추천 규칙 적용
-      ...react.configs['jsx-runtime'].rules, // JSX 런타임 관련 규칙
+      ...react.configs.recommended.rules,
+      ...react.configs['jsx-runtime'].rules,
       'react/jsx-no-target-blank': 'off',
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      'prettier/prettier': 'error',  // Prettier 규칙을 위반하면 ESLint에서 에러로 처리
+      'prettier/prettier': ['error',
+        {
+          endOfLine: 'auto'
+        }
+      ]
     },
   },
 ]
