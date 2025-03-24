@@ -1,4 +1,5 @@
 import Input from "./components/Input";
+import Button from "./components/Button";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -6,6 +7,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   padding: 20px;
+  gap: 10px;
 `;
 
 function App() {
@@ -13,8 +15,9 @@ function App() {
   return (
     <Container>
       <Input />
+      <Button>버튼</Button>
     </Container>
   )
 }
 
-export default App
+export default App;
