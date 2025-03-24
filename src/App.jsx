@@ -5,6 +5,7 @@ import Image from "./components/Image";
 import styled from "styled-components";
 import image from "./assets/test.jpg";
 import Modal from "./components/Modal";
+import Toast from './components/Toast';
 
 const Container = styled.div`
   display: flex;
@@ -22,15 +23,22 @@ const Row = styled.div`
 
 function App() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [toastShow, setToastShow] = useState(false);
+
+  const InputFocus = () => {
+    setToastShow(true);
+    setTimeout(() => setToastShow(false), 2000); 
+  };
 
   return (
     <Container>
       <Row>
-        <Input placeholder="입력하세요" />
+        <Input onFocus={InputFocus} placeholder="입력하세요" />
         <Button width='200px' onClick={() => setModalOpen(true)}>버튼</Button>
       </Row>
       <Image src={image} alt="Placeholder" radius='50%' />
       <Modal Open={modalOpen} Close={() => setModalOpen(false)} />
+      <Toast show={toastShow} />
     </Container>
   );
 }
