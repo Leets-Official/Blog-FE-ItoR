@@ -20,7 +20,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const StyledButton = styled.button<ButtonProps>`
   ${flexCenter}
-  font-size:${({ theme }) => theme.FONT_SIZE.sm};
+  gap:8px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.sm};
   font-weight: ${({ theme }) => theme.FONT_WEIGHT.regular};
 
   ${({ variant }) => variant && variantStyles[variant]};
