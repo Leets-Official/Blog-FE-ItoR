@@ -1,0 +1,13 @@
+@font-face {
+  font-family: 'Noto Sans';
+  src: url('@/fonts/NotoSansKR-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'Apple SD Gothic Neo';
+  src: url('@/fonts/AppleSDGothicNeoM.ttf');
+}
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
