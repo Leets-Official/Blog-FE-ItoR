@@ -7,7 +7,7 @@ import {
   sizeStyles,
   variantStyles,
 } from '@/components/common/Button/Button.styled';
-import { flexAlignCenter } from '@/styles/common.styled';
+import { flexCenter } from '@/styles/common.styled';
 import { forwardRef } from 'react';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -19,7 +19,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const StyledButton = styled.button<ButtonProps>`
-  ${flexAlignCenter}
+  ${flexCenter}
   font-size:${({ theme }) => theme.FONT_SIZE.sm};
   font-weight: ${({ theme }) => theme.FONT_WEIGHT.regular};
 
@@ -31,7 +31,7 @@ const StyledButton = styled.button<ButtonProps>`
   cursor: pointer;
 
   &:disabled {
-    opacity: 0.9;
+    opacity: 0.6;
     cursor: not-allowed;
   }
 `;
