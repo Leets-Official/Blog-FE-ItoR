@@ -6,6 +6,8 @@ import PencilSvg from '@/assets/icon/ic_create.svg?react';
 import Input from '@/components/common/Input/Input';
 import Header from '@/components/common/Header/Header';
 import theme from '@/styles/theme.styled';
+import Toast, { ToastType } from '@/components/common/Toast/Toast';
+import { useState } from 'react';
 
 const Flex = styled.div`
   ${flexColumn}
@@ -13,6 +15,15 @@ const Flex = styled.div`
   /* padding-left: 20px; */
 `;
 const HomePage: React.FC = () => {
+  const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
+
+  const showToast = (message: string, type: ToastType = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 2500);
+  };
+
   return (
     <Flex>
       <Header />
@@ -49,6 +60,27 @@ const HomePage: React.FC = () => {
       <Input label="닉네임" placeholder="닉네임" />
       <Input label="이름" placeholder="이름" readOnly />
       <Input as="textarea" rows={9} placeholder="댓글을 입력하세요." />
+
+      <Button
+        variant="text"
+        size="sm"
+        rounded="full"
+        textColor={theme.COLORS.positive}
+        onClick={() => showToast('저장되었습니다!', 'success')}
+      >
+        저장 성공 토스트
+      </Button>
+
+      <Button
+        variant="text"
+        size="sm"
+        rounded="full"
+        textColor={theme.COLORS.negative}
+        onClick={() => showToast('내용을 입력해주세요!', 'error')}
+      >
+        에러 토스트
+      </Button>
+      {toast && <Toast message={toast.message} type={toast.type} />}
     </Flex>
   );
 };
