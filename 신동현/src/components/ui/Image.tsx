@@ -3,15 +3,15 @@ import styled from 'styled-components';
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     src: string;
     alt: string;
-    width: string;
-    height: string;
-    $objectFit: 'cover' | 'contain' | 'fill';
+    width?: string;
+    height?: string;
+    $objectFit?: 'cover' | 'contain' | 'fill';
 }
 
 const StyledImage = styled.img<{
-    width: string;
-    height: string;
-    $objectFit: 'cover' | 'contain' | 'fill';
+    width?: string;
+    height?: string;
+    $objectFit?: 'cover' | 'contain' | 'fill';
 }>`
     width: ${(props) => props.width};
     height: ${(props) => props.height};

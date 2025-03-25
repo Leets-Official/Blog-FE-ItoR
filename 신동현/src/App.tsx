@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Button from "./components/ui/Button";
-import Image from "./components/ui/Image";
-import Modal from "./components/ui/Modal";
+import Button from "@/components/ui/Button";
+import Image from "@/components/ui/Image";
+import Modal from "@/components/ui/Modal";
 
 function App() {
 

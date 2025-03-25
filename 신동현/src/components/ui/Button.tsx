@@ -1,26 +1,23 @@
-import styled from "styled-components";
+import styled, { css, CSSProperties } from "styled-components";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     onClick: () => void;
     disabled: boolean;
-    width: string;
-    height: string;
-    fontSize: string;
-    backgroundColor: string;
-    color: string;
-    hoverColor: string;
-    hoverBackgroundColor: string;
+    width?: string;
+    height?: string;
+    fontSize?: string;
+    backgroundColor?: string;
+    color?: string;
+    style?: CSSProperties;
 }
 
 const StyledButton = styled.button<{
-    width: string;
-    height: string;
-    fontSize: string;
-    color: string;
-    backgroundColor: string;
-    hoverColor: string;
-    hoverBackgroundColor: string;
+    width?: string;
+    height?: string;
+    fontSize?: string;
+    color?: string;
+    backgroundColor?: string;
 }>`
     cursor: pointer;
     width: ${(props) => props.width};
@@ -28,10 +25,6 @@ const StyledButton = styled.button<{
     font-size: ${(props) => props.fontSize};
     color: ${(props) => props.color};
     background-color: ${(props) => props.backgroundColor};
-    &:hover {
-        color: ${(props) => props.hoverColor};
-        background-color: ${(props) => props.hoverBackgroundColor};
-    }
 `;
 
 const Button = ({
@@ -43,8 +36,6 @@ const Button = ({
     fontSize,
     backgroundColor,
     color,
-    hoverColor,
-    hoverBackgroundColor,
     ...rest
 }: ButtonProps) => {
     return (
@@ -54,8 +45,6 @@ const Button = ({
             fontSize={fontSize}
             color={color}
             backgroundColor={backgroundColor}
-            hoverColor={hoverColor}
-            hoverBackgroundColor={hoverBackgroundColor}
             onClick={onClick}
             disabled={disabled}
             {...rest}
