@@ -42,6 +42,7 @@ function App() {
         $objectFit="cover"
       />
     
+      <Clear />
       <Modal open={modalOpen} onClose={closeModal} width="500px" height="500px" animation="fadeIn">
         <h2>환영합니다!</h2>
         <p>이것은 멋진 모달입니다.</p>
