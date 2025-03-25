@@ -21,6 +21,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 const StyledButton = styled.button<ButtonProps>`
   ${flexCenter}
   gap:8px;
+  white-space: nowrap;
+
   font-size: ${({ theme }) => theme.FONT_SIZE.sm};
   font-weight: ${({ theme }) => theme.FONT_WEIGHT.regular};
 
@@ -30,6 +32,12 @@ const StyledButton = styled.button<ButtonProps>`
   ${({ fullWidth }) => fullWidth && 'width: 100%;'}
 
   cursor: pointer;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
 
   &:disabled {
     opacity: 0.6;

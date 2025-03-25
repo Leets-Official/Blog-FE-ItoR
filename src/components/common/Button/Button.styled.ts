@@ -65,8 +65,8 @@ const sizeStyles: Record<ButtonSize, ReturnType<typeof css>> = {
     padding: 8px 12px;
   `,
   md: css`
-    width: 141px;
-    height: 38px;
+    width: 145px;
+    height: 42px;
     padding: 8px 12px;
   `,
   lg: css`
