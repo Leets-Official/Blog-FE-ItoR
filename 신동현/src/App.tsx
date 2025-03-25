@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Image from "@/components/ui/Image";
 import Modal from "@/components/ui/Modal";
+import { Clear } from "@/assets/index";
 
 function App() {
 
@@ -23,9 +24,7 @@ function App() {
           height="45px"
           fontSize="15px"
           color="white"
-          backgroundColor="#6366f1"
-          hoverColor="white"
-          hoverBackgroundColor="#4f46e5"
+          backgroundcolor="#6366f1"
           onClick={openModal}
           disabled={false}
         >
@@ -42,12 +41,11 @@ function App() {
         height="300px"
         $objectFit="cover"
       />
-      
+    
       <Modal open={modalOpen} onClose={closeModal} width="500px" height="500px" animation="fadeIn">
         <h2>환영합니다!</h2>
         <p>이것은 멋진 모달입니다.</p>
       </Modal>
-
     </>
   )
 }

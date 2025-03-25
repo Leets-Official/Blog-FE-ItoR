@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-    src: string;
-    alt: string;
-    width?: string;
-    height?: string;
-    $objectFit?: 'cover' | 'contain' | 'fill';
+  src: string;
+  alt: string;
+  width?: string;
+  height?: string;
+  $objectFit?: 'cover' | 'contain' | 'fill';
 }
 
 const StyledImage = styled.img<{

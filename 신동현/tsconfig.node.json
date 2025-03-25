@@ -19,7 +19,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["node"]
+    "types": ["vite-plugin-svgr/client"]
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "src/assets/vite-env.d.ts"]
 }

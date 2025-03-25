@@ -66,7 +66,7 @@ const Modal = ({ children, open, onClose, width, height, animation }: ModalProps
         <Overlay onClick={onClose}>
             <Container onClick={(e) => e.stopPropagation()} width={width} height={height} animation={animation}>
                 {children}
-                <CloseButton onClick={onClose}>✕</CloseButton>
+                <CloseButton onClick={onClose}>x</CloseButton>
             </Container>
         </Overlay>
     );
