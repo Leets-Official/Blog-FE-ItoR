@@ -4,8 +4,6 @@ import App from './App.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <Routes>
-      <App />
-    </Routes>
+    <App />
   </BrowserRouter>,
 );
