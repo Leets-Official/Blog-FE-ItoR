@@ -1,10 +1,9 @@
 import HamburgerSvg from '@/assets/icon/ic_hamburger.svg?react';
 import LogoSvg from '@/assets/icon/ic_gitlog_logo.svg?react';
-import styled from 'styled-components';
-import { flexAlignCenter } from '@/styles/common.styled';
-import WriteRight from './WriteRight';
-import DetailRight from './DetailRight';
-import ActionRight from './ActionRight';
+import WriteRight from '@/components/common/Header/WriteRight';
+import DetailRight from '@/components/common/Header/DetailRight';
+import ActionRight from '@/components/common/Header/ActionRight';
+import { HeaderContainer, SectionWrapper } from '@/components/common/Header/Header.styled';
 
 type HeaderVariant = 'default' | 'write' | 'detail' | 'action';
 
@@ -18,22 +17,6 @@ interface HeaderProps {
   onClickNegative?: () => void;
   onClickConfirm?: () => void;
 }
-
-const HeaderContainer = styled.div`
-  ${flexAlignCenter}
-  justify-content: space-between;
-  width: 100%;
-  position: sticky;
-  top: 0;
-  background-color: ${({ theme }) => theme.COLORS.white};
-  height: 72px;
-  padding: 20px;
-`;
-
-export const SectionWrapper = styled.div`
-  ${flexAlignCenter}
-  gap:16px;
-`;
 
 const renderRightSection = (
   variant: HeaderVariant,

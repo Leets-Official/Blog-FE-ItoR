@@ -1,6 +1,6 @@
 import theme from '@/styles/theme.styled';
-import Button from '../Button/Button';
-import { SectionWrapper } from './Header';
+import Button from '@/components/common/Button/Button';
+import { SectionWrapper } from '@/components/common/Header/Header.styled';
 
 interface ActionRightProps {
   negativeLabel: string;
