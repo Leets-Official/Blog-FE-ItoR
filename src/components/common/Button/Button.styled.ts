@@ -7,6 +7,7 @@ export type ButtonVariant =
   | 'secondary-filled'
   | 'black'
   | 'negative'
+  | 'text'
   | 'kakao';
 
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -50,6 +51,10 @@ const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
     color: ${({ theme }) => theme.COLORS.black};
     border: none;
     font-weight: ${({ theme }) => theme.FONT_WEIGHT.medium};
+  `,
+  text: css`
+    background-color: ${({ theme }) => theme.COLORS.white};
+    border: none;
   `,
 };
 

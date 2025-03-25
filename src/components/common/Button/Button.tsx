@@ -16,6 +16,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   rounded?: ButtonRounded;
   fullWidth?: boolean;
   children: React.ReactNode;
+  textColor?: string;
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -25,6 +26,9 @@ const StyledButton = styled.button<ButtonProps>`
 
   font-size: ${({ theme }) => theme.FONT_SIZE.sm};
   font-weight: ${({ theme }) => theme.FONT_WEIGHT.regular};
+
+  color: ${({ variant, textColor, theme }) =>
+    variant === 'text' ? (textColor ?? theme.COLORS.black) : 'inherit'};
 
   ${({ variant }) => variant && variantStyles[variant]};
   ${({ size }) => size && sizeStyles[size]};

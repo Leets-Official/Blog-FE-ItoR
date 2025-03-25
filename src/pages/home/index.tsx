@@ -4,22 +4,32 @@ import styled from 'styled-components';
 import { flexColumn } from '@/styles/common.styled';
 import PencilSvg from '@/assets/icon/ic_create.svg?react';
 import Input from '@/components/common/Input/Input';
+import Header from '@/components/common/Header/Header';
+import theme from '@/styles/theme.styled';
 
 const Flex = styled.div`
   ${flexColumn}
   gap:12px;
-  padding-left: 20px;
+  /* padding-left: 20px; */
 `;
 const HomePage: React.FC = () => {
   return (
     <Flex>
-      <h1>Home Page</h1>
+      <Header />
+      <Header variant="detail" />
+      <Header
+        variant="action"
+        negativeLabel="삭제하기"
+        confirmLabel="게시하기"
+        onClickNegative={() => console.log('삭제')}
+        onClickConfirm={() => console.log('게시')}
+      />
       {/* 버튼 예시 */}
       <Button variant="kakao" size="lg" rounded="md">
         <KakaoSvg />
         카카오로 로그인
       </Button>
-      <Button variant="black" size="xs" rounded="full">
+      <Button variant="text" size="xs" rounded="full" textColor={theme.COLORS.gray[56]}>
         등록
       </Button>
       <Button variant="secondary" size="md" rounded="full">
