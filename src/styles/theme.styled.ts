@@ -13,6 +13,7 @@ const COLORS = {
   point: '#00A1FF',
   negative: '#FF3F3F',
   positive: '#15DC5E',
+  kakao: '#FEE500',
 };
 
 const FONT_SIZE = {
