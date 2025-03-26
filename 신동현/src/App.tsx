@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Image from "@/components/ui/Image";
 import Modal from "@/components/ui/Modal";
-import { Clear } from "@/assets/index";
+import { Chat, Clear } from "@/assets/index";
 
 function App() {
 
@@ -19,12 +19,22 @@ function App() {
   return (
     <>
       <div>
+        <Button width="300px" height="45px" fontSize="16px" color="000000" backgroundcolor="#FEE500" disabled={false} onClick={() => { }} icon={<Chat />} style={{
+          border: "none",
+          borderRadius: "6px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "8px"
+        }}>카카오 로그인</Button>
+      </div >
+      <div>
         <Button
-          width="180px"
+          width="300px"
           height="45px"
-          fontSize="15px"
-          color="white"
-          backgroundcolor="#6366f1"
+          fontSize="16px"
+          color="#FFFFFF"
+          backgroundcolor="#000000"
           onClick={openModal}
           disabled={false}
         >
