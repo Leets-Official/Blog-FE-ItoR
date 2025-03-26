@@ -21,15 +21,15 @@ const ModalContent = styled.div`
   min-width: 300px;
 `;
 
-const Modal = ({ Open, Close }) => {
-  if (!Open) return null;
+const Modal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
 
   return (
-    <ModalOverlay onClick={Close}>
+    <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}> {/*ModalContent 클릭했을때 나가짐 방지*/}
         <h2>모달 내용</h2>
         <p>닫기 버튼을 눌러주세요.</p>
-        <Button onClick={Close}>
+        <Button onClick={onClose}>
           닫기
         </Button>
       </ModalContent>

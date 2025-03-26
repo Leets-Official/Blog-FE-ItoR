@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Input from "./components/Input";
-import Button from "./components/Button";
-import Image from "./components/Image";
 import styled from "styled-components";
-import image from "./assets/test.jpg";
-import Modal from "./components/Modal";
-import Toast from './components/Toast';
+import Input from "@/components/Input";
+import Button from "@/components/Button";
+import Image from "@/components/Image";
+import image from "@/assets/test.jpg";
+import Modal from "@/components/Modal";
+import Toast from '@/components/Toast';
 
 const Container = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ function App() {
         <Button width='200px' onClick={() => setModalOpen(true)}>버튼</Button>
       </Row>
       <Image src={image} alt="Placeholder" radius='50%' />
-      <Modal Open={modalOpen} Close={() => setModalOpen(false)} />
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       <Toast show={toastShow} />
     </Container>
   );
