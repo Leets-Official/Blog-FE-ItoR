@@ -3,7 +3,7 @@ import styled, { css, CSSProperties } from "styled-components";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     onClick: () => void;
-    disabled: boolean;
+    disabled ?: boolean;
     width?: string;
     height?: string;
     fontSize?: string;
