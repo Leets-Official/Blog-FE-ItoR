@@ -51,11 +51,9 @@ function App() {
         height="300px"
         $objectFit="cover"
       />
-    
     <Clear/>
       <Modal open={modalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" buttonComponents = {[{text: "취소", onClick: closeModal, type: "secondary"}, {text: "회원가입 하기", onClick: closeModal, type: "primary"}]} onClose={closeModal} width="500px" height="200px" animation="fadeIn">
       </Modal>
-
     </>
   )
 }
