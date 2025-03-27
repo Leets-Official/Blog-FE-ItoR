@@ -9,7 +9,7 @@ const ModalOverlay = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  display: flex; 
+  display: flex;
   align-items: center;
   justify-content: center;
 `;
@@ -26,12 +26,12 @@ const Modal = ({ isOpen, onClose }) => {
 
   return (
     <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}> {/*ModalContent 클릭했을때 나가짐 방지*/}
+      <ModalContent onClick={(e) => e.stopPropagation()}>
+        {' '}
+        {/*ModalContent 클릭했을때 나가짐 방지*/}
         <h2>모달 내용</h2>
         <p>닫기 버튼을 눌러주세요.</p>
-        <Button onClick={onClose}>
-          닫기
-        </Button>
+        <Button onClick={onClose}>닫기</Button>
       </ModalContent>
     </ModalOverlay>
   );
