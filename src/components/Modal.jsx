@@ -27,7 +27,6 @@ const Modal = ({ isOpen, onClose }) => {
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
-        {' '}
         {/*ModalContent 클릭했을때 나가짐 방지*/}
         <h2>모달 내용</h2>
         <p>닫기 버튼을 눌러주세요.</p>

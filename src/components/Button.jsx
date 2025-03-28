@@ -1,39 +1,58 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon from '@/assets/create.svg?react';
 
 const StyledButton = styled.button`
-  font-size: ${(props) => props.fontSize || '16px'};
-  color: ${(props) => props.color || 'white'};
-  background-color: ${(props) => props.bgColor || 'blue'};
-  width: ${(props) => props.width || '100%'};
-  padding: 10px 20px;
-  border: 1px solid skyblue;
-  border-radius: 25px;
+  font-size: ${(props) => props.fontSize || '14px'};
+  font-weight: ${(props) => props.fontWeight || 'normal'}; //bold or normal
+  color: ${(props) => props.color || 'black'};
+  background-color: ${(props) => props.$bgColor || 'white'};
+  width: ${(props) => props.width || 'auto'};
+  height: ${(props) => props.height || '40px'};
+  border: ${(props) => props.$borderStyle || '1px solid'};
+  border-radius: ${(props) => props.radius || '25px'};
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+`;
 
+const StyledIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
 `;
 
-const StyledIcon = styled(Icon)`
-  width: ${(props) => props.size || '20px'};
-  height: ${(props) => props.size || '20px'};
-  color: 'skyblue';
-`;
-
-const Button = ({ children, width, color, bgColor, fontSize, iconSize, onClick }) => {
+const Button = ({
+  children,
+  width,
+  height,
+  radius,
+  color,
+  bgColor,
+  fontSize,
+  fontWeight,
+  borderStyle,
+  icon: Icon,
+  onClick,
+}) => {
   return (
     <StyledButton
       width={width}
+      height={height}
+      radius={radius}
       color={color}
-      bgColor={bgColor}
+      $bgColor={bgColor}
       fontSize={fontSize}
+      fontWeight={fontWeight}
+      $borderStyle={borderStyle}
       onClick={onClick}
     >
-      <StyledIcon size={iconSize} />
+      {Icon && (
+        <StyledIcon>
+          <Icon />
+        </StyledIcon>
+      )}
       {children}
     </StyledButton>
   );
