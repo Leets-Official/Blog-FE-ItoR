@@ -8,13 +8,13 @@ const StyledButton = styled.button`
   background-color: ${({ $bgColor }) => $bgColor || 'white'};
   width: ${(props) => props.width || 'auto'};
   height: ${(props) => props.height || '40px'};
-  border: ${(props) => props.$borderStyle || '1px solid'};
+  border: ${(props) => props.$borderStyle || '1px solid black'};
   border-radius: ${(props) => props.radius || '25px'};
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
 `;
 
 const StyledIcon = styled.div`

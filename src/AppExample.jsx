@@ -28,7 +28,13 @@ function AppExample() {
   return (
     <Container>
       <Input onFocus={InputFocus} placeholder='입력하세요' />
-      <Button width='150px' color='#00A1FF' icon={CreateIcon}>
+      <Input
+        onFocus={InputFocus}
+        placeholder='입력하세요'
+        borderStyle='1px solid black'
+        bgColor='#E6E6E6'
+      />
+      <Button width='150px' color='#00A1FF' borderStyle='1px solid #00A1FF' icon={CreateIcon}>
         깃로그 시작하기
       </Button>
       <Button width='150px' onClick={() => setModalOpen(true)} color='gray' bgColor='black'>
