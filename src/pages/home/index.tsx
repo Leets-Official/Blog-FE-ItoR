@@ -12,7 +12,7 @@ import { useState } from 'react';
 const Flex = styled.div`
   ${flexColumn}
   gap:12px;
-  /* padding-left: 20px; */
+  padding-left: 20px;
 `;
 const HomePage: React.FC = () => {
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
@@ -28,6 +28,7 @@ const HomePage: React.FC = () => {
     <Flex>
       <Header />
       <Header variant="detail" />
+      <Header variant="write" />
       <Header
         variant="action"
         negativeLabel="삭제하기"
