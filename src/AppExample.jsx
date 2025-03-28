@@ -31,7 +31,7 @@ function AppExample() {
       <Button width='150px' color='#00A1FF' icon={CreateIcon}>
         깃로그 시작하기
       </Button>
-      <Button width='150px' onClick={() => setModalOpen(true)} color='gray' bgColor='#000000'>
+      <Button width='150px' onClick={() => setModalOpen(true)} color='gray' bgColor='black'>
         모달창 띄우기
       </Button>
       <Button
