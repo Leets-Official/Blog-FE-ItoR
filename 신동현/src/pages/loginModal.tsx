@@ -33,6 +33,14 @@ const Container = styled.div<{ animation?: string }>`
   justify-content: center;
   align-items: center;
   animation: ${fadeIn} 0.3s ease-in-out;
+
+  @media (max-width: 700px) {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+  }  
 `;
 
 const ImageContainer = styled.div`
@@ -42,6 +50,10 @@ const ImageContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 700px) {
+    flex-basis: 500px; 
+  }
 `;
 
 const ImageSubContent = styled.p`
@@ -50,6 +62,10 @@ const ImageSubContent = styled.p`
   padding-top: 20px;
   margin-top: 20px;
 
+  @media (max-width: 700px) {
+    font-size: 12px;
+    margin-top: 10px;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -60,6 +76,10 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+
+  @media (max-width: 700px) {
+    justify-content: start;
+  }
 `;
 
 const InputContent = styled.p`
