@@ -1,0 +1,19 @@
+# 빌드
+dist
+build
+
+#패키지
+node_modules
+
+package-lock.json
+
+# 로그 및 테스트
+coverage
+*.log
+
+public
+
+.vite
+
+# 타입 정의
+*.d.ts
