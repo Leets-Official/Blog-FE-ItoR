@@ -2,8 +2,9 @@ import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Image from "@/components/ui/Image";
 import Modal from "@/components/ui/Modal";
-import { Chat, Clear, GITLOG } from "@/assets/index";
+import { Chat, Clear } from "@/assets/index";
 import LoginModal from "@/pages/loginModal";
+import Header from "@/components/layout/header/header";
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
 
   return (
     <>
+      <Header type="write" />
       <div>
         <Button width="300px" height="45px" fontSize="16px" color="000000" backgroundcolor="#FEE500" disabled={false} onClick={openLoginModal} icon={<Chat />} style={{
           border: "none",

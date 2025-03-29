@@ -13,6 +13,7 @@ import Reorder from '@/assets/icons/reorder.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
 import GITLOG from '@/assets/icons/GITLOG.svg?react';
 import Kakao from '@/assets/icons/KaKaoLogo.svg?react';
+import HeaderLogo from '@/assets/icons/Header_GITLOG.svg?react';
 
 export {
     Add_photo,
@@ -30,4 +31,5 @@ export {
     GITLOG,
     Kakao,
     ClearWhite,
+    HeaderLogo,
 };

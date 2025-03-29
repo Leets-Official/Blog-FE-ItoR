@@ -1,7 +1,7 @@
 import styled, { css, CSSProperties } from "styled-components";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children ?: React.ReactNode;
   onClick: () => void;
   disabled ?: boolean;
   width?: string;
@@ -26,6 +26,10 @@ const StyledButton = styled.button<{
   font-size: ${(props) => props.fontSize};
   color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundcolor};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
 `;
 
 const IconContainer = styled.span`
