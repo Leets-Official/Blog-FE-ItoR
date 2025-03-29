@@ -8,7 +8,7 @@ const Container = styled.div`
   height: 72px;
   display: flex;
   align-items: center;
-  position: fixed;
+  position: sticky;
   background-color: #ffffff;
   top: 0;
   left: 0;
