@@ -18,18 +18,22 @@ const Container = styled.div`
 
 function AppExample() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [toastShow, setToastShow] = useState(false);
+  const [toastData, setToastData] = useState({ show: false, type: 'error', message: '' });
 
-  const InputFocus = () => {
-    setToastShow(true);
-    setTimeout(() => setToastShow(false), 2000);
+  const InputFocus = (type) => {
+    setToastData({
+      show: true,
+      type,
+      message: type === 'positive' ? '저장되었습니다!' : '내용을 입력해주세요',
+    });
+    setTimeout(() => setToastData((prev) => ({ ...prev, show: false })), 2000);
   };
 
   return (
     <Container>
-      <Input onFocus={InputFocus} placeholder='입력하세요' />
+      <Input onFocus={() => InputFocus('error')} placeholder='입력하세요' />
       <Input
-        onFocus={InputFocus}
+        onFocus={() => InputFocus('positive')}
         placeholder='입력하세요'
         borderStyle='1px solid black'
         bgColor='#E6E6E6'
@@ -72,7 +76,9 @@ function AppExample() {
         </ButtonContainer>
       </Modal>
       ;
-      <Toast show={toastShow} />
+      <Toast show={toastData.show} type={toastData.type}>
+        {toastData.message}
+      </Toast>
     </Container>
   );
 }
