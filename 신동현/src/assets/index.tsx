@@ -1,6 +1,7 @@
 import Add_photo from '@/assets/icons/add_photo_alternate.svg?react';
 import Chat from '@/assets/icons/chat.svg?react';
 import Clear from '@/assets/icons/clear.svg?react';
+import ClearWhite from '@/assets/icons/clear_white.svg?react';
 import Create from '@/assets/icons/create.svg?react';
 import Delete from '@/assets/icons/delete_forever.svg?react';
 import Done from '@/assets/icons/done.svg?react';
@@ -10,6 +11,8 @@ import More_vert from '@/assets/icons/more_vert.svg?react';
 import Navigate_before from '@/assets/icons/navigate_before.svg?react';
 import Reorder from '@/assets/icons/reorder.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
+import GITLOG from '@/assets/icons/GITLOG.svg?react';
+import Kakao from '@/assets/icons/KaKaoLogo.svg?react';
 
 export {
     Add_photo,
@@ -24,4 +27,7 @@ export {
     Navigate_before,
     Reorder,
     Settings,
+    GITLOG,
+    Kakao,
+    ClearWhite,
 };
