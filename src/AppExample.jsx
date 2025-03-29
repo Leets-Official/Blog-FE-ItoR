@@ -4,7 +4,7 @@ import Input from '@/components/Input';
 import Button from '@/components/Button';
 import Image from '@/components/Image';
 import image from '@/assets/test.jpg';
-import Modal from '@/components/Modal';
+import { Modal, ModalText, ButtonContainer } from '@/components/Modal';
 import Toast from '@/components/Toast';
 import CreateIcon from '@/assets/create.svg?react';
 import KakaoIcon from '@/assets/kakaologo.svg?react';
@@ -52,7 +52,26 @@ function AppExample() {
         카카오로 로그인
       </Button>
       <Image src={image} alt='프로필' width='90px' height='90px' radius='50%' />
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
+        <ModalText>
+          <h4>해당 블로그를 삭제하시겠어요?</h4>
+          <p>삭제된 블로그는 다시 확인할 수 없어요.</p>
+        </ModalText>
+        <ButtonContainer>
+          <Button
+            onClick={() => setModalOpen(false)}
+            width='150px'
+            borderStyle='1px solid #dfdada'
+            radius='3px'
+          >
+            취소
+          </Button>
+          <Button width='150px' borderStyle='none' radius='3px' color='white' bgColor='#FF3F3F'>
+            삭제하기
+          </Button>
+        </ButtonContainer>
+      </Modal>
+      ;
       <Toast show={toastShow} />
     </Container>
   );

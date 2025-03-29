@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Button from './Button';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -16,24 +15,41 @@ const ModalOverlay = styled.div`
 
 const ModalContent = styled.div`
   background: white;
-  padding: 30px;
-  border-radius: 10px;
-  min-width: 300px;
+  padding: 20px;
+  border-radius: 4px;
+  width: 320px;
+  min-height: 140px;
 `;
 
-const Modal = ({ isOpen, onClose }) => {
+const ModalText = styled.div`
+  margin: -10px 0px 30px 10px;
+
+  h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #7c7878;
+    line-height: 1.3;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+`;
+
+const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 
   return (
-    <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        {/*ModalContent 클릭했을때 나가짐 방지*/}
-        <h2>모달 내용</h2>
-        <p>닫기 버튼을 눌러주세요.</p>
-        <Button onClick={onClose}>닫기</Button>
-      </ModalContent>
+    <ModalOverlay>
+      <ModalContent onClick={(e) => e.stopPropagation()}>{children}</ModalContent>
     </ModalOverlay>
   );
 };
 
-export default Modal;
+export { Modal, ModalText, ButtonContainer };
