@@ -4,7 +4,7 @@ import MainHeader from "./mainHeader";
 import WriteHeader from "./writeHeader";
 import DetailHeader from "./detailHeader";
 import { useState } from "react";
-import Frame from "@/components/layout/sideBar";
+import SideBar from "@/components/layout/sideBar";
 import Button from "@/components/ui/Button";
 
 const HeaderContainer = styled.div`
@@ -42,17 +42,17 @@ interface HeaderProps {
 }
 
 const Header = ({ type }: HeaderProps) => {
-  const [isFrameOpen, setIsFrameOpen] = useState(false);
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
-  const setFrameOpen = () => {
-    setIsFrameOpen((current) => !current);
+  const setSideBarOpen = () => {
+    setIsSideBarOpen((current) => !current);
   }
 
   return (
     <>
       <HeaderContainer>
         <LeftContainer>
-          <Button onClick={setFrameOpen} icon={<Reorder />} backgroundColor="#FFFFFF"></Button>
+          <Button onClick={setSideBarOpen} icon={<Reorder />} backgroundColor="#FFFFFF"></Button>
           <HeaderLogo />
         </LeftContainer>
         <RightContainer>
@@ -61,7 +61,7 @@ const Header = ({ type }: HeaderProps) => {
           {type === "detail" && <DetailHeader />}
         </RightContainer>
       </HeaderContainer>
-      {isFrameOpen && <Frame isLogin={false} />}
+      {isSideBarOpen && <SideBar isLogin={true} />}
     </>
   );
 };

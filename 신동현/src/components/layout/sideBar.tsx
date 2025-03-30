@@ -55,6 +55,7 @@ const FooterButtonContainer = styled(ButtonContainer)`
   left: 0;
   right: 0;
   padding-left: 16px;
+  padding-bottom: 16px;
 `;
 
 interface FrameProps {
