@@ -12,7 +12,8 @@ interface ModalProps {
   onConfirm?: () => void;
   cancelText?: string;
   confirmText?: string;
-  type?: 'positive' | 'negative';
+  cancelType?: 'positive' | 'negative';
+  confirmType?: 'positive' | 'negative';
 }
 
 const fadeIn = keyframes`
@@ -47,8 +48,8 @@ const Container = styled.div<{ animation?: string }>`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   max-width: 500px;
   margin: auto;
-  width: 500px;
-  min-height: 200px;
+  width: 326px;
+  height: 100px;
   animation: ${(props) => props.animation === 'fadeIn' ? fadeIn : slideIn} 0.3s ease-in-out;
 `;
 
@@ -64,8 +65,8 @@ const ButtonContainer = styled.div`
 `;
 
 const ModalTitle = styled.h2`
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 400;
   margin: 0;
   margin-bottom: 4px;
 `;
@@ -77,7 +78,7 @@ const ModalSubTitle = styled.p`
 `;
 
 
-const Modal = ({ title, subTitle, open, onClose, onCancel, onConfirm, animation, cancelText, confirmText, type }: ModalProps) => {
+const Modal = ({ title, subTitle, open, onClose, onCancel, onConfirm, animation, cancelText, confirmText, cancelType, confirmType }: ModalProps) => {
   if (!open) return null;
 
   return (
@@ -85,9 +86,9 @@ const Modal = ({ title, subTitle, open, onClose, onCancel, onConfirm, animation,
       <Container onClick={(e) => e.stopPropagation()} animation={animation}>
         {title && <ModalTitle>{title}</ModalTitle>}
         {subTitle && <ModalSubTitle>{subTitle}</ModalSubTitle>}
-        <ButtonContainer> 
-          <Button fontSize="15px" width="100%" height="50px" backgroundColor="#2196F3" color="#ffffff" style={{ border: "none" }} onClick={onCancel || (() => {})}>{cancelText}</Button>
-          <Button fontSize="15px" width="100%" height="50px" backgroundColor={type === 'positive' ? "#2196F3" : "#ffffff"} color={type === 'positive' ? "#ffffff" : "#2196F3"} style={{ border: type === 'positive' ? "none" : "1px solid #2196F3" }} onClick={onConfirm || (() => {})}>{confirmText}</Button>
+        <ButtonContainer>
+          <Button fontSize="15px" width="100%" height="50px" backgroundColor={cancelType === 'positive' ? "#2196F3" : "#ffffff"} color={cancelType === 'positive' ? "#ffffff" : "#000000"} style={{ border: cancelType === 'positive' ? "none" : "1px solid #2196F3" }} onClick={onCancel || (() => { })}>{cancelText}</Button>
+          <Button fontSize="15px" width="100%" height="50px" backgroundColor={confirmType === 'positive' ? "#2196F3" : "#ffffff"} color={confirmType === 'positive' ? "#ffffff" : "#000000"} style={{ border: confirmType === 'positive' ? "none" : "1px solid #2196F3" }} onClick={onConfirm || (() => { })}>{confirmText}</Button>
         </ButtonContainer>
       </Container>
     </Overlay>

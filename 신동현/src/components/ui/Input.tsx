@@ -7,12 +7,13 @@ const Container = styled.div`
 `;
 
 const StyledInput = styled.input`
-  width: ${({ width }) => width};
-  height: ${({ height }) => height};
+  width: ${({ width }) => width || "650px"};
+  height: ${({ height }) => height || "40px"};
   border: 1px solid #E0E0E0;
   border-radius: 4px;
   padding: 0 16px;
-
+  background-color: ${({ disabled }) => disabled ? "#E6E6E6" : "#FFFFFF"};
+  color: ${({ disabled }) => disabled ? "#909090" : "#000000"};
   ::placeholder {
     color: #C8C8C8;
     font-size: 14px;
@@ -21,22 +22,31 @@ const StyledInput = styled.input`
 `;
 
 const Title = styled.div`
+  margin-left: 8px;
+  margin-bottom: 8px;
   font-size: 14px;
   font-weight: 300;
   color: #909090;
 `;
 
+const SubTitle = styled(Title)`
+  font-size: 12px;
+  color: #909090;
+`;
+
 interface InputProps {
   title ?: string;
-  width: string;
-  height: string;
+  subTitle ?: string;
+  width ?: string;
+  height ?: string;
   type: string;
   placeholder: string;
   value: string;
+  disabled ?: boolean;
   onChange ?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input = ({ title, type, placeholder, value, onChange, ...rest }: InputProps) => {
+const Input = ({ title, subTitle, type, placeholder, value, disabled, onChange, ...rest }: InputProps) => {
   return (
     <Container>
       {title && <Title>{title}</Title>}
@@ -45,8 +55,10 @@ const Input = ({ title, type, placeholder, value, onChange, ...rest }: InputProp
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        disabled={disabled}
         {...rest}
       />
+      {subTitle && <SubTitle>{subTitle}</SubTitle>}
     </Container>
   )
 }
