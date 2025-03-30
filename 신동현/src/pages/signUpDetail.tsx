@@ -3,6 +3,7 @@ import Header from "@/components/layout/header/header";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import { Add_photo_gray, Profile } from "@/assets";
+import Input from "@/components/ui/Input";
 
 const TitleContainer = styled.div`
   width: 100%;
@@ -112,6 +113,7 @@ const SignUpDetail = () => {
             <Button onClick={() => { }} icon={<Profile />} width="40px" height="40px" style={{ paddingLeft: "30px" }}></Button>
             <Button onClick={() => { }} icon={<Add_photo_gray />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF" style={{ border: "1px solid #E6E6E6" }}>프로필 사진 추가</Button>
           </ProfileChangeContainer>
+          <Input title="이메일" width="100%" height="40px" type="text" placeholder="이메일" value="" onChange={() => { }} />
         </ProfileContainer>
       </InputContainer>
     </>

@@ -2,6 +2,7 @@ import { ClearWhite, GITLOG_White, Kakao } from "@/assets";
 import Button from "@/components/ui/Button";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+import Input from "./Input";
 
 const Overlay = styled.div`
   position: fixed;
@@ -111,20 +112,6 @@ const SnsContent = styled(InputContent)`
   }
 `;
 
-const TextBox = styled.input<{ placeholder: string }>`
-  width: 272px;
-  height: 18px;
-  border-radius: 6px;
-  border: 1px solid #333333;
-  text-align: left;
-  padding: 14px;
-  ::placeholder {
-    color: #b3b3b3;
-    font-size: 14px;
-    font-weight: 300;
-  }
-`;
-
 interface LoginProps {
   open: boolean;
   onClose: () => void;
@@ -146,8 +133,8 @@ const Login = ({ open, onClose }: LoginProps) => {
           </ImageSubContent>
         </ImageContainer>
         <InputContainer>
-          <TextBox placeholder="이메일" />
-          <TextBox placeholder="비밀번호" />
+          <Input width="265px" height="46px" type="text" placeholder="이메일" value="" onChange={() => { }} />
+          <Input width="265px" height="46px" type="password" placeholder="비밀번호" value="" onChange={() => { }} />
           <Button width="300px" height="45px" fontSize="14px" color="#ffffff" backgroundColor="#00A1FF" disabled={false} onClick={() => { }} style={{
             border: "none",
             borderRadius: "6px",
