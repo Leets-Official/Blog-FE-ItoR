@@ -147,7 +147,7 @@ const Login = ({ open, onClose }: LoginProps) => {
         <InputContainer>
           <TextBox placeholder="이메일" />
           <TextBox placeholder="비밀번호" />
-          <Button width="300px" height="45px" fontSize="14px" color="#ffffff" backgroundcolor="#00A1FF" disabled={false} onClick={() => { }} style={{
+          <Button width="300px" height="45px" fontSize="14px" color="#ffffff" backgroundColor="#00A1FF" disabled={false} onClick={() => { }} style={{
             border: "none",
             borderRadius: "6px",
             display: "flex",
@@ -158,7 +158,7 @@ const Login = ({ open, onClose }: LoginProps) => {
           <SnsContent>
             SNS
           </SnsContent>
-          <Button width="300px" height="45px" fontSize="15px" color="000000" backgroundcolor="#FEE500" disabled={false} onClick={() => { }} icon={<Kakao />} style={{
+          <Button width="300px" height="45px" fontSize="15px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={() => { }} icon={<Kakao />} style={{
             border: "none",
             borderRadius: "6px",
             display: "flex",

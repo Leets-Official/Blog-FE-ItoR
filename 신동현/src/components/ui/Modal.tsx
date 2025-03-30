@@ -85,9 +85,9 @@ const Modal = ({ title, subTitle, open, onClose, onCancel, onConfirm, animation,
       <Container onClick={(e) => e.stopPropagation()} animation={animation}>
         {title && <ModalTitle>{title}</ModalTitle>}
         {subTitle && <ModalSubTitle>{subTitle}</ModalSubTitle>}
-        <ButtonContainer>
-          <Button fontSize="15px" width="100%" height="50px" backgroundcolor="#2196F3" color="#ffffff" style={{ border: "none" }} onClick={onCancel || (() => {})}>{cancelText}</Button>
-          <Button fontSize="15px" width="100%" height="50px" backgroundcolor={type === 'positive' ? "#2196F3" : "#ffffff"} color={type === 'positive' ? "#ffffff" : "#2196F3"} style={{ border: type === 'positive' ? "none" : "1px solid #2196F3" }} onClick={onConfirm || (() => {})}>{confirmText}</Button>
+        <ButtonContainer> 
+          <Button fontSize="15px" width="100%" height="50px" backgroundColor="#2196F3" color="#ffffff" style={{ border: "none" }} onClick={onCancel || (() => {})}>{cancelText}</Button>
+          <Button fontSize="15px" width="100%" height="50px" backgroundColor={type === 'positive' ? "#2196F3" : "#ffffff"} color={type === 'positive' ? "#ffffff" : "#2196F3"} style={{ border: type === 'positive' ? "none" : "1px solid #2196F3" }} onClick={onConfirm || (() => {})}>{confirmText}</Button>
         </ButtonContainer>
       </Container>
     </Overlay>

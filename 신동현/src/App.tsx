@@ -31,7 +31,7 @@ function App() {
     <>
       <Header type="write" />
       <div>
-        <Button width="300px" height="45px" fontSize="16px" color="000000" backgroundcolor="#FEE500" disabled={false} onClick={openLoginModal} icon={<Chat />} style={{
+        <Button width="300px" height="45px" fontSize="16px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={openLoginModal} icon={<Chat />} style={{
           border: "none",
           borderRadius: "6px",
           display: "flex",
@@ -47,7 +47,7 @@ function App() {
           height="45px"
           fontSize="16px"
           color="#FFFFFF"
-          backgroundcolor="#000000"
+          backgroundColor="#000000"
           onClick={openModal}
           disabled={false}
         >

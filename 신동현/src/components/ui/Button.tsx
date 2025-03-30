@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   width?: string;
   height?: string;
   fontSize?: string;
-  backgroundcolor?: string;
+  backgroundColor?: string;
   color?: string;
   icon?: React.ReactNode;
   style?: CSSProperties;
@@ -18,14 +18,14 @@ const StyledButton = styled.button<{
   height?: string;
   fontSize?: string;
   color?: string;
-  backgroundcolor?: string;
+  backgroundColor?: string;
 }>`
   cursor: pointer;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  font-size: ${(props) => props.fontSize};
+  font-size: ${(props) => props.fontSize || "15px"};
   color: ${(props) => props.color};
-  background-color: ${(props) => props.backgroundcolor};
+  background-color: ${(props) => props.backgroundColor};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,7 +45,7 @@ const Button = ({
   width,
   height,
   fontSize,
-  backgroundcolor,
+  backgroundColor,
   color,
   icon,
   ...rest
@@ -56,7 +56,7 @@ const Button = ({
       height={height}
       fontSize={fontSize}
       color={color}
-      backgroundcolor={backgroundcolor}
+      backgroundColor={backgroundColor}
       onClick={onClick}
       disabled={disabled}
       {...rest}
