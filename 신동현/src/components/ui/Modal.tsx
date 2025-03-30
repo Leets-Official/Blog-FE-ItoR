@@ -49,7 +49,7 @@ const Container = styled.div<{ animation?: string }>`
   max-width: 500px;
   margin: auto;
   width: 326px;
-  height: 100px;
+  height: 100px
   animation: ${(props) => props.animation === 'fadeIn' ? fadeIn : slideIn} 0.3s ease-in-out;
 `;
 
@@ -76,7 +76,6 @@ const ModalSubTitle = styled.p`
   color: #666;
   margin-bottom: 32px;
 `;
-
 
 const Modal = ({ title, subTitle, open, onClose, onCancel, onConfirm, animation, cancelText, confirmText, cancelType, confirmType }: ModalProps) => {
   if (!open) return null;
