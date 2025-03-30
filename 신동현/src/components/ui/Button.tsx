@@ -1,4 +1,4 @@
-import styled, { css, CSSProperties } from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children ?: React.ReactNode;
