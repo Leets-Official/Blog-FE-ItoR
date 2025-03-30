@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import LoginModal from "../ui/loginModal";
 
-const FrameContainer = styled.div`
+const SideBarContainer = styled.div`
   float: left;
   top: 0;
   left: 0;
@@ -12,10 +12,12 @@ const FrameContainer = styled.div`
   width: 240px;
   height: 100vh;
   background-color: #F5F5F5;
+  position: fixed;
+  z-index: 98;
 `;
 
 const Container = styled.div`
-  padding-top: 30px;
+  padding-top: 130px;
   padding-left: 16px;
 `;
 
@@ -107,16 +109,16 @@ const NotLoginedContainer = () => {
   )
 }
 
-const Frame = ({ isLogin }: FrameProps) => {
+const SideBar = ({ isLogin }: FrameProps) => {
   return (
-    <FrameContainer>
+    <SideBarContainer>
       {isLogin === true ? (
         <LoginedContainer />
       ) : (
         <NotLoginedContainer />
       )}
-    </FrameContainer>
+    </SideBarContainer>
   );
 };
 
-export default Frame;
+export default SideBar;

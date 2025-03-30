@@ -1,4 +1,5 @@
 import Add_photo from '@/assets/icons/add_photo_alternate.svg?react';
+import Add_photo_gray from '@/assets/icons/add_photo_alternate_gray.svg?react';
 import Chat from '@/assets/icons/chat.svg?react';
 import Clear from '@/assets/icons/clear.svg?react';
 import ClearWhite from '@/assets/icons/clear_white.svg?react';
@@ -19,6 +20,7 @@ import Profile from '@/assets/icons/profile.svg?react';
 
 export {
     Add_photo,
+    Add_photo_gray,
     Chat,
     Clear,
     Create,

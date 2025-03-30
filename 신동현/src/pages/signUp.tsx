@@ -2,6 +2,13 @@ import Header from "@/components/layout/header/header";
 import { GITLOG_Black, Kakao } from "@/assets";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
+import { useNavigate } from "react-router-dom";
+
+const Container = styled.div`
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+`;
 
 const ContentContainer = styled.div`
   margin-top: 200px;
@@ -92,8 +99,18 @@ const ButtonContainer = styled.div`
 `;
 
 const SignUp = () => {
+  const navigate = useNavigate();
+
+  const handleEmailSignUp = () => {
+    navigate("/signUpDetail?type=email");
+  };
+
+  const handleKakaoSignUp = () => {
+    navigate("/signUpDetail?type=kakao");
+  };
+
   return (
-    <>
+    <Container>
       <Header />
       <TitleContainer>
         <Title>회원가입</Title>
@@ -106,7 +123,7 @@ const SignUp = () => {
           </ImageSubContent>
         </ImageContainer>
         <ButtonContainer>
-          <Button width="300px" height="45px" fontSize="14px" color="#ffffff" backgroundColor="#00A1FF" disabled={false} onClick={() => { }} style={{
+          <Button width="300px" height="45px" fontSize="14px" color="#ffffff" backgroundColor="#00A1FF" disabled={false} onClick={handleEmailSignUp} style={{
             border: "none",
             borderRadius: "6px",
             display: "flex",
@@ -115,7 +132,7 @@ const SignUp = () => {
             gap: "8px"
           }}>이메일로 회원가입</Button>
           <SubContent>또는</SubContent>
-          <Button width="300px" height="45px" fontSize="15px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={() => { }} icon={<Kakao />} style={{
+          <Button width="300px" height="45px" fontSize="15px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={handleKakaoSignUp} icon={<Kakao />} style={{
             border: "none",
             borderRadius: "6px",
             display: "flex",
@@ -125,7 +142,7 @@ const SignUp = () => {
           }}>카카오로 회원가입</Button>
         </ButtonContainer>
       </ContentContainer>
-    </>
+    </Container>
   );
 };
 

@@ -8,6 +8,7 @@ import Frame from "@/components/layout/sideBar";
 import Button from "@/components/ui/Button";
 
 const HeaderContainer = styled.div`
+  margin-top: 0px;
   width: 100%;
   height: 72px;
   display: flex;
