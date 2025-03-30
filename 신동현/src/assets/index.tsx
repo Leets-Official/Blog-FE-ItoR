@@ -11,7 +11,8 @@ import More_vert from '@/assets/icons/more_vert.svg?react';
 import Navigate_before from '@/assets/icons/navigate_before.svg?react';
 import Reorder from '@/assets/icons/reorder.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
-import GITLOG from '@/assets/icons/GITLOG.svg?react';
+import GITLOG_White from '@/assets/icons/GITLOG_White.svg?react';
+import GITLOG_Black from '@/assets/icons/GITLOG_Black.svg?react';
 import Kakao from '@/assets/icons/KaKaoLogo.svg?react';
 import HeaderLogo from '@/assets/icons/Header_GITLOG.svg?react';
 import Profile from '@/assets/icons/profile.svg?react';
@@ -29,7 +30,8 @@ export {
     Navigate_before,
     Reorder,
     Settings,
-    GITLOG,
+    GITLOG_White,
+    GITLOG_Black,
     Kakao,
     ClearWhite,
     HeaderLogo,

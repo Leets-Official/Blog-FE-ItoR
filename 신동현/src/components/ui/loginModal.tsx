@@ -1,5 +1,6 @@
-import { ClearWhite, GITLOG, Kakao } from "@/assets";
+import { ClearWhite, GITLOG_White, Kakao } from "@/assets";
 import Button from "@/components/ui/Button";
+import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
 const Overlay = styled.div`
@@ -139,7 +140,7 @@ const Login = ({ open, onClose }: LoginProps) => {
           <ClearWhite />
         </CloseButton>
         <ImageContainer>
-          <GITLOG />
+          <GITLOG_White />
           <ImageSubContent>
             You can make anything by writing
           </ImageSubContent>
@@ -167,7 +168,7 @@ const Login = ({ open, onClose }: LoginProps) => {
             gap: "8px"
           }}>카카오로 로그인</Button>
           <InputContent>
-            또는 회원가입
+            <Link to="/signup" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
           </InputContent>
 
         </InputContainer>

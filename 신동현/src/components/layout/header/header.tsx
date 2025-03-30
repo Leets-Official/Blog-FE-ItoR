@@ -37,7 +37,7 @@ const RightContainer = styled.div`
 `;
 
 interface HeaderProps {
-  type: "main" | "write" | "detail";
+  type ?: "main" | "write" | "detail";
 }
 
 const Header = ({ type }: HeaderProps) => {
