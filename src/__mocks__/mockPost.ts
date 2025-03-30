@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 
 export const mockPosts: Post[] = Array.from({ length: 10 }, (_, i) => ({
   id: i + 1,
-  title: faker.lorem.sentence(),
+  title: faker.lorem.words(),
   content: faker.lorem.paragraph(),
   nickName: faker.internet.username(),
   createAt: faker.date.recent().toLocaleDateString('ko-KR', {

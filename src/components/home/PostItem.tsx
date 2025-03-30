@@ -1,26 +1,59 @@
-export interface Post {
-  id: number;
-  title: string;
-  content: string;
-  nickName: string;
-  createAt: string;
-  image?: string;
-  commentCount: number;
-}
+import { flexAlignCenter, flexColumn } from '@/styles/common.styled';
+import theme from '@/styles/theme.styled';
+import { Post } from '@/types/post';
+import styled from 'styled-components';
 
 interface PostItemProps {
   post: Post;
 }
 
+type TextColor = 'black' | 'gray33' | 'gray56' | 'gray20';
+
+export const Text = styled.div<{
+  fontSize?: keyof typeof theme.FONT_SIZE;
+  fontWeight?: keyof typeof theme.FONT_WEIGHT;
+  color?: TextColor;
+}>`
+  font-weight: ${({ theme, fontWeight = 'regular' }) => theme.FONT_WEIGHT[fontWeight]};
+  font-size: ${({ theme, fontSize = 'sm' }) => theme.FONT_SIZE[fontSize]};
+  color: ${({ theme, color = 'black' }) => {
+    switch (color) {
+      case 'gray33':
+        return theme.COLORS.gray[33];
+      case 'gray56':
+        return theme.COLORS.gray[56];
+      case 'gray20':
+        return theme.COLORS.gray[20];
+      case 'black':
+      default:
+        return theme.COLORS.black;
+    }
+  }};
+  line-height: 1.6;
+`;
+
+const FlexItem = styled.div`
+  ${flexAlignCenter};
+  gap: 15px;
+`;
+
+const ItemContainer = styled.div`
+  ${flexColumn}
+`;
+
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
   return (
-    <div>
-      <div>{post.title}</div>
-      <div>{post.content}</div>
-      <div>{post.nickName}</div>
-      <div>{post.createAt}</div>
-      <div>댓글 {post.commentCount}</div>
-    </div>
+    <ItemContainer>
+      <Text fontWeight="medium" fontSize="md">
+        {post.title}
+      </Text>
+      <Text color="gray33">{post.content}</Text>
+      <FlexItem>
+        <Text color="gray20">{post.nickName}</Text>
+        <Text color="gray56">{post.createAt}</Text>
+        <Text color="gray56">댓글 {post.commentCount}</Text>
+      </FlexItem>
+    </ItemContainer>
   );
 };
 
