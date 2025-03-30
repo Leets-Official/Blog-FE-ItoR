@@ -6,7 +6,7 @@ import { Chat, Clear } from "@/assets/index";
 import LoginModal from "@/components/ui/loginModal";
 import Header from "@/components/layout/header/header";
 
-function Main_Page() {
+const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -74,4 +74,4 @@ function Main_Page() {
   )
 }
 
-export default Main_Page
+export default Home
