@@ -14,6 +14,7 @@ import Settings from '@/assets/icons/settings.svg?react';
 import GITLOG from '@/assets/icons/GITLOG.svg?react';
 import Kakao from '@/assets/icons/KaKaoLogo.svg?react';
 import HeaderLogo from '@/assets/icons/Header_GITLOG.svg?react';
+import Profile from '@/assets/icons/profile.svg?react';
 
 export {
     Add_photo,
@@ -32,4 +33,5 @@ export {
     Kakao,
     ClearWhite,
     HeaderLogo,
+    Profile,
 };

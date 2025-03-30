@@ -15,7 +15,7 @@ const WriteHeader = () => {
                 height="40px"
                 fontSize="14px"
                 color="#FF3F3F"
-                backgroundcolor="#FFFFFF"
+                backgroundColor="#FFFFFF"
                 onClick={() => {}}
             > 삭제하기
             </Button>
@@ -24,7 +24,7 @@ const WriteHeader = () => {
                 height="40px"
                 fontSize="14px"
                 color="#000000"
-                backgroundcolor="#FFFFFF"
+                backgroundColor="#FFFFFF"
                 onClick={() => {}}
             > 게시하기
             </Button>            

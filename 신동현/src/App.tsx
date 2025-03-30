@@ -30,6 +30,7 @@ function App() {
   return (
     <>
       <Header type="write" />
+
       <div>
         <Button width="300px" height="45px" fontSize="16px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={openLoginModal} icon={<Chat />} style={{
           border: "none",
@@ -65,10 +66,10 @@ function App() {
         $objectFit="cover"
       />
 
-    <Clear/>
-      <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => {}} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">
+      <Clear />
+      <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => { }} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">
       </Modal>
-      <LoginModal open={isLoginModalOpen} onClose={closeLoginModal}/>
+      <LoginModal open={isLoginModalOpen} onClose={closeLoginModal} />
     </>
   )
 }

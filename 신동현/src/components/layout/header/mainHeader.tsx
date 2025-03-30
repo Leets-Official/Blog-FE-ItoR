@@ -8,7 +8,7 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const MainHeader = () => {
+const MainHeader = () => {    
     return (
         <Container>
             <Button 
@@ -16,7 +16,7 @@ const MainHeader = () => {
                 height="40px"
                 fontSize="14px"
                 color="#909090"
-                backgroundcolor="#FFFFFF"
+                backgroundColor="#FFFFFF"   
                 icon={<Create />}
                 onClick={() => {}}
             >

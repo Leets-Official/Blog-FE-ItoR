@@ -3,7 +3,11 @@ import styled from "styled-components";
 import MainHeader from "./mainHeader";
 import WriteHeader from "./writeHeader";
 import DetailHeader from "./detailHeader";
-const Container = styled.div`
+import { useState } from "react";
+import Frame from "@/components/layout/sideBar";
+import Button from "@/components/ui/Button";
+
+const HeaderContainer = styled.div`
   width: 100%;
   height: 72px;
   display: flex;
@@ -23,12 +27,6 @@ const LeftContainer = styled.div`
   gap: 8px;
 `;
 
-const MenuButton = styled.div`
-  display: flex;
-  margin-right: 10px;
-  cursor: pointer;
-`;
-
 const RightContainer = styled.div`
   position: absolute;
   right: 0;
@@ -39,25 +37,32 @@ const RightContainer = styled.div`
 `;
 
 interface HeaderProps {
-    type: "main" | "write" | "detail";
+  type: "main" | "write" | "detail";
 }
 
 const Header = ({ type }: HeaderProps) => {
-    return (
-        <Container>
-            <LeftContainer>
-                <MenuButton>
-                    <Reorder />
-                </MenuButton>
-                <HeaderLogo />
-            </LeftContainer>
-            <RightContainer>
-                {type === "main" && <MainHeader />}
-                {type === "write" && <WriteHeader />}
-                {type === "detail" && <DetailHeader />}
-            </RightContainer>
-        </Container>
-    );
+  const [isFrameOpen, setIsFrameOpen] = useState(false);
+
+  const setFrameOpen = () => {
+    setIsFrameOpen((current) => !current);
+  }
+
+  return (
+    <>
+      <HeaderContainer>
+        <LeftContainer>
+          <Button onClick={setFrameOpen} icon={<Reorder />} backgroundColor="#FFFFFF"></Button>
+          <HeaderLogo />
+        </LeftContainer>
+        <RightContainer>
+          {type === "main" && <MainHeader />}
+          {type === "write" && <WriteHeader />}
+          {type === "detail" && <DetailHeader />}
+        </RightContainer>
+      </HeaderContainer>
+      {isFrameOpen && <Frame isLogin={false} />}
+    </>
+  );
 };
 
 export default Header;
