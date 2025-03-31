@@ -15,9 +15,6 @@ const TitleContainer = styled.div`
 
   justify-content: center;
   background-color: #F5F5F5;
-  @media (max-width: 700px) {
-    height: 90px;
-  }  
 `;
 
 const TitleContentContainer = styled.div`
@@ -36,13 +33,7 @@ const Title = styled.h1`
   font-size: 24px;
   font-weight: 700;
   color: #000000;
-  margin-bottom: 0px;
-
-
-  @media (max-width: 700px) {
-    align-items: center;
-    margin-left: 50px;
-  }  
+  margin-bottom: 0px; 
 `;
 
 const SubTitle = styled.p`
@@ -53,15 +44,10 @@ const SubTitle = styled.p`
   font-size: 14px;
   font-weight: 300;
   color: #333333;
-
-  @media (max-width: 700px) {
-    align-items: center;
-    margin-left: 50px;
-  }  
 `;
 
 const MainContainer = styled.div`
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
