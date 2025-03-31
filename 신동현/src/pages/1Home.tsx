@@ -4,7 +4,7 @@ import Image from "@/components/ui/Image";
 import Modal from "@/components/ui/Modal";
 import { Chat, Clear } from "@/assets/index";
 import LoginModal from "@/components/ui/loginModal";
-import Header from "@/components/layout/header/header";
+import Header from "@/components/layout/header/1Header";
 
 const Home = () => {
 
@@ -29,7 +29,7 @@ const Home = () => {
 
   return (
     <>
-      <Header type="write" />
+      <Header type="main" />
 
       <div>
         <Button width="300px" height="45px" fontSize="16px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={openLoginModal} icon={<Chat />} style={{

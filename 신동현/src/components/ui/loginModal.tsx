@@ -62,11 +62,10 @@ const ImageSubContent = styled.p`
   font-size: 14px;
   color: #333333;
   padding-top: 20px;
-  margin-top: 20px;
 
   @media (max-width: 700px) {
     font-size: 12px;
-    margin-top: 10px;
+
   }
 `;
 
