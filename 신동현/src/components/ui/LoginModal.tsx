@@ -1,8 +1,8 @@
 import { ClearWhite, GITLOG_White, Kakao } from "@/assets";
-import Button from "@/components/ui/Button/Button";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Input from "./Input";
+import SignButton from "./Button/SignButton";
 
 const Overlay = styled.div`
   position: fixed;
@@ -134,25 +134,8 @@ const Login = ({ open, onClose }: LoginProps) => {
         <InputContainer>
           <Input width="265px" height="46px" type="text" placeholder="이메일" value="" onChange={() => { }} />
           <Input width="265px" height="46px" type="password" placeholder="비밀번호" value="" onChange={() => { }} />
-          <Button width="300px" height="45px" fontSize="14px" color="#ffffff" backgroundColor="#00A1FF" disabled={false} onClick={() => { }} style={{
-            border: "none",
-            borderRadius: "6px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px"
-          }}>이메일로 로그인</Button>
-          <SnsContent>
-            SNS
-          </SnsContent>
-          <Button width="300px" height="45px" fontSize="15px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={() => { }} icon={<Kakao />} style={{
-            border: "none",
-            borderRadius: "6px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px"
-          }}>카카오로 로그인</Button>
+          <SignButton disabled={false} onClick={() => { }} type="email">이메일로 로그인</SignButton>
+          <SignButton disabled={false} onClick={() => { }} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
           <InputContent>
             <Link to="/signUp" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
           </InputContent>

@@ -3,6 +3,7 @@ import { GITLOG_Black, Kakao } from "@/assets";
 import styled from "styled-components";
 import Button from "@/components/ui/Button/Button";
 import { useNavigate } from "react-router-dom";
+import SignButton from "@/components/ui/Button/SignButton";
 
 const Container = styled.div`
   width: 100vw;
@@ -123,23 +124,9 @@ const SignUp = () => {
           </ImageSubContent>
         </ImageContainer>
         <ButtonContainer>
-          <Button width="300px" height="45px" fontSize="14px" color="#ffffff" backgroundColor="#00A1FF" disabled={false} onClick={handleEmailSignUp} style={{
-            border: "none",
-            borderRadius: "6px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px"
-          }}>이메일로 회원가입</Button>
+          <SignButton disabled={false} onClick={handleEmailSignUp} type="email">이메일로 회원가입</SignButton>
           <SubContent>또는</SubContent>
-          <Button width="300px" height="45px" fontSize="15px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={handleKakaoSignUp} icon={<Kakao />} style={{
-            border: "none",
-            borderRadius: "6px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "8px"
-          }}>카카오로 회원가입</Button>
+          <SignButton disabled={false} onClick={handleKakaoSignUp} icon={<Kakao />} type="kakao">카카오로 회원가입</SignButton>
         </ButtonContainer>
       </ContentContainer>
     </Container>

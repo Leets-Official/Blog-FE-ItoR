@@ -114,7 +114,7 @@ const NotLoginedContainer = () => {
 const SideBar = ({ isLogin }: FrameProps) => {
   return (
     <SideBarContainer>
-      {isLogin === true ? (
+      {isLogin ? (
         <LoginedContainer />
       ) : (
         <NotLoginedContainer />
