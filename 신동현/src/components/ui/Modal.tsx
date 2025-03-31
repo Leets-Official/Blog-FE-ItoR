@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import Button from "./Button";
+import Button from "./Button/Button";
 
 interface ModalProps {
   children?: React.ReactNode;

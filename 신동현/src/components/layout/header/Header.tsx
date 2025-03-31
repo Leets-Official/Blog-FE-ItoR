@@ -5,7 +5,7 @@ import WriteHeader from "./WriteHeader";
 import DetailHeader from "./DetailHeader";
 import { useState } from "react";
 import SideBar from "@/components/layout/SideBar";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button/Button";
 
 const HeaderContainer = styled.div`
   margin-top: 0px;
@@ -38,7 +38,7 @@ const RightContainer = styled.div`
 `;
 
 interface HeaderProps {
-  type ?: "main" | "write" | "detail";
+  type?: "main" | "write" | "detail";
 }
 
 const Header = ({ type }: HeaderProps) => {

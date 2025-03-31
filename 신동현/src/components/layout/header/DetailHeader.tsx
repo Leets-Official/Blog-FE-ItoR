@@ -1,5 +1,5 @@
 import { Chat, More_vert } from "@/assets";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button/Button";
 import styled from "styled-components";
 
 const Container = styled.div`

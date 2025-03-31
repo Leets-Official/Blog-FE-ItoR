@@ -1,5 +1,5 @@
 import { ClearWhite, GITLOG_White, Kakao } from "@/assets";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button/Button";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Input from "./Input";
@@ -115,7 +115,7 @@ interface LoginProps {
   open: boolean;
   onClose: () => void;
 }
-  
+
 const Login = ({ open, onClose }: LoginProps) => {
   if (!open) return null;
 

@@ -1,8 +1,9 @@
-import Button from "@/components/ui/Button";
 import { Profile } from "@/assets";
 import styled from "styled-components";
 import { useState } from "react";
 import LoginModal from "../ui/LoginModal";
+import SideBarButton from "../ui/Button/ActionButton";
+import Button from "../ui/Button/Button";
 
 const SideBarContainer = styled.div`
   float: left;
@@ -73,12 +74,12 @@ const LoginedContainer = () => {
       <Title>%닉네임</Title>
       <SubTitle paddingTop="5px">%한 줄 소개</SubTitle>
       <ButtonContainer>
-        <Button onClick={() => { }} color="#00A1FF" backgroundColor="#FFFFFF" fontSize="14px" width="99px" height="38px" style={{ borderRadius: "25px", border: "1px solid #2196F3" }}>나의 깃로그</Button>
-        <Button onClick={() => { }} color="#00A1FF" backgroundColor="#FFFFFF" fontSize="14px" width="99px" height="38px" style={{ borderRadius: "25px", border: "1px solid #2196F3" }}>깃로그 쓰기</Button>
+        <SideBarButton onClick={() => { }} type="blue">나의 깃로그</SideBarButton>
+        <SideBarButton onClick={() => { }} type="blue">깃로그 쓰기</SideBarButton>
       </ButtonContainer>
       <FooterButtonContainer>
-        <Button onClick={() => { }} color="#909090" backgroundColor="#FFFFFF" fontSize="14px" width="99px" height="38px" style={{ borderRadius: "25px", border: "1px solid #909090" }}>설정</Button>
-        <Button onClick={() => { }} color="#909090" backgroundColor="#FFFFFF" fontSize="14px" width="99px" height="38px" style={{ borderRadius: "25px", border: "1px solid #909090" }}>로그아웃</Button>
+        <SideBarButton onClick={() => { }} type="gray">설정</SideBarButton>
+        <SideBarButton onClick={() => { }} type="gray">로그아웃</SideBarButton>
       </FooterButtonContainer>
     </Container>
   )
@@ -102,7 +103,7 @@ const NotLoginedContainer = () => {
       </ProfileContainer>
       <SubTitle paddingTop="10px">You can make anything by writing</SubTitle>
       <ButtonContainer>
-        <Button onClick={openLoginModal} color="#00A1FF" backgroundColor="#FFFFFF" fontSize="14px" height="38px" style={{ borderRadius: "25px", border: "1px solid #2196F3" }}>깃로그 시작하기</Button>
+        <SideBarButton onClick={openLoginModal} type="blue" width="117px">깃로그 시작하기</SideBarButton>
       </ButtonContainer>
 
       <LoginModal open={isLoginModalOpen} onClose={closeLoginModal} />

@@ -35,15 +35,15 @@ const SubTitle = styled(Title)`
 `;
 
 interface InputProps {
-  title ?: string;
-  subTitle ?: string;
-  width ?: string;
-  height ?: string;
+  title?: string;
+  subTitle?: string;
+  width?: string;
+  height?: string;
   type: string;
   placeholder: string;
   value: string;
-  disabled ?: boolean;
-  onChange ?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Input = ({ title, subTitle, type, placeholder, value, disabled, onChange, ...rest }: InputProps) => {

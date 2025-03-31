@@ -1,7 +1,7 @@
 import Header from "@/components/layout/header/Header";
 import { GITLOG_Black, Kakao } from "@/assets";
 import styled from "styled-components";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button/Button";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`

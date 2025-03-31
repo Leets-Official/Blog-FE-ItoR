@@ -1,11 +1,12 @@
 import { useLocation } from "react-router-dom";
 import Header from "@/components/layout/header/Header";
 import styled from "styled-components";
-import Button from "@/components/ui/Button";
+import Button from "@/components/ui/Button/Button";
 import { Add_photo_gray, Kakao, Profile } from "@/assets";
 import Input from "@/components/ui/Input";
 import { useState } from "react";
 import Modal from "@/components/ui/Modal";
+import ActionButton from "@/components/ui/Button/ActionButton";
 
 const TitleContainer = styled.div`
   width: 100%;
@@ -191,7 +192,7 @@ const SignUpDetail = () => {
         </ProfileContainer >
         {type === "email" ? <EmailUI /> : <KaKaoUI />}
         <ButtonContainer>
-          <Button width="656px" height="38px" backgroundColor="#FFFFFF" color="#00A1FF" style={{ borderRadius: "25px", border: "1px solid #00A1FF" }} onClick={openConfirmModal}>회원가입</Button>
+          <ActionButton type="blue" width="688px" height="38px" onClick={openConfirmModal}>회원가입</ActionButton>
         </ButtonContainer>
       </MainContainer>
       <Modal open={isOpenConfirmModal} title="회원가입이 완료되었습니다!" onCancel={closeConfirmModal} onConfirm={() => { }} onClose={closeConfirmModal} cancelText="확인" confirmText="로그인하기" cancelType="negative" confirmType="positive" animation="fadeIn">
