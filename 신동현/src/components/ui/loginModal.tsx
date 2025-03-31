@@ -155,7 +155,7 @@ const Login = ({ open, onClose }: LoginProps) => {
             gap: "8px"
           }}>카카오로 로그인</Button>
           <InputContent>
-            <Link to="/signup" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
+            <Link to="/signUp" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
           </InputContent>
 
         </InputContainer>
