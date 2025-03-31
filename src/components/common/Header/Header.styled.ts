@@ -10,6 +10,7 @@ export const HeaderContainer = styled.div`
   background-color: ${({ theme }) => theme.COLORS.white};
   height: 72px;
   padding: 20px;
+  z-index: 100;
 `;
 
 export const SectionWrapper = styled.div`

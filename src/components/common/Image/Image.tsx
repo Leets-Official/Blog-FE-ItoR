@@ -57,7 +57,7 @@ const Image: React.FC<LazyImageProps> = ({
   placeholder = 'Loading...',
   ...props
 }) => {
-  const imgRef = useRef<HTMLImageElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [shouldLoad, setShouldLoad] = useState(false);
 
@@ -69,8 +69,8 @@ const Image: React.FC<LazyImageProps> = ({
       }
     });
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current);
+    if (wrapperRef.current) {
+      observer.observe(wrapperRef.current);
     }
 
     return () => {
@@ -79,11 +79,10 @@ const Image: React.FC<LazyImageProps> = ({
   }, []);
 
   return (
-    <ImageWrapper width={width} height={height} borderRadius={borderRadius}>
+    <ImageWrapper ref={wrapperRef} width={width} height={height} borderRadius={borderRadius}>
       {!isLoaded && <Placeholder>{placeholder}</Placeholder>}
       {shouldLoad && (
         <StyledImage
-          ref={imgRef}
           src={src}
           alt={alt}
           objectFit={objectFit}
