@@ -31,6 +31,12 @@ export const Text = styled.div<{
     }
   }};
   line-height: 1.6;
+  letter-spacing: 0.3px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const FlexItem = styled.div`

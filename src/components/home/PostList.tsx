@@ -6,7 +6,7 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: 700px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 36px 16px;
 `;
 
 interface PostListProps {
