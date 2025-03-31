@@ -1,6 +1,6 @@
 import { ReactNode, CSSProperties } from 'react';
 import styled from 'styled-components';
-import CreateIcon from '../assets/create.svg';
+import icons from '@/assets/index';
 
 export type ButtonType = 'None' | 'Create';
 
@@ -19,8 +19,8 @@ const StyledButton = styled.button<ButtonProps>`
   align-items: center;
   justify-content: center;
   gap: 4px;
-  width: ${({ width }) => width || 'auto'};
-  height: ${({ height }) => height || '40px'};
+  width: ${({ width }) => width || '100%'};
+  height: ${({ height }) => height || '46px'};
   cursor: pointer;
   background-color: ${({ disabled }) => (disabled ? '#e6e6e6' : '#ffffff')};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
@@ -32,11 +32,13 @@ const IconWrapper = styled.span`
   align-items: center;
 `;
 
+const Create = icons.Create;
+
 const Button = ({ children, type = 'None', ...props }: ButtonProps) => {
   const icon =
     type === 'Create' ? (
       <IconWrapper>
-        <img src={CreateIcon} alt='Create' width={24} height={24} />
+        <img src={Create} alt='Create' width={24} height={24} />
       </IconWrapper>
     ) : null;
 

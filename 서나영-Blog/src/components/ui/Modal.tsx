@@ -1,15 +1,29 @@
-import React from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import Button from './Button';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 interface ModalProps {
   title: string;
   description: string;
+  isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   width?: string;
   height?: string;
+  icon?: ReactNode;
+  closeButton?: ReactNode;
 }
+
+// Fade In/Out 애니메이션
+const fadeIn = keyframes`
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+`;
+
+const fadeOut = keyframes`
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+`;
 
 const ModalTitle = styled.h2`
   font-size: 14px;
@@ -35,7 +49,7 @@ const ModalContent = styled.div`
   gap: 8px;
 `;
 
-const ModalContainer = styled.div<{ width?: string; height?: string | undefined }>`
+const ModalContainer = styled.div<{ width?: string; height?: string | undefined; isOpen: boolean }>`
   display: flex;
   width: ${({ width }) => width || '326px'};
   height: ${({ height }) => (height ? height : 'auto')};
@@ -46,21 +60,40 @@ const ModalContainer = styled.div<{ width?: string; height?: string | undefined 
   border-radius: 4px;
   background: var(--White, #fff);
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+
+  ${({ isOpen }) =>
+    isOpen
+      ? css`
+          animation: ${fadeIn} 0.3s ease-out forwards;
+        `
+      : css`
+          animation: ${fadeOut} 0.3s ease-in forwards;
+          opacity: 0;
+          pointer-events: none;
+        `}
 `;
 
 // 오버레이 배경 스타일
-const ModalOverlay = styled.div`
+const ModalOverlay = styled.div<{ isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(182, 182, 182, 0.5);
+  -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+
+  ${({ isOpen }) =>
+    !isOpen &&
+    css`
+      opacity: 0;
+      pointer-events: none;
+    `}
 `;
 
 const ButtonGroup = styled.div`
@@ -71,10 +104,15 @@ const ButtonGroup = styled.div`
   gap: 12px;
 `;
 
-const Modal = ({ title, description, onClose, onConfirm, width, height }: ModalProps) => {
+const Modal = ({ title, description, isOpen, onClose, onConfirm, width, height }: ModalProps) => {
   return (
-    <ModalOverlay onClick={onClose}>
-      <ModalContainer width={width} height={height} onClick={(e) => e.stopPropagation()}>
+    <ModalOverlay isOpen={isOpen} onClick={onClose}>
+      <ModalContainer
+        isOpen={isOpen}
+        width={width}
+        height={height}
+        onClick={(e) => e.stopPropagation()}
+      >
         <ModalContent>
           <ModalTitle>{title}</ModalTitle>
           <ModalDescription>{description}</ModalDescription>
