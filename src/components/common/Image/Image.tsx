@@ -10,16 +10,19 @@ interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   objectFit?: 'cover' | 'contain' | 'fill';
   borderRadius?: string;
   placeholder?: React.ReactNode;
+  thumbnail?: boolean;
 }
 
 const ImageWrapper = styled.div<{
   width?: string;
   height?: string;
   borderRadius?: string;
+  thumbnail?: boolean;
 }>`
   position: relative;
   width: ${({ width }) => width || '100%'};
-  width: ${({ height }) => height || 'auto'};
+  aspect-ratio: ${({ thumbnail }) => (thumbnail ? '1 / 1' : 'auto')};
+  height: ${({ height, thumbnail }) => (thumbnail ? 'auto' : height || 'auto')};
   overflow: hidden;
   border-radius: ${({ borderRadius }) => borderRadius || '0'};
   background-color: ${({ theme }) => theme.COLORS.gray[56]};

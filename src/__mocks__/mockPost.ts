@@ -11,7 +11,7 @@ export const mockPosts: Post[] = Array.from({ length: 30 }, (_, i) => ({
     month: 'short',
     day: 'numeric',
   }),
-  image: faker.image.urlPicsumPhotos(),
+  image: Math.random() < 0.5 ? faker.image.urlPicsumPhotos() : undefined,
   commentCount: faker.number.int({ min: 0, max: 20 }),
   profileImage: faker.image.avatar(),
 }));

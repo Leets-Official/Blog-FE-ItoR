@@ -40,15 +40,31 @@ const FlexItem = styled.div`
 
 const ItemContainer = styled.div`
   ${flexColumn}
+  gap:36px;
+  padding-bottom: 24px;
 `;
 
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
   return (
     <ItemContainer>
-      <Text fontWeight="medium" fontSize="md">
-        {post.title}
-      </Text>
-      <Text color="gray33">{post.content}</Text>
+      <FlexItem>
+        <div>
+          <Text fontWeight="medium" fontSize="md">
+            {post.title}
+          </Text>
+          <Text color="gray33">{post.content}</Text>
+        </div>
+        {post.image && (
+          <Image
+            src={post.image!}
+            width="220px"
+            alt="post-image"
+            borderRadius="2px"
+            objectFit="cover"
+            thumbnail
+          />
+        )}
+      </FlexItem>
       <FlexItem>
         <Image
           src={post.profileImage!}
