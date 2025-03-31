@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import Header from "@/components/layout/header/header";
+import Header from "@/components/layout/header/Header";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";
 import { Add_photo_gray, Kakao, Profile } from "@/assets";

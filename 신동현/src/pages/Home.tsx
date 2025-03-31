@@ -3,8 +3,8 @@ import Button from "@/components/ui/Button";
 import Image from "@/components/ui/Image";
 import Modal from "@/components/ui/Modal";
 import { Chat, Clear } from "@/assets/index";
-import LoginModal from "@/components/ui/1LoginModal";
-import Header from "@/components/layout/header/header";
+import LoginModal from "@/components/ui/LoginModal";
+import Header from "@/components/layout/header/Header";
 
 const Home = () => {
 

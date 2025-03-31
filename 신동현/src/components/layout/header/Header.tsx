@@ -1,10 +1,10 @@
 import { HeaderLogo, Reorder } from "@/assets";
 import styled from "styled-components";
-import MainHeader from "./mainHeader";
-import WriteHeader from "./writeHeader";
-import DetailHeader from "./detailHeader";
+import MainHeader from "./MainHeader";
+import WriteHeader from "./WriteHeader";
+import DetailHeader from "./DetailHeader";
 import { useState } from "react";
-import SideBar from "@/components/layout/sideBar";
+import SideBar from "@/components/layout/SideBar";
 import Button from "@/components/ui/Button";
 
 const HeaderContainer = styled.div`
@@ -61,7 +61,7 @@ const Header = ({ type }: HeaderProps) => {
           {type === "detail" && <DetailHeader />}
         </RightContainer>
       </HeaderContainer>
-      {isSideBarOpen && <SideBar isLogin={true} />}
+      {isSideBarOpen && <SideBar isLogin={false} />}
     </>
   );
 };

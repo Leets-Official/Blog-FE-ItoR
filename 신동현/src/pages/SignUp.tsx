@@ -1,4 +1,4 @@
-import Header from "@/components/layout/header/header";
+import Header from "@/components/layout/header/Header";
 import { GITLOG_Black, Kakao } from "@/assets";
 import styled from "styled-components";
 import Button from "@/components/ui/Button";

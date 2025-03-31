@@ -2,7 +2,7 @@ import Button from "@/components/ui/Button";
 import { Profile } from "@/assets";
 import styled from "styled-components";
 import { useState } from "react";
-import LoginModal from "../ui/1LoginModal";
+import LoginModal from "../ui/LoginModal";
 
 const SideBarContainer = styled.div`
   float: left;
