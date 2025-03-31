@@ -1,4 +1,4 @@
-import { HeaderLogo, Reorder } from "@/assets";
+import { HeaderLogo, Hamburger } from "@/assets";
 import styled from "styled-components";
 import MainHeader from "./MainHeader";
 import WriteHeader from "./WriteHeader";
@@ -52,7 +52,7 @@ const Header = ({ type }: HeaderProps) => {
     <>
       <HeaderContainer>
         <LeftContainer>
-          <Button onClick={setSideBarOpen} icon={<Reorder />} backgroundColor="#FFFFFF"></Button>
+          <Button onClick={setSideBarOpen} icon={<Hamburger />} backgroundColor="#FFFFFF"></Button>
           <HeaderLogo />
         </LeftContainer>
         <RightContainer>

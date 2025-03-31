@@ -27,14 +27,14 @@ const ProfileContainer = styled.div`
   align-items: center;
 `;
 
-const Title = styled.h2`
+const Nickname = styled.h2`
   font-size: 24px;
   width: 80%;
   color: #333333;
   padding-top: 10px;
 `;
 
-const SubTitle = styled.p<{
+const Bio = styled.p<{
   paddingTop?: string;
 }>`
   font-size: 14px;
@@ -71,8 +71,8 @@ const LoginedContainer = () => {
       <ProfileContainer>
         <Button onClick={() => { }} icon={<Profile />} width="40px" height="40px"></Button>
       </ProfileContainer>
-      <Title>%닉네임</Title>
-      <SubTitle paddingTop="5px">%한 줄 소개</SubTitle>
+      <Nickname>%닉네임</Nickname>
+      <Bio paddingTop="5px">%한 줄 소개</Bio>
       <ButtonContainer>
         <SideBarButton onClick={() => { }} type="blue">나의 깃로그</SideBarButton>
         <SideBarButton onClick={() => { }} type="blue">깃로그 쓰기</SideBarButton>
@@ -101,7 +101,7 @@ const NotLoginedContainer = () => {
       <ProfileContainer>
         <Profile />
       </ProfileContainer>
-      <SubTitle paddingTop="10px">You can make anything by writing</SubTitle>
+      <Bio paddingTop="10px">You can make anything by writing</Bio>
       <ButtonContainer>
         <SideBarButton onClick={openLoginModal} type="blue" width="117px">깃로그 시작하기</SideBarButton>
       </ButtonContainer>
