@@ -4,7 +4,7 @@ import Image from "@/components/ui/Image";
 import Modal from "@/components/ui/Modal";
 import { Chat, Clear } from "@/assets/index";
 import LoginModal from "@/components/ui/loginModal";
-import Header from "@/components/layout/header/1Header";
+import Header from "@/components/layout/header/header";
 
 const Home = () => {
 
