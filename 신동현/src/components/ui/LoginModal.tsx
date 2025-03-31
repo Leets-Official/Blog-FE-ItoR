@@ -135,6 +135,7 @@ const Login = ({ open, onClose }: LoginProps) => {
           <Input width="265px" height="46px" type="text" placeholder="이메일" value="" onChange={() => { }} />
           <Input width="265px" height="46px" type="password" placeholder="비밀번호" value="" onChange={() => { }} />
           <SignButton disabled={false} onClick={() => { }} type="email">이메일로 로그인</SignButton>
+          <SnsContent>SNS</SnsContent>
           <SignButton disabled={false} onClick={() => { }} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
           <InputContent>
             <Link to="/signUp" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>

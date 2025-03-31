@@ -7,41 +7,49 @@ import Button from "../ui/Button/Button";
 
 const SideBarContainer = styled.div`
   float: left;
-  top: 0;
-  left: 0;
-  right: 0;
   width: 240px;
   height: 100vh;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
+`;
+
+const Overlay = styled.div`
   position: fixed;
-  z-index: 98;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 99;
 `;
 
 const Container = styled.div`
-  padding-top: 130px;
   padding-left: 16px;
+  padding-top: 30px;
 `;
 
 const ProfileContainer = styled.div`
   display: flex;
-  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  margin-left: 16px;
+  margin-top: 10px;
 `;
 
 const Nickname = styled.h2`
   font-size: 24px;
   width: 80%;
   color: #333333;
-  padding-top: 10px;
+  margin-bottom: 0px;
 `;
 
-const Bio = styled.p<{
-  paddingTop?: string;
-}>`
+const Bio = styled.p`
   font-size: 14px;
   width: 80%;
-  height: 44px;
-  padding-top: ${(props) => props.paddingTop || "5px"};
+  height: 22px;
   color: #333333;
+  margin-top: 5px;
 `;
 
 const ButtonContainer = styled.div`
@@ -59,7 +67,9 @@ const FooterButtonContainer = styled(ButtonContainer)`
   padding-bottom: 16px;
 `;
 
-interface FrameProps {
+interface SideBarProps {
+  isOpen: boolean;
+  onClose: () => void;
   isLogin: boolean;
 }
 
@@ -70,9 +80,9 @@ const LoginedContainer = () => {
     <Container>
       <ProfileContainer>
         <Button onClick={() => { }} icon={<Profile />} width="40px" height="40px"></Button>
+        <Nickname>%닉네임</Nickname>
+        <Bio>%한 줄 소개</Bio>
       </ProfileContainer>
-      <Nickname>%닉네임</Nickname>
-      <Bio paddingTop="5px">%한 줄 소개</Bio>
       <ButtonContainer>
         <SideBarButton onClick={() => { }} type="blue">나의 깃로그</SideBarButton>
         <SideBarButton onClick={() => { }} type="blue">깃로그 쓰기</SideBarButton>
@@ -100,8 +110,8 @@ const NotLoginedContainer = () => {
     <Container>
       <ProfileContainer>
         <Profile />
+        <Bio>You can make anything by writing</Bio>
       </ProfileContainer>
-      <Bio paddingTop="10px">You can make anything by writing</Bio>
       <ButtonContainer>
         <SideBarButton onClick={openLoginModal} type="blue" width="117px">깃로그 시작하기</SideBarButton>
       </ButtonContainer>
@@ -111,15 +121,18 @@ const NotLoginedContainer = () => {
   )
 }
 
-const SideBar = ({ isLogin }: FrameProps) => {
+const SideBar = ({ isOpen, onClose, isLogin }: SideBarProps) => {
+  if (!isOpen) return null;
   return (
-    <SideBarContainer>
-      {isLogin ? (
-        <LoginedContainer />
-      ) : (
-        <NotLoginedContainer />
-      )}
-    </SideBarContainer>
+    <Overlay onClick={onClose}>
+      <SideBarContainer onClick={(e) => e.stopPropagation()}>
+        {isLogin ? (
+          <LoginedContainer />
+        ) : (
+          <NotLoginedContainer />
+        )}
+      </SideBarContainer>
+    </Overlay>
   );
 };
 
