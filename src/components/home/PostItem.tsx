@@ -2,6 +2,7 @@ import { flexAlignCenter, flexColumn } from '@/styles/common.styled';
 import theme from '@/styles/theme.styled';
 import { Post } from '@/types/post';
 import styled from 'styled-components';
+import Image from '../common/Image/Image';
 
 interface PostItemProps {
   post: Post;
@@ -49,6 +50,15 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
       </Text>
       <Text color="gray33">{post.content}</Text>
       <FlexItem>
+        <Image
+          src={post.profileImage!}
+          alt="profile-img"
+          width="20px"
+          height="20px"
+          borderRadius="9999px"
+          objectFit="cover"
+        />
+
         <Text color="gray20">{post.nickName}</Text>
         <Text color="gray56">{post.createAt}</Text>
         <Text color="gray56">댓글 {post.commentCount}</Text>
