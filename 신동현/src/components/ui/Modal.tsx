@@ -77,7 +77,6 @@ const ModalSubTitle = styled.p`
   margin-bottom: 32px;
 `;
 
-
 const Modal = ({ title, subTitle, open, onClose, onCancel, onConfirm, animation, cancelText, confirmText, cancelType, confirmType }: ModalProps) => {
   if (!open) return null;
 
