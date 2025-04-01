@@ -3,6 +3,7 @@ import theme from '@/styles/theme.styled';
 import { Post } from '@/types/post';
 import styled from 'styled-components';
 import Image from '../common/Image/Image';
+import { formatPostDate } from '@/utils/formatPostDate';
 
 interface PostItemProps {
   post: Post;
@@ -47,7 +48,7 @@ const FlexItem = styled.div`
 const ItemContainer = styled.div`
   ${flexColumn}
   gap:36px;
-  padding-bottom: 24px;
+  padding: 24px 0;
 `;
 
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
@@ -82,7 +83,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
         />
 
         <Text color="gray20">{post.nickName}</Text>
-        <Text color="gray56">{post.createAt}</Text>
+        <Text color="gray56">{formatPostDate(post.createAt)}</Text>
         <Text color="gray56">댓글 {post.commentCount}</Text>
       </FlexItem>
     </ItemContainer>

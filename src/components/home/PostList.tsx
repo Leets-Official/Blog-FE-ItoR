@@ -9,6 +9,10 @@ const Wrapper = styled.div`
   padding: 36px 16px;
 `;
 
+const Line = styled.div`
+  border: 1px solid ${({ theme }) => theme.COLORS.gray[96]};
+`;
+
 interface PostListProps {
   posts: Post[];
 }
@@ -17,7 +21,10 @@ const PostList: React.FC<PostListProps> = ({ posts }) => {
   return (
     <Wrapper>
       {posts.map((post) => (
-        <PostItem key={post.id} post={post} />
+        <div key={post.id}>
+          <PostItem post={post} />
+          <Line />
+        </div>
       ))}
     </Wrapper>
   );
