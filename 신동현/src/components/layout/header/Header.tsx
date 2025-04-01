@@ -4,7 +4,7 @@ import MainHeader from "./MainHeader";
 import WriteHeader from "./WriteHeader";
 import DetailHeader from "./DetailHeader";
 import { useState } from "react";
-import SideBar from "@/components/layout/SideBar";
+import SideBar from "@/components/layout/sideBar/SideBar";
 import Button from "@/components/ui/Button/Button";
 
 const HeaderContainer = styled.div`
