@@ -17,10 +17,6 @@ body {
   background-color: #FFF;
   font-family: 'Noto Sans', sans-serif;;
 }
-
-* {
-  box-sizing: border-box;
-}
 `;
 
 export default GlobalStyle;
