@@ -39,11 +39,11 @@ const inputStyles = {
   `,
 };
 
-const StyledInputContainer = styled.div<{ width?: string; maxWidth?: string; $state: InputState }>`
+const StyledInputContainer = styled.div<{ width?: string; $maxWidth?: string; $state: InputState }>`
   display: flex;
   align-items: center;
   width: ${({ width }) => width || '100%'};
-  maxwidth: ${({ maxWidth }) => maxWidth || 'none'};
+  maxwidth: ${({ $maxWidth }) => $maxWidth || 'none'};
   ${({ $state }) => inputStyles[$state]};
 `;
 
@@ -71,7 +71,7 @@ const TextInput = ({
   const handleBlur = () => setState('input');
 
   return (
-    <StyledInputContainer width={width} maxWidth={maxWidth} $state={disabled ? 'disabled' : state}>
+    <StyledInputContainer width={width} $maxWidth={maxWidth} $state={disabled ? 'disabled' : state}>
       <StyledInput
         {...props}
         name={name}
