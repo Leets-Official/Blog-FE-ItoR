@@ -1,5 +1,4 @@
-import HamburgerSvg from '@/assets/icon/ic_hamburger.svg?react';
-import LogoSvg from '@/assets/icon/ic_gitlog_logo.svg?react';
+import { HamburgerSvg, LogoSvg } from '@/assets';
 import WriteRight from '@/components/common/Header/WriteRight';
 import DetailRight from '@/components/common/Header/DetailRight';
 import ActionRight from '@/components/common/Header/ActionRight';
