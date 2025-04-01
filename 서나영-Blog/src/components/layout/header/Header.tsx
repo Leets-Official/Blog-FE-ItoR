@@ -24,6 +24,7 @@ const HeaderContainer = styled.div`
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(2px);
   border-bottom: 1px solid #f5f5f5;
+  box-sizing: border-box;
 `;
 
 const HeaderLeftSection = styled.div`
@@ -35,6 +36,7 @@ const HeaderLeftSection = styled.div`
 const HeaderRightSection = styled.div`
   display: flex;
   align-items: center;
+  padding-right: 16px;
 `;
 
 const getRightComponent = (type: HeaderType) => {
