@@ -37,7 +37,7 @@ const PostList: React.FC<PostListProps> = ({ posts }) => {
 
       <Pagination
         currentPage={currentPage}
-        totalPages={posts.length}
+        totalItems={posts.length}
         onPageChange={setCurrentPage}
         size={size}
         pagesPerGroup={5}

@@ -38,7 +38,7 @@ const PageButton = styled.button<{ $active?: boolean }>`
 
 interface PaginationProps {
   currentPage: number;
-  totalPages: number;
+  totalItems: number;
   size?: number;
   pagesPerGroup?: number; // 한번에 보여줄 페이지 버튼 수
   onPageChange: (page: number) => void;
@@ -46,15 +46,16 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
-  totalPages,
+  totalItems,
   size = 10,
   pagesPerGroup = 5,
   onPageChange,
 }) => {
-  const totalItems = Math.ceil(totalPages / size);
+  const totalPages = Math.ceil(totalItems / size);
   const currentGroup = Math.floor((currentPage - 1) / pagesPerGroup);
   const startPage = currentGroup * pagesPerGroup + 1;
   const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+  const isLastGroup = endPage >= totalPages;
 
   const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
 
@@ -76,7 +77,7 @@ const Pagination: React.FC<PaginationProps> = ({
           {page}
         </PageButton>
       ))}
-      <ArrowButton disabled={endPage === totalPages} onClick={handleNextGroup}>
+      <ArrowButton disabled={isLastGroup} onClick={handleNextGroup}>
         <NextSvg />
       </ArrowButton>
     </Wrapper>
