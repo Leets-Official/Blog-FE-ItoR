@@ -1,4 +1,4 @@
-import { ClearWhite, GITLOG_White, Kakao } from "@/assets";
+import { Clear, GITLOG, Kakao } from "@/assets";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Input from "./Input";
@@ -123,10 +123,10 @@ const Login = ({ open, onClose }: LoginProps) => {
     <Overlay onClick={onClose}>
       <Container onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>
-          <ClearWhite />
+          <Clear width="30px" height="30px" fill="white" />
         </CloseButton>
         <ImageContainer>
-          <GITLOG_White />
+          <GITLOG fill="white" />
           <ImageSubContent>
             You can make anything by writing
           </ImageSubContent>

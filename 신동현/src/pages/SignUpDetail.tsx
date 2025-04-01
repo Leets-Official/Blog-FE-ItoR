@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import Header from "@/components/layout/header/Header";
 import styled from "styled-components";
 import Button from "@/components/ui/Button/Button";
-import { Add_photo_gray, Kakao, Profile } from "@/assets";
+import { Add_photo, Kakao, Profile } from "@/assets";
 import Input from "@/components/ui/Input";
 import { useState } from "react";
 import Modal from "@/components/ui/Modal";
@@ -61,12 +61,13 @@ const ProfileContainer = styled.div`
   height: 193px;
   display: flex;
   flex-direction: column;
+  gap: 30px;
 `;
 
 const ProfileContent = styled.p`
   width: 100%;
   height: 22px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 300;
   color: #909090;
 `;
@@ -77,7 +78,7 @@ const ProfileChangeContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 30px;
+  gap: 50px;
 `;
 
 const InputContainer = styled.div`
@@ -186,8 +187,8 @@ const SignUpDetail = () => {
         <ProfileContainer>
           <ProfileContent>프로필 사진</ProfileContent>
           <ProfileChangeContainer>
-            <Button onClick={() => { }} icon={<Profile />} width="40px" height="40px" style={{ paddingLeft: "30px" }}></Button>
-            <Button onClick={() => { }} icon={<Add_photo_gray />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF" style={{ border: "1px solid #E6E6E6" }}>프로필 사진 추가</Button>
+            <Button onClick={() => { }} icon={<Profile width="90px" height="90px" />} width="40px" height="40px" style={{ paddingLeft: "40px" }}></Button>
+            <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF" style={{ border: "1px solid #E6E6E6" }}>프로필 사진 추가</Button>
           </ProfileChangeContainer>
         </ProfileContainer >
         {type === "email" ? <EmailUI /> : <KaKaoUI />}

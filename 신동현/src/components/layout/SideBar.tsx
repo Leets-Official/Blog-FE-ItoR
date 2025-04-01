@@ -79,7 +79,7 @@ const LoginedContainer = () => {
   return (
     <Container>
       <ProfileContainer>
-        <Button onClick={() => { }} icon={<Profile />} width="40px" height="40px"></Button>
+        <Button onClick={() => { }} icon={<Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
         <Nickname>%닉네임</Nickname>
         <Bio>%한 줄 소개</Bio>
       </ProfileContainer>

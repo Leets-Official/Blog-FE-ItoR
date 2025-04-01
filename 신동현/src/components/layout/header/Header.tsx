@@ -1,4 +1,4 @@
-import { HeaderLogo, Hamburger } from "@/assets";
+import { GITLOG, Hamburger } from "@/assets";
 import styled from "styled-components";
 import MainHeader from "./MainHeader";
 import WriteHeader from "./WriteHeader";
@@ -52,8 +52,8 @@ const Header = ({ type }: HeaderProps) => {
     <>
       <HeaderContainer>
         <LeftContainer>
-          <Button onClick={setSideBarOpen} icon={<Hamburger />} backgroundColor="#FFFFFF"></Button>
-          <HeaderLogo />
+          <Button onClick={setSideBarOpen} icon={<Hamburger width="24px" height="24px" fill="#333333" />} backgroundColor="#FFFFFF"></Button>
+          <GITLOG width="77px" height="40px" fill="black" />
         </LeftContainer>
         <RightContainer>
           {type === "main" && <MainHeader />}

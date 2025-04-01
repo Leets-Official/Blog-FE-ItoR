@@ -17,7 +17,7 @@ const DetailHeader = () => {
         fontSize="14px"
         color="#909090"
         backgroundColor="#FFFFFF"
-        icon={<Chat />}
+        icon={<Chat width="24px" height="24px" fill="#333333" />}
         onClick={() => { }}
       >
       </Button>
@@ -27,7 +27,7 @@ const DetailHeader = () => {
         fontSize="14px"
         color="#909090"
         backgroundColor="#FFFFFF"
-        icon={<More_vert />}
+        icon={<More_vert width="24px" height="24px" fill="#333333" />}
         onClick={() => { }}
       >
       </Button>

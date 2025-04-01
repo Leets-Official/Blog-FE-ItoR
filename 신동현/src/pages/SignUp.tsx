@@ -1,7 +1,6 @@
 import Header from "@/components/layout/header/Header";
-import { GITLOG_Black, Kakao } from "@/assets";
+import { GITLOG, Kakao } from "@/assets";
 import styled from "styled-components";
-import Button from "@/components/ui/Button/Button";
 import { useNavigate } from "react-router-dom";
 import SignButton from "@/components/ui/Button/SignButton";
 
@@ -118,7 +117,7 @@ const SignUp = () => {
       </TitleContainer>
       <ContentContainer>
         <ImageContainer>
-          <GITLOG_Black />
+          <GITLOG fill="black" />
           <ImageSubContent>
             You can make anything by writing
           </ImageSubContent>

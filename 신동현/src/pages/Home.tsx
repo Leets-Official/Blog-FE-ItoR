@@ -29,10 +29,10 @@ const Home = () => {
 
   return (
     <>
-      <Header type="detail" />
+      <Header type="main" />
 
       <div>
-        <Button width="300px" height="45px" fontSize="16px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={openLoginModal} icon={<Chat />} style={{
+        <Button width="300px" height="45px" fontSize="16px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={openLoginModal} icon={<Chat width="24px" height="24px" fill="#333333" />} style={{
           border: "none",
           borderRadius: "6px",
           display: "flex",

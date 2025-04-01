@@ -17,7 +17,7 @@ const MainHeader = () => {
         fontSize="14px"
         color="#909090"
         backgroundColor="#FFFFFF"
-        icon={<Create />}
+        icon={<Create width="24px" height="24px" fill="#333333" />}
         onClick={() => { }}
       >
         깃로그 쓰기
