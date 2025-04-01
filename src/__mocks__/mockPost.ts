@@ -1,7 +1,7 @@
 import { Post } from '@/types/post';
 import { faker } from '@faker-js/faker';
 
-export const mockPosts: Post[] = Array.from({ length: 30 }, (_, i) => {
+export const mockPosts: Post[] = Array.from({ length: 50 }, (_, i) => {
   const now = new Date();
 
   const randomMinutesAgo = faker.number.int({ min: 0, max: 7200 });

@@ -1,6 +1,8 @@
-import PostItem from '@/components/home/PostItem';
-import { Post } from '@/types/post';
 import styled from 'styled-components';
+import PostItem from '@/components/home/PostItem';
+import { Pagination } from '@/components/index';
+import { Post } from '@/types/post';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -18,14 +20,28 @@ interface PostListProps {
 }
 
 const PostList: React.FC<PostListProps> = ({ posts }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const size = 10;
+
+  const startIdx = (currentPage - 1) * size;
+  const endIdx = startIdx + size;
+  const currentPosts = posts.slice(startIdx, endIdx);
   return (
     <Wrapper>
-      {posts.map((post) => (
+      {currentPosts.map((post) => (
         <div key={post.id}>
           <PostItem post={post} />
           <Line />
         </div>
       ))}
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={posts.length}
+        onPageChange={setCurrentPage}
+        size={size}
+        pagesPerGroup={5}
+      />
     </Wrapper>
   );
 };
