@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Button from "./Button";
 
 interface ActionButtonProps {
-  type?: 'blue' | 'gray';
+  type : 'blue' | 'gray';
   width?: string;
   height?: string;
 }

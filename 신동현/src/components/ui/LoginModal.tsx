@@ -23,7 +23,7 @@ const fadeIn = keyframes`
   to { opacity: 1; }
 `;
 
-const Container = styled.div<{ animation?: string }>`
+const Container = styled.div`
   width: 782px;
   height: 469px;
   background-color: #111112;
