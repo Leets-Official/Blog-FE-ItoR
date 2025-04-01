@@ -20,7 +20,7 @@ const GlobalStyles = createGlobalStyle`
   
 @font-face {
   font-family: 'NotoSans';
-  src: url('/font/NotoSansKr-Regular.ttf') format('truetype');
+  src: url('/font/NotoSansKR-Regular.ttf') format('truetype');
 }
 `;
 

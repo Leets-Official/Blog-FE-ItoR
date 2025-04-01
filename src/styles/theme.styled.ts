@@ -1,4 +1,7 @@
 const COLORS = {
+  primary: {
+    6: '#1890FF',
+  },
   gray: {
     96: '#F5F5F5',
     90: '#E6E6E6',
@@ -7,6 +10,9 @@ const COLORS = {
     33: '#555555',
     20: '#333333',
     7: '#111112',
+  },
+  neutral: {
+    5: '#D9D9D9',
   },
   white: '#FFFFFF',
   black: '#000000',
