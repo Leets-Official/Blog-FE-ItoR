@@ -1,8 +1,8 @@
-import { flexAlignCenter, flexColumn } from '@/styles/common.styled';
 import theme from '@/styles/theme.styled';
-import { Post } from '@/types/post';
 import styled from 'styled-components';
-import Image from '@/components/common/Image/Image';
+import { flexAlignCenter, flexColumn } from '@/styles/common.styled';
+import { Image } from '@/components/index';
+import { Post } from '@/types/post';
 import { formatPostDate } from '@/utils/formatPostDate';
 
 interface PostItemProps {
