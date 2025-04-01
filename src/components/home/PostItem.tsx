@@ -55,6 +55,10 @@ const TextContent = styled.div`
   flex: 1;
 `;
 
+const FooterItem = styled.div`
+  ${flexAlignCenter}
+  gap:14px;
+`;
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
   return (
     <ItemContainer>
@@ -76,20 +80,20 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
           />
         )}
       </FlexItem>
-      <FlexItem>
+      <FooterItem>
         <Image
           src={post.profileImage!}
           alt="profile-img"
           width="20px"
           height="20px"
-          borderRadius="9999px"
+          borderRadius="50%"
           objectFit="cover"
         />
 
         <Text color="gray20">{post.nickName}</Text>
         <Text color="gray56">{formatPostDate(post.createAt)}</Text>
         <Text color="gray56">댓글{post.commentCount}</Text>
-      </FlexItem>
+      </FooterItem>
     </ItemContainer>
   );
 };

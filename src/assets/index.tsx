@@ -7,7 +7,7 @@ import CheckSvg from '@/assets/icon/ic_toast_positive.svg?react';
 import ErrorSvg from '@/assets/icon/ic_toast_negative.svg?react';
 import PrevSvg from '@/assets/icon/ic_pagination_prev.svg?react';
 import NextSvg from '@/assets/icon/ic_pagination_next.svg?react';
-
+import DefaultProfileSvg from '@/assets/icon/ic_default_profile.svg?react';
 export {
   HamburgerSvg,
   LogoSvg,
@@ -18,4 +18,5 @@ export {
   ErrorSvg,
   PrevSvg,
   NextSvg,
+  DefaultProfileSvg,
 };

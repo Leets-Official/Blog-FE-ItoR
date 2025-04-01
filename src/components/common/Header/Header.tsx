@@ -3,6 +3,8 @@ import WriteRight from '@/components/common/Header/WriteRight';
 import DetailRight from '@/components/common/Header/DetailRight';
 import ActionRight from '@/components/common/Header/ActionRight';
 import { HeaderContainer, SectionWrapper } from '@/components/common/Header/Header.styled';
+import { useState } from 'react';
+import SideBar from '../SideBar/SideBar';
 
 type HeaderVariant = 'default' | 'write' | 'detail' | 'action';
 
@@ -52,23 +54,32 @@ const Header: React.FC<HeaderProps> = ({
   onClickConfirm,
   onClickNegative,
 }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <HeaderContainer>
-      <SectionWrapper>
-        <HamburgerSvg onClick={() => alert('사이드바 열림')} />
-        <LogoSvg />
-      </SectionWrapper>
-      <SectionWrapper>
-        {renderRightSection(
-          variant,
-          onClick,
-          negativeLabel,
-          confirmLabel,
-          onClickNegative,
-          onClickConfirm,
-        )}
-      </SectionWrapper>
-    </HeaderContainer>
+    <>
+      <HeaderContainer>
+        <SectionWrapper>
+          <HamburgerSvg
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+            style={{ cursor: 'pointer' }}
+          />
+          <LogoSvg />
+        </SectionWrapper>
+        <SectionWrapper>
+          {renderRightSection(
+            variant,
+            onClick,
+            negativeLabel,
+            confirmLabel,
+            onClickNegative,
+            onClickConfirm,
+          )}
+        </SectionWrapper>
+      </HeaderContainer>
+
+      {isSidebarOpen && <SideBar onClose={() => setIsSidebarOpen(false)} />}
+    </>
   );
 };
 
