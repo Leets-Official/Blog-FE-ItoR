@@ -26,6 +26,7 @@ const PostList: React.FC<PostListProps> = ({ posts }) => {
   const startIdx = (currentPage - 1) * size;
   const endIdx = startIdx + size;
   const currentPosts = posts.slice(startIdx, endIdx);
+
   return (
     <Wrapper>
       {currentPosts.map((post) => (

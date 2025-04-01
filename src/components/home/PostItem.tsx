@@ -40,9 +40,9 @@ export const Text = styled.div<{
   text-overflow: ellipsis;
 `;
 
-const FlexItem = styled.div`
+const FlexItem = styled.div<{ hasImage?: boolean }>`
   ${flexAlignCenter};
-  gap: 15px;
+  gap: ${({ hasImage }) => (hasImage ? '24px' : '0')};
 `;
 
 const ItemContainer = styled.div`
@@ -51,20 +51,24 @@ const ItemContainer = styled.div`
   padding: 24px 0;
 `;
 
+const TextContent = styled.div`
+  flex: 1;
+`;
+
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
   return (
     <ItemContainer>
-      <FlexItem>
-        <div>
+      <FlexItem hasImage={!!post.image}>
+        <TextContent>
           <Text fontWeight="medium" fontSize="md">
             {post.title}
           </Text>
           <Text color="gray33">{post.content}</Text>
-        </div>
+        </TextContent>
         {post.image && (
           <Image
             src={post.image!}
-            width="220px"
+            width="120px"
             alt="post-image"
             borderRadius="2px"
             objectFit="cover"
