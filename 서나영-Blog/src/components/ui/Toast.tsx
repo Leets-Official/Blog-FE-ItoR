@@ -1,22 +1,18 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import styled, { keyframes } from 'styled-components';
-import done from '@/assets/done.svg';
-import error from '@/assets/error_outline.svg';
+import { Done, ErrorOutline } from '@/assets';
 
-// 토스트 메시지 타입
 type ToastType = {
   message: string;
   type: 'positive' | 'negative';
 };
 
-// Context 타입
 interface ToastContextType {
   showToast: (message: string, type: 'positive' | 'negative') => void;
   toast: ToastType | null;
   isVisible: boolean;
 }
 
-// Provider Props 타입
 interface ToastProviderProps {
   children: ReactNode;
 }
@@ -37,7 +33,7 @@ const fadeOut = keyframes`
 const ToastWrapper = styled.div<{ type: 'positive' | 'negative'; $isVisible: boolean }>`
   position: fixed;
   top: 20px;
-  left: 50vw;
+  left: 50%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
@@ -78,12 +74,11 @@ const Toast = () => {
   return toast ? (
     <ToastWrapper type={toast.type} $isVisible={isVisible}>
       <IconWrapper>
-        <img
-          src={toast.type === 'positive' ? done : error}
-          alt={toast.type}
-          width='24'
-          height='24'
-        />
+        {toast.type === 'positive' ? (
+          <Done width={24} height={24} />
+        ) : (
+          <ErrorOutline width={24} height={24} />
+        )}
       </IconWrapper>
       <ToastMessage>{toast.message}</ToastMessage>
     </ToastWrapper>

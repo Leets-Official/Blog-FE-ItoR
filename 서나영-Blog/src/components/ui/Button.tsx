@@ -1,6 +1,7 @@
 import { ReactNode, CSSProperties } from 'react';
 import styled from 'styled-components';
-import icons from '@/assets/index';
+import { Create } from '@/assets';
+import { CreateGray } from '@/assets';
 
 export type ButtonType = 'None' | 'Create';
 
@@ -24,6 +25,15 @@ const StyledButton = styled.button<ButtonProps>`
   cursor: pointer;
   background-color: ${({ disabled }) => (disabled ? '#e6e6e6' : '#ffffff')};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+
+  ${({ type }) =>
+    type === 'Create' &&
+    `
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 160%; 
+      letter-spacing: -0.07px;
+    `}
 `;
 
 const IconWrapper = styled.span`
@@ -32,13 +42,11 @@ const IconWrapper = styled.span`
   align-items: center;
 `;
 
-const Create = icons.Create;
-
 const Button = ({ children, type = 'None', ...props }: ButtonProps) => {
   const icon =
     type === 'Create' ? (
       <IconWrapper>
-        <img src={Create} alt='Create' width={24} height={24} />
+        <Create width={24} height={24} />
       </IconWrapper>
     ) : null;
 
