@@ -59,6 +59,7 @@ const FooterItem = styled.div`
   ${flexAlignCenter}
   gap:14px;
 `;
+
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
   return (
     <ItemContainer>
