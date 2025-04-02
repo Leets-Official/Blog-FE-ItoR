@@ -26,6 +26,7 @@ const ImageWrapper = styled.div<{
   overflow: hidden;
   border-radius: ${({ borderRadius }) => borderRadius || '0'};
   background-color: ${({ theme }) => theme.COLORS.gray[56]};
+  aspect-ratio: ${({ thumbnail }) => (thumbnail ? '1 / 1' : 'auto')};
 `;
 
 const StyledImage = styled.img<{
@@ -47,6 +48,9 @@ const Placeholder = styled.div`
   position: absolute;
   inset: 0;
   z-index: 1;
+  width: 100%;
+  height: 100%;
+  text-align: center;
   color: ${({ theme }) => theme.COLORS.gray[90]};
   font-size: ${({ theme }) => theme.FONT_SIZE.sm};
 `;
