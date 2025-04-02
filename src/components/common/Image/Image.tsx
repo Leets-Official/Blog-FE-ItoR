@@ -46,7 +46,8 @@ const Placeholder = styled.div`
   ${flexAlignCenter}
   position: absolute;
   inset: 0;
-  color: ${({ theme }) => theme.COLORS.gray[56]};
+  z-index: 1;
+  color: ${({ theme }) => theme.COLORS.gray[90]};
   font-size: ${({ theme }) => theme.FONT_SIZE.sm};
 `;
 
