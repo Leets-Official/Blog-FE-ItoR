@@ -1,4 +1,6 @@
-import react, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { loginSchema, LoginSchema } from '@/schema/auth';
 import styled, { css } from 'styled-components';
 import { GITLOG, Kakao, Divider, Clear } from '@/assets';
 import Button from '@/components/ui/Button';
@@ -14,7 +16,7 @@ const LoginModalContainer = styled.div`
   display: flex;
   width: 100%;
   max-width: 782px;
-  padding: 80px 0px;
+  padding: 120px 0px;
   justify-content: center;
   align-items: center;
   border-radius: 9px;
@@ -50,22 +52,12 @@ const LoginRightSection = styled.div`
   }
 `;
 
-const LogoContainer = styled.div`
-  display: flex;
-  height: 160px;
-  min-width: 240px;
-  max-width: 344px;
-  padding: 0px 18px;
-  justify-content: center;
-  align-items: center;
-`;
-
 const LogoWrapper = styled.div`
   display: flex;
+  height: 106px;
   width: 308px;
   min-width: 240px;
-  height: 160px;
-  padding: 47px 12px 36px 13px;
+  padding: 0px 18px;
   justify-content: center;
   align-items: center;
 `;
@@ -94,18 +86,14 @@ const SnsContent = styled.div`
   gap: 8px;
   width: 100%;
   min-width: 240px;
+`;
 
-  img {
-    width: 123px;
-  }
-
-  span {
-    font-size: 12px;
-    padding: 2px 8px 4px 8px;
-    line-height: 160%;
-    font-weight: 400;
-    color: #909090;
-  }
+const SnsText = styled.span`
+  font-size: 12px;
+  padding: 2px 8px 4px 8px;
+  line-height: 160%;
+  font-weight: 400;
+  color: #909090;
 `;
 
 const LoginModalOverlay = styled.div<{ $isOpen: boolean }>`
@@ -148,30 +136,16 @@ const SignUpButton = styled.div`
 `;
 
 const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const validateForm = () => {
-    if (!email) {
-      setError('이메일을 입력해주세요.');
-      return false;
-    } else if (!email.includes('@')) {
-      setError('이메일 형식이 적합하지 않습니다.');
-      return false;
-    } else if (password.length < 6) {
-      // 임시 에러 메시지
-      setError('비밀번호가 일치하지 않습니다.');
-      return false;
-    }
-    setError('');
-    return true;
-  };
-
-  const handleLogin = () => {
-    if (validateForm()) {
-      console.log('로그인 요청');
-    }
+  const onSubmit = (data: LoginSchema) => {
+    console.log('로그인 요청', data);
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -184,14 +158,12 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     <LoginModalOverlay $isOpen={isOpen} onClick={handleOverlayClick}>
       <LoginModalContainer onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose} aria-label='닫기'>
-          <Clear width={'24px'} height={'24px'} />
+          <Clear width={'24px'} height={'24px'} fill='#FFF' />
         </CloseButton>
         <LoginLeftSection>
-          <LogoContainer>
-            <LogoWrapper>
-              <GITLOG width={282.692} height={76.029} />
-            </LogoWrapper>
-          </LogoContainer>
+          <LogoWrapper>
+            <GITLOG width={282.692} height={76.029} fill='#FFF' />
+          </LogoWrapper>
           <p
             style={{
               color: '#909090',
@@ -208,27 +180,26 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
         <LoginRightSection>
           <InputWrapper>
             <TextInput
+              {...register('email')}
               name='email'
               type='email'
               placeholder='이메일'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               width='100%'
               maxWidth='312px'
             />
+            {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
             <TextInput
+              {...register('password')}
               name='password'
               type='password'
               placeholder='비밀번호'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               width='100%'
               maxWidth='312px'
             />
-            {error && <ErrorMessage>{error}</ErrorMessage>}
+            {errors.password && <ErrorMessage>{errors.password.message}</ErrorMessage>}
           </InputWrapper>
           <Button
-            onClick={handleLogin}
+            onClick={handleSubmit(onSubmit)}
             width='100%'
             height='46px'
             style={{
@@ -243,9 +214,9 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
             이메일로 로그인
           </Button>
           <SnsContent>
-            <Divider />
-            <span>SNS</span>
-            <Divider />
+            <Divider width={123} />
+            <SnsText>SNS</SnsText>
+            <Divider width={123} />
           </SnsContent>
           <Button
             width='100%'
