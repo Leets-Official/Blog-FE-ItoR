@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import Button from './Button';
 import styled, { keyframes, css } from 'styled-components';
 
 interface ModalProps {
   title: string;
-  description: string;
+  description?: string;
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
@@ -12,6 +12,10 @@ interface ModalProps {
   height?: string;
   icon?: ReactNode;
   closeButton?: ReactNode;
+  RightButtonText?: string;
+  LeftButtonText?: string;
+  RightButtonColor?: string;
+  LeftButtonColor?: string;
 }
 
 // Fade In/Out 애니메이션
@@ -35,7 +39,6 @@ const ModalTitle = styled.h2`
 const ModalDescription = styled.p`
   font-size: 12px;
   color: #909090;
-  font-style: normal;
   font-weight: 400;
   line-height: 160%;
 `;
@@ -49,7 +52,11 @@ const ModalContent = styled.div`
   gap: 8px;
 `;
 
-const ModalContainer = styled.div<{ width?: string; height?: string | undefined; isOpen: boolean }>`
+const ModalContainer = styled.div<{
+  width?: string;
+  height?: string | undefined;
+  $isOpen: boolean;
+}>`
   display: flex;
   width: ${({ width }) => width || '326px'};
   height: ${({ height }) => (height ? height : 'auto')};
@@ -61,8 +68,8 @@ const ModalContainer = styled.div<{ width?: string; height?: string | undefined;
   background: var(--White, #fff);
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
 
-  ${({ isOpen }) =>
-    isOpen
+  ${({ $isOpen }) =>
+    $isOpen
       ? css`
           animation: ${fadeIn} 0.3s ease-out forwards;
         `
@@ -73,8 +80,7 @@ const ModalContainer = styled.div<{ width?: string; height?: string | undefined;
         `}
 `;
 
-// 오버레이 배경 스타일
-const ModalOverlay = styled.div<{ isOpen: boolean }>`
+const ModalOverlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -88,8 +94,8 @@ const ModalOverlay = styled.div<{ isOpen: boolean }>`
   justify-content: center;
   z-index: 1000;
 
-  ${({ isOpen }) =>
-    !isOpen &&
+  ${({ $isOpen }) =>
+    !$isOpen &&
     css`
       opacity: 0;
       pointer-events: none;
@@ -104,18 +110,30 @@ const ButtonGroup = styled.div`
   gap: 12px;
 `;
 
-const Modal = ({ title, description, isOpen, onClose, onConfirm, width, height }: ModalProps) => {
+const Modal = ({
+  title,
+  description,
+  isOpen,
+  onClose,
+  onConfirm,
+  width,
+  height,
+  RightButtonText = '취소',
+  RightButtonColor = '#FF3F3F',
+  LeftButtonText = '확인',
+  LeftButtonColor = '#FFF',
+}: ModalProps) => {
   return (
-    <ModalOverlay isOpen={isOpen} onClick={onClose}>
+    <ModalOverlay $isOpen={isOpen} onClick={onClose}>
       <ModalContainer
-        isOpen={isOpen}
+        $isOpen={isOpen}
         width={width}
         height={height}
         onClick={(e) => e.stopPropagation()}
       >
         <ModalContent>
           <ModalTitle>{title}</ModalTitle>
-          <ModalDescription>{description}</ModalDescription>
+          {description && <ModalDescription>{description}</ModalDescription>}
         </ModalContent>
         <ButtonGroup>
           <Button
@@ -123,17 +141,17 @@ const Modal = ({ title, description, isOpen, onClose, onConfirm, width, height }
             style={{
               flex: 1,
               borderRadius: '2px',
-              backgroundColor: '#FFF',
+              backgroundColor: LeftButtonColor,
               border: '1px solid #F5F5F5',
             }}
           >
-            취소
+            {LeftButtonText}
           </Button>
           <Button
             onClick={onConfirm}
-            style={{ flex: 1, backgroundColor: '#FF3F3F', color: '#FFFFFF' }}
+            style={{ flex: 1, border: 'none', backgroundColor: RightButtonColor, color: '#FFFFFF' }}
           >
-            삭제하기
+            {RightButtonText}
           </Button>
         </ButtonGroup>
       </ModalContainer>
