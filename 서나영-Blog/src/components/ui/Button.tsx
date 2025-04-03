@@ -1,9 +1,8 @@
 import { ReactNode, CSSProperties } from 'react';
 import styled from 'styled-components';
 import { Create } from '@/assets';
-import { CreateGray } from '@/assets';
 
-export type ButtonType = 'None' | 'Create';
+export type ButtonType = 'None' | 'Create' | 'Submit';
 
 interface ButtonProps {
   children: ReactNode;
@@ -13,6 +12,8 @@ interface ButtonProps {
   style?: CSSProperties;
   onClick?: () => void;
   disabled?: boolean;
+  iconFill?: string;
+  buttonType?: 'button' | 'submit';
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -22,7 +23,6 @@ const StyledButton = styled.button<ButtonProps>`
   gap: 4px;
   width: ${({ width }) => width || '100%'};
   height: ${({ height }) => height || '46px'};
-  cursor: pointer;
   background-color: ${({ disabled }) => (disabled ? '#e6e6e6' : '#ffffff')};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
@@ -34,6 +34,13 @@ const StyledButton = styled.button<ButtonProps>`
       line-height: 160%; 
       letter-spacing: -0.07px;
     `}
+
+  ${({ type }) =>
+    type === 'Submit' &&
+    `
+      background-color: #FFF;
+      color: #00A1FF;
+    `}
 `;
 
 const IconWrapper = styled.span`
@@ -42,16 +49,23 @@ const IconWrapper = styled.span`
   align-items: center;
 `;
 
-const Button = ({ children, type = 'None', ...props }: ButtonProps) => {
+const Button = ({
+  children,
+  type = 'None',
+  iconFill = '#00A1FF',
+  onClick,
+  buttonType = 'button',
+  ...props
+}: ButtonProps) => {
   const icon =
     type === 'Create' ? (
       <IconWrapper>
-        <Create width={24} height={24} />
+        <Create width={24} height={24} fill={iconFill} />
       </IconWrapper>
     ) : null;
 
   return (
-    <StyledButton {...props}>
+    <StyledButton {...props} onClick={onClick}>
       {icon}
       {children}
     </StyledButton>
