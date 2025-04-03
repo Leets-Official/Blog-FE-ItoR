@@ -9,10 +9,10 @@ interface SideProps {
   onClose: () => void;
 }
 
-const SideContainer = styled.div<{ isOpen: boolean }>`
+const SideContainer = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
-  left: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
+  left: ${({ $isOpen }) => ($isOpen ? '0' : '-100%')};
   width: 240px;
   height: 100vh;
   background-color: #f5f5f5;
@@ -24,14 +24,14 @@ const SideContainer = styled.div<{ isOpen: boolean }>`
   z-index: 2000;
 `;
 
-const Overlay = styled.div<{ isOpen: boolean }>`
+const Overlay = styled.div<{ $isOpen: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.2);
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
   z-index: 1000;
 `;
 
@@ -49,8 +49,8 @@ const Sidebar = ({ isOpen, isLogin, onClose }: SideProps) => {
 
   return (
     <>
-      <Overlay id='sidebar-overlay' isOpen={isOpen} />
-      <SideContainer isOpen={isOpen}>{isLogin ? <LoginSide /> : <LogoutSide />}</SideContainer>
+      <Overlay id='sidebar-overlay' $isOpen={isOpen} />
+      <SideContainer $isOpen={isOpen}>{isLogin ? <LoginSide /> : <LogoutSide />}</SideContainer>
     </>
   );
 };
