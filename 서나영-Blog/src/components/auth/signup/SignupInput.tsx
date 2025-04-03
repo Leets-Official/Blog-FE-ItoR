@@ -5,16 +5,16 @@ interface SignupInputProps {
   name: string;
   label: string;
   type: string;
-  value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
+  error?: string;
+  register: any;
 }
 
 const InputContainer = styled.div`
   display: flex;
   width: 100%;
   max-width: 688px;
-  padding: 12px 16px;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
@@ -28,18 +28,27 @@ const Label = styled.label`
   letter-spacing: -0.07px;
 `;
 
-const SignupInput = ({ name, label, type, value, onChange, placeholder }: SignupInputProps) => {
+const ErrorMessage = styled.p`
+  color: #ff3f3f;
+  font-size: 12px;
+  font-weight: 300;
+  margin-top: 2px;
+  margin-left: 4px;
+`;
+
+const SignupInput = ({ name, label, type, placeholder, error, register }: SignupInputProps) => {
   return (
     <InputContainer>
-      <Label>{label}</Label>
+      <Label htmlFor={name}>{label}</Label>
       <TextInput
+        {...register(name)}
+        id={name}
         name={name}
         type={type}
-        value={value}
-        onChange={onChange}
         placeholder={placeholder}
         width='100%'
       />
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </InputContainer>
   );
 };

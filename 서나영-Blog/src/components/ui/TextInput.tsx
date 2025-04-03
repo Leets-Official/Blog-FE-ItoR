@@ -1,4 +1,4 @@
-import React, { useState, InputHTMLAttributes } from 'react';
+import React, { useState, forwardRef, InputHTMLAttributes } from 'react';
 import styled, { css } from 'styled-components';
 
 type InputState = 'default' | 'input' | 'click' | 'disabled';
@@ -43,7 +43,7 @@ const StyledInputContainer = styled.div<{ width?: string; $maxWidth?: string; $s
   display: flex;
   align-items: center;
   width: ${({ width }) => width || '100%'};
-  maxwidth: ${({ $maxWidth }) => $maxWidth || 'none'};
+  max-width: ${({ $maxWidth }) => $maxWidth || 'none'};
   ${({ $state }) => inputStyles[$state]};
 `;
 
@@ -57,31 +57,38 @@ const StyledInput = styled.input`
   padding: 12px 16px;
 `;
 
-const TextInput = ({
-  width,
-  maxWidth,
-  disabled,
-  name,
-  type = 'text',
-  ...props
-}: TextInputProps) => {
-  const [state, setState] = useState<InputState>('default');
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+  ({ width, maxWidth, disabled, name, type = 'text', onChange, onBlur, ...props }, ref) => {
+    const [state, setState] = useState<InputState>('default');
 
-  const handleFocus = () => setState('click');
-  const handleBlur = () => setState('input');
+    const handleFocus = () => setState('click');
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      setState('input');
+      if (onBlur) onBlur(e);
+    };
 
-  return (
-    <StyledInputContainer width={width} $maxWidth={maxWidth} $state={disabled ? 'disabled' : state}>
-      <StyledInput
-        {...props}
-        name={name}
-        type={type}
-        disabled={disabled}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      />
-    </StyledInputContainer>
-  );
-};
+    return (
+      <StyledInputContainer
+        width={width}
+        $maxWidth={maxWidth}
+        $state={disabled ? 'disabled' : state}
+      >
+        <StyledInput
+          {...props}
+          ref={ref}
+          id={name}
+          name={name}
+          type={type}
+          disabled={disabled}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onChange={onChange}
+        />
+      </StyledInputContainer>
+    );
+  },
+);
+
+TextInput.displayName = 'TextInput';
 
 export default TextInput;
