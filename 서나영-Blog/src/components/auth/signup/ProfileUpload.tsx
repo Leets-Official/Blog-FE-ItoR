@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Profile, AddPhoto } from '@/assets';
 
@@ -8,7 +9,7 @@ const ProfileContainer = styled.div`
   flex-direction: column;
   gap: 16px;
   margin-top: 32px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 `;
 
 const Label = styled.label`
@@ -25,11 +26,21 @@ const ProfileWrapper = styled.div`
   height: 90px;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+`;
+
+const StyledProfile = styled.div<{ image: string | null }>`
+  width: 90px;
+  height: 90px;
+  background: ${({ image }) => (image ? `url(${image})` : 'none')} center/cover no-repeat;
+  border-radius: 50%;
 `;
 
 const AddPhotoButton = styled.button`
   display: flex;
-  padding: 2px 8px 4px 8px;
+  width: 117px;
+  padding: 2px 8px 2px 8px;
   justify-content: center;
   align-items: center;
   gap: 4px;
@@ -44,17 +55,36 @@ const AddPhotoButton = styled.button`
 `;
 
 const ProfileUpload = () => {
+  const [image, setImage] = useState<string | null>(null);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+    }
+  };
+
+  const handleButtonClick = () => {
+    document.getElementById('profile-upload')?.click();
+  };
+
   return (
     <ProfileContainer>
       <Label>프로필 사진</Label>
       <ProfileWrapper>
-        <Profile width='90px' height='90px' />
+        {image ? <StyledProfile image={image} /> : <Profile width='90px' height='90px' />}
       </ProfileWrapper>
-      <label htmlFor='profile-upload'>
-        <AddPhotoButton>
-          <AddPhoto width={14} height={14} /> 프로필 사진 추가
-        </AddPhotoButton>
-      </label>
+      <input
+        id='profile-upload'
+        type='file'
+        accept='image/*'
+        style={{ display: 'none' }}
+        onChange={handleImageChange}
+      />
+      <AddPhotoButton onClick={handleButtonClick}>
+        <AddPhoto width={14} height={14} /> 프로필 사진 추가
+      </AddPhotoButton>
     </ProfileContainer>
   );
 };
