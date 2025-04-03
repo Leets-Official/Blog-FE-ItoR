@@ -9,9 +9,9 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 }
 
 const StyledImage = styled.img<{
-    width?: string;
-    height?: string;
-    $objectFit?: 'cover' | 'contain' | 'fill';
+  width?: string;
+  height?: string;
+  $objectFit?: 'cover' | 'contain' | 'fill';
 }>`
     width: ${(props) => props.width};
     height: ${(props) => props.height};
@@ -20,16 +20,16 @@ const StyledImage = styled.img<{
 
 
 const Image = ({
-    src,
-    alt,
-    width,
-    height,
-    $objectFit,
-    ...rest
+  src,
+  alt,
+  width,
+  height,
+  $objectFit,
+  ...rest
 }: ImageProps) => {
-    return (
-        <StyledImage src={src} alt={alt} width={width} height={height} $objectFit={$objectFit} {...rest} />
-    )
+  return (
+    <StyledImage src={src} alt={alt} width={width} height={height} $objectFit={$objectFit} {...rest} />
+  )
 }
 
 export default Image;

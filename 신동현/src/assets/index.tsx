@@ -8,8 +8,11 @@ import Error from '@/assets/icons/error_outline.svg?react';
 import Folder_open from '@/assets/icons/folder_open.svg?react';
 import More_vert from '@/assets/icons/more_vert.svg?react';
 import Navigate_before from '@/assets/icons/navigate_before.svg?react';
-import Reorder from '@/assets/icons/reorder.svg?react';
+import Hamburger from '@/assets/icons/Hamburger.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
+import GITLOG from '@/assets/icons/GITLOG.svg?react';
+import Kakao from '@/assets/icons/KaKaoLogo.svg?react';
+import Profile from '@/assets/icons/profile.svg?react';
 
 export {
     Add_photo,
@@ -22,6 +25,9 @@ export {
     Folder_open,
     More_vert,
     Navigate_before,
-    Reorder,
+    Hamburger,
     Settings,
+    GITLOG,
+    Kakao,
+    Profile,
 };

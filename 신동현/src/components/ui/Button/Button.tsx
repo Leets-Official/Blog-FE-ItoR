@@ -1,9 +1,9 @@
 import styled, { CSSProperties } from "styled-components";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children ?: React.ReactNode;
+  children?: React.ReactNode;
   onClick: () => void;
-  disabled ?: boolean;
+  disabled?: boolean;
   width?: string;
   height?: string;
   fontSize?: string;
@@ -23,7 +23,7 @@ const StyledButton = styled.button<{
   cursor: pointer;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  font-size: ${(props) => props.fontSize};
+  font-size: ${(props) => props.fontSize || "15px"};
   color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
   display: flex;
