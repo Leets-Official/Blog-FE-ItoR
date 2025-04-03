@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Header = styled.div`
+const SignupTitleWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -9,19 +9,21 @@ const Header = styled.div`
   margin-top: 64px;
 `;
 
-const TextContainer = styled.div`
+const TextWrapper = styled.div`
   display: flex;
   width: 100%;
   max-width: 688px;
   padding: 12px 16px;
   flex-direction: column;
   align-items: flex-start;
+  margin-top: 32px;
+  margin-bottom: 20px;
 `;
 
 const SignupHeader = () => {
   return (
-    <Header>
-      <TextContainer>
+    <SignupTitleWrapper>
+      <TextWrapper>
         <p style={{ fontSize: '24px', fontWeight: '500', color: '#000' }}>회원가입</p>
         <p
           style={{
@@ -33,8 +35,8 @@ const SignupHeader = () => {
         >
           가입을 위해 회원님의 정보를 입력해주세요.
         </p>
-      </TextContainer>
-    </Header>
+      </TextWrapper>
+    </SignupTitleWrapper>
   );
 };
 

@@ -1,12 +1,12 @@
 import SignupForm from '@/components/auth/signup/SignupForm';
-import SignupHeader from '@/components/auth/signup/SignupHeader';
+import SignupTitle from '@/components/auth/signup/SignupTitle';
 import Header from '@/components/layout/header/Header';
 
 const Signup = () => {
   return (
     <>
       <Header type='None' />
-      <SignupHeader />
+      <SignupTitle />
       <SignupForm />
     </>
   );
