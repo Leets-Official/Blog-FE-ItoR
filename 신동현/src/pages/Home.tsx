@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button/Button";
-import Image from "@/components/ui/Image";
 import Modal from "@/components/ui/Modal";
-import { Chat, Clear } from "@/assets/index";
+import { Chat, Clear, Profile } from "@/assets/index";
 import LoginModal from "@/components/ui/LoginModal";
 import Header from "@/components/layout/header/Header";
+import PostItem from "@/components/layout/post/PostItem";
 
-const Home = () => {
+const Home = () => {  
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -58,19 +58,15 @@ const Home = () => {
 
       <hr />
 
-      <Image
-        src="https://picsum.photos/300"
-        alt="chat image"
-        width="300px"
-        height="300px"
-        $objectFit="cover"
-      />
+      <PostItem title="16 Title one line" content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." userProfileImage={<Profile/>} userName="닉네임" writeDate="Fed 17 2025" commentCount={0} postImage={<Profile/>} />
 
       <Clear />
       <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => { }} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">
       </Modal>
       <LoginModal open={isLoginModalOpen} onClose={closeLoginModal} />
+      
     </>
+
   )
 }
 
