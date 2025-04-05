@@ -39,7 +39,7 @@ const Title = styled.h1`
   display: flex;
   align-items: center;
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 500;
   color: #000000;
   margin-left: 30%;
 
@@ -65,6 +65,7 @@ const ImageContainer = styled.div`
 const SubContent = styled.p`
   font-size: 14px;
   color: #909090;
+  font-weight: 401;
 
   @media (max-width: 700px) {
     font-size: 12px;
@@ -111,7 +112,7 @@ const SignUp = () => {
 
   return (
     <Container>
-      <Header />
+      <Header type="main" />
       <TitleContainer>
         <Title>회원가입</Title>
       </TitleContainer>

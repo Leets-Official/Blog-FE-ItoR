@@ -20,6 +20,7 @@ const ProfileContainer = styled.div`
 
 const Nickname = styled.h2`
   font-size: 24px;
+  font-weight: 500;
   width: 80%;
   color: #333333;
   margin-bottom: 0px;
@@ -27,6 +28,7 @@ const Nickname = styled.h2`
 
 const Bio = styled.p`
   font-size: 14px;
+  font-weight: 300;
   width: 80%;
   height: 22px;
   color: #333333;

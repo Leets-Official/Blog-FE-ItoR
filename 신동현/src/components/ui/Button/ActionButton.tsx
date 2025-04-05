@@ -15,6 +15,7 @@ const ActionButton = styled(Button) <ActionButtonProps>`
   font-size: 14px;
   width: ${(props) => props.width || "99px"};
   height: ${(props) => props.height || "38px"};
+  font-weight: 401;
 `;
 
 export default ActionButton;

@@ -32,7 +32,7 @@ const Title = styled.h1`
   display: flex;
   align-items: center;
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 500;
   color: #000000;
   margin-bottom: 0px; 
 `;
@@ -176,7 +176,7 @@ const SignUpDetail = () => {
 
   return (
     <>
-      <Header />
+      <Header type="write" />
       <TitleContainer>
         <TitleContentContainer>
           <Title>회원가입</Title>

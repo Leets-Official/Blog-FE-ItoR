@@ -87,6 +87,7 @@ const InputContent = styled.p`
   width: 300px;
   height: 8px;
   font-size: 12px;
+  font-weight: 401;
   color: #909090;
   display: flex;
   justify-content: center;
@@ -138,7 +139,7 @@ const Login = ({ open, onClose }: LoginProps) => {
           <SnsContent>SNS</SnsContent>
           <SignButton disabled={false} onClick={() => { }} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
           <InputContent>
-            <Link to="/signUp" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
+            <Link to="/signUp" style={{ textDecoration: "none", color: "#909090"}}>또는 회원가입</Link>
           </InputContent>
 
         </InputContainer>
