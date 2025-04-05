@@ -5,7 +5,8 @@ import { Chat, Clear, Profile } from "@/assets/index";
 import LoginModal from "@/components/ui/LoginModal";
 import Header from "@/components/layout/header/Header";
 import PostItem from "@/components/layout/post/PostItem";
-
+import { faker } from "@faker-js/faker";
+import Image from "@/components/ui/Image";
 const Home = () => {  
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,6 +27,17 @@ const Home = () => {
     setIsLoginModalOpen(false);
   }
 
+
+  const postList = Array.from({ length: 10 }, () => ({
+    id: faker.string.uuid(),
+    title: faker.lorem.words(10),
+    content: faker.lorem.paragraphs(1),
+    userProfileImage: <Profile />,
+    userName: faker.person.fullName(),
+    writeDate: faker.date.recent(),
+    commentCount: faker.number.int({ min: 0, max: 100 }),
+    postImage: <Image src={faker.image.url({ width: 100, height: 100 })} alt="post image" />,
+  }));
 
   return (
     <>
@@ -58,7 +70,9 @@ const Home = () => {
 
       <hr />
 
-      <PostItem title="16 Title one line" content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book." userProfileImage={<Profile/>} userName="닉네임" writeDate="Fed 17 2025" commentCount={0} postImage={<Profile/>} />
+      {postList.map((post) => (
+        <PostItem key={post.id} title={post.title} content={post.content} userProfileImage={post.userProfileImage} userName={post.userName} writeDate={post.writeDate.toLocaleDateString()} commentCount={post.commentCount} postImage={post.postImage} />
+      ))}
 
       <Clear />
       <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => { }} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">
