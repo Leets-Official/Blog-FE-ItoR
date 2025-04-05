@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
@@ -14,7 +13,12 @@ const StyledButton = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 5px;
+  outline: 0;
+
+  &:hover {
+    filter: ${({ $buttonColor }) => ($buttonColor ? 'brightness(0.9)' : 'none')};
+  }
 `;
 
 const StyledIcon = styled.div`
@@ -35,6 +39,7 @@ const Button = ({
   borderStyle,
   icon: Icon,
   onClick,
+  buttonColor = false,
 }) => {
   return (
     <StyledButton
@@ -47,6 +52,7 @@ const Button = ({
       fontWeight={fontWeight}
       $borderStyle={borderStyle}
       onClick={onClick}
+      $buttonColor={buttonColor}
     >
       {Icon && (
         <StyledIcon>

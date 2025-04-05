@@ -1,7 +1,16 @@
-import React from 'react';
-import AppExample from '경로';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Home, SignUp, SignUpEmail } from '@/pages';
 
 function App() {
-  return <AppExample />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/signUp' element={<SignUp />} />
+        <Route path='/signUpEmail' element={<SignUpEmail />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
+
 export default App;

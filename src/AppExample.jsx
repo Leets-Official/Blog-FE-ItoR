@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Input from '@/components/Input';
-import Button from '@/components/Button';
-import Image from '@/components/Image';
-import image from '@/assets/test.jpg';
-import { Modal, ModalText, ButtonContainer } from '@/components/Modal';
-import Toast from '@/components/Toast';
+import Input from '@/components/ui/Input';
+import Button from '@/components/ui/Button';
+import Image from '@/components/ui/Image';
+import { Modal, ModalText, ButtonContainer } from '@/components/ui/Modal';
+import Toast from '@/components/ui/Toast';
 import CreateIcon from '@/assets/create.svg?react';
 import KakaoIcon from '@/assets/kakaologo.svg?react';
+import Profile from '@/assets/profile.svg?url';
+import LoginModal from '@/components/Login/LoginModal';
 
 const Container = styled.div`
   padding: 10px;
@@ -18,6 +19,7 @@ const Container = styled.div`
 
 function AppExample() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [LoginModalOpen, setLoginModalOpen] = useState(false);
   const [toastData, setToastData] = useState({ show: false, type: 'error', message: '' });
 
   const InputFocus = (type) => {
@@ -44,6 +46,9 @@ function AppExample() {
       <Button width='150px' onClick={() => setModalOpen(true)} color='gray' bgColor='black'>
         모달창 띄우기
       </Button>
+      <Button width='150px' onClick={() => setLoginModalOpen(true)}>
+        로그인창 띄우기
+      </Button>
       <Button
         width='300px'
         height='50px'
@@ -55,7 +60,7 @@ function AppExample() {
       >
         카카오로 로그인
       </Button>
-      <Image src={image} alt='프로필' width='90px' height='90px' radius='50%' />
+      <Image src={Profile} alt='프로필' width='90px' height='90px' radius='50%' />
       <Modal isOpen={modalOpen}>
         <ModalText>
           <h4>해당 블로그를 삭제하시겠어요?</h4>
@@ -75,7 +80,7 @@ function AppExample() {
           </Button>
         </ButtonContainer>
       </Modal>
-      ;
+      <LoginModal isOpen={LoginModalOpen} onClose={() => setLoginModalOpen(false)}></LoginModal>
       <Toast show={toastData.show} type={toastData.type} text={toastData.message} />
     </Container>
   );
