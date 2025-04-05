@@ -1,0 +1,102 @@
+import theme from '@/styles/theme.styled';
+import styled from 'styled-components';
+import { flexAlignCenter, flexColumn } from '@/styles/common.styled';
+import { Image } from '@/components/index';
+import { Post } from '@/types/post';
+import { formatPostDate } from '@/utils/formatPostDate';
+
+interface PostItemProps {
+  post: Post;
+}
+
+type TextColor = 'black' | 'gray33' | 'gray56' | 'gray20';
+
+export const Text = styled.div<{
+  fontSize?: keyof typeof theme.FONT_SIZE;
+  fontWeight?: keyof typeof theme.FONT_WEIGHT;
+  color?: TextColor;
+}>`
+  font-weight: ${({ theme, fontWeight = 'regular' }) => theme.FONT_WEIGHT[fontWeight]};
+  font-size: ${({ theme, fontSize = 'sm' }) => theme.FONT_SIZE[fontSize]};
+  color: ${({ theme, color = 'black' }) => {
+    switch (color) {
+      case 'gray33':
+        return theme.COLORS.gray[33];
+      case 'gray56':
+        return theme.COLORS.gray[56];
+      case 'gray20':
+        return theme.COLORS.gray[20];
+      case 'black':
+      default:
+        return theme.COLORS.black;
+    }
+  }};
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const FlexItem = styled.div<{ hasImage?: boolean }>`
+  ${flexAlignCenter};
+  gap: ${({ hasImage }) => (hasImage ? '24px' : '0')};
+`;
+
+const ItemContainer = styled.div`
+  ${flexColumn}
+  gap:36px;
+  padding: 24px 0;
+`;
+
+const TextContent = styled.div`
+  flex: 1;
+`;
+
+const FooterItem = styled.div`
+  ${flexAlignCenter}
+  gap:14px;
+`;
+
+const PostItem: React.FC<PostItemProps> = ({ post }) => {
+  return (
+    <ItemContainer>
+      <FlexItem hasImage={!!post.image}>
+        <TextContent>
+          <Text fontWeight="medium" fontSize="md">
+            {post.title}
+          </Text>
+          <Text color="gray33">{post.content}</Text>
+        </TextContent>
+        {post.image && (
+          <Image
+            src={post.image!}
+            width="120px"
+            alt="post-image"
+            borderRadius="2px"
+            objectFit="cover"
+            thumbnail
+          />
+        )}
+      </FlexItem>
+      <FooterItem>
+        <Image
+          src={post.profileImage!}
+          alt="profile-img"
+          width="20px"
+          height="20px"
+          borderRadius="50%"
+          objectFit="cover"
+        />
+
+        <Text color="gray20">{post.nickName}</Text>
+        <Text color="gray56">{formatPostDate(post.createAt)}</Text>
+        <Text color="gray56">댓글{post.commentCount}</Text>
+      </FooterItem>
+    </ItemContainer>
+  );
+};
+
+export default PostItem;

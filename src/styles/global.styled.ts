@@ -14,9 +14,13 @@ const GlobalStyles = createGlobalStyle`
     border: none;
   }
 
+  body {
+    font-family: 'NotoSans', sans-serif;
+  }
+  
 @font-face {
   font-family: 'NotoSans';
-  src: url('/font/NotoSansKr-Regular.ttf') format('truetype');
+  src: url('/font/NotoSansKR-Regular.ttf') format('truetype');
 }
 `;
 

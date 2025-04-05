@@ -5,11 +5,12 @@ export const HeaderContainer = styled.div`
   ${flexAlignCenter}
   justify-content: space-between;
   width: 100%;
-  position: sticky;
+  position: fixed;
   top: 0;
   background-color: ${({ theme }) => theme.COLORS.white};
   height: 72px;
   padding: 20px;
+  z-index: 100;
 `;
 
 export const SectionWrapper = styled.div`

@@ -1,5 +1,4 @@
-import CheckIcon from '@/assets/icon/ic_toast_positive.svg?react';
-import ErrorIcon from '@/assets/icon/ic_toast_negative.svg?react';
+import { CheckSvg, ErrorSvg } from '@/assets';
 import { ToastContainer } from '@/components/common/Toast/Toast.styled';
 
 export type ToastType = 'success' | 'error';
@@ -10,7 +9,7 @@ export interface ToastProps {
 }
 
 const Toast: React.FC<ToastProps> = ({ message, type = 'success' }) => {
-  const Icon = type === 'success' ? CheckIcon : ErrorIcon;
+  const Icon = type === 'success' ? CheckSvg : ErrorSvg;
 
   return (
     <ToastContainer type={type}>

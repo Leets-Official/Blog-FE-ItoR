@@ -1,4 +1,4 @@
-import WriteSvg from '@/assets/icon/ic_create.svg?react';
+import { WriteSvg } from '@/assets';
 import Button from '@/components/common/Button/Button';
 import theme from '@/styles/theme.styled';
 import { flexAlignCenter } from '@/styles/common.styled';
