@@ -1,18 +1,17 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal";
-import { Chat, Profile } from "@/assets/index";
+import { Chat } from "@/assets/index";
 import LoginModal from "@/components/ui/LoginModal";
 import Header from "@/components/layout/header/Header";
-import PostItem from "@/components/layout/post/PostItem";
-import { faker } from "@faker-js/faker";
-import Image from "@/components/ui/Image";
-import Pagination from "@/components/pagination/Pagination";
-const Home = () => {  
+import Posts from "@/components/layout/post/Posts";
+import DummyPostList from "@/components/layout/post/DummyPostList";
+
+const Home = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [page, setPage] = useState(1);
+
   const openModal = () => {
     setIsModalOpen(true);
   }
@@ -29,20 +28,7 @@ const Home = () => {
     setIsLoginModalOpen(false);
   }
 
-  const handlePageChange = (page: number) => {
-    setPage(page);
-  }
-
-  const postList = Array.from({ length: 10 }, () => ({
-    id: faker.string.uuid(),
-    title: faker.lorem.words(10),
-    content: faker.lorem.paragraphs(1),
-    userProfileImage: <Profile />,
-    userName: faker.person.fullName(),
-    writeDate: faker.date.recent(),
-    commentCount: faker.number.int({ min: 0, max: 100 }),
-    postImage: <Image src={faker.image.url({ width: 100, height: 100 })} alt="post image" />,
-  }));
+  const postList = DummyPostList({ postCount: 123 });
 
   return (
     <>
@@ -75,11 +61,7 @@ const Home = () => {
 
       <hr />
 
-      {postList.map((post) => (
-        <PostItem key={post.id} title={post.title} content={post.content} userProfileImage={post.userProfileImage} userName={post.userName} writeDate={post.writeDate.toLocaleDateString()} commentCount={post.commentCount} postImage={post.postImage} />
-      ))}
-
-      <Pagination currentPage={page} totalPosts={100} limitPost={10} limitPage={5} setPage={handlePageChange} />
+      <Posts postList={postList} />
 
       <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => { }} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">
       </Modal>

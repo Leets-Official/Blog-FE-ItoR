@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { Post } from "./Post";
+import { Profile } from "@/assets";
+import { ReactNode } from "react";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -101,37 +104,31 @@ const Hr = styled.hr`
 `;
 
 interface PostItemProps {
-  title: string;
-  content: string;
-  userProfileImage?: React.ReactNode;
-  postImage?: React.ReactNode;
-  userName: string;
-  writeDate: string;
-  commentCount: number;
+  post: Post;
 }
 
-const PostItem = ({ title, content, userProfileImage, postImage, userName, writeDate, commentCount }: PostItemProps) => {
+const PostItem = ({ post }: PostItemProps) => {
   return (
     <Wrapper>
       <Container>
         <ContentContainer>
           <PostInfoContainer>
             <PostContentContainer>
-              <Title>{title}</Title>
-              <PostContent>{content}</PostContent>
+              <Title>{post.title}</Title>
+              <PostContent>{post.content}</PostContent>
             </PostContentContainer>
             <ImageContainer>
-              {postImage}
+              {post.postImage}
             </ImageContainer>
           </PostInfoContainer>
           <PostWriteInfoContainer>
             <UserInfoContainer>
               <UserProfileImageContainer>
-                {userProfileImage}
+                {post.userProfileImage}
               </UserProfileImageContainer>
-              <UserName>{userName}</UserName>
+              <UserName>{post.userName}</UserName>
             </UserInfoContainer>
-            <WriteInfoContent> · {writeDate} · 댓글({commentCount})</WriteInfoContent>
+            <WriteInfoContent> · {post.writeDate.toLocaleDateString()} · 댓글({post.commentCount})</WriteInfoContent>
           </PostWriteInfoContainer>
         </ContentContainer>
         <Hr />
