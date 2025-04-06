@@ -3,6 +3,8 @@ import PageButton from "@/components/ui/Button/PageButton";
 import { Left, Right } from "@/assets";
 
 const Wrapper = styled.div`
+  margin-top: 20px;
+  margin-bottom: 40px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -35,11 +37,11 @@ const Pagination = ({ currentPage, totalPosts, limitPost, limitPage, setPage }: 
   return (
     <Wrapper>
       <ButtonContainer>
-        <PageButton onClick={() => setPage(firstPage - 1)} disabled={firstPage === 1} icon={<Left fill={firstPage === 1 ? "#D9D9D9" : "#000000"} />}></PageButton>
+        <PageButton onClick={() => setPage(firstPage - 1)} disabled={firstPage === 1} icon={<Left />} type={firstPage === 1 ? "inactive" : "active"}></PageButton>
         {pageMap.map((page) => (
-          <PageButton key={page} onClick={() => setPage(page)}>{page}</PageButton>
+          <PageButton key={page} onClick={() => setPage(page)} type={page === currentPage ? "current" : "active"}>{page}</PageButton>
         ))}
-        <PageButton onClick={() => setPage(Math.min(lastPage + 1, numPages))} disabled={lastPage === numPages} icon={<Right fill={lastPage === numPages ? "#D9D9D9" : "#000000"} />}></PageButton>
+        <PageButton onClick={() => setPage(Math.min(lastPage + 1, numPages))} disabled={lastPage === numPages} icon={<Right />} type={lastPage === numPages ? "inactive" : "active"} ></PageButton>
       </ButtonContainer>
     </Wrapper>
   )

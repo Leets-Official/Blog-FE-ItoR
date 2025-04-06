@@ -20,6 +20,7 @@ const StyledButton = styled.button<{
   color?: string;
   backgroundColor?: string;
   fontWeight?: string;
+  disabled?: boolean;
 }>`
   cursor: pointer;
   width: ${(props) => props.width};
@@ -32,6 +33,7 @@ const StyledButton = styled.button<{
   align-items: center;
   justify-content: center;
   border: none;
+  cursor: ${(props) => props.disabled ? "default" : "pointer"};
 `;
 
 const IconContainer = styled.span`
