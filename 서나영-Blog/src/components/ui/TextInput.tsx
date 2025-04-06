@@ -55,6 +55,7 @@ const StyledInput = styled.input`
   background: transparent;
   color: inherit;
   padding: 12px 16px;
+  font-family: 'Noto Sans L';
 `;
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(

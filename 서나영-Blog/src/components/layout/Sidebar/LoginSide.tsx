@@ -40,6 +40,7 @@ const Description = styled.div`
   font-weight: 300;
   line-height: 160%;
   letter-spacing: -0.07px;
+  font-family: 'Noto Sans L';
 `;
 
 const ButtonContainer = styled.div`
