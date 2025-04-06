@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { GITLOG, Reorder } from '@/assets';
 import ChatandMore from '@/components/layout/header/ChatandMore';
 import DelandCreate from '@/components/layout/header/DelandCreate';
 import Button from '@/components/ui/Button';
-import Sidebar from '@/components/layout/Sidebar/Sidebar';
+import Sidebar from '@/components/layout/sidebar/Sidebar';
 import styled from 'styled-components';
 
 type HeaderType = 'DelandCreate' | 'ChatandMore' | 'CreateLog' | 'None';
@@ -60,6 +61,7 @@ const getRightComponent = (type: HeaderType) => {
 
 const Header = ({ type }: HeaderProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -76,6 +78,7 @@ const Header = ({ type }: HeaderProps) => {
             height='28px'
             fill='#000'
             style={{ padding: '6px 5px', cursor: 'pointer' }}
+            onClick={() => navigate('/')}
           />
         </HeaderLeftSection>
         <HeaderRightSection>{getRightComponent(type)}</HeaderRightSection>
