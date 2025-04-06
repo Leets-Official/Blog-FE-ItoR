@@ -1,7 +1,8 @@
 import GlobalStyle from './styles/global';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastProvider } from './components/ui/Toast';
-import Signup from './pages/Signup';
+import Signup from '@/pages/signup/Signup';
+import SignupSelect from '@/pages/signup/SignupSelect';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <ToastProvider>
         <Routes>
           <Route path='/signup' element={<Signup />} />
+          <Route path='/signup/select' element={<SignupSelect />} />
         </Routes>
       </ToastProvider>
     </BrowserRouter>
