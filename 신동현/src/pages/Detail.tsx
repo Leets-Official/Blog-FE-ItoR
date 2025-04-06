@@ -208,6 +208,7 @@ interface DetailProps {
 
 const Detail = ({ id, isLogin }: DetailProps) => {
   const [commentCount, setCommentCount] = useState(5);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   console.log(id);
   isLogin = true;
@@ -237,7 +238,7 @@ const Detail = ({ id, isLogin }: DetailProps) => {
             ) : (
               <CommentListContainer>
                 {commentList.map((comment) => (
-                  <CommentItem key={comment.id} profileImage={comment.profileImage} nickname={comment.nickname} date={comment.writeDate.toLocaleDateString()} content={comment.content} />
+                  <CommentItem key={comment.id} profileImage={comment.profileImage} nickname={comment.nickname} date={comment.writeDate.toLocaleDateString()} content={comment.content} isMyComment={true} />
                 ))}
               </CommentListContainer>
             )}

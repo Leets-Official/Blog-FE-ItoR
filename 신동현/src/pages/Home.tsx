@@ -34,33 +34,6 @@ const Home = () => {
     <>
       <Header type="main" />
 
-      <div>
-        <Button width="300px" height="45px" fontSize="16px" color="000000" backgroundColor="#FEE500" disabled={false} onClick={openLoginModal} icon={<Chat width="24px" height="24px" fill="#333333" />} style={{
-          border: "none",
-          borderRadius: "6px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "8px"
-        }}>로그인 모달 열기</Button>
-      </div >
-
-      <div>
-        <Button
-          width="300px"
-          height="45px"
-          fontSize="16px"
-          color="#FFFFFF"
-          backgroundColor="#000000"
-          onClick={openModal}
-          disabled={false}
-        >
-          모달 열기
-        </Button>
-      </div>
-
-      <hr />
-
       <Posts postList={postList} />
 
       <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => { }} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">

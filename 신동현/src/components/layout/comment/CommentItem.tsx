@@ -1,5 +1,7 @@
 import { More_vert } from "@/assets";
 import Button from "@/components/ui/Button/Button";
+import Modal from "@/components/ui/Modal";
+import { useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -69,9 +71,20 @@ interface CommentItemProps {
   nickname: string;
   date: string;
   content: string;
+  isMyComment: boolean;
 }
 
-const CommentItem = ({ profileImage, nickname, date, content }: CommentItemProps) => {
+const CommentItem = ({ profileImage, nickname, date, content, isMyComment }: CommentItemProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
+  
   return (
     <Wrapper>
       <WriteInfoContainer>
@@ -83,21 +96,24 @@ const CommentItem = ({ profileImage, nickname, date, content }: CommentItemProps
           <Date>{date}</Date>
         </LeftContainer>
         <RightContainer>
-          <Button
-            width="40px"
-            height="40px"
-            fontSize="14px"
-            color="#909090"
-            backgroundColor="#FFFFFF"
-            icon={<More_vert width="24px" height="24px" fill="#333333" />}
-            onClick={() => { }}
-          >
-          </Button>
+          {isMyComment && (
+            <Button
+              width="40px"
+              height="40px"
+              fontSize="14px"
+              color="#909090"
+              backgroundColor="#FFFFFF"
+              icon={<More_vert width="24px" height="24px" fill="#333333" />}
+            onClick={openModal}
+            >
+            </Button>
+          )}
         </RightContainer>
       </WriteInfoContainer>
       <CommentContent>
         <CommentContentText>{content}</CommentContentText>
       </CommentContent>
+      <Modal open={isModalOpen} onClose={closeModal} title="댓글을 삭제할까요?" onCancel={closeModal} onConfirm={closeModal} cancelText="취소" confirmText="삭제하기" cancelType="default" confirmType="negative" />
     </Wrapper>
   );
 };

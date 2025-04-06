@@ -196,7 +196,7 @@ const SignUpDetail = () => {
           <ActionButton type="blue" width="688px" height="38px" onClick={openConfirmModal}>회원가입</ActionButton>
         </ButtonContainer>
       </MainContainer>
-      <Modal open={isOpenConfirmModal} title="회원가입이 완료되었습니다!" onCancel={closeConfirmModal} onConfirm={() => { }} onClose={closeConfirmModal} cancelText="확인" confirmText="로그인하기" cancelType="negative" confirmType="positive" animation="fadeIn">
+      <Modal open={isOpenConfirmModal} title="회원가입이 완료되었습니다!" onCancel={closeConfirmModal} onConfirm={() => { }} onClose={closeConfirmModal} cancelText="확인" confirmText="로그인하기" confirmType="positive" animation="fadeIn">
       </Modal>
     </>
   )
