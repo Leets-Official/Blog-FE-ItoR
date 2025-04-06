@@ -50,7 +50,7 @@ const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
     background-color: ${({ theme }) => theme.COLORS.kakao};
     color: ${({ theme }) => theme.COLORS.black};
     border: none;
-    font-weight: ${({ theme }) => theme.FONT_WEIGHT.medium};
+    font-weight: ${({ theme }) => theme.FONT_WEIGHT.semibold};
   `,
   text: css`
     background-color: ${({ theme }) => theme.COLORS.white};

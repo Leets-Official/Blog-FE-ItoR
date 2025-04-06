@@ -33,7 +33,8 @@ const FONT_SIZE = {
 const FONT_WEIGHT = {
   light: 300,
   regular: 400,
-  medium: 600,
+  medium: 500,
+  semibold: 600,
   bold: 700,
 };
 
