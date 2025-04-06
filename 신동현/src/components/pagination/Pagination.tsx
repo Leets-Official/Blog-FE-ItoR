@@ -39,7 +39,7 @@ const Pagination = ({ currentPage, totalPosts, limitPost, limitPage, setPage }: 
       <ButtonContainer>
         <PageButton onClick={() => setPage(firstPage - 1)} disabled={firstPage === 1} icon={<Left />} type={firstPage === 1 ? "inactive" : "active"}></PageButton>
         {pageMap.map((page) => (
-          <PageButton key={page} onClick={() => setPage(page)} type={page === currentPage ? "current" : "active"}>{page}</PageButton>
+          <PageButton key={page} onClick={() => setPage(page)} type={page === currentPage ? "current" : "active"} disabled={page === currentPage}>{page}</PageButton>
         ))}
         <PageButton onClick={() => setPage(Math.min(lastPage + 1, numPages))} disabled={lastPage === numPages} icon={<Right />} type={lastPage === numPages ? "inactive" : "active"} ></PageButton>
       </ButtonContainer>
