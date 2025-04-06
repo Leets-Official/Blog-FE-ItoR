@@ -61,7 +61,7 @@ const Header = ({ type }: HeaderProps) => {
           {type === "detail" && <DetailHeader />}
         </RightContainer>
       </HeaderContainer>
-      {isSideBarOpen && <SideBar isOpen={isSideBarOpen} onClose={setSideBarOpen} isLogin={false} />}
+      {isSideBarOpen && <SideBar isOpen={isSideBarOpen} onClose={setSideBarOpen} isLogin={true} />}
     </>
   );
 };

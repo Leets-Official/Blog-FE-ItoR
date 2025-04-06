@@ -2,6 +2,8 @@ import { Profile } from "@/assets"
 import Button from "@/components/ui/Button/Button"
 import SideBarButton from "@/components/ui/Button/ActionButton"
 import styled from "styled-components"
+import Modal from "@/components/ui/Modal";
+import { useState } from "react";
 
 const Container = styled.div`
   padding-left: 16px;
@@ -52,6 +54,18 @@ const FooterButtonContainer = styled(ButtonContainer)`
 
 
 const LoginedSideBar = () => {
+
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  const openLogoutModal = () => {
+    setIsLogoutModalOpen(true);
+  }
+  
+  const closeLogoutModal = () => {
+    setIsLogoutModalOpen(false);
+  }
+  
+
     return (
       <Container>
         <ProfileContainer>
@@ -65,8 +79,10 @@ const LoginedSideBar = () => {
         </ButtonContainer>
         <FooterButtonContainer>
           <SideBarButton onClick={() => { }} type="gray">설정</SideBarButton>
-          <SideBarButton onClick={() => { }} type="gray">로그아웃</SideBarButton>
+          <SideBarButton onClick={openLogoutModal} type="gray">로그아웃</SideBarButton>
         </FooterButtonContainer>
+
+        <Modal open={isLogoutModalOpen} onClose={closeLogoutModal} title="로그아웃을 진행할게요" onCancel={closeLogoutModal} onConfirm={closeLogoutModal} cancelText="취소" confirmText="로그아웃" cancelType="default" confirmType="positive" />
       </Container>
     )
 }
