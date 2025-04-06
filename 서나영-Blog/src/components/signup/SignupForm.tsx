@@ -64,9 +64,7 @@ const SignupForm = () => {
     <FormContainer>
       <ProfileUpload />
       <form
-        onSubmit={
-          handleSubmit(onSubmit)
-        }
+        onSubmit={handleSubmit(onSubmit)}
         style={{
           width: '100%',
           display: 'flex',
@@ -96,6 +94,7 @@ const SignupForm = () => {
               borderRadius: '25px',
               backgroundColor: '#FFF',
               border: '1px solid #00A1FF',
+              fontFamily: 'Noto Sans R',
             }}
           >
             회원가입 완료

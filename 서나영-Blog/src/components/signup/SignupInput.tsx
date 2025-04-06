@@ -9,6 +9,7 @@ interface SignupInputProps {
   placeholder: string;
   error?: string;
   register: any;
+  disabled?: boolean;
 }
 
 const InputContainer = styled.div`
@@ -26,6 +27,7 @@ const Label = styled.label`
   font-weight: 300;
   line-height: 160%;
   letter-spacing: -0.07px;
+  font-family: 'Noto Sans L';
 `;
 
 const ErrorMessage = styled.p`
@@ -34,9 +36,18 @@ const ErrorMessage = styled.p`
   font-weight: 300;
   margin-top: 2px;
   margin-left: 4px;
+  font-family: 'Noto Sans L';
 `;
 
-const SignupInput = ({ name, label, type, placeholder, error, register }: SignupInputProps) => {
+const SignupInput = ({
+  name,
+  label,
+  type,
+  placeholder,
+  error,
+  register,
+  disabled,
+}: SignupInputProps) => {
   return (
     <InputContainer>
       <Label htmlFor={name}>{label}</Label>
@@ -47,6 +58,8 @@ const SignupInput = ({ name, label, type, placeholder, error, register }: Signup
         type={type}
         placeholder={placeholder}
         width='100%'
+        disabled={disabled}
+        style={{ background: disabled ? '#E6E6E6' : '#FFF' }}
       />
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </InputContainer>
