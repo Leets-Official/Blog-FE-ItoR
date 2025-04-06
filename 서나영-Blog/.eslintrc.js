@@ -3,7 +3,8 @@ module.exports = {
         browser: true,
         node: true,
     },
-    plugins: ['react', '@typescript-eslint'],
+    files: ['**/*.{ts, tsx}'],
+    plugins: ['react', '@typescript-eslint', 'prettierPlugin'],
     extends: [
         'eslint:recommended',
         'plugin:react/recommended',
@@ -22,6 +23,7 @@ module.exports = {
     rules: {
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': 'error',
-        '@typescript-eslint/explicit-module-boundary-types': 'off'
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        'prettier/prettier': 'error',
     },
 };

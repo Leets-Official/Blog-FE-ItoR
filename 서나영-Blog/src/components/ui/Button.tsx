@@ -1,8 +1,8 @@
 import { ReactNode, CSSProperties } from 'react';
 import styled from 'styled-components';
-import CreateIcon from '../assets/create.svg';
+import { Create } from '@/assets';
 
-export type ButtonType = 'None' | 'Create';
+export type ButtonType = 'None' | 'Create' | 'Submit';
 
 interface ButtonProps {
   children: ReactNode;
@@ -12,6 +12,8 @@ interface ButtonProps {
   style?: CSSProperties;
   onClick?: () => void;
   disabled?: boolean;
+  iconFill?: string;
+  buttonType?: 'button' | 'submit';
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -19,11 +21,26 @@ const StyledButton = styled.button<ButtonProps>`
   align-items: center;
   justify-content: center;
   gap: 4px;
-  width: ${({ width }) => width || 'auto'};
-  height: ${({ height }) => height || '40px'};
-  cursor: pointer;
+  width: ${({ width }) => width || '100%'};
+  height: ${({ height }) => height || '46px'};
   background-color: ${({ disabled }) => (disabled ? '#e6e6e6' : '#ffffff')};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+
+  ${({ type }) =>
+    type === 'Create' &&
+    `
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 160%; 
+      letter-spacing: -0.07px;
+    `}
+
+  ${({ type }) =>
+    type === 'Submit' &&
+    `
+      background-color: #FFF;
+      color: #00A1FF;
+    `}
 `;
 
 const IconWrapper = styled.span`
@@ -32,16 +49,23 @@ const IconWrapper = styled.span`
   align-items: center;
 `;
 
-const Button = ({ children, type = 'None', ...props }: ButtonProps) => {
+const Button = ({
+  children,
+  type = 'None',
+  iconFill = '#00A1FF',
+  onClick,
+  buttonType = 'button',
+  ...props
+}: ButtonProps) => {
   const icon =
     type === 'Create' ? (
       <IconWrapper>
-        <img src={CreateIcon} alt='Create' width={24} height={24} />
+        <Create width={24} height={24} fill={iconFill} />
       </IconWrapper>
     ) : null;
 
   return (
-    <StyledButton {...props}>
+    <StyledButton {...props} onClick={onClick}>
       {icon}
       {children}
     </StyledButton>
