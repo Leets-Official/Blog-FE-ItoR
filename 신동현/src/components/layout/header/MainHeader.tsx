@@ -1,6 +1,7 @@
 import { Create } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -9,6 +10,7 @@ const Container = styled.div`
 `;
 
 const MainHeader = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Button
@@ -18,7 +20,9 @@ const MainHeader = () => {
         color="#909090"
         backgroundColor="#FFFFFF"
         icon={<Create width="24px" height="24px" fill="#333333" />}
-        onClick={() => { }}
+        onClick={() => {
+          navigate("/Write");
+        }}
       >
         깃로그 쓰기
       </Button>

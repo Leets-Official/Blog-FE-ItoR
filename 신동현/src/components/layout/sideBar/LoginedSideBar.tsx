@@ -4,6 +4,7 @@ import SideBarButton from "@/components/ui/Button/ActionButton"
 import styled from "styled-components"
 import Modal from "@/components/ui/Modal";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   padding-left: 16px;
@@ -54,7 +55,8 @@ const FooterButtonContainer = styled(ButtonContainer)`
 
 
 const LoginedSideBar = () => {
-
+  const navigate = useNavigate();
+  
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const openLogoutModal = () => {
@@ -75,7 +77,7 @@ const LoginedSideBar = () => {
         </ProfileContainer>
         <ButtonContainer>
           <SideBarButton onClick={() => { }} type="blue">나의 깃로그</SideBarButton>
-          <SideBarButton onClick={() => { }} type="blue">깃로그 쓰기</SideBarButton>
+          <SideBarButton onClick={() => { navigate("/Write") }} type="blue">깃로그 쓰기</SideBarButton>
         </ButtonContainer>
         <FooterButtonContainer>
           <SideBarButton onClick={() => { }} type="gray">설정</SideBarButton>

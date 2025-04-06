@@ -6,10 +6,10 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const StyledInput = styled.input`
+const StyledInput = styled.input<{ noneBorder?: boolean }>`
   width: ${({ width }) => width || "650px"};
   height: ${({ height }) => height || "40px"};
-  border: 1px solid #E0E0E0;
+  border: ${({ noneBorder }) => noneBorder ? "none" : "1px solid #E0E0E0"};
   border-radius: 4px;
   padding: 0 16px;
   background-color: ${({ disabled }) => disabled ? "#E6E6E6" : "#FFFFFF"};
@@ -20,6 +20,12 @@ const StyledInput = styled.input`
     font-size: 14px;
     font-weight: 300;
   }
+
+  ${({ noneBorder }) => noneBorder && `
+    &:focus {
+      outline: none;
+    }
+  `}
 `;
 
 const Title = styled.div`
@@ -45,9 +51,12 @@ interface InputProps {
   value: string;
   disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  noneBorder?: boolean;
+  style?: React.CSSProperties;
 }
 
-const Input = ({ title, subTitle, type, placeholder, value, disabled, onChange, ...rest }: InputProps) => {
+const Input = ({ title, subTitle, type, placeholder, value, disabled, onChange, noneBorder, ...rest }: InputProps) => {
+
   return (
     <Container>
       {title && <Title>{title}</Title>}
@@ -57,6 +66,7 @@ const Input = ({ title, subTitle, type, placeholder, value, disabled, onChange, 
         value={value}
         onChange={onChange}
         disabled={disabled}
+        noneBorder={noneBorder}
         {...rest}
       />
       {subTitle && <SubTitle>{subTitle}</SubTitle>}
