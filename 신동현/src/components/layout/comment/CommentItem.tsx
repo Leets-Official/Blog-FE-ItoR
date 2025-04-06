@@ -29,7 +29,6 @@ const RightContainer = styled.div`
 
 const LeftContainer = styled.div`
   display: flex;
-  align-items: center;
   flex-direction: column;
   gap: 0px;
 `;

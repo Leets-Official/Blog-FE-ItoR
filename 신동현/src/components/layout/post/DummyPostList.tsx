@@ -1,4 +1,3 @@
-import { Profile } from "@/assets";
 import { faker } from "@faker-js/faker";
 import Image from "@/components/ui/Image";
 
@@ -11,7 +10,7 @@ const DummyPostList = ({ postCount }: DummyPostListProps) => {
     id: faker.string.uuid(),
     title: faker.lorem.words(10),
     content: faker.lorem.paragraphs(1),
-    userProfileImage: <Profile />,
+    userProfileImage: <Image src={faker.image.avatar()} width="16px" height="16px" alt="profile image" />,
     userName: faker.person.fullName(),
     writeDate: faker.date.recent(),
     commentCount: faker.number.int({ min: 0, max: 100 }),

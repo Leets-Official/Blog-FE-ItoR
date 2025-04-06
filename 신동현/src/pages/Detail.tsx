@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import CommentItem from "@/components/layout/comment/CommentItem";
 import { Profile } from "@/assets";
+import DummyCommentList from "@/components/layout/comment/DummyCommentList";
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -62,9 +63,11 @@ const CommentEmpty = styled.p`
 
 const Detail = () => {
   const { id } = useParams();
-  const [commentCount, setCommentCount] = useState(1);
+  const [commentCount, setCommentCount] = useState(5);
 
   console.log(id);
+
+  const commentList = DummyCommentList({ commentCount });
 
   return (
     <>
@@ -83,8 +86,9 @@ const Detail = () => {
             </CommentEmptyContainer>
           ) : (
             <CommentListContainer>
-              <CommentItem profileImage={<Profile />} nickname="닉네임" date="작성일" content="댓글 내용" />
-              <CommentItem profileImage={<Profile />} nickname="닉네임" date="작성일" content="댓글 내용" />
+              {commentList.map((comment) => (
+                <CommentItem profileImage={comment.profileImage} nickname={comment.nickname} date={comment.writeDate.toLocaleDateString()} content={comment.content} />
+              ))}
             </CommentListContainer>
           )}
         </CommentContainer>
