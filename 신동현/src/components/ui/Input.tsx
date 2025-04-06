@@ -1,20 +1,22 @@
 import styled from "styled-components";
 
 const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
 `;
 
 const StyledInput = styled.input<{ noneBorder?: boolean }>`
-  width: ${({ width }) => width || "650px"};
+  width: ${({ width }) => width || "100%"};
   height: ${({ height }) => height || "40px"};
   border: ${({ noneBorder }) => noneBorder ? "none" : "1px solid #E0E0E0"};
   border-radius: 4px;
-  padding: 0 16px;
+  padding: 0px;
   background-color: ${({ disabled }) => disabled ? "#E6E6E6" : "#FFFFFF"};
   color: ${({ disabled }) => disabled ? "#909090" : "#000000"};
   text-align: left;
+  text-indent: 16px;
   ::placeholder {
     color: #C8C8C8;
     font-size: 14px;
