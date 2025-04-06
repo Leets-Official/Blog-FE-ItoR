@@ -1,16 +1,18 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal";
-import { Chat, Clear, Profile } from "@/assets/index";
+import { Chat, Profile } from "@/assets/index";
 import LoginModal from "@/components/ui/LoginModal";
 import Header from "@/components/layout/header/Header";
 import PostItem from "@/components/layout/post/PostItem";
 import { faker } from "@faker-js/faker";
 import Image from "@/components/ui/Image";
+import Pagination from "@/components/pagination/Pagination";
 const Home = () => {  
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
   const openModal = () => {
     setIsModalOpen(true);
   }
@@ -27,6 +29,9 @@ const Home = () => {
     setIsLoginModalOpen(false);
   }
 
+  const handlePageChange = (page: number) => {
+    setPage(page);
+  }
 
   const postList = Array.from({ length: 10 }, () => ({
     id: faker.string.uuid(),
@@ -74,11 +79,11 @@ const Home = () => {
         <PostItem key={post.id} title={post.title} content={post.content} userProfileImage={post.userProfileImage} userName={post.userName} writeDate={post.writeDate.toLocaleDateString()} commentCount={post.commentCount} postImage={post.postImage} />
       ))}
 
-      <Clear />
+      <Pagination currentPage={page} totalPosts={100} limitPost={10} limitPage={5} setPage={handlePageChange} />
+
       <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => { }} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">
       </Modal>
       <LoginModal open={isLoginModalOpen} onClose={closeLoginModal} />
-      
     </>
 
   )
