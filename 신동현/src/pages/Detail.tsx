@@ -24,6 +24,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 50px;
+
+  @media (max-width: 700px) {
+    width: 90%;
+  }  
 `;
 
 const ContentContainer = styled.div`
@@ -142,6 +146,10 @@ const Textarea = styled.textarea`
   border: none;
   outline: none;
   resize: none;
+
+  @media (max-width: 700px) {
+    width: 90%;
+  }  
 `;
 
 const Footer = styled.div`
@@ -158,6 +166,10 @@ const FooterContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   margin: 50px 0;
+
+  @media (max-width: 700px) {
+    width: 90%;
+  }  
 `;
 
 const WriterProfileImageContainer = styled.div`

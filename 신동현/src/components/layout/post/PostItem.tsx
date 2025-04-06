@@ -16,6 +16,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  @media (max-width: 700px) {
+    width: 90%;
+  }  
 `;
 
 const ContentContainer = styled.div`
@@ -44,12 +48,6 @@ const PostContentContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const PostWriterInfoContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
 `;
 
 const Title = styled.p`
