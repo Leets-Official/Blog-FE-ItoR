@@ -14,6 +14,7 @@ const StyledInput = styled.input`
   padding: 0 16px;
   background-color: ${({ disabled }) => disabled ? "#E6E6E6" : "#FFFFFF"};
   color: ${({ disabled }) => disabled ? "#909090" : "#000000"};
+  text-align: left;
   ::placeholder {
     color: #C8C8C8;
     font-size: 14px;

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Post } from "../../../styles/Post";
 import { Link } from "react-router-dom";
+import WriterInfoContainer from "../common/WrtierInfoContainer";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -45,7 +46,7 @@ const PostContentContainer = styled.div`
   flex-direction: column;
 `;
 
-const PostWriteInfoContainer = styled.div`
+const PostWriterInfoContainer = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -68,31 +69,6 @@ const PostContent = styled.p`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-`;
-
-const UserInfoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`;
-
-const UserName = styled.p`
-  font-size: 12px;
-  font-weight: 400;
-  margin: 0;
-  color: #000000;
-`;
-
-const UserProfileImageContainer = styled.div`
-  width: 16px;
-  height: 16px;
-`;
-
-const WriteInfoContent = styled.p`
-  font-size: 12px;
-  font-weight: 300;
-  margin: 0;
-  color: #909090;
 `;
 
 const Hr = styled.hr`
@@ -122,15 +98,7 @@ const PostItem = ({ post }: PostItemProps) => {
               {post.postImage}
             </ImageContainer>
           </PostInfoContainer>
-          <PostWriteInfoContainer>
-            <UserInfoContainer>
-              <UserProfileImageContainer>
-                {post.userProfileImage}
-              </UserProfileImageContainer>
-              <UserName>{post.userName}</UserName>
-            </UserInfoContainer>
-            <WriteInfoContent> · {post.writeDate.toLocaleDateString()} · 댓글({post.commentCount})</WriteInfoContent>
-          </PostWriteInfoContainer>
+          <WriterInfoContainer userProfileImage={post.userProfileImage} userName={post.userName} writeDate={post.writeDate} commentCount={post.commentCount} />
         </ContentContainer>
         <Hr />
       </Container>
