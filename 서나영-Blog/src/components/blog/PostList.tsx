@@ -10,6 +10,8 @@ const PostListContainer = styled.div`
   width: 100%;
   margin: 0 auto;
   margin-top: 104px;
+  overflow-x: hidden;
+  box-sizing: border-box;
 `;
 
 interface PostListProps {

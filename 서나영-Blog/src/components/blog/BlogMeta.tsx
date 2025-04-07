@@ -27,7 +27,7 @@ const StyledNickName = styled.span`
   line-height: 160%;
 `;
 
-const StyledCreateAt = styled.span`
+const StyledCreatedAt = styled.span`
   height: 19px;
   color: #909090;
   font-family: 'Noto Sans L';
@@ -49,21 +49,21 @@ interface PostMetaProps {
   post: BlogPost;
 }
 
-const PostMeta: React.FC<PostMetaProps> = ({ post }) => {
+const BlogMeta: React.FC<PostMetaProps> = ({ post }) => {
   return (
     <MetaContainer>
-      {post.profileImageUrl ? (
-        <ProfileImage src={post.profileImageUrl} alt='profile' />
+      {post.profileUrl ? (
+        <ProfileImage src={post.profileUrl} alt='profile' />
       ) : (
         <Profile width={20} height={20} />
       )}
       <StyledNickName>{post.nickName}</StyledNickName>
       <Dot />
-      <StyledCreateAt>{formatPostDate(post.createAt)}</StyledCreateAt>
+      <StyledCreatedAt>{formatPostDate(post.createdAt)}</StyledCreatedAt>
       <Dot />
-      <StyledCommentCount>댓글 {post.commentCount}</StyledCommentCount>
+      <StyledCommentCount>댓글 {post.comments.length}</StyledCommentCount>
     </MetaContainer>
   );
 };
 
-export default PostMeta;
+export default BlogMeta;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import PostMeta from './PostMeta';
+import BlogMeta from '@/components/blog/BlogMeta';
 import { BlogPost } from '@/types/blogPost';
 import Image from '@/components/ui/Image';
 
@@ -21,7 +21,6 @@ const PostItemContainer = styled.div`
 
 const PostTextWrapper = styled.div`
   display: flex;
-  flex: 1;
   flex-direction: column;
   height: 100%;
   padding: 8px 0px;
@@ -58,6 +57,7 @@ const ImageWrapper = styled.div`
   align-items: center;
   padding: 12px 16px;
   flex-shrink: 0;
+  margin-right: 8px;
 `;
 
 interface PostItemProps {
@@ -65,16 +65,20 @@ interface PostItemProps {
 }
 
 const PostItem: React.FC<PostItemProps> = ({ post }) => {
+  const firstTextContent = post.contents.find((item) => item.contentType === 'TEXT')?.content || '';
+  const firstImageContent =
+    post.contents.find((item) => item.contentType === 'IMAGE')?.content || '';
+
   return (
     <PostItemContainer>
       <PostTextWrapper>
         <PostTitle>{post.title}</PostTitle>
-        <PostContent>{post.content}</PostContent>
-        <PostMeta post={post} />
+        <PostContent>{firstTextContent}</PostContent>
+        <BlogMeta post={post} />
       </PostTextWrapper>
-      {post.imageUrl && (
+      {firstImageContent && (
         <ImageWrapper>
-          <Image src={post.imageUrl} alt={post.title} thumbnail borderRadius='2px' />
+          <Image src={firstImageContent} alt={post.title} thumbnail borderRadius='2px' />
         </ImageWrapper>
       )}
     </PostItemContainer>
