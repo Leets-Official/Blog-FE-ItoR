@@ -14,16 +14,35 @@ export const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.COLORS.black};
   padding: 40px;
   border-radius: 8px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+    min-height: 600px;
+    gap: 60px;
+    padding: 80px 24px 40px 24px;
+  }
 `;
 
 export const LeftSection = styled.div`
   ${flexColumnCenter}
   gap:28px;
+
+  @media (max-width: 768px) {
+    svg {
+      width: 250px;
+      height: 120px;
+    }
+  }
 `;
 
 export const RightSection = styled.div`
   ${flexColumnCenter}
   gap:10px;
+  max-width: 320px;
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 export const CloseButton = styled.button`
@@ -57,7 +76,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
         <RightSection>
           <Input placeholder="이메일" />
           <Input placeholder="비밀번호" />
-          <Button variant="primary" size="lg" rounded="md">
+          <Button variant="primary" size="lg" rounded="md" fullWidth>
             이메일로 로그인
           </Button>
           <FlexRow>
@@ -67,7 +86,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             </Text>
             <LineSvg />
           </FlexRow>
-          <Button variant="kakao" size="lg" rounded="md">
+          <Button variant="kakao" size="lg" rounded="md" fullWidth>
             <KakaoSvg /> 카카오로 로그인
           </Button>
           <Text color="gray56" fontSize="xs" fontWeight="regular">

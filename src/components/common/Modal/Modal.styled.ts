@@ -5,7 +5,7 @@ export const StyledModal = (maxWidth: string) => ({
   },
   content: {
     maxWidth,
-    width: '90%',
+    width: '100%',
     margin: 'auto',
     inset: '40% auto auto 50%',
     transform: 'translate(-50%, -50%)',
