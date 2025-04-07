@@ -7,4 +7,19 @@ import SideBar from '@/components/common/SideBar/SideBar';
 import Toast from '@/components/common/Toast/Toast';
 import Pagination from '@/components/pagination/Pagination';
 import LoginModal from '@/components/common/Modal/LoginModal';
-export { Button, Header, Image, Input, BaseModal, SideBar, Toast, Pagination, LoginModal };
+import SignupHeader from '@/components/signup/SignupHeader';
+import SignupSelection from '@/components/signup/SignupSelection';
+
+export {
+  Button,
+  Header,
+  Image,
+  Input,
+  BaseModal,
+  SideBar,
+  Toast,
+  Pagination,
+  LoginModal,
+  SignupHeader,
+  SignupSelection,
+};

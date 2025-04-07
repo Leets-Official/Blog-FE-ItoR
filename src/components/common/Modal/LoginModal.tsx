@@ -6,12 +6,13 @@ import { Text } from '@/components/home/PostItem';
 import Input from '@/components/common/Input/Input';
 import Button from '@/components/common/Button/Button';
 import { FlexRow } from '@/components/common/SideBar/SideBar.styled';
+import { useNavigate } from 'react-router-dom';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ bgColor?: string }>`
   ${flexCenter}
   gap: 80px;
   height: 490px;
-  background-color: ${({ theme }) => theme.COLORS.black};
+  background-color: ${({ theme, bgColor }) => bgColor ?? theme.COLORS.black};
   padding: 40px;
   border-radius: 8px;
 
@@ -55,12 +56,25 @@ export const CloseButton = styled.button`
   padding: 4px;
 `;
 
+export const SignupText = styled(Text)`
+  font-size: ${({ theme }) => theme.FONT_SIZE.xs};
+  font-weight: ${({ theme }) => theme.FONT_WEIGHT.light};
+  color: ${({ theme }) => theme.COLORS.gray[56]};
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 interface LoginModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
+  const nav = useNavigate();
+
   return (
     <BaseModal isOpen={isOpen} onRequestClose={onClose} maxWidth="880px">
       <Wrapper>
@@ -80,18 +94,16 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
             이메일로 로그인
           </Button>
           <FlexRow>
-            <LineSvg />
+            <LineSvg stroke="#333" />
             <Text color="gray56" fontSize="xs" fontWeight="regular">
               SNS
             </Text>
-            <LineSvg />
+            <LineSvg stroke="#333" />
           </FlexRow>
           <Button variant="kakao" size="lg" rounded="md" fullWidth>
             <KakaoSvg /> 카카오로 로그인
           </Button>
-          <Text color="gray56" fontSize="xs" fontWeight="regular">
-            또는 회원가입
-          </Text>
+          <SignupText onClick={() => nav('/signup')}>또는 회원가입</SignupText>
         </RightSection>
       </Wrapper>
     </BaseModal>
