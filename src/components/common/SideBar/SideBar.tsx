@@ -1,4 +1,4 @@
-import { Button } from '@/components/index';
+import { Button, LoginModal } from '@/components/index';
 import { DefaultProfileSvg } from '@/assets';
 import {
   Flex,
@@ -17,6 +17,7 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
   const token = localStorage.getItem('accessToken');
   const [isClosing, setIsClosing] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleClose = () => {
     setIsClosing(true);
@@ -60,7 +61,12 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
               </Button>
             </FlexRow>
           ) : (
-            <Button variant="primary-outline" size="md" rounded="full">
+            <Button
+              variant="primary-outline"
+              size="md"
+              rounded="full"
+              onClick={() => setIsLoginModalOpen(true)}
+            >
               깃로그 시작하기
             </Button>
           )}
@@ -78,6 +84,8 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
           </FlexRow>
         )}
       </SidebarWrapper>
+
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </>
   );
 };

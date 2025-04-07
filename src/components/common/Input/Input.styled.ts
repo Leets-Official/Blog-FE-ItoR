@@ -4,7 +4,9 @@ import styled from 'styled-components';
 export const InputWrapper = styled.div`
   ${flexColumn}
   gap:16px;
+  width: 100%;
 `;
+
 export const Label = styled.div`
   font-size: ${({ theme }) => theme.FONT_SIZE.sm};
   color: ${({ theme }) => theme.COLORS.gray[56]};
@@ -16,7 +18,7 @@ export const StyledInput = styled.input<{
   borderColor?: string;
 }>`
   ${flexAlignCenter}
-  width:70%;
+  width:100%;
   border-radius: 4px;
   padding: 12px 16px;
   font-size: ${({ theme }) => theme.FONT_SIZE.sm};
