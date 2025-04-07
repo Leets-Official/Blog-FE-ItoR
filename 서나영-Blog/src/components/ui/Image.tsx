@@ -4,11 +4,11 @@ import styled from 'styled-components';
 interface ImageStyleProps {
   $borderRadius?: string;
   $thumbnail?: boolean;
-  aspectRatio?: string;
-  objectFit?: 'cover' | 'contain' | 'fill';
+  $aspectRatio?: string;
+  $objectFit?: 'cover' | 'contain' | 'fill';
   width?: string;
   height?: string;
-  maxWidth?: string;
+  $maxWidth?: string;
 }
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -25,18 +25,21 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 
 const StyledImage = styled.img<ImageStyleProps>`
   width: 100%;
+  max-width: 100%;
   height: 100%;
+  box-sizing: border-box;
   border-radius: ${({ $borderRadius }) => $borderRadius ?? '2px'};
-  aspect-ratio: ${({ aspectRatio, $thumbnail }) => ($thumbnail ? '1/1' : aspectRatio || 'auto')};
-  object-fit: ${({ objectFit }) => objectFit || 'cover'};
+  aspect-ratio: ${({ $aspectRatio, $thumbnail }) => ($thumbnail ? '1/1' : $aspectRatio || 'auto')};
+  object-fit: ${({ $objectFit }) => $objectFit || 'cover'};
 `;
 
 const ImageFrame = styled.div<ImageStyleProps>`
   position: relative;
   width: ${({ width, $thumbnail }) => ($thumbnail ? '124px' : width || '100%')};
   height: ${({ height, $thumbnail }) => ($thumbnail ? '116px' : height || 'auto')};
-  max-width: ${({ maxWidth }) => maxWidth || 'none'};
+  max-width: ${({ $maxWidth }) => $maxWidth || '100%'};
   border-radius: ${({ $borderRadius }) => $borderRadius || '0'};
+  box-sizing: border-box;
   background-color: #fff;
   overflow: hidden;
 `;
@@ -54,11 +57,11 @@ const Image = ({
   const styleProps = {
     $thumbnail: thumbnail,
     $borderRadius: borderRadius,
-    aspectRatio,
-    objectFit,
+    $aspectRatio: aspectRatio,
+    $objectFit: objectFit,
     width,
     height,
-    maxWidth,
+    $maxWidth: maxWidth,
   };
   return (
     <ImageFrame {...styleProps}>
