@@ -1,10 +1,23 @@
 export interface BlogPost {
   postId: string;
   title: string;
-  content: string;
-  commentCount: number;
+  contents: BlogPostContent[];
+  comments: BlogComment[];
   nickName: string;
-  createAt: string;
-  profileImageUrl: string;
-  imageUrl: string;
+  createdAt: string;
+  profileUrl: string;
+  isOwner: boolean;
+}
+
+export interface BlogPostContent {
+  contentOrder: number;
+  content: string;
+  contentType: 'TEXT' | 'IMAGE';
+}
+
+export interface BlogComment {
+  commentId: number;
+  content: string;
+  nickName: string;
+  isOwner: boolean;
 }
