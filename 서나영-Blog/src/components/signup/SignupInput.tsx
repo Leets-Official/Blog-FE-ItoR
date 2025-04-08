@@ -5,11 +5,12 @@ interface SignupInputProps {
   name: string;
   label: string;
   type: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   error?: string;
   register: any;
   disabled?: boolean;
+  isMyPage?: boolean;
 }
 
 const InputContainer = styled.div`
@@ -47,7 +48,14 @@ const SignupInput = ({
   error,
   register,
   disabled,
+  isMyPage,
 }: SignupInputProps) => {
+  let backgroundColor = '#FFF';
+
+  if (isMyPage && (name === 'email' || name === 'name') && disabled) {
+    backgroundColor = '#E6E6E6';
+  }
+
   return (
     <InputContainer>
       <Label htmlFor={name}>{label}</Label>
@@ -59,7 +67,9 @@ const SignupInput = ({
         placeholder={placeholder}
         width='100%'
         disabled={disabled}
-        style={{ background: disabled ? '#E6E6E6' : '#FFF' }}
+        style={{
+          background: backgroundColor,
+        }}
       />
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </InputContainer>
