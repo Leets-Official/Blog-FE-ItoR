@@ -35,18 +35,24 @@ const ToastWrapper = styled.div<{ type: 'positive' | 'negative'; $isVisible: boo
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
+  z-index: 2000;
+
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: 8px;
+
   padding: 0px 12px 0px 8px;
-  gap: 4px;
   height: 40px;
   max-width: 80%;
+
   border-radius: 25px;
   border: 1px solid ${({ type }) => (type === 'positive' ? '#15DC5E' : '#FF3F3F')};
   background: #fff;
   color: ${({ type }) => (type === 'positive' ? '#15DC5E' : '#FF3F3F')};
   font-weight: bold;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
   opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
   animation: ${({ $isVisible }) => ($isVisible ? fadeIn : fadeOut)} 0.3s ease-in-out forwards;
 `;
@@ -60,6 +66,7 @@ const IconWrapper = styled.div`
 `;
 
 const ToastMessage = styled.p`
+  margin: 0;
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.07px;

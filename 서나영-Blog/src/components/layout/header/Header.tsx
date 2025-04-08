@@ -3,14 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import { GITLOG, Reorder } from '@/assets';
 import ChatandMore from '@/components/layout/header/ChatandMore';
 import DelandCreate from '@/components/layout/header/DelandCreate';
+import CancelandSave from '@/components/layout/header/CancelandSave';
 import Button from '@/components/ui/Button';
 import Sidebar from '@/components/layout/sidebar/Sidebar';
 import styled from 'styled-components';
 
-type HeaderType = 'DelandCreate' | 'ChatandMore' | 'CreateLog' | 'None';
+type HeaderType = 'DelandCreate' | 'ChatandMore' | 'CreateLog' | 'Edit' | 'CancelandSave' | 'None';
 
 interface HeaderProps {
   type: HeaderType;
+  onEditClick?: () => void;
+  navigateEditor?: string;
+  title?: string;
+  content?: string;
 }
 
 const HeaderContainer = styled.div`
@@ -40,18 +45,37 @@ const HeaderRightSection = styled.div`
   padding-right: 16px;
 `;
 
-const getRightComponent = (type: HeaderType) => {
+const getRightComponent = (
+  type: HeaderType,
+  onEditClick?: () => void,
+  navigateEditor?: ReturnType<typeof useNavigate>,
+  title?: string,
+  content?: string,
+) => {
   switch (type) {
     case 'CreateLog':
       return (
-        <Button type='Create' iconFill='#909090' style={{ color: '#909090', border: 'none' }}>
+        <Button
+          type='Create'
+          iconFill='#909090'
+          onClick={() => navigateEditor?.('/blog/editor')}
+          style={{ color: '#909090', border: 'none', backgroundColor: 'transparent' }}
+        >
           깃로그 쓰기
         </Button>
       );
     case 'DelandCreate':
-      return <DelandCreate />;
+      return <DelandCreate title={title ?? ''} content={content ?? ''} />;
     case 'ChatandMore':
       return <ChatandMore />;
+    case 'CancelandSave':
+      return <CancelandSave />;
+    case 'Edit':
+      return (
+        <Button type='None' style={{ color: '#000', border: 'none' }} onClick={onEditClick}>
+          수정하기
+        </Button>
+      );
     case 'None':
       return null;
     default:
@@ -59,7 +83,7 @@ const getRightComponent = (type: HeaderType) => {
   }
 };
 
-const Header = ({ type }: HeaderProps) => {
+const Header = ({ type, onEditClick, title, content }: HeaderProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -81,11 +105,13 @@ const Header = ({ type }: HeaderProps) => {
             onClick={() => navigate('/')}
           />
         </HeaderLeftSection>
-        <HeaderRightSection>{getRightComponent(type)}</HeaderRightSection>
+        <HeaderRightSection>
+          {getRightComponent(type, onEditClick, navigate, title, content)}
+        </HeaderRightSection>
       </HeaderContainer>
 
       {/* Sidebar 컴포넌트 */}
-      <Sidebar isOpen={isSidebarOpen} isLogin={false} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar isOpen={isSidebarOpen} isLogin={true} onClose={() => setIsSidebarOpen(false)} />
     </>
   );
 };
