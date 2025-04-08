@@ -14,7 +14,7 @@ const Signup: React.FC = () => {
       {signupType === null ? (
         <SignupSelection onSelect={(type) => setSignupType(type)} />
       ) : (
-        <SignupField />
+        <SignupField signupType={signupType} />
       )}
     </Flex>
   );

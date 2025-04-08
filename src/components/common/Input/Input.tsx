@@ -1,5 +1,8 @@
 import {
   ErrorText,
+  IconWrapper,
+  InputBox,
+  InputRow,
   InputWrapper,
   Label,
   StyledInput,
@@ -19,7 +22,9 @@ interface InputProps {
   disabled?: boolean;
   textColor?: string;
   borderColor?: string;
+  icon?: React.ReactNode;
 }
+
 const Input: React.FC<InputProps> = ({
   label,
   as = 'input',
@@ -33,22 +38,27 @@ const Input: React.FC<InputProps> = ({
   disabled = false,
   textColor,
   borderColor,
+  icon,
 }) => {
   return (
     <InputWrapper>
       {label && <Label>{label}</Label>}
-      <StyledInput
-        as={as}
-        type={as === 'input' ? type : undefined}
-        rows={as === 'textarea' ? rows : undefined}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        readOnly={readOnly}
-        disabled={disabled}
-        textColor={textColor}
-        borderColor={borderColor}
-      />
+      <InputBox>
+        {icon && <IconWrapper>{icon}</IconWrapper>}
+        <StyledInput
+          as={as}
+          type={as === 'input' ? type : undefined}
+          rows={as === 'textarea' ? rows : undefined}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          readOnly={readOnly}
+          disabled={disabled}
+          textColor={textColor}
+          borderColor={borderColor}
+          hasIcon={!!icon}
+        />
+      </InputBox>
       {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
     </InputWrapper>
   );

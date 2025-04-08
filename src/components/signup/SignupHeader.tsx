@@ -19,7 +19,7 @@ export const Wrapper = styled.div`
   gap:12px;
   margin: 0 auto;
   width: 890px;
-  padding: 20px 50px;
+  padding: 20px 100px;
 `;
 
 const SignupHeader: React.FC<SignupHeaderProps> = ({ title, hasSubTitle = false }) => {
