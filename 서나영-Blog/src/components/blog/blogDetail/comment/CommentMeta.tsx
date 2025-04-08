@@ -52,16 +52,21 @@ interface CommentMetaProps {
 }
 
 const CommentMeta: React.FC<CommentMetaProps> = ({ post, isInput = false }) => {
+  const displayName = isInput ? 'Guest' : post.nickName;
+
   return (
     <CommentMetaContainer>
       <LeftSection>
-        {post.profileUrl ? (
+        {isInput ? (
+          <Profile width={20} height={20} />
+        ) : post.profileUrl && post.profileUrl.trim() !== '' ? (
           <ProfileImage src={post.profileUrl} alt='profile' />
         ) : (
           <Profile width={20} height={20} />
         )}
+
         <TextWrapper>
-          <StyledNickName>{post.nickName}</StyledNickName>
+          <StyledNickName>{displayName}</StyledNickName>
           {!isInput && <StyledCreatedAt>{formatPostDate(post.createdAt)}</StyledCreatedAt>}
         </TextWrapper>
       </LeftSection>
