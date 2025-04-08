@@ -7,11 +7,11 @@ import styled from 'styled-components';
 
 const ContentWrapper = styled.div`
   ${flexColumnCenter}
-  gap:8px;
+  gap:40px;
   width: 100%;
-  max-width: 100vw;
+  max-width: 720px;
   padding: 0 20px;
-  margin-top: 72px;
+  margin: 72px auto 0 auto;
 `;
 
 const Container = styled.div`
