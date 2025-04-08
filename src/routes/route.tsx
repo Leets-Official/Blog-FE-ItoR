@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { HomePage, MyPage, Post, Signup } from '@/pages';
+import BlogDetail from '@/pages/blogDetail';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/post/write',
     element: <Post />,
+  },
+  {
+    path: '/post/:postId',
+    element: <BlogDetail />,
   },
 ]);
 
