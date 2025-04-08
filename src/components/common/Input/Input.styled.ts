@@ -45,8 +45,7 @@ export const StyledInput = styled.input<{
   color: ${({ textColor, readOnly, theme }) =>
     textColor ?? (readOnly ? theme.COLORS.gray[56] : theme.COLORS.black)};
 
-  border: ${({ theme, readOnly, showBorder }) =>
-    !showBorder || readOnly ? 'none' : `1px solid ${theme.COLORS.gray[78]}`};
+  border: ${({ theme, readOnly }) => (readOnly ? 'none' : `1px solid ${theme.COLORS.gray[78]}`)};
 
   &:focus {
     outline: none;
