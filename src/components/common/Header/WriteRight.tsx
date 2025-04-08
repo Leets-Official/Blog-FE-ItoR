@@ -18,7 +18,8 @@ const WriteRight: React.FC = () => {
   const handleClick = () => {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-      openLoginModal();
+      // openLoginModal();
+      nav('/signup');
     } else {
       nav('/post/write');
     }

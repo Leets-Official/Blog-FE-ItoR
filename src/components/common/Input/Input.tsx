@@ -9,9 +9,7 @@ import {
 
 interface InputProps {
   label?: string;
-  as?: 'input' | 'textarea';
   placeholder?: string;
-  rows?: number; // textarea 인 경우에만 사용 ( rows 값으로 높이 제한 )
   type?: string;
   errorMessage?: string;
   value?: string | number;
@@ -22,14 +20,11 @@ interface InputProps {
   textColor?: string;
   borderColor?: string;
   icon?: React.ReactNode;
-  showBorder?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
   label,
-  as = 'input',
   placeholder,
-  rows,
   type = 'text',
   errorMessage,
   value,
@@ -39,7 +34,6 @@ const Input: React.FC<InputProps> = ({
   textColor,
   borderColor,
   icon,
-  showBorder = true,
 }) => {
   return (
     <InputWrapper>
@@ -47,9 +41,7 @@ const Input: React.FC<InputProps> = ({
       <InputBox>
         {icon && <IconWrapper>{icon}</IconWrapper>}
         <StyledInput
-          as={as}
-          type={as === 'input' ? type : undefined}
-          rows={as === 'textarea' ? rows : undefined}
+          type={type}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -58,7 +50,6 @@ const Input: React.FC<InputProps> = ({
           textColor={textColor}
           borderColor={borderColor}
           hasIcon={!!icon}
-          showBorder={showBorder}
         />
       </InputBox>
       {errorMessage && <ErrorText>{errorMessage}</ErrorText>}

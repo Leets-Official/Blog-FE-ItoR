@@ -9,7 +9,7 @@ const ContentWrapper = styled.div`
   ${flexColumnCenter}
   gap:8px;
   width: 100%;
-  max-width: 720px;
+  max-width: 100vw;
   padding: 0 20px;
   margin-top: 72px;
 `;

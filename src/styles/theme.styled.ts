@@ -38,6 +38,10 @@ const FONT_WEIGHT = {
   bold: 700,
 };
 
+export type FONT_SIZE_TYPE = keyof typeof FONT_SIZE;
+export type FONT_WEIGHT_TYPE = keyof typeof FONT_WEIGHT;
+export type COLORS_TYPE = keyof typeof COLORS;
+
 const theme = {
   COLORS,
   FONT_SIZE,

@@ -1,9 +1,17 @@
-import { Input } from '@/components/index';
+import Textarea from '../common/Textarea/Textarea';
 
 const TitleSection: React.FC = () => {
   return (
     <div>
-      <Input as="textarea" rows={5} placeholder="제목" />
+      <Textarea
+        placeholder="제목"
+        inputSize="xl"
+        inputWeight="medium"
+        placeholderColor="gray56"
+        placeholderSize="md"
+        placeholderWeight="medium"
+        hasBorder={false}
+      />
     </div>
   );
 };
