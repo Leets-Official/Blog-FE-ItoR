@@ -74,7 +74,7 @@ const StyledText = styled.span`
 const SignupOption = () => {
   const navigate = useNavigate();
   const handleEmailSignup = () => {
-    navigate('/signup/email');
+    navigate('/signup');
   };
 
   const handleKakaoSignup = () => {

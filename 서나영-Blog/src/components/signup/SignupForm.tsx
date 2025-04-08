@@ -16,6 +16,8 @@ const FormContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   padding: 12px 16px;
+  overflow-x: hidden;
+  box-sizing: border-box;
 `;
 
 const ButtonWrapper = styled.div`

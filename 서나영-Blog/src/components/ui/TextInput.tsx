@@ -1,4 +1,5 @@
 import React, { useState, forwardRef, InputHTMLAttributes } from 'react';
+import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 type InputState = 'default' | 'input' | 'click' | 'disabled';
@@ -7,6 +8,7 @@ interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   width?: string;
   maxWidth?: string;
   disabled?: boolean;
+  style?: CSSProperties;
   name: string;
 }
 
@@ -59,7 +61,7 @@ const StyledInput = styled.input`
 `;
 
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ width, maxWidth, disabled, name, type = 'text', onChange, onBlur, ...props }, ref) => {
+  ({ width, maxWidth, disabled, name, type = 'text', style, onChange, onBlur, ...props }, ref) => {
     const [state, setState] = useState<InputState>('default');
 
     const handleFocus = () => setState('click');
@@ -84,6 +86,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           onFocus={handleFocus}
           onBlur={handleBlur}
           onChange={onChange}
+          style={style}
         />
       </StyledInputContainer>
     );

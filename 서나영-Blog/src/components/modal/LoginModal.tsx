@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, LoginSchema } from '@/schema/auth';
 import styled, { css } from 'styled-components';
@@ -138,6 +139,7 @@ const SignUpButton = styled.div`
 `;
 
 const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -154,6 +156,10 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
+  };
+
+  const handleSignUpClick = () => {
+    navigate('/signup/select');
   };
 
   return (
@@ -238,7 +244,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
           >
             <Kakao width={18} height={18} /> 카카오로 로그인
           </Button>
-          <SignUpButton>또는 회원가입</SignUpButton>
+          <SignUpButton onClick={handleSignUpClick}>또는 회원가입</SignUpButton>
         </LoginRightSection>
       </LoginModalContainer>
     </LoginModalOverlay>

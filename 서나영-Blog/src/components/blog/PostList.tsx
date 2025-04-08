@@ -9,7 +9,7 @@ const PostListContainer = styled.div`
   max-width: 688px;
   width: 100%;
   margin: 0 auto;
-  margin-top: 104px;
+  padding-top: 32px;
   overflow-x: hidden;
   box-sizing: border-box;
 `;

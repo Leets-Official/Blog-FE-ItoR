@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Profile } from '@/assets';
 import Button from '@/components/ui/Button';
 import styled from 'styled-components';
@@ -59,6 +60,20 @@ const BottomButtonContainer = styled.div`
 `;
 
 const LoginSide = () => {
+  const navigate = useNavigate();
+
+  const handleMyPageClick = () => {
+    navigate('/mypage');
+  };
+
+  const handleEditorClick = () => {
+    navigate('/blog/editor');
+  };
+
+  const handleHomeClick = () => {
+    navigate('/');
+  };
+
   return (
     <SideContainer>
       <ContentContainer>
@@ -80,6 +95,7 @@ const LoginSide = () => {
               border: '1px solid #00A1FF',
               padding: '8px 12px',
             }}
+            onClick={handleHomeClick}
           >
             나의 깃로그
           </Button>
@@ -93,6 +109,7 @@ const LoginSide = () => {
               border: '1px solid #00A1FF',
               padding: '8px 12px',
             }}
+            onClick={handleEditorClick}
           >
             깃로그 쓰기
           </Button>
@@ -109,6 +126,7 @@ const LoginSide = () => {
             border: '1px solid #909090',
             padding: '8px 12px',
           }}
+          onClick={handleMyPageClick}
         >
           설정
         </Button>

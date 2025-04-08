@@ -5,6 +5,10 @@ import Pagination from '@/components/pagination/Pagination';
 import PostList from '@/components/blog/PostList';
 import { mockPosts } from '@/mocks/mockPosts';
 
+const HomeContainer = styled.div`
+  padding-top: 32px;
+`;
+
 const pageSize = 5;
 
 const Home = () => {
@@ -16,7 +20,7 @@ const Home = () => {
   const currentPosts = mockPosts.slice(startIdx, startIdx + pageSize);
 
   return (
-    <>
+    <HomeContainer>
       <Header type='CreateLog' />
       <PostList posts={currentPosts} />
       <Pagination
@@ -24,7 +28,7 @@ const Home = () => {
         totalPages={totalPages}
         onPageChange={(page) => setCurrentPage(page)}
       />
-    </>
+    </HomeContainer>
   );
 };
 

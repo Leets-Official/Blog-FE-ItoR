@@ -17,6 +17,7 @@ interface ButtonProps {
 }
 
 const StyledButton = styled.button<ButtonProps>`
+  font-family: 'Noto Sans R';
   display: flex;
   align-items: center;
   justify-content: center;
