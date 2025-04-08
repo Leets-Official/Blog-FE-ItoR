@@ -2,7 +2,6 @@ import {
   ErrorText,
   IconWrapper,
   InputBox,
-  InputRow,
   InputWrapper,
   Label,
   StyledInput,
@@ -23,6 +22,7 @@ interface InputProps {
   textColor?: string;
   borderColor?: string;
   icon?: React.ReactNode;
+  showBorder?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -39,6 +39,7 @@ const Input: React.FC<InputProps> = ({
   textColor,
   borderColor,
   icon,
+  showBorder = true,
 }) => {
   return (
     <InputWrapper>
@@ -57,6 +58,7 @@ const Input: React.FC<InputProps> = ({
           textColor={textColor}
           borderColor={borderColor}
           hasIcon={!!icon}
+          showBorder={showBorder}
         />
       </InputBox>
       {errorMessage && <ErrorText>{errorMessage}</ErrorText>}

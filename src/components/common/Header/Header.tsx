@@ -11,7 +11,6 @@ type HeaderVariant = 'default' | 'write' | 'detail' | 'action';
 interface HeaderProps {
   variant?: HeaderVariant;
   onClick?: (action: string) => void;
-
   // action 타입에만 필요한 props
   negativeLabel?: string;
   confirmLabel?: string;
@@ -27,20 +26,27 @@ const renderRightSection = (
   onClickNegative?: () => void,
   onClickConfirm?: () => void,
 ) => {
+  if (variant === 'action') {
+    const isDeleteConfirm = confirmLabel === '게시하기' || negativeLabel === '삭제하기';
+
+    const resolvedConfirmLabel = confirmLabel ?? (isDeleteConfirm ? '게시하기' : '저장하기');
+    const resolvedNegativeLabel = negativeLabel ?? (isDeleteConfirm ? '삭제하기' : '취소하기');
+
+    return (
+      <ActionRight
+        confirmLabel={resolvedConfirmLabel}
+        negativeLabel={resolvedNegativeLabel}
+        onClickNegative={onClickNegative ?? (() => {})}
+        onClickConfirm={onClickConfirm ?? (() => {})}
+      />
+    );
+  }
+
   switch (variant) {
     case 'write':
-      return <WriteRight onClick={onClick} />;
+      return <WriteRight />;
     case 'detail':
       return <DetailRight onClick={onClick} />;
-    case 'action':
-      return (
-        <ActionRight
-          negativeLabel={negativeLabel ?? '취소하기'}
-          confirmLabel={confirmLabel ?? '저장하기'}
-          onClickNegative={onClickNegative ?? (() => {})}
-          onClickConfirm={onClickConfirm ?? (() => {})}
-        />
-      );
     default:
       return null;
   }

@@ -11,6 +11,7 @@ import DefaultProfileSvg from '@/assets/icon/ic_default_profile.svg?react';
 import LineSvg from '@/assets/icon/ic_line.svg?react';
 import KakaoSvg from '@/assets/icon/ic_kakao_logo.svg?react';
 import CloseSvg from '@/assets/icon/ic_close_button.svg?react';
+import PhotoSvg from '@/assets/icon/ic_profile_upload.svg?react';
 
 export {
   HamburgerSvg,
@@ -26,4 +27,5 @@ export {
   LineSvg,
   KakaoSvg,
   CloseSvg,
+  PhotoSvg,
 };
