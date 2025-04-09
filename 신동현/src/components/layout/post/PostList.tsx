@@ -1,6 +1,6 @@
 import Pagination from "@/components/pagination/Pagination";
 import { useState } from "react";
-import { Post } from "../../../styles/Post";
+import { Post } from "../../../assets/type/Post";
 import PostItem from "./PostItem";
 
 interface PostsProps {
