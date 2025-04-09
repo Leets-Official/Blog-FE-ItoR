@@ -26,7 +26,7 @@ const StyledButton = styled.button<{
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   font-size: ${(props) => props.fontSize || "15px"};
-  font-weight: ${(props) => props.fontWeight || "401"};
+  font-weight: ${(props) => props.fontWeight || "400"};
   color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
   display: flex;

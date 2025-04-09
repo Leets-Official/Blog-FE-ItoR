@@ -12,7 +12,7 @@ const SignButton = styled(Button) <SignButton>`
   width: ${(props) => props.width || "300px"};
   height: ${(props) => props.height || "45px"};
   font-size: "15px";
-  font-weight:${(props) => props.type == "email" ? "401" : "600"};
+  font-weight:${(props) => props.type == "email" ? "400" : "600"};
   color: ${(props) => props.type == "email" ? "#ffffff" : "#000000"};
   background-color: ${(props) => props.type == "email" ? "#00A1FF" : "#FEE500"};
   border: none;

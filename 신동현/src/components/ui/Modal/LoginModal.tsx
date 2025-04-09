@@ -1,8 +1,8 @@
 import { Clear, GITLOG, Kakao } from "@/assets";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
-import Input from "./Input";
-import SignButton from "./Button/SignButton";
+import Input from "../Input";
+import SignButton from "../Button/SignButton";
 
 const Overlay = styled.div`
   position: fixed;
@@ -69,6 +69,19 @@ const ImageSubContent = styled.p`
   }
 `;
 
+const SubmitContainer = styled.div`
+  width: 391px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  @media (max-width: 700px) {
+    width: 70%;
+  }
+`;
+
 const InputContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -77,17 +90,23 @@ const InputContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+`;
 
-  @media (max-width: 700px) {
-    justify-content: start;
-  }
+const ButtonContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
 `;
 
 const InputContent = styled.p`
   width: 300px;
   height: 8px;
   font-size: 12px;
-  font-weight: 401;
   color: #909090;
   display: flex;
   justify-content: center;
@@ -102,6 +121,7 @@ const CloseButton = styled.div`
 `;
 
 const SnsContent = styled(InputContent)`
+  width: 100%;
   &::before,
   &::after {
     content: "";
@@ -132,17 +152,20 @@ const Login = ({ open, onClose }: LoginProps) => {
             You can make anything by writing
           </ImageSubContent>
         </ImageContainer>
-        <InputContainer>
-          <Input width="265px" height="46px" type="text" placeholder="이메일" value="" onChange={() => { }} />
-          <Input width="265px" height="46px" type="password" placeholder="비밀번호" value="" onChange={() => { }} />
-          <SignButton disabled={false} onClick={() => { }} type="email">이메일로 로그인</SignButton>
-          <SnsContent>SNS</SnsContent>
-          <SignButton disabled={false} onClick={() => { }} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
-          <InputContent>
-            <Link to="/signUp" style={{ textDecoration: "none", color: "#909090"}}>또는 회원가입</Link>
-          </InputContent>
-
-        </InputContainer>
+        <SubmitContainer>
+          <InputContainer>
+            <Input width="100%" height="46px" type="text" placeholder="이메일" value="" onChange={() => { }} />
+            <Input width="100%" height="46px" type="password" placeholder="비밀번호" value="" onChange={() => { }} />
+          </InputContainer>
+          <ButtonContainer>
+            <SignButton width="100%" disabled={false} onClick={() => { }} type="email">이메일로 로그인</SignButton>
+            <SnsContent>SNS</SnsContent>
+            <SignButton width="100%" disabled={false} onClick={() => { }} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
+            <InputContent>
+              <Link to="/signUp" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
+            </InputContent>
+          </ButtonContainer>
+        </SubmitContainer>
       </Container>
     </Overlay>
   );

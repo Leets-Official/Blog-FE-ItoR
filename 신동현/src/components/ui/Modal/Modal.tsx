@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import Button from "./Button/Button";
+import Button from "../Button/Button";
 
 interface ModalProps {
   children?: React.ReactNode;
@@ -66,7 +66,6 @@ const ButtonContainer = styled.div`
 
 const ModalTitle = styled.h2`
   font-size: 14px;
-  font-weight: 401;
   margin: 0;
   margin-bottom: 4px;
 `;

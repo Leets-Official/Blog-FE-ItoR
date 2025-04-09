@@ -77,7 +77,6 @@ const Hr = styled.hr`
 
 const CommentCount = styled.p`
   font-size: 16px;
-  font-weight: 401;
   color: #00A1FF;
 `;
 
@@ -120,7 +119,6 @@ const UserProfileImageContainer = styled.div`
 
 const UserProfileNickname = styled.p`
   font-size: 14px;
-  font-weight: 401;
   color: #000000;
 `;
 

@@ -102,6 +102,6 @@ const PostItem = ({ post }: PostItemProps) => {
       </Container>
     </Wrapper>
   );
-};
+}
 
 export default PostItem;

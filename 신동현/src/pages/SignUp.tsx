@@ -50,7 +50,6 @@ const Title = styled.h1`
 `;
 
 const ImageContainer = styled.div`
-  width: 400px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -65,7 +64,6 @@ const ImageContainer = styled.div`
 const SubContent = styled.p`
   font-size: 14px;
   color: #909090;
-  font-weight: 401;
 
   @media (max-width: 700px) {
     font-size: 12px;
@@ -86,7 +84,6 @@ const ImageSubContent = styled(SubContent)`
 `;
 
 const ButtonContainer = styled.div`
-  width: 400px;
   height: 100%;
   display: flex;
   flex-direction: column;

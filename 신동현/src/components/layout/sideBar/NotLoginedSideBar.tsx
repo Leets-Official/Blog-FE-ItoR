@@ -1,5 +1,5 @@
 import { Profile } from "@/assets";
-import LoginModal from "@/components/ui/LoginModal";
+import LoginModal from "@/components/ui/Modal/LoginModal";
 import { useState } from "react";   
 import styled from "styled-components";
 import SideBarButton from "@/components/ui/Button/ActionButton";

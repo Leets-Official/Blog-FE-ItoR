@@ -1,6 +1,6 @@
 import { More_vert } from "@/assets";
 import Button from "@/components/ui/Button/Button";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/Modal/Modal";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -37,7 +37,6 @@ const LeftContainer = styled.div`
 
 const Nickname = styled.p`
   font-size: 14px;
-  font-weight: 401;
   margin: 0;
 `;
 

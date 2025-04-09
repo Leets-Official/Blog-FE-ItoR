@@ -5,7 +5,7 @@ import Button from "@/components/ui/Button/Button";
 import { Add_photo, Kakao, Profile } from "@/assets";
 import Input from "@/components/ui/Input";
 import { useState } from "react";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/Modal/Modal";
 import ActionButton from "@/components/ui/Button/ActionButton";
 
 const Wrapper = styled.div`

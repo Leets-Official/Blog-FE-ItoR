@@ -2,7 +2,7 @@ import { Profile } from "@/assets"
 import Button from "@/components/ui/Button/Button"
 import SideBarButton from "@/components/ui/Button/ActionButton"
 import styled from "styled-components"
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/Modal/Modal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 

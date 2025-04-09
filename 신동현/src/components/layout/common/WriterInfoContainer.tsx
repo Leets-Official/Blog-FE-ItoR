@@ -14,7 +14,6 @@ const UserInfoContainer = styled.div`
 
 const UserName = styled.p`
   font-size: 12px;
-  font-weight: 400;
   margin: 0;
   color: #000000;
 `;
