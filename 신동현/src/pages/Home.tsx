@@ -1,10 +1,8 @@
 import { useState } from "react";
-import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal";
-import { Chat } from "@/assets/index";
 import LoginModal from "@/components/ui/LoginModal";
 import Header from "@/components/layout/header/Header";
-import Posts from "@/components/layout/post/Posts";
+import Posts from "@/components/layout/post/PostList";
 import DummyPostList from "@/components/layout/post/DummyPostList";
 
 const Home = () => {
@@ -12,16 +10,8 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  }
-
   const closeModal = () => {
     setIsModalOpen(false);
-  }
-
-  const openLoginModal = () => {
-    setIsLoginModalOpen(true);
   }
 
   const closeLoginModal = () => {

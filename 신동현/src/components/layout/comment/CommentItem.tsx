@@ -104,9 +104,8 @@ const CommentItem = ({ profileImage, nickname, date, content, isMyComment }: Com
               color="#909090"
               backgroundColor="#FFFFFF"
               icon={<More_vert width="24px" height="24px" fill="#333333" />}
-            onClick={openModal}
-            >
-            </Button>
+              onClick={openModal}
+            />
           )}
         </RightContainer>
       </WriteInfoContainer>

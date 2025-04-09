@@ -6,7 +6,7 @@ import CommentItem from "@/components/layout/comment/CommentItem";
 import DummyCommentList from "@/components/layout/comment/DummyCommentList";
 import SubmitButton from "@/components/ui/Button/SubmitButton";
 import { Profile } from "@/assets";
-import WriterInfoContainer from "@/components/layout/common/WrtierInfoContainer";
+import WriterInfoContainer from "@/components/layout/common/WriterInfoContainer";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -207,11 +207,11 @@ interface DetailProps {
 }
 
 const Detail = ({ id, isLogin }: DetailProps) => {
-  const [commentCount, setCommentCount] = useState(5);
+  const [commentCount, setCommentCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   console.log(id);
-  isLogin = true;
+  isLogin = false;
   const commentList = DummyCommentList({ commentCount });
 
   return (

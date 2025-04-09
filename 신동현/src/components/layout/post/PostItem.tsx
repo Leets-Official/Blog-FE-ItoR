@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Post } from "../../../styles/Post";
 import { Link } from "react-router-dom";
-import WriterInfoContainer from "../common/WrtierInfoContainer";
+import WriterInfoContainer from "../common/WriterInfoContainer";
 
 const Wrapper = styled.div`
   width: 100%;

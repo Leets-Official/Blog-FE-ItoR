@@ -7,7 +7,7 @@ interface PostsProps {
   postList: Post[];
 }
 
-const Posts = ({ postList }: PostsProps) => {
+const PostList = ({ postList }: PostsProps) => {
   const [page, setPage] = useState(1);
   const size = 10;
 
@@ -29,5 +29,5 @@ const Posts = ({ postList }: PostsProps) => {
   );
 };
 
-export default Posts;
+export default PostList;
 

@@ -7,7 +7,7 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const WriteHeader = () => {
+const MyPageHeader = () => {
   return (
     <Container>
       <Button
@@ -32,4 +32,4 @@ const WriteHeader = () => {
   );
 };
 
-export default WriteHeader;
+export default MyPageHeader;
