@@ -3,8 +3,7 @@ import PageButton from "@/components/ui/Button/PageButton";
 import { Left, Right } from "@/assets";
 
 const Wrapper = styled.div`
-  margin-top: 20px;
-  margin-bottom: 40px;
+  margin: 20px 0px 40px;
   width: 100%;
   display: flex;
   justify-content: center;

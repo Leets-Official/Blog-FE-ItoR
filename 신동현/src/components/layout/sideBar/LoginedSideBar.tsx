@@ -71,13 +71,13 @@ const LoginedSideBar = () => {
     return (
       <Container>
         <ProfileContainer>
-          <Button onClick={() => { navigate("/Mypage") }} icon={<Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
+          <Button onClick={() => { navigate("/mypage") }} icon={<Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
           <Nickname>닉네임</Nickname>
           <Bio>한 줄 소개</Bio>
         </ProfileContainer>
         <ButtonContainer>
           <SideBarButton onClick={() => { }} type="blue">나의 깃로그</SideBarButton>
-          <SideBarButton onClick={() => { navigate("/Write") }} type="blue">깃로그 쓰기</SideBarButton>
+          <SideBarButton onClick={() => { navigate("/write") }} type="blue">깃로그 쓰기</SideBarButton>
         </ButtonContainer>
         <FooterButtonContainer>
           <SideBarButton onClick={() => { }} type="gray">설정</SideBarButton>

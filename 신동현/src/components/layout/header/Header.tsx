@@ -63,7 +63,7 @@ const Header = ({ type }: HeaderProps) => {
           {type === "mypage" && <MyPageHeader />}
         </RightContainer>
       </HeaderContainer>
-      {isSideBarOpen && <SideBar isOpen={isSideBarOpen} onClose={setSideBarOpen} isLogin={false} />}
+      {isSideBarOpen && <SideBar isOpen={isSideBarOpen} onClose={setSideBarOpen} isLogin={true} />}
     </>
   );
 };
