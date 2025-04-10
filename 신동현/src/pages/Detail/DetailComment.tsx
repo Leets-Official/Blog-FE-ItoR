@@ -51,8 +51,11 @@ const CommentEmpty = styled.p`
   margin : 0;
 `;
 
-const DetailComment = () => {
-  const [commentCount, setCommentCount] = useState(10);
+interface DetailCommentProps {
+  commentCount: number;
+}
+
+const DetailComment = ({ commentCount }: DetailCommentProps) => {
   const commentList = DummyCommentList({ commentCount });
 
   return (

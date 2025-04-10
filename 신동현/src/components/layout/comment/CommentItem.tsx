@@ -32,19 +32,16 @@ const RightContainer = styled.div`
 const LeftContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0px;
 `;
 
-const Nickname = styled.p`
+const Nickname = styled.div`
   font-size: 14px;
-  margin: 0;
 `;
 
-const Date = styled.p`
+const Date = styled.div`
   font-size: 12px;
   font-weight: 300;
   color: #909090;
-  margin: 0;
 `;
 
 const CommentContent = styled.div`

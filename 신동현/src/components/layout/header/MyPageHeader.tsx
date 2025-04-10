@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button/Button";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -8,6 +9,7 @@ const Container = styled.div`
 `;
 
 const MyPageHeader = () => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Button
@@ -16,7 +18,7 @@ const MyPageHeader = () => {
         fontSize="14px"
         color="#FF3F3F"
         backgroundColor="#FFFFFF"
-        onClick={() => { }}
+        onClick={() => navigate(-1)}
       > 취소하기
       </Button>
       <Button
@@ -25,7 +27,7 @@ const MyPageHeader = () => {
         fontSize="14px"
         color="#000000"
         backgroundColor="#FFFFFF"
-        onClick={() => { }}
+        onClick={() => navigate(-1)}
       > 저장하기
       </Button>
     </Container>

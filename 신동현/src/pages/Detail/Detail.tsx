@@ -6,6 +6,7 @@ import { Profile } from "@/assets";
 import DetailContent from "./DetailContent";
 import DetailComment from "./DetailComment";
 import DetailCommentInput from "./DetailCommentInput";
+
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
