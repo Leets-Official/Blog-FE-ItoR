@@ -82,7 +82,6 @@ interface PostItemProps {
 }
 
 const PostItem = ({ post }: PostItemProps) => {
-  console.log(dayjs(post.writeDate).format("MMM DD. YYYY.").toString());
   return (
     <Wrapper>
       <Container>

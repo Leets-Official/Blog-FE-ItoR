@@ -77,19 +77,12 @@ const WriterBio = styled.p`
   margin: 0;
 `;
 
-
-interface DetailProps {
-  id: string;
-  isLogin: boolean;
-}
-
-const Detail = ({ id, isLogin }: DetailProps) => {
+const Detail = () => {
   const [commentCount, setCommentCount] = useState(10);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log(id);
-  isLogin = false;
-  
+  const { id } = useParams();
+  const isLogin = false;
   return (
     <>
       <Header type="detail" />

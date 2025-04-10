@@ -15,8 +15,9 @@ const PostList = ({ postList }: PostsProps) => {
   const lastPage = firstPage + size;
   const currentPosts = postList.slice(firstPage, lastPage);
 
-  const handlePageChange = (page: number) => {
-    setPage(page);
+  const handlePageChange = (newPage: number) => {
+    const clampedPage = Math.max(1, Math.min(newPage, lastPage));
+    setPage(clampedPage);    
   }
 
   return (
