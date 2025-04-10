@@ -1,6 +1,6 @@
 import CommentItem from "@/components/layout/comment/CommentItem";
 import DummyCommentList from "@/components/layout/comment/DummyCommentList";
-import { useState } from "react";
+import dayjs from "dayjs";
 
 import styled from "styled-components";
 
@@ -72,8 +72,8 @@ const DetailComment = ({ commentCount }: DetailCommentProps) => {
       ) : (
         <CommentListContainer>
           {commentList.map((comment) => (
-            <CommentItem key={comment.id} profileImage={comment.profileImage} nickname={comment.nickname} date={comment.writeDate.toLocaleDateString()} content={comment.content} isMyComment={true} />
-          ))}
+            <CommentItem key={comment.id} profileImage={comment.profileImage} nickname={comment.nickname} date={dayjs(comment.writeDate).format("MMM DD.YYYY.").toString()} content={comment.content} isMyComment={true} />
+          ))} 
         </CommentListContainer>
       )}
     </CommentContainer>

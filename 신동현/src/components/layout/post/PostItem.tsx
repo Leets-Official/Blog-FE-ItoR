@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Post } from "../../../assets/type/Post";
 import { Link } from "react-router-dom";
 import WriterInfoContainer from "../common/WriterInfoContainer";
+import dayjs from "dayjs";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -81,6 +82,7 @@ interface PostItemProps {
 }
 
 const PostItem = ({ post }: PostItemProps) => {
+  console.log(dayjs(post.writeDate).format("MMM DD. YYYY.").toString());
   return (
     <Wrapper>
       <Container>
@@ -96,7 +98,7 @@ const PostItem = ({ post }: PostItemProps) => {
               {post.postImage}
             </ImageContainer>
           </PostInfoContainer>
-          <WriterInfoContainer userProfileImage={post.userProfileImage} userName={post.userName} writeDate={post.writeDate} commentCount={post.commentCount} />
+          <WriterInfoContainer userProfileImage={post.userProfileImage} userName={post.userName} writeDate={dayjs(post.writeDate).format("MMM DD. YYYY.").toString()} commentCount={post.commentCount} />
         </ContentContainer>
         <Hr />
       </Container>

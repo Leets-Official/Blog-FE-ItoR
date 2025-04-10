@@ -36,7 +36,7 @@ const WriterInfoContent = styled.p`
 interface WriterInfoContainerProps {
   userProfileImage?: React.ReactNode;
   userName: string;
-  writeDate: Date;
+  writeDate: string;
   commentCount: number;
 }
 
@@ -49,7 +49,7 @@ const WriterInfoContainer = ({ userProfileImage, userName, writeDate, commentCou
         </UserProfileImageContainer>
         <UserName>{userName}</UserName>
       </UserInfoContainer>
-      <WriterInfoContent> · {writeDate.toLocaleDateString()} · 댓글({commentCount})</WriterInfoContent>
+      <WriterInfoContent> · {writeDate} · 댓글({commentCount})</WriterInfoContent>
     </PostWriterInfoContainer>
   );
 };

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import WriterInfoContainer from "@/components/layout/common/WriterInfoContainer";
 import { Profile } from "@/assets";
+import dayjs from "dayjs";
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -35,7 +36,7 @@ const DetailContent = ({ commentCount }: DetailContentContainerProps) => {
   return (
     <ContentContainer>
       <ContentTitle>32 Title one line</ContentTitle>
-      <WriterInfoContainer userProfileImage={<Profile width="20px" height="20px" />} userName="닉네임" writeDate={new Date()} commentCount={commentCount} />
+      <WriterInfoContainer userProfileImage={<Profile width="20px" height="20px" />} userName="닉네임" writeDate={dayjs(new Date()).format("MMM DD.YYYY.").toString()} commentCount={commentCount} /> 
       <Hr />
       <Content>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.  </Content>
     </ContentContainer>
