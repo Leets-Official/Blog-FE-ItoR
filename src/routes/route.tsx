@@ -1,6 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { HomePage, MyPage, Post, Signup } from '@/pages';
-import BlogDetail from '@/pages/blogDetail';
+import { HomePage, MyPage, Post, Signup, BlogDetail } from '@/pages';
 
 const router = createBrowserRouter([
   {
