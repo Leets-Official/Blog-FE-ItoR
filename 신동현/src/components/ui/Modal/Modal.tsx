@@ -79,13 +79,31 @@ const ModalSubTitle = styled.p`
 const Modal = ({ title, subTitle, open, onClose, onCancel, onConfirm, animation, cancelText, confirmText, cancelType, confirmType }: ModalProps) => {
   if (!open) return null;
 
-  const cancelBackgroundColor = cancelType === 'positive' ? "#2196F3" : cancelType === 'negative' ? "#FF3F3F" : "#ffffff";
-  const cancelColor = cancelType === 'positive' ? "#ffffff" : cancelType === 'negative' ? "#ffffff" : "#000000";
-  const cancelBorder = cancelType === 'positive' ? "none" : cancelType === 'negative' ? "none" : cancelType === 'default' ? "1px solid #F5F5F5" : "1px solid #2196F3";
+  const typeStyleMap = {
+    positive: {
+      backgroundColor: "#2196F3",
+      color: "#ffffff",
+      border: "none"
+    },
+    negative: {
+      backgroundColor: "#FF3F3F",
+      color: "#ffffff",
+      border: "none"
+    },
+    default: {
+      backgroundColor: "#ffffff",
+      color: "#000000",
+      border: "1px solid #F5F5F5"
+    },
+    fallback: {
+      backgroundColor: "#ffffff",
+      color: "#000000",
+      border: "1px solid #F5F5F5"
+    }
+  }
 
-  const confirmBackgroundColor = confirmType === 'positive' ? "#2196F3" : confirmType === 'negative' ? "#FF3F3F" : "#ffffff";
-  const confirmColor = confirmType === 'positive' ? "#ffffff" : confirmType === 'negative' ? "#ffffff" : "#000000";
-  const confirmBorder = confirmType === 'positive' ? "none" : confirmType === 'negative' ? "none" : confirmType === 'default' ? "1px solid #F5F5F5" : "1px solid #2196F3";
+  const cancelStyle = typeStyleMap[cancelType || "fallback"];
+  const confirmStyle = typeStyleMap[confirmType || "fallback"];
 
   return (
     <Overlay onClick={onClose}>
@@ -93,8 +111,8 @@ const Modal = ({ title, subTitle, open, onClose, onCancel, onConfirm, animation,
         {title && <ModalTitle>{title}</ModalTitle>}
         {subTitle && <ModalSubTitle>{subTitle}</ModalSubTitle>}
         <ButtonContainer>
-          <Button fontSize="15px" width="100%" height="50px" backgroundColor={cancelBackgroundColor} color={cancelColor} style={{ border: cancelBorder, borderRadius: "2px" }} onClick={onCancel || (() => { })}>{cancelText}</Button>
-          <Button fontSize="15px" width="100%" height="50px" backgroundColor={confirmBackgroundColor} color={confirmColor} style={{ border: confirmBorder, borderRadius: "2px" }} onClick={onConfirm || (() => { })}>{confirmText}</Button>
+          <Button fontSize="15px" width="100%" height="50px" backgroundColor={cancelStyle.backgroundColor} color={cancelStyle.color} style={{ border: cancelStyle.border, borderRadius: "2px" }} onClick={onCancel || (() => { })}>{cancelText}</Button>
+          <Button fontSize="15px" width="100%" height="50px" backgroundColor={confirmStyle.backgroundColor} color={confirmStyle.color} style={{ border: confirmStyle.border, borderRadius: "2px" }} onClick={onConfirm || (() => { })}>{confirmText}</Button>
         </ButtonContainer>
       </Container>
     </Overlay>
