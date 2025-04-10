@@ -4,7 +4,7 @@ import DetailRight from '@/components/common/Header/DetailRight';
 import ActionRight from '@/components/common/Header/ActionRight';
 import { HeaderContainer, SectionWrapper } from '@/components/common/Header/Header.styled';
 import { useState } from 'react';
-import SideBar from '../SideBar/SideBar';
+import SideBar from '@/components/common/SideBar/SideBar';
 
 type HeaderVariant = 'default' | 'write' | 'detail' | 'action';
 

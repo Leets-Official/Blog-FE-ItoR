@@ -1,5 +1,5 @@
 import { PhotoSvg } from '@/assets';
-import { Text } from '../home/PostItem';
+import { Text } from '@/components/home/PostItem';
 import { flexCenter } from '@/styles/common.styled';
 import styled from 'styled-components';
 
