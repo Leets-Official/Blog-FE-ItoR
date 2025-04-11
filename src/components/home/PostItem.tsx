@@ -1,6 +1,6 @@
 import theme from '@/styles/theme.styled';
 import styled from 'styled-components';
-import { flexAlignCenter, flexColumn } from '@/styles/common.styled';
+import { flexAlignCenter, flexColumn, flexJustifyCenter } from '@/styles/common.styled';
 import { Image } from '@/components/index';
 import { Post } from '@/types/post';
 import { formatPostDate } from '@/utils/formatPostDate';
@@ -42,7 +42,7 @@ export const Text = styled.div<{
 `;
 
 const FlexItem = styled.div<{ hasImage?: boolean }>`
-  ${flexAlignCenter};
+  ${flexJustifyCenter};
   gap: ${({ hasImage }) => (hasImage ? '24px' : '0')};
 `;
 
@@ -54,6 +54,8 @@ const ItemContainer = styled.div`
 `;
 
 const TextContent = styled.div`
+  ${flexColumn}
+  gap: 10px;
   flex: 1;
 `;
 
