@@ -8,10 +8,10 @@ import Button from '@/components/common/Button/Button';
 import { FlexRow } from '@/components/common/SideBar/SideBar.styled';
 import { useNavigate } from 'react-router-dom';
 
-export const Wrapper = styled.div<{ bgColor?: string }>`
+export const Wrapper = styled.div<{ bgColor?: string; height?: string }>`
   ${flexCenter}
   gap: 80px;
-  height: 490px;
+  height: ${({ height }) => height ?? '490px'};
   background-color: ${({ theme, bgColor }) => bgColor ?? theme.COLORS.black};
   padding: 40px;
   border-radius: 8px;
