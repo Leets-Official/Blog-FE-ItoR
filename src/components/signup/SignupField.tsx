@@ -1,9 +1,11 @@
-import { flexColumnCenter } from '@/styles/common.styled';
-import { KakaoSvg } from '@/assets';
 import styled from 'styled-components';
-import Input from '@/components/common/Input/Input';
-import { inputFields } from '@/constants';
-import Button from '@/components/common/Button/Button';
+import { flexAlignCenter, flexColumn, flexColumnCenter } from '@/styles/common.styled';
+import { KakaoSvg } from '@/assets';
+import { Button, Input } from '@/components';
+import { emailSignupFields, kakaoSignupFields } from '@/constants';
+import { PhotoSvg, DefaultProfileSvg } from '@/assets';
+import theme from '@/styles/theme.styled';
+import { Text } from '../home/PostItem';
 
 interface SignupFieldProps {
   signupType: 'email' | 'kakao';
@@ -32,41 +34,56 @@ const InputWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
+const ButtonWrapper = styled.div`
+  ${flexAlignCenter}
+  gap:8px;
+`;
+
+const ProfileSection = styled.div`
+  ${flexColumn}
+  gap:16px;
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
 const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
+  const readOnlyFields = ['socialLogin', 'email', 'name'];
   const isKakao = signupType === 'kakao';
+  const fields = isKakao ? kakaoSignupFields : emailSignupFields;
 
   return (
     <Wrapper>
       <InputSection>
-        {inputFields.map(({ label, placeholder, name, type }) => {
-          if (isKakao && (name === 'password' || name === 'confirmPassword')) {
-            return null;
-          }
-
-          if (isKakao && name === 'email') {
-            return (
-              <InputWrapper key="social-login">
-                <Input
-                  label="소셜 로그인"
-                  placeholder="카카오 로그인"
-                  readOnly
-                  icon={<KakaoSvg />}
-                />
-              </InputWrapper>
-            );
-          }
-
-          return (
-            <InputWrapper key={name}>
-              <Input
-                label={label}
-                placeholder={placeholder}
-                type={type}
-                readOnly={isKakao && name === 'name'}
-              />
-            </InputWrapper>
-          );
-        })}
+        <ProfileSection>
+          <Text fontSize="sm" fontWeight="light" color="gray56">
+            프로필 사진
+          </Text>
+          <DefaultProfileSvg />
+          <ButtonWrapper>
+            <Button
+              variant="text"
+              size="md"
+              rounded="sm"
+              height="25px"
+              borderColor={theme.COLORS.gray[90]}
+              textColor={theme.COLORS.gray[56]}
+            >
+              <PhotoSvg />
+              프로필 사진 추가
+            </Button>
+          </ButtonWrapper>
+        </ProfileSection>
+        {fields.map(({ label, placeholder, name, type }) => (
+          <InputWrapper key={name}>
+            <Input
+              label={label}
+              placeholder={placeholder}
+              type={type}
+              readOnly={isKakao && readOnlyFields.includes(name)}
+              icon={name === 'socialLogin' ? <KakaoSvg /> : undefined}
+            />
+          </InputWrapper>
+        ))}
       </InputSection>
 
       <ButtonSection>
