@@ -4,7 +4,6 @@ import { flexAlignCenter, flexColumn } from '@/styles/common.styled';
 import { Image } from '@/components/index';
 import { Post } from '@/types/post';
 import { formatPostDate } from '@/utils/formatPostDate';
-import { use } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface PostItemProps {
