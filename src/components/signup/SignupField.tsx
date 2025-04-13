@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 import { flexAlignCenter, flexColumn, flexColumnCenter } from '@/styles/common.styled';
-import { KakaoSvg } from '@/assets';
-import { Button, Input } from '@/components';
+import { Button, Image, Input } from '@/components';
 import { emailSignupFields, kakaoSignupFields } from '@/constants';
-import { PhotoSvg, DefaultProfileSvg } from '@/assets';
+import { PhotoSvg, DefaultProfileSvg, KakaoSvg } from '@/assets';
 import theme from '@/styles/theme.styled';
-import { Text } from '../home/PostItem';
+import { Text } from '@/components/home/PostItem';
+import { useRef } from 'react';
+import { useImageUpload } from '@/hooks/useImageUpload';
 
 interface SignupFieldProps {
   signupType: 'email' | 'kakao';
 }
 
-const Wrapper = styled.div`
+export const Wrapper = styled.div`
   ${flexColumnCenter}
   width: 100%;
   max-width: 720px;
@@ -20,26 +21,22 @@ const Wrapper = styled.div`
   padding: 10px 20px;
 `;
 
-const InputSection = styled.div`
+export const InputSection = styled.div`
   width: 100%;
   margin-bottom: 60px;
 `;
 
-const ButtonSection = styled.div`
-  width: 100%;
-`;
-
-const InputWrapper = styled.div`
+export const InputWrapper = styled.div`
   width: 100%;
   margin-bottom: 20px;
 `;
 
-const ButtonWrapper = styled.div`
+export const ButtonWrapper = styled.div`
   ${flexAlignCenter}
   gap:8px;
 `;
 
-const ProfileSection = styled.div`
+export const ProfileSection = styled.div`
   ${flexColumn}
   gap:16px;
   width: 100%;
@@ -50,6 +47,10 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
   const readOnlyFields = ['socialLogin', 'email', 'name'];
   const isKakao = signupType === 'kakao';
   const fields = isKakao ? kakaoSignupFields : emailSignupFields;
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { previewUrl, handleImageChange } = useImageUpload();
+
+  const handleClick = () => inputRef.current?.click();
 
   return (
     <Wrapper>
@@ -58,8 +59,27 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
           <Text fontSize="sm" fontWeight="light" color="gray56">
             프로필 사진
           </Text>
-          <DefaultProfileSvg />
-          <ButtonWrapper>
+          {previewUrl ? (
+            <Image
+              src={previewUrl}
+              alt="profile-preview"
+              width="90px"
+              height="90px"
+              borderRadius="50%"
+            />
+          ) : (
+            <DefaultProfileSvg width="90px" height="90px" />
+          )}
+
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleImageChange}
+          />
+
+          <ButtonWrapper onClick={handleClick}>
             <Button
               variant="text"
               size="md"
@@ -73,6 +93,7 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
             </Button>
           </ButtonWrapper>
         </ProfileSection>
+
         {fields.map(({ label, placeholder, name, type }) => (
           <InputWrapper key={name}>
             <Input
@@ -86,11 +107,9 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
         ))}
       </InputSection>
 
-      <ButtonSection>
-        <Button variant="primary-outline" size="lg" rounded="full" fullWidth>
-          회원가입 완료
-        </Button>
-      </ButtonSection>
+      <Button variant="primary-outline" size="lg" rounded="full" fullWidth>
+        회원가입 완료
+      </Button>
     </Wrapper>
   );
 };
