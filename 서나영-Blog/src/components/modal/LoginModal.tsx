@@ -92,8 +92,6 @@ const SnsContent = styled.div`
 const SnsText = styled.span`
   font-size: 12px;
   padding: 2px 8px 4px 8px;
-  line-height: 160%;
-  font-weight: 400;
   color: #909090;
   font-family: 'Noto Sans R';
 `;

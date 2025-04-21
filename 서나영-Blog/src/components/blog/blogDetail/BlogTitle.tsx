@@ -21,11 +21,6 @@ const TextWrapper = styled.div`
 `;
 
 const TitleText = styled.h1`
-  font-family: 'Noto Sans M';
-  font-size: 32px;
-  font-weight: 500;
-  line-height: 160%;
-  color: #000;
   margin-bottom: 32px;
 `;
 

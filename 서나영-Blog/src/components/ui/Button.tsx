@@ -17,7 +17,6 @@ interface ButtonProps {
 }
 
 const StyledButton = styled.button<ButtonProps>`
-  font-family: 'Noto Sans R';
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,9 +30,6 @@ const StyledButton = styled.button<ButtonProps>`
     type === 'Create' &&
     `
       font-size: 14px;
-      font-weight: 400;
-      line-height: 160%; 
-      letter-spacing: -0.07px;
     `}
 
   ${({ type }) =>

@@ -23,8 +23,6 @@ const StyledNickName = styled.span`
   color: #333;
   font-family: 'Noto Sans R';
   font-size: 12px;
-  font-weight: 400;
-  line-height: 160%;
 `;
 
 const StyledCreatedAt = styled.span`
@@ -33,7 +31,6 @@ const StyledCreatedAt = styled.span`
   font-family: 'Noto Sans L';
   font-size: 12px;
   font-weight: 300;
-  line-height: 160%;
 `;
 
 const StyledCommentCount = styled.span`
@@ -42,7 +39,6 @@ const StyledCommentCount = styled.span`
   font-family: 'Noto Sans L';
   font-size: 12px;
   font-weight: 300;
-  line-height: 160%;
 `;
 
 interface PostMetaProps {

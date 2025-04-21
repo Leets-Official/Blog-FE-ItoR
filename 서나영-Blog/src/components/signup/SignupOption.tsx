@@ -64,9 +64,7 @@ const TextContainer = styled.div`
 
 const StyledText = styled.span`
   font-size: 12px;
-  padding: 2px 8px 4px 8px;
-  line-height: 160%;
-  font-weight: 400;
+  padding: 2px 8px 4px;
   color: #909090;
   font-family: 'Noto Sans R';
 `;

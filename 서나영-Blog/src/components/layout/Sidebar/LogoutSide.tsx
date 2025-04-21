@@ -20,7 +20,6 @@ const StyledText = styled.p`
   color: '#333';
   font-family: 'Noto Sans L';
   font-weight: 300;
-  line-height: '160%';
   letter-spacing: '-0.07px';
   font-size: '14px';
   padding: '12px 20px';

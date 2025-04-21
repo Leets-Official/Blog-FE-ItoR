@@ -29,10 +29,8 @@ const ContentWrapper = styled.div`
 
 const NickName = styled.div`
   color: #000;
-  font-family: 'Noto Sans M';
   font-size: 32px;
   font-weight: 500;
-  line-height: 160%;
   padding-top: 24px;
 `;
 
@@ -41,7 +39,6 @@ const Description = styled.div`
   font-family: 'Noto Sans L';
   font-size: 14px;
   font-weight: 300;
-  line-height: 160%;
   letter-spacing: -0.07px;
 `;
 
@@ -66,8 +63,6 @@ const SettingButton = styled.button`
   border: 1px solid #e6e6e6;
 
   font-size: 12px;
-  font-weight: 400;
-  line-height: 160%;
   color: #909090;
   background-color: #f5f5f5;
 `;

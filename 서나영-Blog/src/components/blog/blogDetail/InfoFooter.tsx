@@ -31,10 +31,8 @@ const ProfileImage = styled.img`
 
 const NickName = styled.div`
   color: #000;
-  font-family: 'Noto Sans M';
   font-size: 32px;
   font-weight: 500;
-  line-height: 160%;
   padding-top: 24px;
 `;
 
@@ -43,7 +41,6 @@ const Description = styled.div`
   font-family: 'Noto Sans L';
   font-size: 14px;
   font-weight: 300;
-  line-height: 160%;
   letter-spacing: -0.07px;
 `;
 

@@ -15,10 +15,6 @@ const ProfileContainer = styled.div`
 const Label = styled.label`
   color: #909090;
   font-size: 14px;
-  font-weight: 300;
-  line-height: 160%;
-  letter-spacing: -0.07px;
-  font-family: 'Noto Sans L';
 `;
 
 const ProfileWrapper = styled.div`
@@ -49,8 +45,6 @@ const AddPhotoButton = styled.button`
   border-radius: 2px;
   border: 1px solid #e6e6e6;
   font-size: 12px;
-  font-weight: 400;
-  line-height: 160%;
   color: #909090;
   background-color: #fff;
 `;

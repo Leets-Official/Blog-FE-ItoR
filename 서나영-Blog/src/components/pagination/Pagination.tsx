@@ -14,9 +14,7 @@ const PaginationContainer = styled.div`
   gap: 8px;
   width: 100%;
   max-width: 688px;
-  margin: 0 auto;
-  margin-top: 32px;
-  margin-bottom: 64px;
+  margin: 32px auto 64px;
 `;
 
 const PageButton = styled.button<{ disabled?: boolean; $isActive?: boolean }>`
@@ -27,7 +25,6 @@ const PageButton = styled.button<{ disabled?: boolean; $isActive?: boolean }>`
   align-items: center;
   justify-content: center;
   border-radius: 2px;
-  font-family: 'Noto Sans R';
   font-size: 14px;
   line-height: 22px;
   background: #fff;

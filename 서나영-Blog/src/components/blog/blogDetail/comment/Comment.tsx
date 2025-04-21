@@ -13,12 +13,10 @@ const CommentWrapper = styled.div`
 const CommentText = styled.span`
   padding: 12px 16px;
   margin-left: 26px;
-
   color: #333;
   font-family: 'Noto Sans L';
   font-size: 14px;
   font-weight: 300;
-  line-height: 160%;
   letter-spacing: -0.07px;
 `;
 

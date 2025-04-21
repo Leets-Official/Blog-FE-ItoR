@@ -28,8 +28,6 @@ const PostTextWrapper = styled.div`
 `;
 
 const PostTitle = styled.p`
-  font-family: 'Noto Sans M';
-  font-size: 16px;
   font-weight: 500;
   letter-spacing: -0.04px;
   color: #000;
@@ -40,7 +38,6 @@ const PostContent = styled.p`
   font-family: 'Noto Sans L';
   font-size: 14px;
   font-weight: 300;
-  line-height: 160%;
   letter-spacing: -0.07px;
   color: #555;
   margin-bottom: 12px;

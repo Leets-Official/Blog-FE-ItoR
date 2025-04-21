@@ -6,6 +6,7 @@ const EditorContainer = styled.div`
   max-width: 688px;
   gap: 16px;
   margin: 0 auto 20px;
+  padding: 12px 16px;
 `;
 
 const EditableArea = styled.div<{ $isEmpty: boolean }>`

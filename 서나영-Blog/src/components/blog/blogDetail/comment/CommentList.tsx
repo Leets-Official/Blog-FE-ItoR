@@ -21,7 +21,6 @@ const CommentLabel = styled.span`
   font-family: 'Noto Sans M';
   font-size: 16px;
   font-weight: 500;
-  line-height: 160%;
   letter-spacing: -0.04px;
   color: #000;
 `;
@@ -30,7 +29,6 @@ const CommentCount = styled.span`
   font-family: 'Noto Sans M';
   font-size: 16px;
   font-weight: 500;
-  line-height: 160%;
   letter-spacing: -0.04px;
   color: #00a1ff;
   margin-left: 4px;
@@ -50,7 +48,6 @@ const NoCommentText = styled.span`
   font-family: 'Noto Sans L';
   font-size: 14px;
   font-weight: 300;
-  line-height: 160%;
   letter-spacing: -0.07px;
 `;
 

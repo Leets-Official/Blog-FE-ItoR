@@ -17,7 +17,6 @@ const ContentWrapper = styled.div`
 const TextBlock = styled.p`
   font-family: 'Noto Sans L';
   font-size: 14px;
-  line-height: 160%;
   letter-spacing: -0.07px;
   font-weight: 300;
   color: #333;

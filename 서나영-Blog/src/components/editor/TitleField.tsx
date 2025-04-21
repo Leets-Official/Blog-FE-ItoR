@@ -19,15 +19,12 @@ const TextBox = styled.input`
   margin: 0 auto;
   width: 100%;
   max-width: 688px;
-  padding: 12px 16px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   gap: 8px;
   align-self: stretch;
-  font-family: 'Noto Sans M';
   font-size: 16px;
-  font-weight: '500';
   letter-spacing: -0.04px;
   border: none;
   padding: 12px 16px;
