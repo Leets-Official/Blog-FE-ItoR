@@ -7,6 +7,7 @@ interface SideProps {
   isLogin: boolean;
   isOpen: boolean;
   onClose: () => void;
+  onLogout: () => void;
 }
 
 const SideContainer = styled.div<{ $isOpen: boolean }>`
@@ -35,7 +36,7 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
   z-index: 1000;
 `;
 
-const Sidebar = ({ isOpen, isLogin, onClose }: SideProps) => {
+const Sidebar = ({ isOpen, isLogin, onClose, onLogout }: SideProps) => {
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if ((event.target as HTMLElement).id === 'sidebar-overlay') {
@@ -50,7 +51,9 @@ const Sidebar = ({ isOpen, isLogin, onClose }: SideProps) => {
   return (
     <>
       <Overlay id='sidebar-overlay' $isOpen={isOpen} />
-      <SideContainer $isOpen={isOpen}>{isLogin ? <LoginSide /> : <LogoutSide />}</SideContainer>
+      <SideContainer $isOpen={isOpen}>
+        {isLogin ? <LoginSide onLogout={onLogout} /> : <LogoutSide />}
+      </SideContainer>
     </>
   );
 };
