@@ -12,8 +12,6 @@ const Container = styled.div`
 
 const Text = styled.p<{ type: TextType }>`
   font-size: 14px;
-  font-weight: 400;
-  line-height: 160%;
   letter-spacing: -0.07px;
   padding: 8px 12px;
   color: ${({ type }) => (type === 'Cancel' ? '#FF3F3F' : '#000')};
@@ -30,9 +28,7 @@ const CancelandSave = () => {
 
   const handleSave = () => {
     showToast('저장되었습니다!', 'positive');
-    setTimeout(() => {
-      navigate('/mypage');
-    }, 1000);
+    navigate('/mypage');
   };
 
   return (

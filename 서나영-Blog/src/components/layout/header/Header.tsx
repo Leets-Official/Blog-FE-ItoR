@@ -16,17 +16,23 @@ interface HeaderProps {
   navigateEditor?: string;
   title?: string;
   content?: string;
+  commentRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 const HeaderContainer = styled.div`
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 1000;
-  display: flex;
   width: 100%;
+
+  display: flex;
   align-items: center;
+  justify-content: center;
+
+  height: 72px;
   padding: 16px 16px 16px 12px;
-  justify-content: space-between;
+
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(2px);
   border-bottom: 1px solid #f5f5f5;
@@ -34,15 +40,25 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderLeftSection = styled.div`
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+
   display: flex;
   align-items: center;
   gap: 10px;
 `;
 
 const HeaderRightSection = styled.div`
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+
   display: flex;
   align-items: center;
-  padding-right: 16px;
+  gap: 10px;
 `;
 
 const getRightComponent = (
@@ -51,6 +67,7 @@ const getRightComponent = (
   navigateEditor?: ReturnType<typeof useNavigate>,
   title?: string,
   content?: string,
+  commentRef?: React.RefObject<HTMLDivElement | null>,
 ) => {
   switch (type) {
     case 'CreateLog':
@@ -67,7 +84,7 @@ const getRightComponent = (
     case 'DelandCreate':
       return <DelandCreate title={title ?? ''} content={content ?? ''} />;
     case 'ChatandMore':
-      return <ChatandMore />;
+      return <ChatandMore commentRef={commentRef} />;
     case 'CancelandSave':
       return <CancelandSave />;
     case 'Edit':
@@ -83,9 +100,15 @@ const getRightComponent = (
   }
 };
 
-const Header = ({ type, onEditClick, title, content }: HeaderProps) => {
+const Header = ({ type, onEditClick, title, content, commentRef }: HeaderProps) => {
+  const [isLogin, setIsLogin] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setIsLogin(false);
+    setIsSidebarOpen(false);
+  };
 
   return (
     <>
@@ -106,12 +129,17 @@ const Header = ({ type, onEditClick, title, content }: HeaderProps) => {
           />
         </HeaderLeftSection>
         <HeaderRightSection>
-          {getRightComponent(type, onEditClick, navigate, title, content)}
+          {getRightComponent(type, onEditClick, navigate, title, content, commentRef)}
         </HeaderRightSection>
       </HeaderContainer>
 
       {/* Sidebar 컴포넌트 */}
-      <Sidebar isOpen={isSidebarOpen} isLogin={true} onClose={() => setIsSidebarOpen(false)} />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        isLogin={isLogin}
+        onClose={() => setIsSidebarOpen(false)}
+        onLogout={handleLogout}
+      />
     </>
   );
 };
