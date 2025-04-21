@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import ReactDOM from 'react-dom';
 import Button from './Button';
 import styled, { keyframes, css } from 'styled-components';
 
@@ -29,18 +30,15 @@ const fadeOut = keyframes`
   100% { opacity: 0; }
 `;
 
-const ModalTitle = styled.h2`
+const ModalTitle = styled.h1`
   font-size: 14px;
   font-weight: 400;
-  line-height: 160%;
   letter-spacing: -0.07px;
 `;
 
-const ModalDescription = styled.p`
+const ModalDescription = styled.span`
   font-size: 12px;
   color: #909090;
-  font-weight: 400;
-  line-height: 160%;
 `;
 
 const ModalContent = styled.div`
@@ -123,7 +121,7 @@ const Modal = ({
   LeftButtonText = '확인',
   LeftButtonColor = '#FFF',
 }: ModalProps) => {
-  return (
+  return ReactDOM.createPortal(
     <ModalOverlay $isOpen={isOpen} onClick={onClose}>
       <ModalContainer
         $isOpen={isOpen}
@@ -155,7 +153,8 @@ const Modal = ({
           </Button>
         </ButtonGroup>
       </ModalContainer>
-    </ModalOverlay>
+    </ModalOverlay>,
+    document.body,
   );
 };
 
