@@ -1,4 +1,3 @@
-import { Create } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -9,25 +8,30 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const MainHeader = () => {
+const MyPageHeader = () => {
   const navigate = useNavigate();
   return (
     <Container>
       <Button
-        width="120px"
+        width="76px"
         height="40px"
         fontSize="14px"
-        color="#909090"
+        color="#FF3F3F"
         backgroundColor="#FFFFFF"
-        icon={<Create width="24px" height="24px" fill="#333333" />}
-        onClick={() => {
-          navigate("/Write");
-        }}
-      >
-        깃로그 쓰기
+        onClick={() => navigate(-1)}
+      > 취소하기
+      </Button>
+      <Button
+        width="76px"
+        height="40px"
+        fontSize="14px"
+        color="#000000"
+        backgroundColor="#FFFFFF"
+        onClick={() => navigate(-1)}
+      > 저장하기
       </Button>
     </Container>
   );
 };
 
-export default MainHeader;  
+export default MyPageHeader;

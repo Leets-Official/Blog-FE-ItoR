@@ -5,16 +5,26 @@ import Button from "@/components/ui/Button/Button";
 import { Add_photo, Kakao, Profile } from "@/assets";
 import Input from "@/components/ui/Input";
 import { useState } from "react";
-import Modal from "@/components/ui/Modal";
+import Modal from "@/components/ui/Modal/Modal";
 import ActionButton from "@/components/ui/Button/ActionButton";
+
+const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
+`;
+
 
 const TitleContainer = styled.div`
   width: 100%;
   height: 148px;
   display: flex;
   flex-direction: column;
-
   justify-content: center;
+  align-items: center;
   background-color: #F5F5F5;
 `;
 
@@ -23,7 +33,10 @@ const TitleContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 30%;
+
+  @media (max-width: 700px) {
+    width: 90%;
+  }
 `;
 
 const Title = styled.h1`
@@ -32,7 +45,7 @@ const Title = styled.h1`
   display: flex;
   align-items: center;
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 500;
   color: #000000;
   margin-bottom: 0px; 
 `;
@@ -48,12 +61,16 @@ const SubTitle = styled.p`
 `;
 
 const MainContainer = styled.div`
+  width: 668px;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 30%;
   margin-top: 120px; 
+
+  @media (max-width: 700px) {
+    width: 90%;
+  }
 `;
 
 const ProfileContainer = styled.div`
@@ -99,19 +116,26 @@ const ButtonContainer = styled.div`
 `;
 
 const SocialBoxContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const SocialBoxContext = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
 `;
 
 const SocialBox = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 20px;
-  width: 656px;
+  height: 40px;
+  width: 100%;
   background: #E6e6e6;
-  padding: 12px 16px;
   border-radius: 4px;
   font-size: 14px;
   font-weight: 300;
@@ -147,8 +171,10 @@ const KaKaoUI = () => {
       <SocialBoxContainer>
         <SocialBoxTitle>소셜로그인</SocialBoxTitle>
         <SocialBox>
-          <Kakao />
-          카카오 로그인
+          <SocialBoxContext>
+            <Kakao />
+            카카오 로그인
+          </SocialBoxContext>
         </SocialBox>
       </SocialBoxContainer>
       <Input title="이메일" type="email" placeholder="111@naver.com" value="" disabled={true} onChange={() => { }} />
@@ -175,8 +201,8 @@ const SignUpDetail = () => {
   }
 
   return (
-    <>
-      <Header />
+    <Wrapper>
+      <Header type="write" />
       <TitleContainer>
         <TitleContentContainer>
           <Title>회원가입</Title>
@@ -193,12 +219,12 @@ const SignUpDetail = () => {
         </ProfileContainer >
         {type === "email" ? <EmailUI /> : <KaKaoUI />}
         <ButtonContainer>
-          <ActionButton type="blue" width="688px" height="38px" onClick={openConfirmModal}>회원가입</ActionButton>
+          <ActionButton type="blue" width="100%" height="38px" onClick={openConfirmModal}>회원가입</ActionButton>
         </ButtonContainer>
       </MainContainer>
-      <Modal open={isOpenConfirmModal} title="회원가입이 완료되었습니다!" onCancel={closeConfirmModal} onConfirm={() => { }} onClose={closeConfirmModal} cancelText="확인" confirmText="로그인하기" cancelType="negative" confirmType="positive" animation="fadeIn">
+      <Modal open={isOpenConfirmModal} title="회원가입이 완료되었습니다!" onCancel={closeConfirmModal} onConfirm={() => { }} onClose={closeConfirmModal} cancelText="확인" confirmText="로그인하기" confirmType="positive" animation="fadeIn">
       </Modal>
-    </>
+    </Wrapper>
   )
 }
 

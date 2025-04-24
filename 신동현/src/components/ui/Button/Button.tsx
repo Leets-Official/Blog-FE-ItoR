@@ -19,17 +19,21 @@ const StyledButton = styled.button<{
   fontSize?: string;
   color?: string;
   backgroundColor?: string;
+  fontWeight?: string;
+  disabled?: boolean;
 }>`
   cursor: pointer;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
   font-size: ${(props) => props.fontSize || "15px"};
+  font-weight: ${(props) => props.fontWeight || "400"};
   color: ${(props) => props.color};
   background-color: ${(props) => props.backgroundColor};
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
+  cursor: ${(props) => props.disabled ? "default" : "pointer"};
 `;
 
 const IconContainer = styled.span`

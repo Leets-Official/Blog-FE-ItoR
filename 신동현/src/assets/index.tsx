@@ -13,6 +13,9 @@ import Settings from '@/assets/icons/settings.svg?react';
 import GITLOG from '@/assets/icons/GITLOG.svg?react';
 import Kakao from '@/assets/icons/KaKaoLogo.svg?react';
 import Profile from '@/assets/icons/profile.svg?react';
+import Left from '@/assets/icons/Left.svg?react';
+import Right from '@/assets/icons/Right.svg?react';
+import ProfilePlus from '@/assets/icons/profilePlus.svg?react';
 
 export {
     Add_photo,
@@ -30,4 +33,7 @@ export {
     GITLOG,
     Kakao,
     Profile,
+    Left,   
+    Right,
+    ProfilePlus
 };

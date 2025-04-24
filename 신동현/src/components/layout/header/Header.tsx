@@ -6,6 +6,7 @@ import DetailHeader from "./DetailHeader";
 import { useState } from "react";
 import SideBar from "@/components/layout/sideBar/SideBar";
 import Button from "@/components/ui/Button/Button";
+import MyPageHeader from "./MyPageHeader";
 
 const HeaderContainer = styled.div`
   margin-top: 0px;
@@ -38,7 +39,7 @@ const RightContainer = styled.div`
 `;
 
 interface HeaderProps {
-  type : "main" | "write" | "detail";
+  type : "main" | "write" | "detail" | "mypage";
 }
 
 const Header = ({ type }: HeaderProps) => {
@@ -59,6 +60,7 @@ const Header = ({ type }: HeaderProps) => {
           {type === "main" && <MainHeader />}
           {type === "write" && <WriteHeader />}
           {type === "detail" && <DetailHeader />}
+          {type === "mypage" && <MyPageHeader />}
         </RightContainer>
       </HeaderContainer>
       {isSideBarOpen && <SideBar isOpen={isSideBarOpen} onClose={setSideBarOpen} isLogin={true} />}
