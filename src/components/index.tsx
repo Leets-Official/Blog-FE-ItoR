@@ -9,6 +9,8 @@ import Pagination from '@/components/pagination/Pagination';
 import LoginModal from '@/components/common/Modal/LoginModal';
 import SignupHeader from '@/components/signup/SignupHeader';
 import SignupSelection from '@/components/signup/SignupSelection';
+import Textarea from '@/components/common/Textarea/Textarea';
+import ActionModal from '@/components/common/Modal/ActionModal';
 
 export {
   Button,
@@ -22,4 +24,6 @@ export {
   LoginModal,
   SignupHeader,
   SignupSelection,
+  Textarea,
+  ActionModal,
 };

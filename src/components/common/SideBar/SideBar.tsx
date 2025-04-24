@@ -1,4 +1,4 @@
-import { Button, LoginModal } from '@/components/index';
+import { Button, LoginModal, ActionModal } from '@/components';
 import { DefaultProfileSvg } from '@/assets';
 import {
   Flex,
@@ -9,6 +9,7 @@ import {
 } from '@/components/common/SideBar/SideBar.styled';
 import { useState } from 'react';
 import { Text } from '@/components/home/PostItem';
+import { useNavigate } from 'react-router-dom';
 
 interface SideBarProps {
   onClose: () => void;
@@ -18,12 +19,19 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
   const token = localStorage.getItem('accessToken');
   const [isClosing, setIsClosing] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const nav = useNavigate();
 
   const handleClose = () => {
     setIsClosing(true);
     setTimeout(() => {
       onClose();
     }, 300);
+  };
+
+  const handleClick = {
+    write: () => nav('/post/write'),
+    logout: () => setIsLogoutModalOpen(true),
   };
 
   return (
@@ -56,7 +64,12 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
               <Button variant="primary-outline" size="md" rounded="full">
                 나의 깃로그
               </Button>
-              <Button variant="primary-outline" size="md" rounded="full">
+              <Button
+                variant="primary-outline"
+                size="md"
+                rounded="full"
+                onClick={handleClick.write}
+              >
                 깃로그 쓰기
               </Button>
             </FlexRow>
@@ -78,7 +91,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
             <Button variant="secondary" size="sm" rounded="full">
               설정
             </Button>
-            <Button variant="secondary" size="sm" rounded="full">
+            <Button variant="secondary" size="sm" rounded="full" onClick={handleClick.logout}>
               로그아웃
             </Button>
           </FlexRow>
@@ -86,6 +99,21 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
       </SidebarWrapper>
 
       <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+
+      <ActionModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        message="로그아웃을 진행할게요"
+        actionText="로그아웃"
+        cancelText="취소"
+        type="positive"
+        onConfirm={() => {
+          localStorage.removeItem('accessToken');
+          setIsLogoutModalOpen(false);
+          window.location.reload();
+          nav('/');
+        }}
+      />
     </>
   );
 };

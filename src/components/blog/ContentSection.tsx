@@ -1,4 +1,4 @@
-import Textarea from '@/components/common/Textarea/Textarea';
+import { Textarea } from '@/components';
 
 const ContentSection: React.FC = () => {
   return (

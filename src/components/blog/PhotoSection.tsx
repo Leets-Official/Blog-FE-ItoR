@@ -1,6 +1,6 @@
 import { PhotoSvg } from '@/assets';
 import { Button } from '@/components';
-import { ButtonWrapper } from '../signup/SignupField';
+import { ButtonWrapper } from '@/components/signup/SignupField';
 import theme from '@/styles/theme.styled';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useRef } from 'react';

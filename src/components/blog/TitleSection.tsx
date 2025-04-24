@@ -1,4 +1,4 @@
-import Textarea from '@/components/common/Textarea/Textarea';
+import { Textarea } from '@/components';
 
 const TitleSection: React.FC = () => {
   return (
