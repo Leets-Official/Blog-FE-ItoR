@@ -178,7 +178,7 @@ const EmailUI = ({ control }: { control: Control<z.infer<typeof signUpEmailSchem
   )
 }
 
-const KaKaoUI = ({ control }: { control: Control<z.infer<typeof signUpSchema>> }) => {
+const KaKaoUI = ({ control }: { control: Control<z.infer<typeof signUpSocialSchema>> }) => {
   const [birth, setBirth] = useState("");
   const [nickname, setNickname] = useState("");
   const [bio, setBio] = useState("");

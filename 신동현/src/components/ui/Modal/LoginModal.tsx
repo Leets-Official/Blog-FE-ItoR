@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Input from "../Input";
 import SignButton from "../Button/SignButton";
+import { loginSchema } from "@/schema/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const Overlay = styled.div`
   position: fixed;
@@ -140,6 +144,18 @@ interface LoginProps {
 const Login = ({ open, onClose }: LoginProps) => {
   if (!open) return null;
 
+  const { control, handleSubmit } = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof loginSchema>) => {
+    console.log(data);
+  }
+
   return (
     <Overlay onClick={onClose}>
       <Container onClick={(e) => e.stopPropagation()}>
@@ -154,11 +170,11 @@ const Login = ({ open, onClose }: LoginProps) => {
         </ImageContainer>
         <SubmitContainer>
           <InputContainer>
-            <Input width="100%" height="46px" type="text" placeholder="이메일" value="" onChange={() => { }} />
-            <Input width="100%" height="46px" type="password" placeholder="비밀번호" value="" onChange={() => { }} />
+            <Input width="100%" height="46px" type="text" placeholder="이메일" value="" onChange={() => { }} control={control} name="email" />
+            <Input width="100%" height="46px" type="password" placeholder="비밀번호" value="" onChange={() => { }} control={control} name="password" />
           </InputContainer>
           <ButtonContainer>
-            <SignButton width="100%" disabled={false} onClick={() => { }} type="email">이메일로 로그인</SignButton>
+            <SignButton width="100%" disabled={false} onClick={handleSubmit(onSubmit)} type="email">이메일로 로그인</SignButton>
             <SnsContent>SNS</SnsContent>
             <SignButton width="100%" disabled={false} onClick={() => { }} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
             <InputContent>

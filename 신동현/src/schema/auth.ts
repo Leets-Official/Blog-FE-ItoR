@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+const loginSchema = z.object({
+  email: z.string().email({ message: "이메일 형식이 적합하지 않습니다." }),
+  password: z.string().min(1, { message: "비밀번호를 입력해주세요." }).min(8, { message: "비밀번호는 최소 8글자 입니다." }).max(20, { message: "비밀번호는 최대 20글자 입니다." }),
+});
+
 const signUpEmailSchema = z.object({
   email: z.string().min(1, { message: "이메일을 입력해주세요." }).email({ message: "이메일 형식이 적합하지 않습니다." }),
   password: z.string().min(1, { message: "비밀번호를 입력해주세요." }).min(8, { message: "비밀번호는 최소 8글자 입니다." }).max(20, { message: "비밀번호는 최대 20글자 입니다." }),
@@ -25,4 +30,4 @@ const signUpSocialSchema = z.object({
   bio: z.string().min(1, { message: "한 줄 소개를 입력해주세요." }).max(50, { message: "한 줄 소개는 최대 50글자 입니다." }),
 });
 
-export { signUpEmailSchema, signUpSocialSchema };
+export { loginSchema, signUpEmailSchema, signUpSocialSchema };
