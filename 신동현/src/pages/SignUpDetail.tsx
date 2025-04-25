@@ -7,6 +7,7 @@ import Input from "@/components/ui/Input";
 import { useState } from "react";
 import Modal from "@/components/ui/Modal/Modal";
 import ActionButton from "@/components/ui/Button/ActionButton";
+import signUpSchema from "@/schema/auth";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -152,15 +153,51 @@ const SocialBoxTitle = styled.div`
 
 
 const EmailUI = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState("");
+  const [name, setName] = useState("");
+  const [birth, setBirth] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [bio, setBio] = useState("");
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  }
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  }
+
+  const handlePasswordCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPasswordCheck(e.target.value);
+  }
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e.target.value);
+  }
+
+  const handleBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBirth(e.target.value);
+  }
+
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNickname(e.target.value);
+  }
+
+  const handleBioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBio(e.target.value);
+  }
+
   return (
     <InputContainer>
-      <Input title="이메일" type="text" placeholder="이메일" value="" onChange={() => { }} />
-      <Input title="비밀번호" type="password" placeholder="비밀번호" value="" onChange={() => { }} />
-      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" value="" onChange={() => { }} />
-      <Input title="이름" type="text" placeholder="이름" value="" onChange={() => { }} />
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" value="" onChange={() => { }} />
-      <Input title="닉네임" type="text" placeholder="닉네임" subTitle="* 20글자 이내" value="" onChange={() => { }} />
-      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" value="" onChange={() => { }} />
+      <Input title="이메일" type="text" placeholder="이메일" value={email} onChange={handleEmailChange} />
+      <Input title="비밀번호" type="password" placeholder="비밀번호" value={password} onChange={handlePasswordChange} />
+      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" value={passwordCheck} onChange={handlePasswordCheckChange} />
+      <Input title="이름" type="text" placeholder="이름" value={name} onChange={handleNameChange} />
+      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" value={birth} onChange={handleBirthChange} />
+      <Input title="닉네임" type="text" placeholder="닉네임" value={nickname} onChange={handleNicknameChange} />
+      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" value={bio} onChange={handleBioChange} />
     </InputContainer>
   )
 }
