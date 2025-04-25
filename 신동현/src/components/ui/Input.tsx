@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
 const Container = styled.div`
   width: 100%;
@@ -43,7 +44,15 @@ const SubTitle = styled(Title)`
   color: #909090;
 `;
 
-interface InputProps {
+const ErrorText = styled.p`
+  color: #ff3f3f;
+  font-size: 12px;
+  font-weight: 300;
+  padding-left: 2px;
+  margin-top: 6px;
+`;
+
+interface InputProps<T extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
   title?: string;
   subTitle?: string;
   width?: string;
@@ -55,24 +64,33 @@ interface InputProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   noneBorder?: boolean;
   style?: React.CSSProperties;
+  control?: Control<T>;
+  name: Path<T>;
 }
 
-const Input = ({ title, subTitle, type, placeholder, value, disabled, onChange, noneBorder, ...rest }: InputProps) => {
+const Input = <T extends FieldValues>({ title, subTitle, type, placeholder, value, disabled, onChange, noneBorder, name, control, ...rest }: InputProps<T>) => {
 
   return (
-    <Container>
-      {title && <Title>{title}</Title>}
-      <StyledInput
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        disabled={disabled}
-        noneBorder={noneBorder}
-        {...rest}
-      />
-      {subTitle && <SubTitle>{subTitle}</SubTitle>}
-    </Container>
+    <Controller
+      control={control}
+      name={name}
+      render={({ field, fieldState }) => (
+        <Container>
+          {title && <Title>{title}</Title>}
+          <StyledInput
+            type={type}
+            placeholder={placeholder}
+            value={field.value}
+            onChange={field.onChange}
+            disabled={disabled}
+            noneBorder={noneBorder}
+            {...rest}
+          />
+          {subTitle && <SubTitle>{subTitle}</SubTitle>}
+          {fieldState.error && <ErrorText>{fieldState.error.message}</ErrorText>}
+        </Container>
+      )}
+    />
   )
 }
 

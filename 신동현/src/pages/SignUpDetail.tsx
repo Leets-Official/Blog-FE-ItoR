@@ -8,6 +8,9 @@ import { useState } from "react";
 import Modal from "@/components/ui/Modal/Modal";
 import ActionButton from "@/components/ui/Button/ActionButton";
 import signUpSchema from "@/schema/auth";
+import { Control, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -152,7 +155,8 @@ const SocialBoxTitle = styled.div`
 `;
 
 
-const EmailUI = () => {
+
+const EmailUI = ({ control }: { control: Control<z.infer<typeof signUpSchema>> }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -161,48 +165,23 @@ const EmailUI = () => {
   const [nickname, setNickname] = useState("");
   const [bio, setBio] = useState("");
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  }
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }
-
-  const handlePasswordCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPasswordCheck(e.target.value);
-  }
-
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
-  }
-
-  const handleBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBirth(e.target.value);
-  }
-
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-  }
-
-  const handleBioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBio(e.target.value);
-  }
-
   return (
     <InputContainer>
-      <Input title="이메일" type="text" placeholder="이메일" value={email} onChange={handleEmailChange} />
-      <Input title="비밀번호" type="password" placeholder="비밀번호" value={password} onChange={handlePasswordChange} />
-      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" value={passwordCheck} onChange={handlePasswordCheckChange} />
-      <Input title="이름" type="text" placeholder="이름" value={name} onChange={handleNameChange} />
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" value={birth} onChange={handleBirthChange} />
-      <Input title="닉네임" type="text" placeholder="닉네임" value={nickname} onChange={handleNicknameChange} />
-      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" value={bio} onChange={handleBioChange} />
+      <Input title="이메일" type="text" placeholder="이메일" control={control} name="email" value={email} onChange={(e) => { setEmail(e.target.value) }} />
+      <Input title="비밀번호" type="password" placeholder="비밀번호" control={control} name="password" value={password} onChange={(e) => { setPassword(e.target.value) }} />
+      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" control={control} name="passwordCheck" value={passwordCheck} onChange={(e) => { setPasswordCheck(e.target.value) }} />
+      <Input title="이름" type="text" placeholder="이름" control={control} name="name" value={name} onChange={(e) => { setName(e.target.value) }} />
+      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" value={birth} onChange={(e) => { setBirth(e.target.value) }} />
+      <Input title="닉네임" type="text" placeholder="닉네임" control={control} name="nickname" value={nickname} onChange={(e) => { setNickname(e.target.value) }} />
+      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" value={bio} onChange={(e) => { setBio(e.target.value) }} />
     </InputContainer>
   )
 }
 
-const KaKaoUI = () => {
+const KaKaoUI = ({ control }: { control: Control<z.infer<typeof signUpSchema>> }) => {
+  const [nickname, setNickname] = useState("");
+  const [bio, setBio] = useState("");
+
   return (
     <InputContainer>
       <SocialBoxContainer>
@@ -214,16 +193,28 @@ const KaKaoUI = () => {
           </SocialBoxContext>
         </SocialBox>
       </SocialBoxContainer>
-      <Input title="이메일" type="email" placeholder="111@naver.com" value="" disabled={true} onChange={() => { }} />
-      <Input title="이름" type="text" placeholder="신동동" value="" disabled={true} onChange={() => { }} />
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" value="" onChange={() => { }} />
-      <Input title="닉네임" type="text" placeholder="닉네임" subTitle="* 20글자 이내" value="" onChange={() => { }} />
-      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" value="" onChange={() => { }} />
+      {/* <InputShape title="이메일" />
+      <InputShape title="이름"/>
+      <InputShape title="생년월일" /> */}
+      <Input title="닉네임" type="text" placeholder="닉네임" subTitle="* 20글자 이내" control={control} name="nickname" value={nickname} onChange={(e) => { setNickname(e.target.value) }} />
+      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" value={bio} onChange={(e) => { setBio(e.target.value) }} />
     </InputContainer>
   )
 }
 
 const SignUpDetail = () => {
+  const { control, handleSubmit } = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      passwordCheck: "",
+      name: "",
+      birth: "",
+      nickname: "",
+      bio: "",
+    }
+  });
   const location = useLocation();
   const type = location.search.split("=")[1];
 
@@ -235,6 +226,11 @@ const SignUpDetail = () => {
 
   const closeConfirmModal = () => {
     setIsOpenConfirmModal(false);
+  }
+
+  const onSubmit = (data: z.infer<typeof signUpSchema>) => {
+    console.log(data);
+    openConfirmModal();
   }
 
   return (
@@ -254,9 +250,9 @@ const SignUpDetail = () => {
             <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF" style={{ border: "1px solid #E6E6E6" }}>프로필 사진 추가</Button>
           </ProfileChangeContainer>
         </ProfileContainer >
-        {type === "email" ? <EmailUI /> : <KaKaoUI />}
+        {type === "email" ? <EmailUI control={control} /> : <KaKaoUI control={control} />}
         <ButtonContainer>
-          <ActionButton type="blue" width="100%" height="38px" onClick={openConfirmModal}>회원가입</ActionButton>
+          <ActionButton type="blue" width="100%" height="38px" onClick={handleSubmit(onSubmit)}>회원가입</ActionButton>
         </ButtonContainer>
       </MainContainer>
       <Modal open={isOpenConfirmModal} title="회원가입이 완료되었습니다!" onCancel={closeConfirmModal} onConfirm={() => { }} onClose={closeConfirmModal} cancelText="확인" confirmText="로그인하기" confirmType="positive" animation="fadeIn">
