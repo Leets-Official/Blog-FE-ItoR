@@ -7,7 +7,7 @@ import Input from "@/components/ui/Input";
 import { useState } from "react";
 import Modal from "@/components/ui/Modal/Modal";
 import ActionButton from "@/components/ui/Button/ActionButton";
-import signUpSchema from "@/schema/auth";
+import { signUpEmailSchema, signUpSocialSchema } from "@/schema/auth";
 import { Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -156,7 +156,7 @@ const SocialBoxTitle = styled.div`
 
 
 
-const EmailUI = ({ control }: { control: Control<z.infer<typeof signUpSchema>> }) => {
+const EmailUI = ({ control }: { control: Control<z.infer<typeof signUpEmailSchema>> }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
@@ -179,6 +179,7 @@ const EmailUI = ({ control }: { control: Control<z.infer<typeof signUpSchema>> }
 }
 
 const KaKaoUI = ({ control }: { control: Control<z.infer<typeof signUpSchema>> }) => {
+  const [birth, setBirth] = useState("");
   const [nickname, setNickname] = useState("");
   const [bio, setBio] = useState("");
 
@@ -193,9 +194,23 @@ const KaKaoUI = ({ control }: { control: Control<z.infer<typeof signUpSchema>> }
           </SocialBoxContext>
         </SocialBox>
       </SocialBoxContainer>
-      {/* <InputShape title="이메일" />
-      <InputShape title="이름"/>
-      <InputShape title="생년월일" /> */}
+      <SocialBoxContainer>
+        <SocialBoxTitle>이메일</SocialBoxTitle>
+        <SocialBox>
+          <SocialBoxContext>
+            djhakjhs1726@naver.com
+          </SocialBoxContext>
+        </SocialBox>
+      </SocialBoxContainer>
+      <SocialBoxContainer>
+        <SocialBoxTitle>이름</SocialBoxTitle>
+        <SocialBox>
+          <SocialBoxContext>
+            김릿츠
+          </SocialBoxContext>
+        </SocialBox>
+      </SocialBoxContainer>
+      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" value={birth} onChange={(e) => { setBirth(e.target.value) }} />
       <Input title="닉네임" type="text" placeholder="닉네임" subTitle="* 20글자 이내" control={control} name="nickname" value={nickname} onChange={(e) => { setNickname(e.target.value) }} />
       <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" value={bio} onChange={(e) => { setBio(e.target.value) }} />
     </InputContainer>
@@ -203,8 +218,8 @@ const KaKaoUI = ({ control }: { control: Control<z.infer<typeof signUpSchema>> }
 }
 
 const SignUpDetail = () => {
-  const { control, handleSubmit } = useForm<z.infer<typeof signUpSchema>>({
-    resolver: zodResolver(signUpSchema),
+  const { control: controlEmail, handleSubmit: handleSubmitEmail } = useForm<z.infer<typeof signUpEmailSchema>>({
+    resolver: zodResolver(signUpEmailSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -213,8 +228,19 @@ const SignUpDetail = () => {
       birth: "",
       nickname: "",
       bio: "",
-    }
+    },
   });
+
+  const { control: controlSocial, handleSubmit: handleSubmitSocial } = useForm<z.infer<typeof signUpSocialSchema>>({
+    resolver: zodResolver(signUpSocialSchema),
+    defaultValues: {
+      birth: "",
+      nickname: "",
+      bio: "",
+    },
+  });
+
+
   const location = useLocation();
   const type = location.search.split("=")[1];
 
@@ -228,7 +254,7 @@ const SignUpDetail = () => {
     setIsOpenConfirmModal(false);
   }
 
-  const onSubmit = (data: z.infer<typeof signUpSchema>) => {
+  const onSubmit = (data: z.infer<typeof signUpEmailSchema> | z.infer<typeof signUpSocialSchema>) => {
     console.log(data);
     openConfirmModal();
   }
@@ -250,9 +276,9 @@ const SignUpDetail = () => {
             <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF" style={{ border: "1px solid #E6E6E6" }}>프로필 사진 추가</Button>
           </ProfileChangeContainer>
         </ProfileContainer >
-        {type === "email" ? <EmailUI control={control} /> : <KaKaoUI control={control} />}
+        {type === "email" ? <EmailUI control={controlEmail} /> : <KaKaoUI control={controlSocial} />}
         <ButtonContainer>
-          <ActionButton type="blue" width="100%" height="38px" onClick={handleSubmit(onSubmit)}>회원가입</ActionButton>
+          <ActionButton type="blue" width="100%" height="38px" onClick={type === "email" ? handleSubmitEmail(onSubmit) : handleSubmitSocial(onSubmit)}>회원가입</ActionButton>
         </ButtonContainer>
       </MainContainer>
       <Modal open={isOpenConfirmModal} title="회원가입이 완료되었습니다!" onCancel={closeConfirmModal} onConfirm={() => { }} onClose={closeConfirmModal} cancelText="확인" confirmText="로그인하기" confirmType="positive" animation="fadeIn">
