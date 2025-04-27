@@ -3,12 +3,15 @@ import Button from '@/components/common/Button/Button';
 import { LeftSection, RightSection, Wrapper } from '@/components/common/Modal/LoginModal';
 import { FlexRow } from '@/components/common/SideBar/SideBar.styled';
 import { Text } from '@/components/home/PostItem';
+import { useNavigate } from 'react-router-dom';
 
-interface SignupSelectionProps {
-  onSelect: (type: 'email' | 'kakao') => void;
-}
+const SignupSelection: React.FC = () => {
+  const nav = useNavigate();
 
-const SignupSelection: React.FC<SignupSelectionProps> = ({ onSelect }) => {
+  const handleSelect = (type: 'email' | 'kakao') => {
+    nav(`/signup/${type}`);
+  };
+
   return (
     <Wrapper bgColor="white">
       <LeftSection>
@@ -23,7 +26,7 @@ const SignupSelection: React.FC<SignupSelectionProps> = ({ onSelect }) => {
           size="lg"
           rounded="md"
           fullWidth
-          onClick={() => onSelect('email')}
+          onClick={() => handleSelect('email')}
         >
           이메일로 회원가입
         </Button>
@@ -34,7 +37,13 @@ const SignupSelection: React.FC<SignupSelectionProps> = ({ onSelect }) => {
           </Text>
           <LineSvg stroke="#f5f5f5" />
         </FlexRow>
-        <Button variant="kakao" size="lg" rounded="md" fullWidth onClick={() => onSelect('kakao')}>
+        <Button
+          variant="kakao"
+          size="lg"
+          rounded="md"
+          fullWidth
+          onClick={() => handleSelect('kakao')}
+        >
           <KakaoSvg /> 카카오로 회원가입
         </Button>
       </RightSection>

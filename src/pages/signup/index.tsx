@@ -1,20 +1,22 @@
-import { useState } from 'react';
 import { Header, SignupHeader, SignupSelection } from '@/components';
 import { Flex } from '@/components/common/SideBar/SideBar.styled';
 import SignupField from '@/components/signup/SignupField';
+import { useParams } from 'react-router-dom';
 
 const Signup: React.FC = () => {
-  const [signupType, setSignupType] = useState<'email' | 'kakao' | null>(null);
+  const { type } = useParams();
 
   return (
     <Flex>
       <Header variant="default" />
-      <SignupHeader title="회원가입" hasSubTitle={signupType !== null} />
+      <SignupHeader title="회원가입" hasSubTitle={type !== undefined} />
 
-      {signupType === null ? (
-        <SignupSelection onSelect={(type) => setSignupType(type)} />
+      {type === undefined ? (
+        <SignupSelection />
+      ) : type === 'email' || type === 'kakao' ? (
+        <SignupField signupType={type} />
       ) : (
-        <SignupField signupType={signupType} />
+        <div>잘못된 접근입니다.</div>
       )}
     </Flex>
   );
