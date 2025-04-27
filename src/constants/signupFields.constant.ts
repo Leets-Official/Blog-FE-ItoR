@@ -10,7 +10,7 @@ export const emailSignupFields = [
   { label: '이름', placeholder: '이름', name: 'name', type: 'text' },
   { label: '생년월일', placeholder: 'YYYY - MM - DD', name: 'birth', type: 'text' },
   { label: '닉네임', placeholder: '닉네임', name: 'nickname', type: 'text' },
-  { label: '한 줄 소개', placeholder: '한 줄 소개', name: 'intro', type: 'text' },
+  { label: '한 줄 소개', placeholder: '한 줄 소개', name: 'bio', type: 'text' },
 ] as const;
 
 export const kakaoSignupFields = [
@@ -19,5 +19,5 @@ export const kakaoSignupFields = [
   { label: '이름', placeholder: '이름', name: 'name', type: 'text' },
   { label: '생년월일', placeholder: 'YYYY - MM - DD', name: 'birth', type: 'text' },
   { label: '닉네임', placeholder: '닉네임', name: 'nickname', type: 'text' },
-  { label: '한 줄 소개', placeholder: '한 줄 소개', name: 'intro', type: 'text' },
+  { label: '한 줄 소개', placeholder: '한 줄 소개', name: 'bio', type: 'text' },
 ] as const;

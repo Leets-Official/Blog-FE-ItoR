@@ -6,6 +6,7 @@ import {
   Label,
   StyledInput,
 } from '@/components/common/Input/Input.styled';
+import { forwardRef } from 'react';
 
 interface InputProps {
   label?: string;
@@ -22,39 +23,47 @@ interface InputProps {
   icon?: React.ReactNode;
 }
 
-const Input: React.FC<InputProps> = ({
-  label,
-  placeholder,
-  type = 'text',
-  errorMessage,
-  value,
-  onChange,
-  readOnly = false,
-  disabled = false,
-  textColor,
-  borderColor,
-  icon,
-}) => {
-  return (
-    <InputWrapper>
-      {label && <Label>{label}</Label>}
-      <InputBox>
-        {icon && <IconWrapper>{icon}</IconWrapper>}
-        <StyledInput
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-          readOnly={readOnly}
-          disabled={disabled}
-          textColor={textColor}
-          borderColor={borderColor}
-          hasIcon={!!icon}
-        />
-      </InputBox>
-      {errorMessage && <ErrorText>{errorMessage}</ErrorText>}
-    </InputWrapper>
-  );
-};
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      label,
+      placeholder,
+      type = 'text',
+      errorMessage,
+      value,
+      onChange,
+      readOnly = false,
+      disabled = false,
+      textColor,
+      borderColor,
+      icon,
+      ...props
+    },
+    ref,
+  ) => {
+    return (
+      <InputWrapper>
+        {label && <Label>{label}</Label>}
+        <InputBox>
+          {icon && <IconWrapper>{icon}</IconWrapper>}
+          <StyledInput
+            ref={ref}
+            type={type}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            readOnly={readOnly}
+            disabled={disabled}
+            textColor={textColor}
+            borderColor={borderColor}
+            hasIcon={!!icon}
+            {...props}
+          />
+        </InputBox>
+        {errorMessage && <ErrorText>*{errorMessage}</ErrorText>}
+      </InputWrapper>
+    );
+  },
+);
 
 export default Input;

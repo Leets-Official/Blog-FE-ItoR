@@ -5,6 +5,7 @@ import ActionRight from '@/components/common/Header/ActionRight';
 import { HeaderContainer, SectionWrapper } from '@/components/common/Header/Header.styled';
 import { useState } from 'react';
 import SideBar from '@/components/common/SideBar/SideBar';
+import { useNavigate } from 'react-router-dom';
 
 type HeaderVariant = 'default' | 'write' | 'detail' | 'action';
 
@@ -60,6 +61,7 @@ const Header: React.FC<HeaderProps> = ({
   onClickConfirm,
   onClickNegative,
 }) => {
+  const nav = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -70,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({
             onClick={() => setIsSidebarOpen((prev) => !prev)}
             style={{ cursor: 'pointer' }}
           />
-          <LogoSvg />
+          <LogoSvg onClick={() => nav('/')} style={{ cursor: 'pointer' }} />
         </SectionWrapper>
         <SectionWrapper>
           {renderRightSection(

@@ -7,6 +7,9 @@ import theme from '@/styles/theme.styled';
 import { Text } from '@/components/home/PostItem';
 import { useRef } from 'react';
 import { useImageUpload } from '@/hooks/useImageUpload';
+import { useForm, Path } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { SignupSchema, signupSchema } from '@/schema/auth';
 
 interface SignupFieldProps {
   signupType: 'email' | 'kakao';
@@ -52,6 +55,18 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
 
   const handleClick = () => inputRef.current?.click();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupSchema>({
+    resolver: zodResolver(signupSchema),
+  });
+
+  const onSubmit = (data: SignupSchema) => {
+    console.log('Form Data:', data);
+    // TODO:  회원가입 api 요청
+  };
   return (
     <Wrapper>
       <InputSection>
@@ -97,17 +112,26 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
         {fields.map(({ label, placeholder, name, type }) => (
           <InputWrapper key={name}>
             <Input
+              {...register(name as Path<SignupSchema>)}
               label={label}
               placeholder={placeholder}
               type={type}
               readOnly={isKakao && readOnlyFields.includes(name)}
               icon={name === 'socialLogin' ? <KakaoSvg /> : undefined}
+              errorMessage={errors[name as keyof SignupSchema]?.message}
             />
           </InputWrapper>
         ))}
       </InputSection>
 
-      <Button variant="primary-outline" size="lg" rounded="full" fullWidth>
+      <Button
+        variant="primary-outline"
+        size="lg"
+        rounded="full"
+        fullWidth
+        onClick={handleSubmit(onSubmit)}
+        type="submit"
+      >
         회원가입 완료
       </Button>
     </Wrapper>

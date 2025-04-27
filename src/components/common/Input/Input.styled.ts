@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const InputWrapper = styled.div`
   ${flexColumn}
-  gap:16px;
+  gap:12px;
   width: 100%;
 `;
 
