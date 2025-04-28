@@ -5,6 +5,7 @@ import { Comment } from '@/types/post';
 import { Textarea, Button, Image } from '@/components';
 import { formatPostDate } from '@/utils/formatPostDate';
 import { MeatballSvg } from '@/assets';
+import { useState } from 'react';
 
 interface CommentSectionProps {
   commentCount: number;
@@ -32,8 +33,27 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   writerNickName,
   writerProfileImage,
 }) => {
+  const [commentList, setCommentList] = useState<Comment[]>(comments);
+  const [newComment, setNewComment] = useState<string>('');
+
   const hasComments = comments.length > 0;
 
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewComment(e.target.value);
+  };
+
+  const handleCommentSubmit = () => {
+    const newCommentData: Comment = {
+      id: Date.now(), // 임시 id
+      nickName: writerNickName,
+      profileImage: writerProfileImage,
+      createAt: new Date().toISOString(),
+      content: newComment.trim(),
+    };
+
+    setCommentList((prev) => [...prev, newCommentData]);
+    setNewComment('');
+  };
   return (
     <CommentSectionWrapper>
       <Text fontSize="md" fontWeight="medium">
@@ -41,7 +61,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       </Text>
 
       {hasComments ? (
-        comments.map((comment) => (
+        commentList.map((comment) => (
           <div key={comment.id}>
             <CommentListWrapper>
               <div style={{ display: 'flex', gap: '8px' }}>
@@ -102,10 +122,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({
               placeholderSize="sm"
               placeholderColor="gray20"
               hasBorder={false}
+              value={newComment}
+              onChange={handleCommentChange}
             />
 
             <SubmitButtonWrapper>
-              <Button variant="secondary" size="xs" rounded="full">
+              <Button
+                variant={newComment.trim() ? 'secondary-black' : 'secondary'}
+                size="xs"
+                rounded="full"
+                onClick={handleCommentSubmit}
+                disabled={!newComment.trim()}
+              >
                 등록
               </Button>
             </SubmitButtonWrapper>
@@ -128,8 +156,10 @@ export default CommentSection;
 
 const CommentInputWrapper = styled.div`
   ${flexColumn}
-  gap:8px;
   width: 100%;
+  gap: 8px;
+  padding: 16px;
+  margin-bottom: 80px;
   border: 1px solid ${({ theme }) => theme.COLORS.gray[90]};
   border-radius: 4px;
 `;

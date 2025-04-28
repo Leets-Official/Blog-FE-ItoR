@@ -5,6 +5,7 @@ export type ButtonVariant =
   | 'primary-outline'
   | 'secondary'
   | 'secondary-filled'
+  | 'secondary-black'
   | 'black'
   | 'negative'
   | 'text'
@@ -34,6 +35,11 @@ const variantStyles: Record<ButtonVariant, ReturnType<typeof css>> = {
   'secondary-filled': css`
     background-color: ${({ theme }) => theme.COLORS.white};
     color: ${({ theme }) => theme.COLORS.gray[56]};
+    border: none;
+  `,
+  'secondary-black': css`
+    background-color: ${({ theme }) => theme.COLORS.black};
+    color: ${({ theme }) => theme.COLORS.white};
     border: none;
   `,
   black: css`
