@@ -2,7 +2,10 @@ import { z } from "zod";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "이메일 형식이 적합하지 않습니다." }),
-  password: z.string().min(1, { message: "비밀번호를 입력해주세요." }).min(8, { message: "비밀번호는 최소 8글자 입니다." }).max(64, { message: "비밀번호는 최대 64글자 입니다." }),
+  password: z.string().min(1, { message: "비밀번호를 입력해주세요." }).min(8, { message: "비밀번호는 최소 8글자 입니다." }).max(64, { message: "비밀번호는 최대 64글자 입니다." }).refine((value) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,64}$/;
+    return passwordRegex.test(value);
+  }, { message: "비밀번호는 영문, 숫자, 특수문자를 포함해야 합니다." }),
 });
 
 const signUpEmailSchema = z.object({

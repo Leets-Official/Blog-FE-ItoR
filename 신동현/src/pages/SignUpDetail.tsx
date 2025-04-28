@@ -11,7 +11,8 @@ import { signUpEmailSchema, signUpSocialSchema } from "@/schema/auth";
 import { Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import api from "@/api/apt";
+import api from "@/api/api";
+import EmailSignUp from "@/api/signUp";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -256,23 +257,24 @@ const SignUpDetail = () => {
     setIsOpenConfirmModal(false);
   }
 
-  const onSubmit = (data: z.infer<typeof signUpEmailSchema> | z.infer<typeof signUpSocialSchema>) => {
+  const onSubmit = async (data: z.infer<typeof signUpEmailSchema> | z.infer<typeof signUpSocialSchema>) => {
     console.log({ ...data });
-    if (type === "email") {
-      api.post("/auth/register", {
-        email: (data as z.infer<typeof signUpEmailSchema>).email.toString(),
-        nickname: (data as z.infer<typeof signUpEmailSchema>).nickname.toString(),
-        password: (data as z.infer<typeof signUpEmailSchema>).password.toString(),
-        profilePicture: "https://example.com/profile.jpg",
-        birthDate: (data as z.infer<typeof signUpEmailSchema>).birth.toString(),
-        name: (data as z.infer<typeof signUpEmailSchema>).name.toString(),
-        introduction: (data as z.infer<typeof signUpEmailSchema>).bio.toString(),
-      }).then((res) => {
-        console.log(res);
+    if (type === "email") { 
+      const response = await EmailSignUp(
+        (data as z.infer<typeof signUpEmailSchema>).email.toString(),
+        (data as z.infer<typeof signUpEmailSchema>).nickname.toString(),
+        (data as z.infer<typeof signUpEmailSchema>).password.toString(),
+        "https://example.com/profile.jpg",
+        (data as z.infer<typeof signUpEmailSchema>).birth.toString(),
+        (data as z.infer<typeof signUpEmailSchema>).name.toString(),
+        (data as z.infer<typeof signUpEmailSchema>).bio.toString(),
+      );
+
+      if (response.code === 200) {
         openConfirmModal();
-      });
-    } else {
-      openConfirmModal();
+      } else {
+        alert(response.response.data.message);
+      }
     }
   }
 

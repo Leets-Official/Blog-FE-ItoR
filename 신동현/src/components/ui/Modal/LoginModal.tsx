@@ -7,6 +7,7 @@ import { loginSchema } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import EamilLogin from "@/api/login";
 
 const Overlay = styled.div`
   position: fixed;
@@ -152,8 +153,20 @@ const Login = ({ open, onClose }: LoginProps) => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof loginSchema>) => {
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     console.log(data);
+    const response = await EamilLogin(data.email, data.password);
+    console.log(response);
+    if (response.code === 200 ) {
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("refreshToken", response.refreshToken);
+      localStorage.setItem("nickname", response.nickname);
+      localStorage.setItem("profilePicture", response.profilePicture);
+      alert("로그인에 성공했습니다.");
+    } else {
+      alert("로그인에 실패했습니다.");
+    }
+    onClose();
   }
 
   return (
