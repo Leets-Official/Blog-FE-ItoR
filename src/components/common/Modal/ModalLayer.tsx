@@ -28,9 +28,19 @@ const ModalLayer: React.FC = () => {
     );
   }
 
-  //   if (modalType === 'delete') {
-  //     return <DetailModal onClose={closeModal} onAction={() => {}} />;
-  //   }
+  if (modalType === 'delete') {
+    return (
+      <ActionModal
+        isOpen
+        onClose={closeModal}
+        message="해당 블로그를 삭제하시겠어요?"
+        subMessage="삭제된 블로그는 다시 확인할 수 없어요."
+        actionText="삭제하기"
+        cancelText="취소"
+        type="negative"
+      />
+    );
+  }
 
   return null;
 };

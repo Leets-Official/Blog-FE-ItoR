@@ -1,3 +1,4 @@
+import { useModal } from '@/context/ModalContext';
 import { flexColumn } from '@/styles/common.styled';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
@@ -43,11 +44,17 @@ export const MenuItems = styled.div<{ isNegative?: boolean }>`
 
 const DetailModal: React.FC<DetailModalProps> = ({ onClose, onAction }) => {
   const modalRef = useRef<HTMLDivElement>(null);
+  const { openModal } = useModal();
 
   const handleOutsideClick = (e: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
       onClose();
     }
+  };
+
+  const handleDeleteClick = () => {
+    onClose();
+    openModal('delete');
   };
 
   useEffect(() => {
@@ -60,7 +67,7 @@ const DetailModal: React.FC<DetailModalProps> = ({ onClose, onAction }) => {
   return (
     <ModalWrapper ref={modalRef}>
       <MenuItems onClick={() => onAction('edit')}>수정하기</MenuItems>
-      <MenuItems isNegative onClick={() => onAction('delete')}>
+      <MenuItems isNegative onClick={handleDeleteClick}>
         삭제하기
       </MenuItems>
     </ModalWrapper>
