@@ -1,5 +1,5 @@
 import { Clear, GITLOG, Kakao } from "@/assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import Input from "../Input";
 import SignButton from "../Button/SignButton";
@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import EamilLogin from "@/api/login";
+import Toast from "../Toast";
+import { useState } from "react";
 
 const Overlay = styled.div`
   position: fixed;
@@ -145,6 +147,8 @@ interface LoginProps {
 const Login = ({ open, onClose }: LoginProps) => {
   if (!open) return null;
 
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+
   const { control, handleSubmit } = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -157,20 +161,27 @@ const Login = ({ open, onClose }: LoginProps) => {
     console.log(data);
     const response = await EamilLogin(data.email, data.password);
     console.log(response);
-    if (response.code === 200 ) {
-      localStorage.setItem("accessToken", response.accessToken);
-      localStorage.setItem("refreshToken", response.refreshToken);
-      localStorage.setItem("nickname", response.nickname);
-      localStorage.setItem("profilePicture", response.profilePicture);
-      alert("로그인에 성공했습니다.");
-    } else {
-      alert("로그인에 실패했습니다.");
+
+    if (response.error) {
+      setToast({ message: response.message, type: "error" });
+      return;
     }
-    onClose();
+    
+    localStorage.setItem("accessToken", response.data.accessToken);
+    localStorage.setItem("refreshToken", response.data.refreshToken);
+    localStorage.setItem("nickname", response.data.nickname);
+    localStorage.setItem("profilePicture", response.data.profilePicture);
+    
+    setToast({ message: "로그인에 성공했습니다.", type: "success" });
+    setTimeout(() => {
+      onClose();
+      window.location.reload();
+    }, 3000);
   }
 
   return (
     <Overlay onClick={onClose}>
+      {toast && <Toast key={Date.now()} message={toast.message} type={toast.type} />}
       <Container onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>
           <Clear width="30px" height="30px" fill="white" />

@@ -5,7 +5,7 @@ import LoginModal from "@/components/ui/Modal/LoginModal";
 import Header from "@/components/layout/header/Header";
 import Posts from "@/components/layout/post/PostList";
 import DummyPostList from "@/components/layout/post/DummyPostList";
-import Toast from "@/components/ui/Toast";
+
 const Home = () => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,10 +26,9 @@ const Home = () => {
   }
 
   const postList = DummyPostList({ postCount: 123 });
-  
+
   return (
     <>
-      <Toast message="회원가입에 성공했습니다." type="success" />
       <Header type="main" />
       <Posts postList={postList} />
 

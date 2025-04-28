@@ -44,6 +44,7 @@ interface HeaderProps {
 
 const Header = ({ type }: HeaderProps) => {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const isLogin = localStorage.getItem("accessToken") ? true : false;
 
   const setSideBarOpen = () => {
     setIsSideBarOpen((current) => !current);
@@ -63,7 +64,7 @@ const Header = ({ type }: HeaderProps) => {
           {type === "mypage" && <MyPageHeader />}
         </RightContainer>
       </HeaderContainer>
-      {isSideBarOpen && <SideBar isOpen={isSideBarOpen} onClose={setSideBarOpen} isLogin={false} />}
+      {isSideBarOpen && <SideBar isOpen={isSideBarOpen} onClose={setSideBarOpen} isLogin={isLogin} />}
     </>
   );
 };

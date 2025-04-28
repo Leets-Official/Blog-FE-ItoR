@@ -61,6 +61,9 @@ const Toast = ({ message, type }: ToastProps) => {
   const [isRender, setIsRender] = useState(true);
 
   useEffect(() => {
+    setIsVisible(true);
+    setIsRender(true);
+
     const timer = setTimeout(() => {
       setIsVisible(false);
       setTimeout(() => {
@@ -69,7 +72,7 @@ const Toast = ({ message, type }: ToastProps) => {
     }, 2700);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [message, type]);
 
   if (!isRender) return null;
 

@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import api from "@/api/api";
 import EmailSignUp from "@/api/signUp";
+import Toast from "@/components/ui/Toast";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -220,6 +221,8 @@ const KaKaoUI = ({ control }: { control: Control<z.infer<typeof signUpSocialSche
 }
 
 const SignUpDetail = () => {
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+
   const { control: controlEmail, handleSubmit: handleSubmitEmail } = useForm<z.infer<typeof signUpEmailSchema>>({
     resolver: zodResolver(signUpEmailSchema),
     defaultValues: {
@@ -270,10 +273,11 @@ const SignUpDetail = () => {
         (data as z.infer<typeof signUpEmailSchema>).bio.toString(),
       );
 
-      if (response.code === 200) {
-        openConfirmModal();
+      if (response.error) {
+        setToast({ message: response.message, type: "error" });
       } else {
-        alert(response.response.data.message);
+        setToast({ message: "회원가입에 성공했습니다!", type: "success" });
+        openConfirmModal();
       }
     }
   }
@@ -290,6 +294,7 @@ const SignUpDetail = () => {
 
   return (
     <Wrapper>
+      {toast && <Toast key={Date.now()} message={toast.message} type={toast.type} />}
       <Header type="write" />
       <TitleContainer>
         <TitleContentContainer>

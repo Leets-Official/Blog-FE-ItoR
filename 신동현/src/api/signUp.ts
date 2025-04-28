@@ -12,9 +12,12 @@ const EmailSignUp = async (email: string, nickname: string, password: string, pr
       introduction,
     });
     return response.data;
-  } catch (error) {
-    console.error("EmailSignUp Error", error);
-    return error;
+  } catch (error: any) {
+    console.log("EmailSignUp Error", error);
+    return {
+      error: true,
+      message: error.response?.data?.message || "회원가입에 실패했습니다."
+    };
   }
 };
 
