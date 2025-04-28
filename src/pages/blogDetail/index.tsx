@@ -6,6 +6,7 @@ import ContentSection from '@/components/blogDetail/ContentSection';
 import CommentSection from '@/components/blogDetail/CommentSection';
 import { ContentWrapper } from '@/pages/post';
 import styled from 'styled-components';
+import BlogFooter from '@/components/blogDetail/BlogFooter';
 
 const DetailWrapper = styled(ContentWrapper)`
   margin-top: 120px;
@@ -38,6 +39,7 @@ const BlogDetail: React.FC = () => {
           writerNickName={post.nickName}
           writerProfileImage={post.profileImage || ''}
         />
+        <BlogFooter />
       </DetailWrapper>
     </div>
   );
