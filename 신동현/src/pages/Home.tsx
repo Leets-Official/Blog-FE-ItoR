@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Modal from "@/components/ui/Modal/Modal";
 import LoginModal from "@/components/ui/Modal/LoginModal";
 import Header from "@/components/layout/header/Header";
@@ -6,9 +7,16 @@ import Posts from "@/components/layout/post/PostList";
 import DummyPostList from "@/components/layout/post/DummyPostList";
 
 const Home = () => {
-
+  const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    if (searchParams.get('type') === 'login') {
+      setIsLoginModalOpen(true);
+    }
+  }, [location]);
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -30,7 +38,6 @@ const Home = () => {
       </Modal>
       <LoginModal open={isLoginModalOpen} onClose={closeLoginModal} />
     </>
-
   )
 }
 

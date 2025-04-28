@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Header from "@/components/layout/header/Header";
 import styled from "styled-components";
 import Button from "@/components/ui/Button/Button";
@@ -240,6 +240,7 @@ const SignUpDetail = () => {
     },
   });
 
+  const navigate = useNavigate();
 
   const location = useLocation();
   const type = location.search.split("=")[1];
@@ -257,6 +258,16 @@ const SignUpDetail = () => {
   const onSubmit = (data: z.infer<typeof signUpEmailSchema> | z.infer<typeof signUpSocialSchema>) => {
     console.log(data);
     openConfirmModal();
+  }
+
+  const onCancel = () => {
+    closeConfirmModal();
+    navigate("/");
+  }
+
+  const onConfirm = () => {
+    closeConfirmModal();
+    navigate("/?type=login");
   }
 
   return (
@@ -281,7 +292,7 @@ const SignUpDetail = () => {
           <ActionButton type="blue" width="100%" height="38px" onClick={type === "email" ? handleSubmitEmail(onSubmit) : handleSubmitSocial(onSubmit)}>회원가입</ActionButton>
         </ButtonContainer>
       </MainContainer>
-      <Modal open={isOpenConfirmModal} title="회원가입이 완료되었습니다!" onCancel={closeConfirmModal} onConfirm={() => { }} onClose={closeConfirmModal} cancelText="확인" confirmText="로그인하기" confirmType="positive" animation="fadeIn">
+      <Modal open={isOpenConfirmModal} title="회원가입이 완료되었습니다!" onCancel={onCancel} onConfirm={onConfirm} onClose={closeConfirmModal} cancelText="확인" confirmText="로그인하기" confirmType="positive" animation="fadeIn">
       </Modal>
     </Wrapper>
   )
