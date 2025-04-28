@@ -1,0 +1,160 @@
+import { Text } from '../home/PostItem';
+import styled from 'styled-components';
+import { flexColumn, flexColumnCenter } from '@/styles/common.styled';
+import { Comment } from '@/types/post';
+import { Textarea, Button, Image } from '@/components';
+import { formatPostDate } from '@/utils/formatPostDate';
+import { MeatballSvg } from '@/assets';
+
+interface CommentSectionProps {
+  commentCount: number;
+  comments: Comment[];
+  isLoggedIn: boolean;
+  writerNickName: string;
+  writerProfileImage: string;
+}
+
+const CommentSectionWrapper = styled.div`
+  ${flexColumn}
+  gap: 40px;
+  width: 100%;
+`;
+
+const FlexColumn = styled.div`
+  ${flexColumnCenter}
+  gap: 4px;
+`;
+
+const CommentSection: React.FC<CommentSectionProps> = ({
+  commentCount,
+  comments,
+  isLoggedIn,
+  writerNickName,
+  writerProfileImage,
+}) => {
+  const hasComments = comments.length > 0;
+
+  return (
+    <CommentSectionWrapper>
+      <Text fontSize="md" fontWeight="medium">
+        댓글 <span style={{ color: '#00a1ff' }}>{commentCount}</span>
+      </Text>
+
+      {hasComments ? (
+        comments.map((comment) => (
+          <div key={comment.id}>
+            <CommentListWrapper>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <Image
+                  src={comment.profileImage}
+                  alt="user-profile"
+                  width="24px"
+                  height="24px"
+                  borderRadius="50%"
+                  objectFit="cover"
+                />
+                <div>
+                  <Text fontSize="sm" color="gray20">
+                    {comment.nickName}
+                  </Text>
+                  <Text fontSize="xs" color="gray56">
+                    {formatPostDate(comment.createAt)}
+                  </Text>
+                </div>
+              </div>
+              <MeatballSvg style={{ cursor: 'pointer' }} />
+            </CommentListWrapper>
+            <div>
+              <Text fontSize="sm">{comment.content}</Text>
+            </div>
+          </div>
+        ))
+      ) : (
+        <FlexColumn>
+          <Text fontSize="sm" color="gray78">
+            작성된 댓글이 없습니다.
+          </Text>
+          <Text fontSize="sm" color="gray78">
+            응원의 첫 번째 댓글을 달아주세요.
+          </Text>
+        </FlexColumn>
+      )}
+
+      {isLoggedIn ? (
+        <CommentInputWrapper>
+          <CommentInputTop>
+            <Image
+              src={writerProfileImage}
+              alt="내 프로필"
+              width="24px"
+              height="24px"
+              borderRadius="50%"
+              objectFit="cover"
+            />
+            <Text fontSize="sm" fontWeight="regular" color="gray20">
+              {writerNickName}
+            </Text>
+          </CommentInputTop>
+
+          <TextareaWrapper>
+            <Textarea
+              placeholder="댓글을 입력하세요."
+              placeholderSize="sm"
+              placeholderColor="gray20"
+              hasBorder={false}
+            />
+
+            <SubmitButtonWrapper>
+              <Button variant="secondary" size="xs" rounded="full">
+                등록
+              </Button>
+            </SubmitButtonWrapper>
+          </TextareaWrapper>
+        </CommentInputWrapper>
+      ) : (
+        <Textarea
+          placeholder="로그인하고 댓글을 달아보세요!"
+          inputColor="gray20"
+          inputSize="sm"
+          placeholderColor="gray20"
+          placeholderSize="sm"
+        />
+      )}
+    </CommentSectionWrapper>
+  );
+};
+
+export default CommentSection;
+
+const CommentInputWrapper = styled.div`
+  ${flexColumn}
+  gap:8px;
+  width: 100%;
+  border: 1px solid ${({ theme }) => theme.COLORS.gray[90]};
+  border-radius: 4px;
+`;
+
+const CommentInputTop = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const CommentListWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+`;
+
+const SubmitButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+`;
+
+const TextareaWrapper = styled.div`
+  ${flexColumn}
+  gap: 8px;
+  width: 100%;
+`;

@@ -5,7 +5,7 @@ import TitleSection from '@/components/blog/TitleSection';
 import { flexColumnCenter } from '@/styles/common.styled';
 import styled from 'styled-components';
 
-const ContentWrapper = styled.div`
+export const ContentWrapper = styled.div`
   ${flexColumnCenter}
   gap:40px;
   width: 100%;

@@ -15,9 +15,14 @@ const DetailRight: React.FC<{ onClick?: (action: string) => void }> = ({ onClick
     setIsModalOpen(false);
   };
 
+  const handleCommentClick = () => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    onClick?.('comment');
+  };
+
   return (
     <SectionWrapper>
-      <CommentSvg onClick={() => onClick?.('comment')} />
+      <CommentSvg onClick={handleCommentClick} />
       <MeatballSvg onClick={handleModalOpen} />
 
       {isModalOpen && <DetailModal onClose={() => setIsModalOpen(false)} onAction={handleAction} />}

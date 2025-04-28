@@ -6,11 +6,11 @@ import { Post } from '@/types/post';
 import { formatPostDate } from '@/utils/formatPostDate';
 import { useNavigate } from 'react-router-dom';
 
-interface PostItemProps {
+export interface PostItemProps {
   post: Post;
 }
 
-type TextColor = 'black' | 'gray33' | 'gray56' | 'gray20';
+type TextColor = 'black' | 'gray33' | 'gray56' | 'gray20' | 'gray78';
 
 export const Text = styled.div<{
   fontSize?: keyof typeof theme.FONT_SIZE;
@@ -27,6 +27,8 @@ export const Text = styled.div<{
         return theme.COLORS.gray[56];
       case 'gray20':
         return theme.COLORS.gray[20];
+      case 'gray78':
+        return theme.COLORS.gray[78];
       case 'black':
       default:
         return theme.COLORS.black;
@@ -41,25 +43,25 @@ export const Text = styled.div<{
   text-overflow: ellipsis;
 `;
 
-const FlexItem = styled.div<{ hasImage?: boolean }>`
+export const FlexItem = styled.div<{ hasImage?: boolean }>`
   ${flexJustifyCenter};
   gap: ${({ hasImage }) => (hasImage ? '24px' : '0')};
 `;
 
-const ItemContainer = styled.div`
+export const ItemContainer = styled.div`
   ${flexColumn}
   gap:36px;
   padding: 24px 0;
   cursor: pointer;
 `;
 
-const TextContent = styled.div`
+export const TextContent = styled.div`
   ${flexColumn}
   gap: 10px;
   flex: 1;
 `;
 
-const FooterItem = styled.div`
+export const FooterItem = styled.div`
   ${flexAlignCenter}
   gap:14px;
 `;
