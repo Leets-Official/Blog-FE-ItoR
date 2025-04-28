@@ -1,4 +1,4 @@
-import { Button, LoginModal, ActionModal } from '@/components';
+import { Button } from '@/components';
 import { DefaultProfileSvg } from '@/assets';
 import {
   Flex,
@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import { Text } from '@/components/home/PostItem';
 import { useNavigate } from 'react-router-dom';
+import { useModal } from '@/context/ModalContext';
 
 interface SideBarProps {
   onClose: () => void;
@@ -18,8 +19,7 @@ interface SideBarProps {
 const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
   const token = localStorage.getItem('accessToken');
   const [isClosing, setIsClosing] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const { openModal } = useModal();
   const nav = useNavigate();
 
   const handleClose = () => {
@@ -31,7 +31,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
 
   const handleClick = {
     write: () => nav('/post/write'),
-    logout: () => setIsLogoutModalOpen(true),
+    logout: () => openModal('logout'),
   };
 
   return (
@@ -78,7 +78,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
               variant="primary-outline"
               size="md"
               rounded="full"
-              onClick={() => setIsLoginModalOpen(true)}
+              onClick={() => openModal('login')}
             >
               깃로그 시작하기
             </Button>
@@ -97,23 +97,6 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
           </FlexRow>
         )}
       </SidebarWrapper>
-
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
-
-      <ActionModal
-        isOpen={isLogoutModalOpen}
-        onClose={() => setIsLogoutModalOpen(false)}
-        message="로그아웃을 진행할게요"
-        actionText="로그아웃"
-        cancelText="취소"
-        type="positive"
-        onConfirm={() => {
-          localStorage.removeItem('accessToken');
-          setIsLogoutModalOpen(false);
-          window.location.reload();
-          nav('/');
-        }}
-      />
     </>
   );
 };

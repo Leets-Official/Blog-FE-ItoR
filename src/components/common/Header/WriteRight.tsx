@@ -4,7 +4,7 @@ import theme from '@/styles/theme.styled';
 import { flexAlignCenter } from '@/styles/common.styled';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useLoginModal } from '@/context/LoginModalContext';
+import { useModal } from '@/context/ModalContext';
 
 export const Container = styled.div`
   ${flexAlignCenter}
@@ -13,13 +13,12 @@ export const Container = styled.div`
 
 const WriteRight: React.FC = () => {
   const nav = useNavigate();
-  const { open: openLoginModal } = useLoginModal();
+  const { openModal } = useModal();
 
   const handleClick = () => {
     const token = localStorage.getItem('accessToken');
     if (!token) {
-      // openLoginModal();
-      nav('/signup');
+      openModal('login');
     } else {
       nav('/post/write');
     }

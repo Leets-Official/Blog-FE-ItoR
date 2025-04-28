@@ -3,16 +3,16 @@ import router from '@/routes/route';
 import { ThemeProvider } from 'styled-components';
 import theme from '@/styles/theme.styled';
 import GlobalStyles from '@/styles/global.styled';
-import { LoginModalProvider } from '@/context/LoginModalContext';
+import { ModalProvider } from '@/context/ModalContext';
 
 function App() {
   return (
-    <LoginModalProvider>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
+      <ModalProvider>
         <RouterProvider router={router} />
-      </ThemeProvider>
-    </LoginModalProvider>
+      </ModalProvider>
+    </ThemeProvider>
   );
 }
 

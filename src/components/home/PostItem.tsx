@@ -73,7 +73,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
     nav(`/post/${post.id}`);
   };
 
-  localStorage.setItem('accessToken', 'test_token');
+  // localStorage.setItem('accessToken', 'test_token');
 
   return (
     <ItemContainer onClick={handleClick}>

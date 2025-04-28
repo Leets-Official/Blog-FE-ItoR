@@ -7,6 +7,7 @@ import Input from '@/components/common/Input/Input';
 import Button from '@/components/common/Button/Button';
 import { FlexRow } from '@/components/common/SideBar/SideBar.styled';
 import { useNavigate } from 'react-router-dom';
+import { useModal } from '@/context/ModalContext';
 
 export const Wrapper = styled.div<{ bgColor?: string; height?: string }>`
   ${flexCenter}
@@ -67,18 +68,17 @@ export const SignupText = styled(Text)`
   }
 `;
 
-interface LoginModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+const LoginModal: React.FC = () => {
+  const { isOpen, closeModal, modalType } = useModal();
 
-const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
   const nav = useNavigate();
 
+  if (modalType !== 'login') return null;
+
   return (
-    <BaseModal isOpen={isOpen} onRequestClose={onClose} maxWidth="880px">
+    <BaseModal isOpen={isOpen} onRequestClose={closeModal} maxWidth="880px">
       <Wrapper>
-        <CloseButton onClick={onClose}>
+        <CloseButton onClick={closeModal}>
           <CloseSvg />
         </CloseButton>
         <LeftSection>
@@ -103,7 +103,14 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
           <Button variant="kakao" size="lg" rounded="md" fullWidth>
             <KakaoSvg /> 카카오로 로그인
           </Button>
-          <SignupText onClick={() => nav('/signup')}>또는 회원가입</SignupText>
+          <SignupText
+            onClick={() => {
+              closeModal();
+              nav('/signup');
+            }}
+          >
+            또는 회원가입
+          </SignupText>
         </RightSection>
       </Wrapper>
     </BaseModal>

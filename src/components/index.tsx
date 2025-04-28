@@ -12,6 +12,8 @@ import SignupSelection from '@/components/signup/SignupSelection';
 import Textarea from '@/components/common/Textarea/Textarea';
 import ActionModal from '@/components/common/Modal/ActionModal';
 import SignupField from '@/components/signup/SignupField';
+import DetailModal from '@/components/common/Modal/DetailModal';
+import Layout from '@/components/layout/Layout';
 
 export {
   Button,
@@ -28,4 +30,6 @@ export {
   Textarea,
   ActionModal,
   SignupField,
+  DetailModal,
+  Layout,
 };

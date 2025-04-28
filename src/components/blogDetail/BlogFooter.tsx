@@ -10,7 +10,7 @@ const FooterWrapper = styled.div`
   width: 100vw;
   background-color: ${({ theme }) => theme.COLORS.gray[96]};
   margin-bottom: 60px;
-  padding: 20px 0;
+  padding: 60px 0;
 `;
 
 const FooterContent = styled.div`
