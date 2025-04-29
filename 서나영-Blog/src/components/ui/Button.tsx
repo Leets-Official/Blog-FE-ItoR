@@ -25,6 +25,7 @@ const StyledButton = styled.button<ButtonProps>`
   height: ${({ height }) => height || '46px'};
   background-color: ${({ disabled }) => (disabled ? '#e6e6e6' : '#ffffff')};
   cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  transition: opacity 0.2s ease;
 
   ${({ type }) =>
     type === 'Create' &&
@@ -38,6 +39,10 @@ const StyledButton = styled.button<ButtonProps>`
       background-color: #FFF;
       color: #00A1FF;
     `}
+
+  &:hover {
+    opacity: ${({ disabled }) => (disabled ? 1 : 0.8)};
+  }
 `;
 
 const IconWrapper = styled.span`
