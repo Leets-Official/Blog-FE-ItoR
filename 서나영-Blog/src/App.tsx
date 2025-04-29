@@ -8,6 +8,7 @@ import Home from '@/pages/Home';
 import MyPage from '@/pages/mypage/MyPage';
 import MyPageSetting from '@/pages/mypage/MyPageSetting';
 import BlogEditor from '@/pages/BlogEditor';
+import KakaoLoginProcess from './pages/signup/kakaoLoginProcess';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path='/blog/:postId' element={<BlogDetail />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/signup/select' element={<SignupSelect />} />
+          <Route path='/oauth/kakao/success' element={<KakaoLoginProcess />} />
           <Route path='/mypage' element={<MyPage />} />
           <Route path='/mypage/setting' element={<MyPageSetting />} />
         </Routes>
