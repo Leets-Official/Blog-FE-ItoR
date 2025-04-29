@@ -4,15 +4,14 @@ import styled from "styled-components";
 import Button from "@/components/ui/Button/Button";
 import { Add_photo, Kakao, Profile } from "@/assets";
 import Input from "@/components/ui/Input";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Modal from "@/components/ui/Modal/Modal";
 import ActionButton from "@/components/ui/Button/ActionButton";
 import { signUpEmailSchema, signUpSocialSchema } from "@/schema/auth";
 import { Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import api from "@/api/api";
-import EmailSignUp from "@/api/signUp";
+import { EmailSignUp, KakaoSignUp } from "@/api/signUp";
 import Toast from "@/components/ui/Toast";
 
 const Wrapper = styled.div`
@@ -85,7 +84,6 @@ const ProfileContainer = styled.div`
   height: 193px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
 `;
 
 const ProfileContent = styled.p`
@@ -102,7 +100,7 @@ const ProfileChangeContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 50px;
+  gap: 20px;
 `;
 
 const InputContainer = styled.div`
@@ -157,34 +155,45 @@ const SocialBoxTitle = styled.div`
   color: #909090;
 `;
 
+const ProfileImageContainer = styled.div`
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
 
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+`;
+
+const ProfileButton = styled(Button)`
+  width: 90px;
+  height: 90px;
+  padding: 0;
+  background-color: transparent;
+`;
 
 const EmailUI = ({ control }: { control: Control<z.infer<typeof signUpEmailSchema>> }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordCheck, setPasswordCheck] = useState("");
-  const [name, setName] = useState("");
-  const [birth, setBirth] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [bio, setBio] = useState("");
-
   return (
     <InputContainer>
-      <Input title="이메일" type="text" placeholder="이메일" control={control} name="email" value={email} onChange={(e) => { setEmail(e.target.value) }} />
-      <Input title="비밀번호" type="password" placeholder="비밀번호" control={control} name="password" value={password} onChange={(e) => { setPassword(e.target.value) }} />
-      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" control={control} name="passwordCheck" value={passwordCheck} onChange={(e) => { setPasswordCheck(e.target.value) }} />
-      <Input title="이름" type="text" placeholder="이름" control={control} name="name" value={name} onChange={(e) => { setName(e.target.value) }} />
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" value={birth} onChange={(e) => { setBirth(e.target.value) }} />
-      <Input title="닉네임" type="text" placeholder="닉네임" control={control} name="nickname" value={nickname} onChange={(e) => { setNickname(e.target.value) }} />
-      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" value={bio} onChange={(e) => { setBio(e.target.value) }} />
+      <Input title="이메일" type="text" placeholder="이메일" control={control} name="email" value={""} onChange={() => { }} />
+      <Input title="비밀번호" type="password" placeholder="비밀번호" control={control} name="password" value={""} onChange={() => { }} />
+      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" control={control} name="passwordCheck" value={""} onChange={() => { }} />
+      <Input title="이름" type="text" placeholder="이름" control={control} name="name" value={""} onChange={() => { }} />
+      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" value={""} onChange={() => { }} />
+      <Input title="닉네임" type="text" placeholder="닉네임" control={control} name="nickname" value={""} onChange={() => { }} />
+      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" value={""} onChange={() => { }} />
     </InputContainer>
   )
 }
 
 const KaKaoUI = ({ control }: { control: Control<z.infer<typeof signUpSocialSchema>> }) => {
-  const [birth, setBirth] = useState("");
-  const [nickname, setNickname] = useState("");
-  const [bio, setBio] = useState("");
+  const name = localStorage.getItem("name");
 
   return (
     <InputContainer>
@@ -197,31 +206,35 @@ const KaKaoUI = ({ control }: { control: Control<z.infer<typeof signUpSocialSche
           </SocialBoxContext>
         </SocialBox>
       </SocialBoxContainer>
-      <SocialBoxContainer>
-        <SocialBoxTitle>이메일</SocialBoxTitle>
-        <SocialBox>
-          <SocialBoxContext>
-            djhakjhs1726@naver.com
-          </SocialBoxContext>
-        </SocialBox>
-      </SocialBoxContainer>
+      <Input title="이메일" type="email" placeholder="이메일" control={control} name="email" value={""} onChange={() => { }} />
       <SocialBoxContainer>
         <SocialBoxTitle>이름</SocialBoxTitle>
         <SocialBox>
           <SocialBoxContext>
-            김릿츠
+            {name}
           </SocialBoxContext>
         </SocialBox>
-      </SocialBoxContainer>
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" value={birth} onChange={(e) => { setBirth(e.target.value) }} />
-      <Input title="닉네임" type="text" placeholder="닉네임" subTitle="* 20글자 이내" control={control} name="nickname" value={nickname} onChange={(e) => { setNickname(e.target.value) }} />
-      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" value={bio} onChange={(e) => { setBio(e.target.value) }} />
+      </SocialBoxContainer>            
+      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" value={""} onChange={() => { }} />
+      <Input title="닉네임" type="text" placeholder="닉네임" control={control} name="nickname" value={""} onChange={() => { }} />
+      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" value={""} onChange={() => { }} />
     </InputContainer>
   )
 }
 
 const SignUpDetail = () => {
+  const profilePicture = localStorage.getItem("profilePicture");
+  const name = localStorage.getItem("name");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const [profileImage, setProfileImage] = useState<string>(profilePicture || "");
+  const ImgInputRef = useRef<HTMLInputElement>(null);
+  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
+
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  const type = location.search.split("=")[1];
+
 
   const { control: controlEmail, handleSubmit: handleSubmitEmail } = useForm<z.infer<typeof signUpEmailSchema>>({
     resolver: zodResolver(signUpEmailSchema),
@@ -239,35 +252,43 @@ const SignUpDetail = () => {
   const { control: controlSocial, handleSubmit: handleSubmitSocial } = useForm<z.infer<typeof signUpSocialSchema>>({
     resolver: zodResolver(signUpSocialSchema),
     defaultValues: {
+      email: "",
       birth: "",
       nickname: "",
       bio: "",
     },
   });
 
-  const navigate = useNavigate();
 
-  const location = useLocation();
-  const type = location.search.split("=")[1];
+  const handleProfileImageChange = () => {
+    if (ImgInputRef.current) {
+      ImgInputRef.current.click();
+    }
+  };
 
-  const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
-
-  const openConfirmModal = () => {
-    setIsOpenConfirmModal(true);
-  }
-
-  const closeConfirmModal = () => {
-    setIsOpenConfirmModal(false);
-  }
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith("image/")) {
+        setToast({ message: "이미지 파일만 업로드 가능합니다.", type: "error" });
+        return;
+      }
+      setToast(null);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const onSubmit = async (data: z.infer<typeof signUpEmailSchema> | z.infer<typeof signUpSocialSchema>) => {
-    console.log({ ...data });
-    if (type === "email") { 
+    if (type === "email") {
       const response = await EmailSignUp(
         (data as z.infer<typeof signUpEmailSchema>).email.toString(),
         (data as z.infer<typeof signUpEmailSchema>).nickname.toString(),
         (data as z.infer<typeof signUpEmailSchema>).password.toString(),
-        "https://example.com/profile.jpg",
+        profileImage,
         (data as z.infer<typeof signUpEmailSchema>).birth.toString(),
         (data as z.infer<typeof signUpEmailSchema>).name.toString(),
         (data as z.infer<typeof signUpEmailSchema>).bio.toString(),
@@ -279,7 +300,33 @@ const SignUpDetail = () => {
         setToast({ message: "회원가입에 성공했습니다!", type: "success" });
         openConfirmModal();
       }
+    } else {
+      const response = await KakaoSignUp(
+        (data as z.infer<typeof signUpSocialSchema>).email.toString(),
+        (data as z.infer<typeof signUpSocialSchema>).nickname.toString(),
+        profileImage,
+        (data as z.infer<typeof signUpSocialSchema>).birth.toString(),
+        name as string,
+        (data as z.infer<typeof signUpSocialSchema>).bio.toString(),
+      );
+
+      if (response.error) {
+        setToast({ message: response.message, type: "error" });
+      } else {
+        setToast({ message: "회원가입에 성공했습니다!", type: "success" });
+        console.log(response);
+        openConfirmModal();
+      }      
+      console.log(data);
     }
+  }
+
+  const openConfirmModal = () => {
+    setIsOpenConfirmModal(true);
+  }
+
+  const closeConfirmModal = () => {
+    setIsOpenConfirmModal(false);
   }
 
   const onCancel = () => {
@@ -306,8 +353,11 @@ const SignUpDetail = () => {
         <ProfileContainer>
           <ProfileContent>프로필 사진</ProfileContent>
           <ProfileChangeContainer>
-            <Button onClick={() => { }} icon={<Profile width="90px" height="90px" />} width="40px" height="40px" style={{ paddingLeft: "40px" }}></Button>
-            <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF" style={{ border: "1px solid #E6E6E6" }}>프로필 사진 추가</Button>
+            <input type="file" ref={ImgInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
+            <ProfileImageContainer>
+              <ProfileButton onClick={handleProfileImageChange} icon={profileImage ? <img src={profileImage} alt="profile" /> : <Profile width="90px" height="90px" />} />
+            </ProfileImageContainer>
+            <Button onClick={handleProfileImageChange} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF" style={{ border: "1px solid #E6E6E6" }}>프로필 사진 추가</Button>
           </ProfileChangeContainer>
         </ProfileContainer >
         {type === "email" ? <EmailUI control={controlEmail} /> : <KaKaoUI control={controlSocial} />}

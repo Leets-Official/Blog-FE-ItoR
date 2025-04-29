@@ -1,4 +1,4 @@
-import api from "./api";
+import { BaseUrl, api } from "./api";
 
 const EamilLogin = async (email: string, password: string) => {
   try {
@@ -16,4 +16,16 @@ const EamilLogin = async (email: string, password: string) => {
   }
 };
 
-export default EamilLogin;
+const KakaoLogin = async () => {
+  const url = `${BaseUrl}/auth/kakao`;
+  window.location.href = url;
+}
+
+const KakaoRedirect = async (code: string) => {
+  const response = await api.get("/auth/kakao/redirect", {
+    params: { code }
+  });
+  return response.data;
+}
+
+export { EamilLogin, KakaoLogin, KakaoRedirect };

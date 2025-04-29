@@ -7,7 +7,7 @@ import { loginSchema } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import EamilLogin from "@/api/login";
+import { EamilLogin, KakaoLogin } from "@/api/login";
 import Toast from "../Toast";
 import { useState } from "react";
 
@@ -146,9 +146,9 @@ interface LoginProps {
 
 const Login = ({ open, onClose }: LoginProps) => {
   if (!open) return null;
-
+  
+  const navigate = useNavigate();
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-
   const { control, handleSubmit } = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -162,7 +162,8 @@ const Login = ({ open, onClose }: LoginProps) => {
     const response = await EamilLogin(data.email, data.password);
     console.log(response);
 
-    if (response.error) {
+    const stateCode = response.code;
+    if (stateCode !== 200 || response.error) {
       setToast({ message: response.message, type: "error" });
       return;
     }
@@ -175,8 +176,13 @@ const Login = ({ open, onClose }: LoginProps) => {
     setToast({ message: "로그인에 성공했습니다.", type: "success" });
     setTimeout(() => {
       onClose();
+      navigate("/");
       window.location.reload();
     }, 3000);
+  }
+
+  const onKakaoLogin = async () => {
+    await KakaoLogin();
   }
 
   return (
@@ -200,7 +206,7 @@ const Login = ({ open, onClose }: LoginProps) => {
           <ButtonContainer>
             <SignButton width="100%" disabled={false} onClick={handleSubmit(onSubmit)} type="email">이메일로 로그인</SignButton>
             <SnsContent>SNS</SnsContent>
-            <SignButton width="100%" disabled={false} onClick={() => { }} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
+            <SignButton width="100%" disabled={false} onClick={onKakaoLogin} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
             <InputContent>
               <Link to="/signUp" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
             </InputContent>

@@ -4,6 +4,7 @@ import GlobalStyle from "./styles/Global";
 import Detail from "./pages/Detail/Detail";
 import Write from "./pages/Write";
 import Mypage from "./pages/Mypage";
+import KakaoLoginLoading from "./pages/KakaoLoginLoading";
 function App() {
 
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/write" element={<Write />} />
         <Route path="/mypage" element={<Mypage />} />
+        <Route path="/oauth/kakao/success" element={<KakaoLoginLoading />} />
       </Routes>
     </BrowserRouter>
   );

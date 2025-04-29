@@ -1,4 +1,4 @@
-import api from "./api";
+import { api } from "./api";
 
 const EmailSignUp = async (email: string, nickname: string, password: string, profilePicture: string, birthDate: string, name: string, introduction: string) => {
   try {
@@ -21,5 +21,25 @@ const EmailSignUp = async (email: string, nickname: string, password: string, pr
   }
 };
 
-export default EmailSignUp;
+const KakaoSignUp = async (email: string, nickname: string, profilePicture: string, birthDate: string, name: string, introduction: string) => {
+  try {
+    const response = await api.post("/auth/register-oauth", {
+      email,
+      nickname,
+      profilePicture,
+      birthDate,
+      name,
+      introduction,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.log("KakaoSignUp Error", error);
+    return {
+      error: true,
+      message: error.response?.data?.message || "회원가입에 실패했습니다."
+    };
+  }
+};
+
+export { EmailSignUp, KakaoSignUp };
 
