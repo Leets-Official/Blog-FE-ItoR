@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface SignupTitleProps {
+  hideDescription?: boolean;
+}
+
 const SignupTitleWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -20,24 +24,27 @@ const TextWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
-const SignupHeader = () => {
+const SignupTitle = ({ hideDescription = false }: SignupTitleProps) => {
   return (
     <SignupTitleWrapper>
       <TextWrapper>
         <p style={{ fontSize: '24px', fontWeight: '500', color: '#000' }}>회원가입</p>
-        <p
-          style={{
-            fontSize: '14px',
-            fontWeight: '300',
-            letterSpacing: '-0.07px',
-            color: '#000',
-          }}
-        >
-          가입을 위해 회원님의 정보를 입력해주세요.
-        </p>
+        {!hideDescription && (
+          <p
+            style={{
+              fontSize: '14px',
+              fontWeight: '300',
+              letterSpacing: '-0.07px',
+              color: '#000',
+              fontFamily: 'Noto Sans L',
+            }}
+          >
+            가입을 위해 회원님의 정보를 입력해주세요.
+          </p>
+        )}
       </TextWrapper>
     </SignupTitleWrapper>
   );
 };
 
-export default SignupHeader;
+export default SignupTitle;

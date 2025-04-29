@@ -16,8 +16,20 @@ const ProfileContainer = styled.div`
   padding: 0px 16px;
 `;
 
+const StyledText = styled.p`
+  color: '#333';
+  font-family: 'Noto Sans L';
+  font-weight: 300;
+  letter-spacing: '-0.07px';
+  font-size: '14px';
+  padding: '12px 20px';
+  margin-bottom: '20px';
+  padding: 0px 16px;
+`;
+
 const ButtonContainer = styled.div`
   padding: 0px 16px;
+  margin-top: 20px;
 `;
 
 const LogoutSide = () => {
@@ -28,19 +40,7 @@ const LogoutSide = () => {
       <ProfileContainer>
         <Profile width='64' height='64' />
       </ProfileContainer>
-      <p
-        style={{
-          color: '#333',
-          fontWeight: 300,
-          lineHeight: '160%',
-          letterSpacing: '-0.07px',
-          fontSize: '14px',
-          padding: '12px 20px',
-          marginBottom: '20px',
-        }}
-      >
-        You can make anything by writing
-      </p>
+      <StyledText>You can make anything by writing</StyledText>
       <ButtonContainer>
         <Button
           type={'None'}

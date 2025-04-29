@@ -18,6 +18,8 @@ import Reorder from '@/assets/icons/reorder.svg?react';
 import Right from '@/assets/icons/right.svg?react';
 import Settings from '@/assets/icons/settings.svg?react';
 import Profile from '@/assets/icons/profile.svg?react';
+import Dot from '@/assets/icons/dot.svg?react';
+import DeleteImg from '@/assets/icons/deleteImg.svg?react';
 
 export {
   AddPhoto,
@@ -40,4 +42,6 @@ export {
   Right,
   Settings,
   Profile,
+  Dot,
+  DeleteImg,
 };

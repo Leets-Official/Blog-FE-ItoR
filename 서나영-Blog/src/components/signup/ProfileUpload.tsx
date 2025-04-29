@@ -15,9 +15,6 @@ const ProfileContainer = styled.div`
 const Label = styled.label`
   color: #909090;
   font-size: 14px;
-  font-weight: 300;
-  line-height: 160%;
-  letter-spacing: -0.07px;
 `;
 
 const ProfileWrapper = styled.div`
@@ -39,8 +36,8 @@ const StyledProfile = styled.div<{ image: string | null }>`
 
 const AddPhotoButton = styled.button`
   display: flex;
-  width: 117px;
-  padding: 2px 8px 2px 8px;
+  width: 120px;
+  padding: 4px 8px 2px 8px;
   justify-content: center;
   align-items: center;
   gap: 4px;
@@ -48,8 +45,6 @@ const AddPhotoButton = styled.button`
   border-radius: 2px;
   border: 1px solid #e6e6e6;
   font-size: 12px;
-  font-weight: 400;
-  line-height: 160%;
   color: #909090;
   background-color: #fff;
 `;
@@ -73,7 +68,11 @@ const ProfileUpload = () => {
     <ProfileContainer>
       <Label>프로필 사진</Label>
       <ProfileWrapper>
-        {image ? <StyledProfile image={image} /> : <Profile width='90px' height='90px' />}
+        {image ? (
+          <StyledProfile image={image} onClick={handleButtonClick} />
+        ) : (
+          <Profile width='90px' height='90px' onClick={handleButtonClick} />
+        )}
       </ProfileWrapper>
       <input
         id='profile-upload'

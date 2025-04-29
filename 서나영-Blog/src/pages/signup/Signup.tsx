@@ -1,5 +1,5 @@
-import SignupForm from '@/components/auth/signup/SignupForm';
-import SignupTitle from '@/components/auth/signup/SignupTitle';
+import SignupForm from '@/components/signup/SignupForm';
+import SignupTitle from '@/components/signup/SignupTitle';
 import Header from '@/components/layout/header/Header';
 
 const Signup = () => {

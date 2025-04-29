@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import ReactDOM from 'react-dom';
 import styled, { keyframes } from 'styled-components';
 import { Done, ErrorOutline } from '@/assets';
 
@@ -30,23 +31,32 @@ const fadeOut = keyframes`
   100% { opacity: 0; transform: translateY(-10px); }
 `;
 
-const ToastWrapper = styled.div<{ type: 'positive' | 'negative'; $isVisible: boolean }>`
+const Container = styled.div`
+  display: flex;
   position: fixed;
   top: 20px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%);
+  width: 100%;
+  justify-content: center;
+  z-index: 2000;
+`;
+
+const ToastWrapper = styled.div<{ type: 'positive' | 'negative'; $isVisible: boolean }>`
   display: flex;
   align-items: center;
+  gap: 8px;
+
   padding: 0px 12px 0px 8px;
-  gap: 4px;
   height: 40px;
-  max-width: 80%;
+
   border-radius: 25px;
   border: 1px solid ${({ type }) => (type === 'positive' ? '#15DC5E' : '#FF3F3F')};
   background: #fff;
   color: ${({ type }) => (type === 'positive' ? '#15DC5E' : '#FF3F3F')};
   font-weight: bold;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
   opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
   animation: ${({ $isVisible }) => ($isVisible ? fadeIn : fadeOut)} 0.3s ease-in-out forwards;
 `;
@@ -59,7 +69,7 @@ const IconWrapper = styled.div`
   height: 24px;
 `;
 
-const ToastMessage = styled.p`
+const ToastMessage = styled.span`
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.07px;
@@ -71,18 +81,23 @@ const Toast = () => {
 
   const { toast, isVisible } = context;
 
-  return toast ? (
-    <ToastWrapper type={toast.type} $isVisible={isVisible}>
-      <IconWrapper>
-        {toast.type === 'positive' ? (
-          <Done width={24} height={24} />
-        ) : (
-          <ErrorOutline width={24} height={24} />
-        )}
-      </IconWrapper>
-      <ToastMessage>{toast.message}</ToastMessage>
-    </ToastWrapper>
-  ) : null;
+  if (!toast) return null;
+
+  return ReactDOM.createPortal(
+    <Container>
+      <ToastWrapper type={toast.type} $isVisible={isVisible}>
+        <IconWrapper>
+          {toast.type === 'positive' ? (
+            <Done width={24} height={24} />
+          ) : (
+            <ErrorOutline width={24} height={24} />
+          )}
+        </IconWrapper>
+        <ToastMessage>{toast.message}</ToastMessage>
+      </ToastWrapper>
+    </Container>,
+    document.body,
+  );
 };
 
 export const ToastProvider = ({ children }: ToastProviderProps) => {

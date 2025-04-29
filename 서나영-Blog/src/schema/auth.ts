@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
 export const loginSchema = z.object({
-  email: z.string().email({ message: '이메일 형식이 적합하지 않습니다.' }),
-  password: z.string().min(6, { message: '비밀번호는 최소 6자 이상이어야 합니다.' }),
+  email: z.string().email({ message: '* 이메일 형식이 적합하지 않습니다.' }),
+  password: z.string().min(6, { message: '* 비밀번호는 최소 6자 이상이어야 합니다.' }),
 });
 
 export const signupSchema = z
@@ -28,5 +28,14 @@ export const signupSchema = z
     path: ['confirmPassword'],
   });
 
+export const profileSchema = z.object({
+  nickName: z
+    .string()
+    .min(1, '* 닉네임을 입력해주세요.')
+    .max(20, '* 닉네임은 20자 이내로 입력해주세요.'),
+  bio: z.string().max(50, '한 줄 소개는 50자 이내로 입력해주세요.').optional(),
+});
+
 export type LoginSchema = z.infer<typeof loginSchema>;
 export type SignupSchema = z.infer<typeof signupSchema>;
+export type ProfileSchema = z.infer<typeof profileSchema>;

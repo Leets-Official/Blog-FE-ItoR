@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, SignupSchema } from '@/schema/auth';
+import { Kakao } from '@/assets';
 import styled from 'styled-components';
 import ProfileUpload from './ProfileUpload';
 import SignupInput from './SignupInput';
@@ -16,6 +17,8 @@ const FormContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   padding: 12px 16px;
+  overflow-x: hidden;
+  box-sizing: border-box;
 `;
 
 const ButtonWrapper = styled.div`
@@ -25,6 +28,29 @@ const ButtonWrapper = styled.div`
   align-items: center;
   margin-top: 22px;
   margin-bottom: 64px;
+`;
+
+const SocialBox = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 16px;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  background-color: #e6e6e6;
+  gap: 8px;
+  font-size: 14px;
+  color: #909090;
+  font-family: 'Noto Sans L';
+`;
+
+const SocialLabel = styled.div`
+  color: #909090;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: -0.07px;
+  font-family: 'Noto Sans L';
 `;
 
 const SignupForm = () => {
@@ -39,34 +65,82 @@ const SignupForm = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const [isKakaoLogin, setIsKakaoLogin] = useState(true);
+
   const onSubmit = (data: SignupSchema) => {
     console.log('회원가입 데이터', data);
     setIsModalOpen(true);
   };
 
   const inputFields = [
-    { name: 'email', label: '이메일', type: 'email', placeholder: '이메일' },
-    { name: 'password', label: '비밀번호', type: 'password', placeholder: '비밀번호' },
+    ...(isKakaoLogin
+      ? [
+          {
+            name: 'email',
+            label: '이메일',
+            type: 'email',
+            placeholder: '이메일',
+            disabled: true,
+          },
+          {
+            name: 'name',
+            label: '이름',
+            type: 'text',
+            placeholder: '이름',
+            disabled: true,
+          },
+        ]
+      : [
+          {
+            name: 'email',
+            label: '이메일',
+            type: 'email',
+            placeholder: '이메일',
+          },
+          {
+            name: 'password',
+            label: '비밀번호',
+            type: 'password',
+            placeholder: '비밀번호',
+          },
+          {
+            name: 'confirmPassword',
+            label: '비밀번호 확인',
+            type: 'password',
+            placeholder: '비밀번호 확인',
+          },
+          {
+            name: 'name',
+            label: '이름',
+            type: 'text',
+            placeholder: '이름',
+          },
+        ]),
     {
-      name: 'confirmPassword',
-      label: '비밀번호 확인',
-      type: 'password',
-      placeholder: '비밀번호 확인',
+      name: 'birthDate',
+      label: '생년월일',
+      type: 'date',
+      placeholder: 'YYYY-MM-DD',
     },
-    { name: 'name', label: '이름', type: 'text', placeholder: '이름' },
-    { name: 'birthDate', label: '생년월일', type: 'date', placeholder: 'YYYY-MM-DD' },
-    { name: 'nickname', label: '닉네임', type: 'text', placeholder: '닉네임' },
-    { name: 'bio', label: '한 줄 소개', type: 'text', placeholder: '한 줄 소개' },
+    {
+      name: 'nickname',
+      label: '닉네임',
+      type: 'text',
+      placeholder: '닉네임',
+    },
+    {
+      name: 'bio',
+      label: '한 줄 소개',
+      type: 'text',
+      placeholder: '한 줄 소개',
+    },
   ];
-  console.log('폼 에러 상태:', errors);
 
   return (
     <FormContainer>
       <ProfileUpload />
       <form
-        onSubmit={
-          handleSubmit(onSubmit)
-        }
+        onSubmit={handleSubmit(onSubmit)}
         style={{
           width: '100%',
           display: 'flex',
@@ -74,6 +148,16 @@ const SignupForm = () => {
           gap: '12px',
         }}
       >
+        {isKakaoLogin && (
+          <>
+            <SocialLabel>소셜 로그인</SocialLabel>
+            <SocialBox>
+              <Kakao width={18} height={18} />
+              카카오 로그인
+            </SocialBox>
+          </>
+        )}
+
         {inputFields.map((field) => (
           <SignupInput
             key={field.name}
@@ -83,6 +167,7 @@ const SignupForm = () => {
             placeholder={field.placeholder}
             error={errors[field.name as keyof SignupSchema]?.message}
             register={register}
+            disabled={field.disabled}
           />
         ))}
 
@@ -96,6 +181,7 @@ const SignupForm = () => {
               borderRadius: '25px',
               backgroundColor: '#FFF',
               border: '1px solid #00A1FF',
+              fontFamily: 'Noto Sans R',
             }}
           >
             회원가입 완료
@@ -103,7 +189,6 @@ const SignupForm = () => {
         </ButtonWrapper>
       </form>
 
-      {/* 회원가입 완료 모달 */}
       <Modal
         title='회원가입이 완료되었습니다!'
         isOpen={isModalOpen}

@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, LoginSchema } from '@/schema/auth';
 import styled, { css } from 'styled-components';
@@ -91,9 +92,8 @@ const SnsContent = styled.div`
 const SnsText = styled.span`
   font-size: 12px;
   padding: 2px 8px 4px 8px;
-  line-height: 160%;
-  font-weight: 400;
   color: #909090;
+  font-family: 'Noto Sans R';
 `;
 
 const LoginModalOverlay = styled.div<{ $isOpen: boolean }>`
@@ -121,10 +121,10 @@ const LoginModalOverlay = styled.div<{ $isOpen: boolean }>`
 const ErrorMessage = styled.p`
   color: #ff3f3f;
   font-size: 12px;
-  font-style: normal;
   font-weight: 300;
-  margin: 2px 0 0 6px;
+  margin: 2px;
   align-self: stretch;
+  font-family: 'Noto Sans L';
 `;
 
 const SignUpButton = styled.div`
@@ -133,9 +133,11 @@ const SignUpButton = styled.div`
   font-weight: 300;
   color: #909090;
   padding: 4px 8px 4px 8px;
+  font-family: 'Noto Sans R';
 `;
 
 const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -152,6 +154,10 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
+  };
+
+  const handleSignUpClick = () => {
+    navigate('/signup/select');
   };
 
   return (
@@ -171,6 +177,8 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
               lineHeight: '160%',
               letterSpacing: '-0.07px',
               fontSize: '14px',
+              fontFamily: 'Noto Sans L',
+              marginBottom: '33px',
             }}
           >
             You can make anything by writing
@@ -214,14 +222,16 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
             이메일로 로그인
           </Button>
           <SnsContent>
-            <Divider width={123} />
+            <Divider width={123} stroke='#909090' />
             <SnsText>SNS</SnsText>
-            <Divider width={123} />
+            <Divider width={123} stroke='#909090' />
           </SnsContent>
           <Button
             width='100%'
             height='46px'
             style={{
+              fontFamily: 'AppleSDGothicNeoM',
+              fontSize: '14px',
               maxWidth: '312px',
               color: 'rgba(0, 0, 0, 0.85)',
               border: 'None',
@@ -232,7 +242,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
           >
             <Kakao width={18} height={18} /> 카카오로 로그인
           </Button>
-          <SignUpButton>또는 회원가입</SignUpButton>
+          <SignUpButton onClick={handleSignUpClick}>또는 회원가입</SignUpButton>
         </LoginRightSection>
       </LoginModalContainer>
     </LoginModalOverlay>
