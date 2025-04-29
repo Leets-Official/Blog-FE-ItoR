@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type ModalType = 'login' | 'delete' | 'logout' | null;
+type ModalType = 'login' | 'delete' | 'logout' | 'signup' | null;
 
 interface ModalContextType {
   openModal: (type: ModalType) => void;

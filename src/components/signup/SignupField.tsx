@@ -9,9 +9,11 @@ import { useRef } from 'react';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useForm, Path } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SignupSchema, signupSchema } from '@/schema/auth';
+import { kakaoSignupSchema, SignupSchema, signupSchema, KakaoSignupSchema } from '@/schema/auth';
 import { getFileUrl, getPresignedUrl } from '@/api/file/file';
-import { kakaoSignupApi } from '@/api/auth/auth';
+import { kakaoSignupApi, signupApi } from '@/api/auth/auth';
+import { useModal } from '@/context/ModalContext';
+import { useLocation } from 'react-router-dom';
 
 interface SignupFieldProps {
   signupType: 'email' | 'kakao';
@@ -54,42 +56,72 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
   const fields = isKakao ? kakaoSignupFields : emailSignupFields;
   const inputRef = useRef<HTMLInputElement>(null);
   const { previewUrl, handleImageChange, imageFile } = useImageUpload();
+  const { openModal } = useModal();
+  const location = useLocation();
 
   const handleClick = () => inputRef.current?.click();
 
   const kakaoUserName = isKakao ? (localStorage.getItem('nickname') ?? '') : '';
 
+  type CurrentSchema = SignupSchema | KakaoSignupSchema;
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupSchema>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<CurrentSchema>({
+    resolver: zodResolver(isKakao ? kakaoSignupSchema : signupSchema),
     defaultValues: {
       name: kakaoUserName,
     },
   });
 
-  const onSubmit = async (data: SignupSchema) => {
-    console.log('Form Data:', data);
+  const onSubmit = async (data: SignupSchema | KakaoSignupSchema) => {
     try {
       let profilePicture = '';
 
       if (imageFile) {
-        const fileName = `${Date.now()}-${imageFile.name}`;
-        const presignedUrl = await getFileUrl(fileName); // presignedUrl 요청
-        await getPresignedUrl(imageFile, presignedUrl); // s3에 업로드
-        profilePicture = presignedUrl.split('?')[0]; // presignedUrl에서 ? 이전 부분만 저장
+        const fileName = imageFile.name;
+
+        // presignedUrl 요청
+        const presignedUrlResponse = await getFileUrl(fileName);
+        const presignedUrl =
+          typeof presignedUrlResponse === 'string'
+            ? presignedUrlResponse
+            : presignedUrlResponse?.data;
+
+        if (!presignedUrl) {
+          console.error('presigned URL이 없습니다.');
+          return;
+        }
+        console.log('presigned URL:', presignedUrl);
+
+        // s3에 업로드
+        await getPresignedUrl(imageFile, presignedUrl);
+        // presignedUrl에서 ? 이전 부분만 저장
+        profilePicture = presignedUrl.split('?')[0];
       }
 
-      const signupData = {
-        ...data,
-        profilePicture,
-      };
+      const isEmailSignup = location.pathname === '/signup/email';
 
-      await kakaoSignupApi(signupData);
+      const signupData = isEmailSignup
+        ? {
+            ...(data as SignupSchema),
+            profilePicture,
+          }
+        : {
+            ...(data as KakaoSignupSchema),
+            profilePicture,
+          };
 
-      alert('회원가입이 완료되었습니다!');
+      // 회원가입 API 호출
+      if (isEmailSignup) {
+        await signupApi(signupData);
+      } else {
+        await kakaoSignupApi(signupData);
+      }
+
+      openModal('signup');
     } catch (error) {
       console.error('회원가입 중 오류 발생', error);
       alert('회원가입에 실패했습니다. 다시 시도해주세요.');
@@ -146,7 +178,7 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
               type={type}
               readOnly={isKakao && readOnlyFields.includes(name)}
               icon={name === 'socialLogin' ? <KakaoSvg /> : undefined}
-              errorMessage={errors[name as keyof SignupSchema]?.message}
+              errorMessage={(errors as Record<string, { message?: string }>)[name]?.message}
             />
           </InputWrapper>
         ))}

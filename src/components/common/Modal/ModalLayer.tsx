@@ -1,8 +1,8 @@
 import { useModal } from '@/context/ModalContext';
-import { LoginModal, ActionModal, DetailModal } from '@/components';
+import { LoginModal, ActionModal } from '@/components';
 
 const ModalLayer: React.FC = () => {
-  const { modalType, closeModal, isOpen } = useModal();
+  const { modalType, closeModal, isOpen, openModal } = useModal();
 
   if (!isOpen) return null;
 
@@ -38,6 +38,23 @@ const ModalLayer: React.FC = () => {
         actionText="삭제하기"
         cancelText="취소"
         type="negative"
+      />
+    );
+  }
+
+  if (modalType === 'signup') {
+    return (
+      <ActionModal
+        isOpen
+        onClose={closeModal}
+        message="회원가입이 완료되었습니다!"
+        actionText="로그인하기"
+        cancelText="확인"
+        type="positive"
+        onConfirm={() => {
+          closeModal();
+          openModal('login');
+        }}
       />
     );
   }
