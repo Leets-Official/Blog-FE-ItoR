@@ -6,10 +6,12 @@ import styled, { css } from 'styled-components';
 import { GITLOG, Kakao, Divider, Clear } from '@/assets';
 import Button from '@/components/ui/Button';
 import TextInput from '@/components/ui/TextInput';
+import { emailLogin } from '@/api/auth/emailLoginAPI';
 
 type LoginModalProps = {
   isOpen: boolean;
   onClose: () => void;
+  onLoginSuccess?: () => void;
 };
 
 const LoginModalContainer = styled.div`
@@ -136,8 +138,10 @@ const SignUpButton = styled.div`
   font-family: 'Noto Sans R';
 `;
 
-const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
+const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_API_URL;
+
   const {
     register,
     handleSubmit,
@@ -146,8 +150,15 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginSchema) => {
-    console.log('로그인 요청', data);
+  const onSubmit = async (data: LoginSchema) => {
+    try {
+      const { nickname } = await emailLogin(data);
+      console.log(`${nickname}님 환영합니다!`);
+      onLoginSuccess?.();
+      onClose();
+    } catch (error) {
+      console.log('로그인 실패');
+    }
   };
 
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -158,6 +169,15 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
 
   const handleSignUpClick = () => {
     navigate('/signup/select');
+  };
+
+  const handleKakaoLogin = async () => {
+    try {
+      const kakaoLink = `${BASE_URL}/auth/kakao`;
+      window.location.href = kakaoLink;
+    } catch (err) {
+      alert('카카오 로그인 URL을 불러오지 못했습니다.');
+    }
   };
 
   return (
@@ -227,6 +247,7 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
             <Divider width={123} stroke='#909090' />
           </SnsContent>
           <Button
+            onClick={handleKakaoLogin}
             width='100%'
             height='46px'
             style={{
