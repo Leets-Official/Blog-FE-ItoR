@@ -45,7 +45,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
             {token ? (
               <Flex>
                 <Text fontSize="xl" fontWeight="medium" color="black">
-                  닉네임
+                  {localStorage.getItem('nickname')}
                 </Text>
                 <Text fontSize="sm" fontWeight="light" color="gray20">
                   한 줄 소개

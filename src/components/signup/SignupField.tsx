@@ -14,6 +14,7 @@ import { getFileUrl, getPresignedUrl } from '@/api/file/file';
 import { kakaoSignupApi, signupApi } from '@/api/auth/auth';
 import { useModal } from '@/context/ModalContext';
 import { useLocation } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 
 interface SignupFieldProps {
   signupType: 'email' | 'kakao';
@@ -76,11 +77,35 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
     },
   });
 
-  const onSubmit = async (data: SignupSchema | KakaoSignupSchema) => {
-    try {
-      let profilePicture = '';
+  // 자체 회원가입 mutation
+  const emailSignupMutation = useMutation({
+    mutationFn: signupApi,
+    onSuccess: () => {
+      openModal('signup');
+    },
+    onError: (error) => {
+      console.error('자체 회원가입 오류', error);
+      alert('자체 회원가입에 실패했습니다.');
+    },
+  });
 
-      if (imageFile) {
+  // 카카오 회원가입 Mutation
+  const kakaoSignupMutation = useMutation({
+    mutationFn: kakaoSignupApi,
+    onSuccess: () => {
+      openModal('signup');
+    },
+    onError: (error) => {
+      console.error('카카오 회원가입 오류', error);
+      alert('카카오 회원가입에 실패했습니다.');
+    },
+  });
+
+  const onSubmit = async (data: SignupSchema | KakaoSignupSchema) => {
+    let profilePicture = '';
+
+    if (imageFile) {
+      try {
         const fileName = imageFile.name;
 
         // presignedUrl 요청
@@ -100,102 +125,95 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
         await getPresignedUrl(imageFile, presignedUrl);
         // presignedUrl에서 ? 이전 부분만 저장
         profilePicture = presignedUrl.split('?')[0];
+      } catch (error) {
+        console.error('프로필 사진 업로드 오류', error);
+        alert('프로필 사진 업로드에 실패했습니다.');
+        return;
       }
 
       const isEmailSignup = location.pathname === '/signup/email';
 
-      const signupData = isEmailSignup
-        ? {
-            ...(data as SignupSchema),
-            profilePicture,
-          }
-        : {
-            ...(data as KakaoSignupSchema),
-            profilePicture,
-          };
+      const signupData = {
+        ...(data as SignupSchema),
+        profilePicture,
+      };
 
-      // 회원가입 API 호출
       if (isEmailSignup) {
-        await signupApi(signupData);
+        emailSignupMutation.mutate(signupData);
       } else {
-        await kakaoSignupApi(signupData);
+        kakaoSignupMutation.mutate(signupData as KakaoSignupSchema);
       }
-
-      openModal('signup');
-    } catch (error) {
-      console.error('회원가입 중 오류 발생', error);
-      alert('회원가입에 실패했습니다. 다시 시도해주세요.');
     }
+    return (
+      <Wrapper>
+        <InputSection>
+          <ProfileSection>
+            <Text fontSize="sm" fontWeight="light" color="gray56">
+              프로필 사진
+            </Text>
+            {previewUrl ? (
+              <Image
+                src={previewUrl}
+                alt="profile-preview"
+                width="90px"
+                height="90px"
+                borderRadius="50%"
+              />
+            ) : (
+              <DefaultProfileSvg width="90px" height="90px" />
+            )}
+
+            <input
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleImageChange}
+            />
+
+            <ButtonWrapper onClick={handleClick}>
+              <Button
+                variant="text"
+                size="md"
+                rounded="sm"
+                height="25px"
+                borderColor={theme.COLORS.gray[90]}
+                textColor={theme.COLORS.gray[56]}
+              >
+                <PhotoSvg />
+                프로필 사진 추가
+              </Button>
+            </ButtonWrapper>
+          </ProfileSection>
+
+          {fields.map(({ label, placeholder, name, type }) => (
+            <InputWrapper key={name}>
+              <Input
+                {...register(name as Path<SignupSchema>)}
+                label={label}
+                placeholder={placeholder}
+                type={type}
+                readOnly={isKakao && readOnlyFields.includes(name)}
+                icon={name === 'socialLogin' ? <KakaoSvg /> : undefined}
+                errorMessage={(errors as Record<string, { message?: string }>)[name]?.message}
+              />
+            </InputWrapper>
+          ))}
+        </InputSection>
+
+        <Button
+          variant="primary-outline"
+          size="lg"
+          rounded="full"
+          fullWidth
+          onClick={handleSubmit(onSubmit)}
+          type="submit"
+        >
+          회원가입 완료
+        </Button>
+      </Wrapper>
+    );
   };
-  return (
-    <Wrapper>
-      <InputSection>
-        <ProfileSection>
-          <Text fontSize="sm" fontWeight="light" color="gray56">
-            프로필 사진
-          </Text>
-          {previewUrl ? (
-            <Image
-              src={previewUrl}
-              alt="profile-preview"
-              width="90px"
-              height="90px"
-              borderRadius="50%"
-            />
-          ) : (
-            <DefaultProfileSvg width="90px" height="90px" />
-          )}
-
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/*"
-            style={{ display: 'none' }}
-            onChange={handleImageChange}
-          />
-
-          <ButtonWrapper onClick={handleClick}>
-            <Button
-              variant="text"
-              size="md"
-              rounded="sm"
-              height="25px"
-              borderColor={theme.COLORS.gray[90]}
-              textColor={theme.COLORS.gray[56]}
-            >
-              <PhotoSvg />
-              프로필 사진 추가
-            </Button>
-          </ButtonWrapper>
-        </ProfileSection>
-
-        {fields.map(({ label, placeholder, name, type }) => (
-          <InputWrapper key={name}>
-            <Input
-              {...register(name as Path<SignupSchema>)}
-              label={label}
-              placeholder={placeholder}
-              type={type}
-              readOnly={isKakao && readOnlyFields.includes(name)}
-              icon={name === 'socialLogin' ? <KakaoSvg /> : undefined}
-              errorMessage={(errors as Record<string, { message?: string }>)[name]?.message}
-            />
-          </InputWrapper>
-        ))}
-      </InputSection>
-
-      <Button
-        variant="primary-outline"
-        size="lg"
-        rounded="full"
-        fullWidth
-        onClick={handleSubmit(onSubmit)}
-        type="submit"
-      >
-        회원가입 완료
-      </Button>
-    </Wrapper>
-  );
 };
 
 export default SignupField;

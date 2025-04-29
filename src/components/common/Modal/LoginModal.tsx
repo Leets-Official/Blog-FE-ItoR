@@ -12,6 +12,7 @@ import { loginApi } from '@/api/auth/auth';
 import { LoginSchema, loginSchema } from '@/schema/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
 
 export const Wrapper = styled.div<{ bgColor?: string; height?: string }>`
   ${flexCenter}
@@ -75,8 +76,7 @@ export const SignupText = styled(Text)`
 const LoginModal: React.FC = () => {
   const { isOpen, closeModal, modalType } = useModal();
   const nav = useNavigate();
-
-  if (modalType !== 'login') return null;
+  const BASE_URL = import.meta.env.VITE_API_URL;
 
   const {
     register,
@@ -87,15 +87,17 @@ const LoginModal: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const handleLogin = async (data: LoginSchema) => {
-    try {
-      const res = await loginApi(data);
+  const loginMutation = useMutation({
+    mutationFn: loginApi,
+    onSuccess: (res) => {
       console.log('로그인 성공:', res.data);
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('refreshToken', res.data.refreshToken);
+      localStorage.setItem('nickname', res.data.nickname);
       closeModal();
       nav('/');
-    } catch (error: any) {
+    },
+    onError: (error: any) => {
       console.error('로그인 실패:', error);
       if (error.response?.status === 401) {
         const message = error.response.data.message || '로그인에 실패했습니다';
@@ -103,7 +105,18 @@ const LoginModal: React.FC = () => {
       } else {
         console.error('로그인 중 오류 발생', error);
       }
-    }
+    },
+  });
+
+  if (modalType !== 'login') return null;
+
+  const handleLogin = async (data: LoginSchema) => {
+    loginMutation.mutate(data);
+  };
+
+  const handleKakaoLogin = async () => {
+    const link = `${BASE_URL}/auth/kakao`;
+    window.location.href = link;
   };
 
   return (
@@ -141,7 +154,7 @@ const LoginModal: React.FC = () => {
             </Text>
             <LineSvg stroke="#333" />
           </FlexRow>
-          <Button variant="kakao" size="lg" rounded="md" fullWidth>
+          <Button variant="kakao" size="lg" rounded="md" fullWidth onClick={handleKakaoLogin}>
             <KakaoSvg /> 카카오로 로그인
           </Button>
           <SignupText

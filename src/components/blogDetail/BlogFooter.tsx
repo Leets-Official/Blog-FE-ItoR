@@ -40,7 +40,7 @@ const BlogFooter: React.FC = () => {
           objectFit="cover"
         />
         <Text fontSize="xl" fontWeight="medium">
-          {myData.name}
+          {localStorage.getItem('nickname')}
         </Text>
         <Text fontSize="sm" fontWeight="light" color="gray20">
           {myData.bio}
