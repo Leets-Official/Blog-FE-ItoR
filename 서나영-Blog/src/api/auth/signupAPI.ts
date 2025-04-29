@@ -2,12 +2,11 @@ import api from '@/api/axios';
 import { SignupSchema } from '@/schema/auth';
 
 export const signupAPI = async (
-  signupData: SignupSchema & { profilePicture?: string },
-  isOAuth = false,
+  signupData: SignupSchema & { profilePicture?: string; isKakaoLogin?: boolean },
 ) => {
-  const endpoint = isOAuth ? '/auth/register-oauth' : '/auth/register';
-
   try {
+    const isKakaoLogin = signupData.isKakaoLogin === true;
+
     const payload = {
       email: signupData.email,
       name: signupData.name,
@@ -15,8 +14,14 @@ export const signupAPI = async (
       nickname: signupData.nickname,
       profilePicture: signupData.profilePicture ?? '',
       introduction: signupData.bio ?? '',
-      ...(isOAuth ? {} : { password: signupData.password }),
+      ...(isKakaoLogin
+        ? {}
+        : {
+            password: signupData.password,
+          }),
     };
+
+    const endpoint = isKakaoLogin ? '/auth/register-oauth' : '/auth/register';
 
     const response = await api.post(endpoint, payload);
     return response.data;

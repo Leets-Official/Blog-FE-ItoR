@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, SignupSchema } from '@/schema/auth';
 import { Kakao } from '@/assets';
@@ -58,10 +58,8 @@ const SocialLabel = styled.div`
 
 const SignupForm = () => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   const isKakaoLogin = location.state?.isKakaoLogin ?? false;
-  const kakaoEmail = location.state?.email || '';
   const kakaoName = location.state?.name || '';
   const kakaoProfilePicture = location.state?.profilePicture || '';
 
@@ -86,6 +84,7 @@ const SignupForm = () => {
   useEffect(() => {
     if (isKakaoLogin) {
       reset({
+        email: '',
         name: kakaoName,
         profilePicture: kakaoProfilePicture,
         birthDate: '',
@@ -93,18 +92,18 @@ const SignupForm = () => {
         bio: '',
       });
     }
-  }, [isKakaoLogin, kakaoEmail, kakaoName, kakaoProfilePicture, reset]);
+  }, [isKakaoLogin, kakaoName, kakaoProfilePicture, reset]);
 
   const onSubmit = async (data: SignupSchema) => {
     console.log('회원가입 제출 데이터:', data);
-    try {
-      const nicknameToSend = data.nickname?.trim() || data.name;
 
+    try {
       const response = await signupAPI({
         ...data,
-        nickname: nicknameToSend,
+        nickname: data.nickname?.trim() || data.name,
         bio: data.bio ?? '',
         profilePicture: watch('profilePicture') || '',
+        isKakaoLogin,
       });
 
       console.log('회원가입 성공 응답:', response);
@@ -125,11 +124,16 @@ const SignupForm = () => {
     ...(isKakaoLogin
       ? [
           {
+            name: 'email',
+            label: '이메일',
+            type: 'email',
+            placeholder: '이메일',
+          },
+          {
             name: 'name',
             label: '이름',
             type: 'text',
             placeholder: '이름',
-            disabled: true,
           },
         ]
       : [
@@ -182,7 +186,7 @@ const SignupForm = () => {
     <FormContainer>
       <ProfileUpload
         initialImage={kakaoProfilePicture}
-        onImageChange={(imageUrl, file) => {
+        onImageChange={(imageUrl) => {
           reset({ ...watch(), profilePicture: imageUrl });
         }}
       />
@@ -216,7 +220,6 @@ const SignupForm = () => {
             placeholder={field.placeholder}
             error={errors[field.name as keyof SignupSchema]?.message}
             register={register}
-            disabled={field.disabled}
           />
         ))}
 

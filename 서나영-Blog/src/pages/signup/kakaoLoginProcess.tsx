@@ -18,13 +18,17 @@ const KakaoLoginProcess = () => {
       try {
         const userInfo = await kakaoOAuthLogin(code);
 
-        navigate('/signup', {
-          state: {
-            isKakaoLogin: true,
-            name: userInfo.nickname,
-            profilePicture: userInfo.picture,
-          },
-        });
+        if (userInfo.responseMessage === 'OAuth2 회원가입이 필요합니다.') {
+          navigate('/signup', {
+            state: {
+              isKakaoLogin: true,
+              name: userInfo.nickname,
+              profilePicture: userInfo.picture,
+            },
+          });
+        } else {
+          navigate('/');
+        }
       } catch (error: any) {
         console.error('카카오 로그인 실패:', error.response?.data || error);
         alert('카카오 로그인 중 문제가 발생했습니다.');
