@@ -10,6 +10,8 @@ import { useImageUpload } from '@/hooks/useImageUpload';
 import { useForm, Path } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SignupSchema, signupSchema } from '@/schema/auth';
+import { getFileUrl, getPresignedUrl } from '@/api/file/file';
+import { kakaoSignupApi } from '@/api/auth/auth';
 
 interface SignupFieldProps {
   signupType: 'email' | 'kakao';
@@ -47,11 +49,11 @@ export const ProfileSection = styled.div`
 `;
 
 const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
-  const readOnlyFields = ['socialLogin', 'email', 'name'];
+  const readOnlyFields = ['socialLogin', 'name'];
   const isKakao = signupType === 'kakao';
   const fields = isKakao ? kakaoSignupFields : emailSignupFields;
   const inputRef = useRef<HTMLInputElement>(null);
-  const { previewUrl, handleImageChange } = useImageUpload();
+  const { previewUrl, handleImageChange, imageFile } = useImageUpload();
 
   const handleClick = () => inputRef.current?.click();
 
@@ -68,9 +70,30 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
     },
   });
 
-  const onSubmit = (data: SignupSchema) => {
+  const onSubmit = async (data: SignupSchema) => {
     console.log('Form Data:', data);
-    // TODO:  회원가입 api 요청
+    try {
+      let profilePicture = '';
+
+      if (imageFile) {
+        const fileName = `${Date.now()}-${imageFile.name}`;
+        const presignedUrl = await getFileUrl(fileName); // presignedUrl 요청
+        await getPresignedUrl(imageFile, presignedUrl); // s3에 업로드
+        profilePicture = presignedUrl.split('?')[0]; // presignedUrl에서 ? 이전 부분만 저장
+      }
+
+      const signupData = {
+        ...data,
+        profilePicture,
+      };
+
+      await kakaoSignupApi(signupData);
+
+      alert('회원가입이 완료되었습니다!');
+    } catch (error) {
+      console.error('회원가입 중 오류 발생', error);
+      alert('회원가입에 실패했습니다. 다시 시도해주세요.');
+    }
   };
   return (
     <Wrapper>

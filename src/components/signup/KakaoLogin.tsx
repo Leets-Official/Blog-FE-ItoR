@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import kakaoLoginApi from '@/api/auth/auth';
+import { kakaoLoginApi } from '@/api/auth/auth';
 
 const KakaoLogin = () => {
   const nav = useNavigate();
