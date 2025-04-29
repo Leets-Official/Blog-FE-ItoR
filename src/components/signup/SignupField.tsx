@@ -144,76 +144,76 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
         kakaoSignupMutation.mutate(signupData as KakaoSignupSchema);
       }
     }
-    return (
-      <Wrapper>
-        <InputSection>
-          <ProfileSection>
-            <Text fontSize="sm" fontWeight="light" color="gray56">
-              프로필 사진
-            </Text>
-            {previewUrl ? (
-              <Image
-                src={previewUrl}
-                alt="profile-preview"
-                width="90px"
-                height="90px"
-                borderRadius="50%"
-              />
-            ) : (
-              <DefaultProfileSvg width="90px" height="90px" />
-            )}
-
-            <input
-              ref={inputRef}
-              type="file"
-              accept="image/*"
-              style={{ display: 'none' }}
-              onChange={handleImageChange}
-            />
-
-            <ButtonWrapper onClick={handleClick}>
-              <Button
-                variant="text"
-                size="md"
-                rounded="sm"
-                height="25px"
-                borderColor={theme.COLORS.gray[90]}
-                textColor={theme.COLORS.gray[56]}
-              >
-                <PhotoSvg />
-                프로필 사진 추가
-              </Button>
-            </ButtonWrapper>
-          </ProfileSection>
-
-          {fields.map(({ label, placeholder, name, type }) => (
-            <InputWrapper key={name}>
-              <Input
-                {...register(name as Path<SignupSchema>)}
-                label={label}
-                placeholder={placeholder}
-                type={type}
-                readOnly={isKakao && readOnlyFields.includes(name)}
-                icon={name === 'socialLogin' ? <KakaoSvg /> : undefined}
-                errorMessage={(errors as Record<string, { message?: string }>)[name]?.message}
-              />
-            </InputWrapper>
-          ))}
-        </InputSection>
-
-        <Button
-          variant="primary-outline"
-          size="lg"
-          rounded="full"
-          fullWidth
-          onClick={handleSubmit(onSubmit)}
-          type="submit"
-        >
-          회원가입 완료
-        </Button>
-      </Wrapper>
-    );
   };
+  return (
+    <Wrapper>
+      <InputSection>
+        <ProfileSection>
+          <Text fontSize="sm" fontWeight="light" color="gray56">
+            프로필 사진
+          </Text>
+          {previewUrl ? (
+            <Image
+              src={previewUrl}
+              alt="profile-preview"
+              width="90px"
+              height="90px"
+              borderRadius="50%"
+            />
+          ) : (
+            <DefaultProfileSvg width="90px" height="90px" />
+          )}
+
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleImageChange}
+          />
+
+          <ButtonWrapper onClick={handleClick}>
+            <Button
+              variant="text"
+              size="md"
+              rounded="sm"
+              height="25px"
+              borderColor={theme.COLORS.gray[90]}
+              textColor={theme.COLORS.gray[56]}
+            >
+              <PhotoSvg />
+              프로필 사진 추가
+            </Button>
+          </ButtonWrapper>
+        </ProfileSection>
+
+        {fields.map(({ label, placeholder, name, type }) => (
+          <InputWrapper key={name}>
+            <Input
+              {...register(name as Path<SignupSchema>)}
+              label={label}
+              placeholder={placeholder}
+              type={type}
+              readOnly={isKakao && readOnlyFields.includes(name)}
+              icon={name === 'socialLogin' ? <KakaoSvg /> : undefined}
+              errorMessage={(errors as Record<string, { message?: string }>)[name]?.message}
+            />
+          </InputWrapper>
+        ))}
+      </InputSection>
+
+      <Button
+        variant="primary-outline"
+        size="lg"
+        rounded="full"
+        fullWidth
+        onClick={handleSubmit(onSubmit)}
+        type="submit"
+      >
+        회원가입 완료
+      </Button>
+    </Wrapper>
+  );
 };
 
 export default SignupField;
