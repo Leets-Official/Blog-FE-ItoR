@@ -55,12 +55,17 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
 
   const handleClick = () => inputRef.current?.click();
 
+  const kakaoUserName = isKakao ? (localStorage.getItem('nickname') ?? '') : '';
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: kakaoUserName,
+    },
   });
 
   const onSubmit = (data: SignupSchema) => {

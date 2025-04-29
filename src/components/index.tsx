@@ -14,6 +14,7 @@ import ActionModal from '@/components/common/Modal/ActionModal';
 import SignupField from '@/components/signup/SignupField';
 import DetailModal from '@/components/common/Modal/DetailModal';
 import Layout from '@/components/layout/Layout';
+import KakaoLogin from '@/components/signup/KakaoLogin';
 
 export {
   Button,
@@ -32,4 +33,5 @@ export {
   SignupField,
   DetailModal,
   Layout,
+  KakaoLogin,
 };
