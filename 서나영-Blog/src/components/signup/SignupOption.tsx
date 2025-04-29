@@ -70,14 +70,22 @@ const StyledText = styled.span`
 `;
 
 const SignupOption = () => {
+  const BASE_URL = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
   const handleEmailSignup = () => {
-    navigate('/signup');
+    navigate('/signup', { state: { isKakaoLogin: false } });
   };
 
-  const handleKakaoSignup = () => {
-    navigate('/signup/kakao');
+  const handleKakaoSignup = async () => {
+    try {
+      const kakaoLink = `${BASE_URL}/auth/kakao`;
+      window.location.href = kakaoLink;
+    } catch (err) {
+      alert('카카오 로그인 URL을 불러오지 못했습니다.');
+    }
   };
+
   return (
     <SignupContainer>
       <SignupLeftSection>

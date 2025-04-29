@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, SignupSchema } from '@/schema/auth';
 import { Kakao } from '@/assets';
+import { signupAPI } from '@/api/auth/signupAPI';
 import styled from 'styled-components';
 import ProfileUpload from './ProfileUpload';
 import SignupInput from './SignupInput';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
+import LoginModal from '@/components/modal/LoginModal';
 
 const FormContainer = styled.div`
   width: 100%;
@@ -54,34 +57,73 @@ const SocialLabel = styled.div`
 `;
 
 const SignupForm = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isKakaoLogin = location.state?.isKakaoLogin ?? false;
+  const kakaoEmail = location.state?.email || '';
+  const kakaoName = location.state?.name || '';
+  const kakaoProfilePicture = location.state?.profilePicture || '';
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [errorModal, setErrorModal] = useState({
+    isOpen: false,
+    message: '',
+  });
+
   const {
     register,
     handleSubmit,
+    reset,
+    watch,
     formState: { errors },
   } = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
     mode: 'onBlur',
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    if (isKakaoLogin) {
+      reset({
+        name: kakaoName,
+        profilePicture: kakaoProfilePicture,
+        birthDate: '',
+        nickname: '',
+        bio: '',
+      });
+    }
+  }, [isKakaoLogin, kakaoEmail, kakaoName, kakaoProfilePicture, reset]);
 
-  const [isKakaoLogin, setIsKakaoLogin] = useState(true);
+  const onSubmit = async (data: SignupSchema) => {
+    console.log('회원가입 제출 데이터:', data);
+    try {
+      const nicknameToSend = data.nickname?.trim() || data.name;
 
-  const onSubmit = (data: SignupSchema) => {
-    console.log('회원가입 데이터', data);
-    setIsModalOpen(true);
+      const response = await signupAPI({
+        ...data,
+        nickname: nicknameToSend,
+        bio: data.bio ?? '',
+        profilePicture: watch('profilePicture') || '',
+      });
+
+      console.log('회원가입 성공 응답:', response);
+      setIsModalOpen(true);
+    } catch (error: any) {
+      if (error.message === '이미 가입된 이메일입니다.') {
+        setErrorModal({
+          isOpen: true,
+          message: error.message,
+        });
+      } else {
+        alert(error.message);
+      }
+    }
   };
 
   const inputFields = [
     ...(isKakaoLogin
       ? [
-          {
-            name: 'email',
-            label: '이메일',
-            type: 'email',
-            placeholder: '이메일',
-            disabled: true,
-          },
           {
             name: 'name',
             label: '이름',
@@ -138,9 +180,16 @@ const SignupForm = () => {
 
   return (
     <FormContainer>
-      <ProfileUpload />
+      <ProfileUpload
+        initialImage={kakaoProfilePicture}
+        onImageChange={(imageUrl, file) => {
+          reset({ ...watch(), profilePicture: imageUrl });
+        }}
+      />
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(e) => {
+          handleSubmit(onSubmit)(e);
+        }}
         style={{
           width: '100%',
           display: 'flex',
@@ -193,11 +242,29 @@ const SignupForm = () => {
         title='회원가입이 완료되었습니다!'
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={() => setIsModalOpen(false)}
+        onConfirm={() => {
+          setIsModalOpen(false);
+          setIsLoginModalOpen(true);
+        }}
         RightButtonText='로그인하기'
         RightButtonColor='#00A1FF'
         LeftButtonText='확인'
       />
+
+      <Modal
+        title={errorModal.message}
+        isOpen={errorModal.isOpen}
+        onClose={() => setErrorModal({ isOpen: false, message: '' })}
+        onConfirm={() => {
+          setErrorModal({ isOpen: false, message: '' });
+          setIsLoginModalOpen(true);
+        }}
+        RightButtonText='로그인하기'
+        RightButtonColor='#00A1FF'
+        LeftButtonText='확인'
+      />
+
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </FormContainer>
   );
 };
