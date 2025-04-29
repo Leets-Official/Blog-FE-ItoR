@@ -101,14 +101,8 @@ const getRightComponent = (
 };
 
 const Header = ({ type, onEditClick, title, content, commentRef }: HeaderProps) => {
-  const [isLogin, setIsLogin] = useState(true);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
-
-  const handleLogout = () => {
-    setIsLogin(false);
-    setIsSidebarOpen(false);
-  };
 
   return (
     <>
@@ -136,9 +130,10 @@ const Header = ({ type, onEditClick, title, content, commentRef }: HeaderProps) 
       {/* Sidebar 컴포넌트 */}
       <Sidebar
         isOpen={isSidebarOpen}
-        isLogin={isLogin}
         onClose={() => setIsSidebarOpen(false)}
-        onLogout={handleLogout}
+        onLogout={() => {
+          setIsSidebarOpen(false);
+        }}
       />
     </>
   );

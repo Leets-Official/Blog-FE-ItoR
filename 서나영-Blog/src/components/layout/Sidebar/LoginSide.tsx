@@ -66,6 +66,9 @@ const LoginSide = ({ onLogout }: LoginSideProps) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const profilePicture = localStorage.getItem('profilePicture') || '';
+  const nickname = localStorage.getItem('nickname') || '닉네임';
+
   const handleMyPageClick = () => {
     navigate('/mypage');
   };
@@ -94,11 +97,21 @@ const LoginSide = ({ onLogout }: LoginSideProps) => {
       <SideContainer>
         <ContentContainer>
           <ProfileContainer>
-            <Profile width='64' height='64' />
+            {profilePicture ? (
+              <img
+                src={profilePicture}
+                alt='프로필 이미지'
+                width={64}
+                height={64}
+                style={{ borderRadius: '50%', objectFit: 'cover' }}
+              />
+            ) : (
+              <Profile width='64' height='64' />
+            )}
           </ProfileContainer>
           <TextContainer>
-            <Nickname>닉네임</Nickname>
-            <Description>한 줄 소개</Description>
+            <Nickname>{nickname}</Nickname>
+            <Description>You can make anything by writing</Description>
           </TextContainer>
           <ButtonContainer>
             <Button
