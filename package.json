@@ -12,6 +12,7 @@
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
     "@hookform/resolvers": "^5.0.1",
+    "axios": "^1.9.0",
     "dayjs": "^1.11.13",
     "dayjs-ext": "^2.2.0",
     "react": "^19.0.0",
