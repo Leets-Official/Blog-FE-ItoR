@@ -41,8 +41,7 @@ const KakaoLoginLoading = () => {
   }, []);
 
   return (
-    <>
-    </>
+    <div>로딩중...</div>
   )
 };
 

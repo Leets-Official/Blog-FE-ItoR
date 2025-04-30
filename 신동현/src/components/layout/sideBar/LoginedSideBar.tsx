@@ -68,10 +68,7 @@ const LoginedSideBar = () => {
   }
 
   const onLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("nickname");
-    localStorage.removeItem("profilePicture");
+    localStorage.clear();
     navigate("/");
     window.location.reload();
   }

@@ -25,7 +25,7 @@ const Home = () => {
   const closeLoginModal = () => {
     setIsLoginModalOpen(false);
   }
-
+  
   const postList = DummyPostList({ postCount: 123 });
   return (
     <>
