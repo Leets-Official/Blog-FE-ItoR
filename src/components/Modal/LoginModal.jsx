@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { ClearIcon, GITLOG, KakaoIcon } from '@/assets';
 import { Input, Button } from '@/components';
+import { useLogin } from '@/context/LoginContext';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -114,14 +115,26 @@ const SignUpText = styled.p`
 const LoginModal = ({ isOpen, onClose }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [fieldState, setFieldState] = useState(null); // 비밀번호 오류 상태
+  const [errorState, setErrorState] = useState(null); // 비밀번호 오류 상태
+  const { setIsLogin } = useLogin();
 
   const handleLogin = () => {
-    if (email !== 'jcw0522@gachon.ac.kr') {
-      setFieldState({ message: '이메일을 다시 입력해주세요.' });
-    } else if (password !== '123456') {
-      setFieldState({ message: '비밀번호가 일치하지 않습니다.' });
-    } else setFieldState(null);
+    const errors = [
+      { value: email === 'jcw0522@gachon.ac.kr', message: '이메일을 다시 입력해주세요.' },
+      {
+        value: password === '123456',
+        message: '비밀번호가 일치하지 않습니다.',
+      },
+    ];
+
+    const error = errors.find((e) => !e.value);
+    if (error) {
+      setErrorState({ message: error.message });
+    } else {
+      setErrorState(null);
+      setIsLogin(true);
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
@@ -150,7 +163,7 @@ const LoginModal = ({ isOpen, onClose }) => {
             type='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            fieldState={fieldState} // 상태 전달
+            errorState={errorState} // 상태 전달
           />
           <Button
             width='82%'
@@ -160,7 +173,6 @@ const LoginModal = ({ isOpen, onClose }) => {
             bgColor='#00A1FF'
             radius='6px'
             onClick={handleLogin}
-            buttonColor={true} //ture일때 Button hover 적용
           >
             이메일로 로그인
           </Button>
@@ -173,7 +185,6 @@ const LoginModal = ({ isOpen, onClose }) => {
             bgColor='#FEE500'
             radius='6px'
             icon={KakaoIcon}
-            buttonColor={true}
           >
             카카오로 로그인
           </Button>

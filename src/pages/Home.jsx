@@ -1,28 +1,40 @@
-import { useState } from 'react';
 import styled from 'styled-components';
-import { Header, SideBar } from '@/components';
-import AppExample from '@/AppExample';
+import { useState, useEffect } from 'react';
+import { Header, BlogPostList, Toast } from '@/components';
+import { useLocation } from 'react-router-dom';
 
-const Main = styled.div`
-  display: flex;
-  margin-top: 100px;
+const Content = styled.div`
+  padding-top: 80px;
+  margin: 70px auto 0;
+  max-width: 700px;
 `;
 
 function Home() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
+  const [toastData, setToastData] = useState({ show: false, type: '', message: '' });
 
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
+  useEffect(() => {
+    const stateToast = location.state?.toastData;
+    if (stateToast) {
+      setToastData(stateToast);
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    if (toastData.show) {
+      setTimeout(() => setToastData((prev) => ({ ...prev, show: false })), 2000);
+    }
+  }, [toastData]);
 
   return (
-    <div>
-      <Header openSidebar={toggleSidebar} />
-      <SideBar isOpen={isSidebarOpen} onClose={toggleSidebar} />
-      <Main>
-        <AppExample />
-      </Main>
-    </div>
+    <>
+      <Toast show={toastData.show} text={toastData.message} type={toastData.type} />
+      <Header />
+      <Content>
+        <BlogPostList />
+      </Content>
+    </>
   );
 }
 

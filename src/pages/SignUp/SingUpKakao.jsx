@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import styled from 'styled-components';
+import { useState } from 'react';
+import dayjs from 'dayjs';
 import { Header, Image, Button, Input, Modal, SignUpHeader } from '@/components';
-import { AddPhoto, Profile } from '@/assets';
+import { AddPhoto, Profile, KakaoIcon } from '@/assets';
 import GlobalStyle from '@/styles/global';
 import { useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
 
 const Container = styled.div`
   position: relative;
@@ -25,7 +25,8 @@ const Content = styled.div`
   @media (max-width: 700px) {
     min-width: 300px;
     width: 90%;
-    margin-top: 160px 0 0 -20px;
+    margin-top: 160px;
+    margin-left: -20px;
   }
 `;
 
@@ -35,54 +36,42 @@ const Text = styled.div`
   margin: 15px 0 13px 7px;
 `;
 
-const SignUpEmail = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [name, setName] = useState('');
+const SocialBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 15px;
+  margin-top: -20px;
+  height: 45px;
+  background: #e6e6e6;
+  width: 100%;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #b3b3b3;
+  pointer-events: ${(props) => (props.disabled ? 'none' : 'auto')};
+`;
+
+const SignUpKakao = () => {
   const [birth, setBirth] = useState('');
   const [nickname, setNickname] = useState('');
   const [bio, setBio] = useState('');
 
-  const navigate = useNavigate();
   const todayString = dayjs().format('YYYY년 M월 D일');
+  const navigate = useNavigate();
 
   const onModalConfirm = () => {
     setModalOpen(false);
     navigate('/', { state: { openLoginModal: true } });
   };
 
-  const [emailError, setEmailError] = useState(null);
-  const [confirmPasswordError, setConfirmPasswordError] = useState(null);
-  const [nameError, setNameError] = useState(null);
   const [birthError, setBirthError] = useState(null);
   const [nicknameError, setNicknameError] = useState(null);
   const [bioError, setBioError] = useState(null);
 
+  const [modalOpen, setModalOpen] = useState(false);
+
   const handleSignUp = () => {
     let isValid = true;
-
-    if (email.trim() === '') {
-      setEmailError({ message: '반드시 입력해야하는 필수 사항입니다.' });
-      isValid = false;
-    } else {
-      setEmailError(null);
-    }
-
-    if (confirmPassword !== password) {
-      setConfirmPasswordError({ message: '비밀번호가 일치하지 않습니다.' });
-      isValid = false;
-    } else {
-      setConfirmPasswordError(null);
-    }
-
-    if (name.trim() === '') {
-      setNameError({ message: '반드시 입력해야하는 필수 사항입니다.' });
-      isValid = false;
-    } else {
-      setNameError(null);
-    }
 
     if (birth.trim() === '') {
       setBirthError({ message: `${todayString} 이전의 날짜만 입력 가능합니다.` });
@@ -113,35 +102,17 @@ const SignUpEmail = () => {
   const inputFields = [
     {
       label: '이메일',
-      onChange: (e) => setEmail(e.target.value),
       name: 'email',
-      error: emailError,
       placeholder: '이메일',
       type: 'email',
-    },
-    {
-      label: '비밀번호',
-      onChange: (e) => setPassword(e.target.value),
-      name: 'password',
-      error: null,
-      placeholder: '비밀번호',
-      type: 'password',
-    },
-    {
-      label: '비밀번호 확인',
-      onChange: (e) => setConfirmPassword(e.target.value),
-      name: 'confirmPassword',
-      error: confirmPasswordError,
-      placeholder: '비밀번호 확인',
-      type: 'password',
+      disabled: true,
     },
     {
       label: '이름',
-      onChange: (e) => setName(e.target.value),
       name: 'name',
-      error: nameError,
       placeholder: '이름',
       type: 'text',
+      disabled: true,
     },
     {
       label: '생년월일',
@@ -188,6 +159,11 @@ const SignUpEmail = () => {
           >
             프로필 사진 추가
           </Button>
+          <Text>소셜 로그인</Text>
+          <SocialBox disabled>
+            <KakaoIcon />
+            카카오 로그인
+          </SocialBox>
           {inputFields.map((field) => (
             <div key={field.name}>
               <Text>{field.label}</Text>
@@ -195,13 +171,16 @@ const SignUpEmail = () => {
                 width='100%'
                 height='45px'
                 radius='3px'
-                placeholder={field.placeholder}
                 phSize='14px'
+                borderStyle={field.disabled && 'none'}
+                bgColor={field.disabled && '#E6E6E6'}
+                placeholder={field.placeholder}
+                type={field.type}
+                name={field.name}
                 value={field.name}
                 onChange={field.onChange}
-                name={field.name}
-                type={field.type}
                 errorState={field.error}
+                disabled={field.disabled}
               />
             </div>
           ))}
@@ -229,4 +208,4 @@ const SignUpEmail = () => {
   );
 };
 
-export default SignUpEmail;
+export default SignUpKakao;
