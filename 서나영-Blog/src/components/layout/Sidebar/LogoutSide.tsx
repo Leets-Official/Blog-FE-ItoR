@@ -41,15 +41,6 @@ interface LogoutSideProps {
 const LogoutSide = ({ onLoginSuccess }: LogoutSideProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleLogin = async (data: LoginSchema) => {
-    try {
-      await emailLogin(data);
-      onLoginSuccess();
-    } catch (e) {
-      alert('로그인 실패');
-    }
-  };
-
   return (
     <SideContainer>
       <ProfileContainer>
