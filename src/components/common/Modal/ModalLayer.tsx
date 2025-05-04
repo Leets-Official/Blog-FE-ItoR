@@ -20,7 +20,7 @@ const ModalLayer: React.FC = () => {
         cancelText="취소"
         type="positive"
         onConfirm={() => {
-          localStorage.removeItem('accessToken');
+          localStorage.clear();
           closeModal();
           window.location.reload();
         }}

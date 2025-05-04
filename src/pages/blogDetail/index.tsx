@@ -11,6 +11,7 @@ import BlogFooter from '@/components/blogDetail/BlogFooter';
 const DetailWrapper = styled(ContentWrapper)`
   margin-top: 120px;
 `;
+
 const BlogDetail: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
 
