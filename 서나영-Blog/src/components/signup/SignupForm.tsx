@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, SignupSchema } from '@/schema/auth';
 import { Kakao } from '@/assets';
@@ -58,10 +58,12 @@ const SocialLabel = styled.div`
 
 const SignupForm = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isKakaoLogin = location.state?.isKakaoLogin ?? false;
   const kakaoName = location.state?.name || '';
   const kakaoProfilePicture = location.state?.profilePicture || '';
+  const kakaoId = location.state?.kakaoId;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -89,7 +91,7 @@ const SignupForm = () => {
         profilePicture: kakaoProfilePicture,
         birthDate: '',
         nickname: '',
-        bio: '',
+        introduction: '',
       });
     }
   }, [isKakaoLogin, kakaoName, kakaoProfilePicture, reset]);
@@ -101,8 +103,9 @@ const SignupForm = () => {
       const response = await signupAPI({
         ...data,
         nickname: data.nickname?.trim() || data.name,
-        bio: data.bio ?? '',
+        introduction: data.introduction ?? '',
         profilePicture: watch('profilePicture') || '',
+        kakaoId,
         isKakaoLogin,
       });
 
@@ -114,6 +117,7 @@ const SignupForm = () => {
           isOpen: true,
           message: error.message,
         });
+        navigate('/');
       } else {
         alert(error.message);
       }
@@ -175,7 +179,7 @@ const SignupForm = () => {
       placeholder: '닉네임',
     },
     {
-      name: 'bio',
+      name: 'introduction',
       label: '한 줄 소개',
       type: 'text',
       placeholder: '한 줄 소개',
@@ -244,7 +248,10 @@ const SignupForm = () => {
       <Modal
         title='회원가입이 완료되었습니다!'
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          navigate('/');
+        }}
         onConfirm={() => {
           setIsModalOpen(false);
           setIsLoginModalOpen(true);
@@ -257,7 +264,10 @@ const SignupForm = () => {
       <Modal
         title={errorModal.message}
         isOpen={errorModal.isOpen}
-        onClose={() => setErrorModal({ isOpen: false, message: '' })}
+        onClose={() => {
+          setErrorModal({ isOpen: false, message: '' });
+          navigate('/');
+        }}
         onConfirm={() => {
           setErrorModal({ isOpen: false, message: '' });
           setIsLoginModalOpen(true);
@@ -267,7 +277,13 @@ const SignupForm = () => {
         LeftButtonText='확인'
       />
 
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => {
+          setIsLoginModalOpen(false);
+          navigate('/');
+        }}
+      />
     </FormContainer>
   );
 };

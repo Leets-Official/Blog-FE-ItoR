@@ -6,14 +6,44 @@ import api from '@/api/axios';
 export const kakaoOAuthLogin = async (
   code: string,
 ): Promise<{
-  nickname: string;
-  picture: string;
+  code: number;
+  accessToken?: string;
+  nickname?: string;
+  profilePicture?: string;
   responseMessage: string;
+  kakaoId: number;
 }> => {
   const response = await api.get(`/auth/kakao/redirect`, {
     params: { code },
   });
 
-  console.log('카카오 OAuth 응답:', response.data);
-  return response.data.data;
+  const result = response.data;
+
+  console.log('카카오 OAuth 응답:', result);
+
+  const {
+    accessToken,
+    refreshToken,
+    nickname,
+    introduction,
+    profilePicture: profilePicture,
+    kakaoId,
+  } = result.data;
+
+  // localStorage에 저장
+  localStorage.setItem('accessToken', accessToken);
+  localStorage.setItem('refreshToken', refreshToken);
+  localStorage.setItem('nickname', nickname);
+  localStorage.setItem('profilePicture', profilePicture);
+  localStorage.setItem('introduction', introduction);
+  localStorage.setItem('kakaoId', kakaoId);
+
+  return {
+    code: result.code,
+    accessToken: result.data?.accessToken,
+    nickname: result.data?.nickname,
+    profilePicture: result.data?.picture,
+    responseMessage: result.data?.responseMessage,
+    kakaoId: result.data?.kakaoId,
+  };
 };

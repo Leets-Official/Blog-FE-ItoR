@@ -2,7 +2,11 @@ import api from '@/api/axios';
 import { SignupSchema } from '@/schema/auth';
 
 export const signupAPI = async (
-  signupData: SignupSchema & { profilePicture?: string; isKakaoLogin?: boolean },
+  signupData: SignupSchema & {
+    profilePicture?: string;
+    isKakaoLogin?: boolean;
+    kakaoId?: number;
+  },
 ) => {
   try {
     const isKakaoLogin = signupData.isKakaoLogin === true;
@@ -13,9 +17,11 @@ export const signupAPI = async (
       birthDate: signupData.birthDate,
       nickname: signupData.nickname,
       profilePicture: signupData.profilePicture ?? '',
-      introduction: signupData.bio ?? '',
+      introduction: signupData.introduction ?? '',
       ...(isKakaoLogin
-        ? {}
+        ? {
+            kakaoId: signupData.kakaoId,
+          }
         : {
             password: signupData.password,
           }),

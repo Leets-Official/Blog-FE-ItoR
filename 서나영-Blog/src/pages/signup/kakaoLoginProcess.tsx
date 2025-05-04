@@ -16,18 +16,34 @@ const KakaoLoginProcess = () => {
       }
 
       try {
-        const userInfo = await kakaoOAuthLogin(code);
+        const {
+          code: responseCode,
+          accessToken,
+          nickname,
+          profilePicture,
+          responseMessage,
+          kakaoId,
+        } = await kakaoOAuthLogin(code);
 
-        if (userInfo.responseMessage === 'OAuth2 회원가입이 필요합니다.') {
+        if (responseCode === 401) {
+          // 회원가입 필요
           navigate('/signup', {
             state: {
               isKakaoLogin: true,
-              name: userInfo.nickname,
-              profilePicture: userInfo.picture,
+              name: nickname,
+              profilePicture: profilePicture,
+              kakaoId: kakaoId,
             },
           });
-        } else {
+        } else if (responseCode === 200) {
+          // 로그인 성공
+          if (accessToken) {
+            localStorage.setItem('accessToken', accessToken);
+          }
           navigate('/');
+        } else {
+          alert(responseMessage || '알 수 없는 오류');
+          navigate('/signup/select');
         }
       } catch (error: any) {
         console.error('카카오 로그인 실패:', error.response?.data || error);
