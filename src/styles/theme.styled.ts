@@ -33,9 +33,14 @@ const FONT_SIZE = {
 const FONT_WEIGHT = {
   light: 300,
   regular: 400,
-  medium: 600,
+  medium: 500,
+  semibold: 600,
   bold: 700,
 };
+
+export type FONT_SIZE_TYPE = keyof typeof FONT_SIZE;
+export type FONT_WEIGHT_TYPE = keyof typeof FONT_WEIGHT;
+export type COLORS_TYPE = keyof typeof COLORS;
 
 const theme = {
   COLORS,

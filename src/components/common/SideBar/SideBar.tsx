@@ -1,14 +1,26 @@
-import { Button } from '@/components/index';
+import { Button } from '@/components';
 import { DefaultProfileSvg } from '@/assets';
-import { Overlay, SidebarWrapper } from './SideBar.styled';
+import {
+  Flex,
+  FlexRow,
+  Overlay,
+  SidebarContent,
+  SidebarWrapper,
+} from '@/components/common/SideBar/SideBar.styled';
 import { useState } from 'react';
+import { Text } from '@/components/home/PostItem';
+import { useNavigate } from 'react-router-dom';
+import { useModal } from '@/context/ModalContext';
 
 interface SideBarProps {
   onClose: () => void;
 }
 
 const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
+  const token = localStorage.getItem('accessToken');
   const [isClosing, setIsClosing] = useState(false);
+  const { openModal } = useModal();
+  const nav = useNavigate();
 
   const handleClose = () => {
     setIsClosing(true);
@@ -17,18 +29,73 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
     }, 300);
   };
 
+  const handleClick = {
+    write: () => nav('/post/write'),
+    logout: () => openModal('logout'),
+  };
+
   return (
     <>
       <Overlay onClick={handleClose} />
       <SidebarWrapper isClosing={isClosing}>
-        {/* Todo: 토큰 유무에 따른 컴포넌트 분리 */}
-        <DefaultProfileSvg width="64px" height="64px" />
-        <div>
-          You can make anything by <br /> writing
-        </div>
-        <Button variant="primary-outline" size="md" rounded="full">
-          깃로그 시작하기
-        </Button>
+        <SidebarContent>
+          <Flex>
+            <DefaultProfileSvg width="64px" height="64px" />
+            {/* 프로필 섹션 */}
+            {token ? (
+              <Flex>
+                <Text fontSize="xl" fontWeight="medium" color="black">
+                  닉네임
+                </Text>
+                <Text fontSize="sm" fontWeight="light" color="gray20">
+                  한 줄 소개
+                </Text>
+              </Flex>
+            ) : (
+              <Text color="gray20" fontWeight="light">
+                You can make anything by <br /> writing
+              </Text>
+            )}
+          </Flex>
+
+          {/* 버튼 섹션 */}
+          {token ? (
+            <FlexRow>
+              <Button variant="primary-outline" size="md" rounded="full">
+                나의 깃로그
+              </Button>
+              <Button
+                variant="primary-outline"
+                size="md"
+                rounded="full"
+                onClick={handleClick.write}
+              >
+                깃로그 쓰기
+              </Button>
+            </FlexRow>
+          ) : (
+            <Button
+              variant="primary-outline"
+              size="md"
+              rounded="full"
+              onClick={() => openModal('login')}
+            >
+              깃로그 시작하기
+            </Button>
+          )}
+        </SidebarContent>
+
+        {/* 하단 섹션 */}
+        {token && (
+          <FlexRow>
+            <Button variant="secondary" size="sm" rounded="full">
+              설정
+            </Button>
+            <Button variant="secondary" size="sm" rounded="full" onClick={handleClick.logout}>
+              로그아웃
+            </Button>
+          </FlexRow>
+        )}
       </SidebarWrapper>
     </>
   );

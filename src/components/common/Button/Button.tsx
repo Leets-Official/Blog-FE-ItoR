@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
   ButtonRounded,
   ButtonSize,
@@ -17,6 +17,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   fullWidth?: boolean;
   children: React.ReactNode;
   textColor?: string;
+  borderColor?: string;
+  height?: string;
 }
 
 const StyledButton = styled.button<ButtonProps>`
@@ -35,6 +37,20 @@ const StyledButton = styled.button<ButtonProps>`
   ${({ rounded }) => rounded && roundedStyles[rounded]};
   ${({ fullWidth }) => fullWidth && 'width: 100%;'}
 
+  ${({ variant, borderColor }) =>
+    variant === 'text' &&
+    borderColor &&
+    css`
+      border: 1px solid ${borderColor};
+    `}
+
+  ${({ variant, height }) =>
+    variant === 'text' &&
+    height &&
+    css`
+      height: ${height};
+    `}
+    
   cursor: pointer;
 
   svg {

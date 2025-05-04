@@ -16,4 +16,5 @@ export const HeaderContainer = styled.div`
 export const SectionWrapper = styled.div`
   ${flexAlignCenter}
   gap:16px;
+  cursor: pointer;
 `;

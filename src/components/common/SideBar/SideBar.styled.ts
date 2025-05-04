@@ -1,3 +1,4 @@
+import { flexCenter, flexColumn } from '@/styles/common.styled';
 import styled, { keyframes } from 'styled-components';
 
 const slideIn = keyframes`
@@ -19,6 +20,8 @@ const slideOut = keyframes`
 `;
 
 export const SidebarWrapper = styled.div<{ isClosing: boolean }>`
+  ${flexColumn}
+  justify-content: space-between;
   position: fixed;
   top: 0;
   left: 0;
@@ -38,4 +41,19 @@ export const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
   z-index: 999;
+`;
+
+export const Flex = styled.div`
+  ${flexColumn};
+  gap: 18px;
+`;
+
+export const FlexRow = styled.div`
+  ${flexCenter};
+  gap: 10px;
+`;
+
+export const SidebarContent = styled.div`
+  ${flexColumn};
+  gap: 28px;
 `;

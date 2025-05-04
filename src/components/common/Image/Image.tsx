@@ -1,4 +1,4 @@
-import { flexAlignCenter } from '@/styles/common.styled';
+import { flexCenter } from '@/styles/common.styled';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
@@ -44,13 +44,12 @@ const StyledImage = styled.img<{
 `;
 
 const Placeholder = styled.div`
-  ${flexAlignCenter}
+  ${flexCenter}
   position: absolute;
   inset: 0;
   z-index: 1;
   width: 100%;
   height: 100%;
-  text-align: center;
   color: ${({ theme }) => theme.COLORS.gray[90]};
   font-size: ${({ theme }) => theme.FONT_SIZE.sm};
 `;

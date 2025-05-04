@@ -11,19 +11,24 @@
   },
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
+    "@hookform/resolvers": "^5.0.1",
     "dayjs": "^1.11.13",
     "dayjs-ext": "^2.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.56.1",
+    "react-modal": "^3.16.3",
     "react-router-dom": "^7.4.0",
     "styled-components": "^6.1.16",
-    "styled-reset": "^4.5.2"
+    "styled-reset": "^4.5.2",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/node": "^22.13.11",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "@types/react-modal": "^3.16.3",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.1.1",
