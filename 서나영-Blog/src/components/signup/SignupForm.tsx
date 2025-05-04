@@ -11,6 +11,7 @@ import SignupInput from './SignupInput';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
 import LoginModal from '@/components/modal/LoginModal';
+import { getInputFields } from '@/components/constants/inputFields';
 
 const FormContainer = styled.div`
   width: 100%;
@@ -124,67 +125,7 @@ const SignupForm = () => {
     }
   };
 
-  const inputFields = [
-    ...(isKakaoLogin
-      ? [
-          {
-            name: 'email',
-            label: '이메일',
-            type: 'email',
-            placeholder: '이메일',
-          },
-          {
-            name: 'name',
-            label: '이름',
-            type: 'text',
-            placeholder: '이름',
-          },
-        ]
-      : [
-          {
-            name: 'email',
-            label: '이메일',
-            type: 'email',
-            placeholder: '이메일',
-          },
-          {
-            name: 'password',
-            label: '비밀번호',
-            type: 'password',
-            placeholder: '비밀번호',
-          },
-          {
-            name: 'confirmPassword',
-            label: '비밀번호 확인',
-            type: 'password',
-            placeholder: '비밀번호 확인',
-          },
-          {
-            name: 'name',
-            label: '이름',
-            type: 'text',
-            placeholder: '이름',
-          },
-        ]),
-    {
-      name: 'birthDate',
-      label: '생년월일',
-      type: 'date',
-      placeholder: 'YYYY-MM-DD',
-    },
-    {
-      name: 'nickname',
-      label: '닉네임',
-      type: 'text',
-      placeholder: '닉네임',
-    },
-    {
-      name: 'introduction',
-      label: '한 줄 소개',
-      type: 'text',
-      placeholder: '한 줄 소개',
-    },
-  ];
+  const inputFields = getInputFields(isKakaoLogin);
 
   return (
     <FormContainer>
