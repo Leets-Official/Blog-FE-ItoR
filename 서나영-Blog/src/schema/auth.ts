@@ -27,7 +27,7 @@ export const signupSchema = z
     ),
 
     nickname: z.string().max(20, '* 닉네임은 20자 이내로 입력해주세요.').optional(),
-    bio: z.string().max(50, '한 줄 소개는 50자 이내로 입력해주세요.').optional(),
+    introduction: z.string().max(50, '한 줄 소개는 50자 이내로 입력해주세요.').optional(),
     profilePicture: z.string().optional(),
   })
   .superRefine((data, ctx) => {
@@ -73,7 +73,7 @@ export const profileSchema = z.object({
     .string()
     .min(1, '* 닉네임을 입력해주세요.')
     .max(20, '* 닉네임은 20자 이내로 입력해주세요.'),
-  bio: z.string().max(50, '한 줄 소개는 50자 이내로 입력해주세요.').optional(),
+  introduction: z.string().max(50, '한 줄 소개는 50자 이내로 입력해주세요.').optional(),
 });
 
 export type LoginSchema = z.infer<typeof loginSchema>;

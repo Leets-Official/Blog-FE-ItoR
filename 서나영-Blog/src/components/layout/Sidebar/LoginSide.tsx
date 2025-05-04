@@ -68,6 +68,7 @@ const LoginSide = ({ onLogout }: LoginSideProps) => {
 
   const profilePicture = localStorage.getItem('profilePicture') || '';
   const nickname = localStorage.getItem('nickname') || '닉네임';
+  const introduction = localStorage.getItem('introduction') || 'You can make anything by writing';
 
   const handleMyPageClick = () => {
     navigate('/mypage');
@@ -111,7 +112,7 @@ const LoginSide = ({ onLogout }: LoginSideProps) => {
           </ProfileContainer>
           <TextContainer>
             <Nickname>{nickname}</Nickname>
-            <Description>You can make anything by writing</Description>
+            <Description>{introduction}</Description>
           </TextContainer>
           <ButtonContainer>
             <Button
