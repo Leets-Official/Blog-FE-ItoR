@@ -1,5 +1,5 @@
 import axios from 'axios';
-import api from '@/api/axios';
+import api from '@/api/api';
 
 /**
  * presigned URL 요청

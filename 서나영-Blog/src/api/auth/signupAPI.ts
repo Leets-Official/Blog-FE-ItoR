@@ -1,4 +1,4 @@
-import api from '@/api/axios';
+import api from '@/api/api';
 import { SignupSchema } from '@/schema/auth';
 
 export const signupAPI = async (

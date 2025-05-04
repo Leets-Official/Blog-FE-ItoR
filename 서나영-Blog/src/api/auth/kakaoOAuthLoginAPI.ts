@@ -1,4 +1,4 @@
-import api from '@/api/axios';
+import api from '@/api/api';
 
 /**
  * @param code Kakao로부터 받은 인증 코드

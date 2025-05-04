@@ -1,4 +1,4 @@
-import api from '@/api/axios';
+import api from '@/api/api';
 import { LoginSchema } from '@/schema/auth';
 
 export const emailLogin = async (
@@ -21,5 +21,6 @@ export const emailLogin = async (
   localStorage.setItem('profilePicture', profilePicture);
   localStorage.setItem('introduction', introduction);
 
+  console.log('로그인 시도: ', response);
   return { accessToken, refreshToken, nickname, profilePicture, introduction };
 };
