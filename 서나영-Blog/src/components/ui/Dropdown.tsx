@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import styled from 'styled-components';
 
 interface DropdownProps {
@@ -37,20 +38,22 @@ const MenuItem = styled.div<{ danger?: boolean }>`
   }
 `;
 
-const Dropdown = ({ menuItems, isOpen, onSelect }: DropdownProps) => {
-  if (!isOpen) return null;
+const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(
+  ({ menuItems, isOpen, onSelect }, ref) => {
+    if (!isOpen) return null;
 
-  return (
-    <DropdownWrapper>
-      <DropdownMenu>
-        {menuItems.map((item, index) => (
-          <MenuItem key={index} danger={item === '삭제하기'} onClick={() => onSelect?.(item)}>
-            {item}
-          </MenuItem>
-        ))}
-      </DropdownMenu>
-    </DropdownWrapper>
-  );
-};
+    return (
+      <DropdownWrapper ref={ref}>
+        <DropdownMenu>
+          {menuItems.map((item, index) => (
+            <MenuItem key={index} danger={item === '삭제하기'} onClick={() => onSelect?.(item)}>
+              {item}
+            </MenuItem>
+          ))}
+        </DropdownMenu>
+      </DropdownWrapper>
+    );
+  },
+);
 
 export default Dropdown;
