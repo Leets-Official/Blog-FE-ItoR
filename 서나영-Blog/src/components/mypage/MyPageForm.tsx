@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import SignupInput from '../signup/SignupInput';
 import { Kakao } from '@/assets';
 import { signupSchema, SignupSchema } from '@/schema/auth';
+import { getInputFields } from '@/components/constants/inputFields';
 
 const FormContainer = styled.div`
   width: 100%;
@@ -44,58 +45,7 @@ const SocialLabel = styled.div`
 
 const MyPageForm = ({ editable = false }: { editable?: boolean }) => {
   const [isKakaoLogin, setIsKakaoLogin] = useState(true);
-
-  const inputFields = [
-    ...(isKakaoLogin
-      ? [
-          {
-            name: 'email',
-            label: '이메일',
-            type: 'email',
-            placeholder: '이메일',
-            disabled: true,
-          },
-          {
-            name: 'name',
-            label: '이름',
-            type: 'text',
-            placeholder: '이름',
-            disabled: true,
-          },
-        ]
-      : [
-          {
-            name: 'email',
-            label: '이메일',
-            type: 'email',
-            placeholder: '이메일',
-          },
-          {
-            name: 'password',
-            label: '비밀번호',
-            type: 'password',
-            placeholder: '비밀번호',
-          },
-          {
-            name: 'confirmPassword',
-            label: '비밀번호 확인',
-            type: 'password',
-            placeholder: '비밀번호 확인',
-          },
-          {
-            name: 'name',
-            label: '이름',
-            type: 'text',
-            placeholder: '이름',
-          },
-        ]),
-    {
-      name: 'birthDate',
-      label: '생년월일',
-      type: 'date',
-      placeholder: 'YYYY-MM-DD',
-    },
-  ];
+  const inputFields = getInputFields(isKakaoLogin);
 
   const {
     register,

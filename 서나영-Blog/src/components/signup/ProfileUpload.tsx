@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Profile, AddPhoto } from '@/assets';
+import { getPresignedUrl, uploadImage } from '@/api/ImageAPI';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -49,14 +50,33 @@ const AddPhotoButton = styled.button`
   background-color: #fff;
 `;
 
-const ProfileUpload = () => {
-  const [image, setImage] = useState<string | null>(null);
+interface ProfileUploadProps {
+  initialImage?: string;
+  onImageChange?: (imageUrl: string, file?: File) => void;
+}
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+const ProfileUpload = ({ initialImage, onImageChange }: ProfileUploadProps) => {
+  const [image, setImage] = useState<string | null>(initialImage || null);
+
+  useEffect(() => {
+    if (initialImage) {
+      setImage(initialImage);
+    }
+  }, [initialImage]);
+
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
+    if (!file) return;
+
+    try {
+      const presignedUrl = await getPresignedUrl(file.name);
+      const uploadedUrl = await uploadImage(presignedUrl, file);
+
+      setImage(uploadedUrl);
+      onImageChange?.(uploadedUrl, file);
+    } catch (error) {
+      alert('이미지 업로드 실패');
+      console.error(error);
     }
   };
 

@@ -3,7 +3,8 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "jsx": "react-jsx",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
     "baseUrl": ".", // 기본 경로를 현재 프로젝트의 루트로 설정
     "paths": {
       "@/*": ["src/*"] // '@' 별칭을 'src' 폴더로 설정 (모듈 경로 참조 시 간단하게 사용 가능)

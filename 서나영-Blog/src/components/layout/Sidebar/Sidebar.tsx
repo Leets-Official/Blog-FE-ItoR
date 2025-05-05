@@ -1,10 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import LoginSide from './LoginSide';
 import LogoutSide from './LogoutSide';
 import styled from 'styled-components';
 
 interface SideProps {
-  isLogin: boolean;
   isOpen: boolean;
   onClose: () => void;
   onLogout: () => void;
@@ -36,7 +35,14 @@ const Overlay = styled.div<{ $isOpen: boolean }>`
   z-index: 1000;
 `;
 
-const Sidebar = ({ isOpen, isLogin, onClose, onLogout }: SideProps) => {
+const Sidebar = ({ isOpen, onClose, onLogout }: SideProps) => {
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    setIsLogin(!!token);
+  }, [isOpen]);
+
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if ((event.target as HTMLElement).id === 'sidebar-overlay') {
@@ -52,7 +58,7 @@ const Sidebar = ({ isOpen, isLogin, onClose, onLogout }: SideProps) => {
     <>
       <Overlay id='sidebar-overlay' $isOpen={isOpen} />
       <SideContainer $isOpen={isOpen}>
-        {isLogin ? <LoginSide onLogout={onLogout} /> : <LogoutSide />}
+        {isLogin ? <LoginSide onLogout={onLogout} /> : <LogoutSide onLoginSuccess={onClose} />}
       </SideContainer>
     </>
   );

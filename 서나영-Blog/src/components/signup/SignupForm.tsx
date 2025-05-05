@@ -1,13 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signupSchema, SignupSchema } from '@/schema/auth';
 import { Kakao } from '@/assets';
+import { signupAPI } from '@/api/auth/signupAPI';
 import styled from 'styled-components';
 import ProfileUpload from './ProfileUpload';
 import SignupInput from './SignupInput';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
+import LoginModal from '@/components/modal/LoginModal';
+import { getInputFields } from '@/components/constants/inputFields';
 
 const FormContainer = styled.div`
   width: 100%;
@@ -54,93 +58,87 @@ const SocialLabel = styled.div`
 `;
 
 const SignupForm = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isKakaoLogin = location.state?.isKakaoLogin ?? false;
+  const kakaoName = location.state?.name || '';
+  const kakaoProfilePicture = location.state?.profilePicture || '';
+  const kakaoId = location.state?.kakaoId;
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [errorModal, setErrorModal] = useState({
+    isOpen: false,
+    message: '',
+  });
+
   const {
     register,
     handleSubmit,
+    reset,
+    watch,
     formState: { errors },
   } = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
     mode: 'onBlur',
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  useEffect(() => {
+    if (isKakaoLogin) {
+      reset({
+        email: '',
+        name: kakaoName,
+        profilePicture: kakaoProfilePicture,
+        birthDate: '',
+        nickname: '',
+        introduction: '',
+      });
+    }
+  }, [isKakaoLogin, kakaoName, kakaoProfilePicture, reset]);
 
-  const [isKakaoLogin, setIsKakaoLogin] = useState(true);
+  const onSubmit = async (data: SignupSchema) => {
+    console.log('회원가입 제출 데이터:', data);
 
-  const onSubmit = (data: SignupSchema) => {
-    console.log('회원가입 데이터', data);
-    setIsModalOpen(true);
+    try {
+      const response = await signupAPI({
+        ...data,
+        nickname: data.nickname?.trim() || data.name,
+        introduction: data.introduction ?? '',
+        profilePicture: watch('profilePicture') || '',
+        kakaoId,
+        isKakaoLogin,
+      });
+
+      console.log('회원가입 성공 응답:', response);
+      setIsModalOpen(true);
+    } catch (error: any) {
+      if (error.message === '이미 가입된 이메일입니다.') {
+        setErrorModal({
+          isOpen: true,
+          message: error.message,
+        });
+        navigate('/');
+      } else {
+        alert(error.message);
+      }
+    }
   };
 
-  const inputFields = [
-    ...(isKakaoLogin
-      ? [
-          {
-            name: 'email',
-            label: '이메일',
-            type: 'email',
-            placeholder: '이메일',
-            disabled: true,
-          },
-          {
-            name: 'name',
-            label: '이름',
-            type: 'text',
-            placeholder: '이름',
-            disabled: true,
-          },
-        ]
-      : [
-          {
-            name: 'email',
-            label: '이메일',
-            type: 'email',
-            placeholder: '이메일',
-          },
-          {
-            name: 'password',
-            label: '비밀번호',
-            type: 'password',
-            placeholder: '비밀번호',
-          },
-          {
-            name: 'confirmPassword',
-            label: '비밀번호 확인',
-            type: 'password',
-            placeholder: '비밀번호 확인',
-          },
-          {
-            name: 'name',
-            label: '이름',
-            type: 'text',
-            placeholder: '이름',
-          },
-        ]),
-    {
-      name: 'birthDate',
-      label: '생년월일',
-      type: 'date',
-      placeholder: 'YYYY-MM-DD',
-    },
-    {
-      name: 'nickname',
-      label: '닉네임',
-      type: 'text',
-      placeholder: '닉네임',
-    },
-    {
-      name: 'bio',
-      label: '한 줄 소개',
-      type: 'text',
-      placeholder: '한 줄 소개',
-    },
-  ];
+  const inputFields = getInputFields(isKakaoLogin);
 
   return (
     <FormContainer>
-      <ProfileUpload />
+      <ProfileUpload
+        initialImage={kakaoProfilePicture}
+        onImageChange={(imageUrl) => {
+          reset({ ...watch(), profilePicture: imageUrl });
+        }}
+      />
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={(e) => {
+          handleSubmit(onSubmit)(e);
+        }}
         style={{
           width: '100%',
           display: 'flex',
@@ -167,7 +165,6 @@ const SignupForm = () => {
             placeholder={field.placeholder}
             error={errors[field.name as keyof SignupSchema]?.message}
             register={register}
-            disabled={field.disabled}
           />
         ))}
 
@@ -192,11 +189,41 @@ const SignupForm = () => {
       <Modal
         title='회원가입이 완료되었습니다!'
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false);
+          navigate('/');
+        }}
+        onConfirm={() => {
+          setIsModalOpen(false);
+          setIsLoginModalOpen(true);
+        }}
         RightButtonText='로그인하기'
         RightButtonColor='#00A1FF'
         LeftButtonText='확인'
+      />
+
+      <Modal
+        title={errorModal.message}
+        isOpen={errorModal.isOpen}
+        onClose={() => {
+          setErrorModal({ isOpen: false, message: '' });
+          navigate('/');
+        }}
+        onConfirm={() => {
+          setErrorModal({ isOpen: false, message: '' });
+          setIsLoginModalOpen(true);
+        }}
+        RightButtonText='로그인하기'
+        RightButtonColor='#00A1FF'
+        LeftButtonText='확인'
+      />
+
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => {
+          setIsLoginModalOpen(false);
+          navigate('/');
+        }}
       />
     </FormContainer>
   );

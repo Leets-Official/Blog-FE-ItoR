@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Profile } from '@/assets';
+import { LoginSchema } from '@/schema/auth';
+import { emailLogin } from '@/api/auth/emailLoginAPI';
 import Button from '@/components/ui/Button';
 import LoginModal from '@/components/modal/LoginModal';
 import styled from 'styled-components';
@@ -32,7 +34,11 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
-const LogoutSide = () => {
+interface LogoutSideProps {
+  onLoginSuccess: () => void;
+}
+
+const LogoutSide = ({ onLoginSuccess }: LogoutSideProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -57,7 +63,13 @@ const LogoutSide = () => {
         </Button>
       </ButtonContainer>
       {/* 로그인 모달 */}
-      {isModalOpen && <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <LoginModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onLoginSuccess={onLoginSuccess}
+        />
+      )}
     </SideContainer>
   );
 };
