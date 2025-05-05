@@ -1,4 +1,4 @@
-import { Button } from '@/components';
+import { Button, Image } from '@/components';
 import { DefaultProfileSvg } from '@/assets';
 import {
   Flex,
@@ -11,16 +11,20 @@ import { useState } from 'react';
 import { Text } from '@/components/home/PostItem';
 import { useNavigate } from 'react-router-dom';
 import { useModal } from '@/context/ModalContext';
+import { useUser } from '@/context/UserContext';
 
 interface SideBarProps {
   onClose: () => void;
 }
 
 const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
-  const token = localStorage.getItem('accessToken');
   const [isClosing, setIsClosing] = useState(false);
   const { openModal } = useModal();
   const nav = useNavigate();
+
+  const { user } = useUser();
+
+  const isLoggedIn = Boolean(user);
 
   const handleClose = () => {
     setIsClosing(true);
@@ -40,15 +44,25 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
       <SidebarWrapper isClosing={isClosing}>
         <SidebarContent>
           <Flex>
-            <DefaultProfileSvg width="64px" height="64px" />
+            {isLoggedIn && user && user.profilePicture ? (
+              <Image
+                src={user.profilePicture}
+                alt="profile"
+                width="64px"
+                height="64px"
+                borderRadius="50%"
+              />
+            ) : (
+              <DefaultProfileSvg width="64px" height="64px" />
+            )}
             {/* 프로필 섹션 */}
-            {token ? (
+            {isLoggedIn ? (
               <Flex>
                 <Text fontSize="xl" fontWeight="medium" color="black">
-                  {localStorage.getItem('nickname')}
+                  {user?.nickname}
                 </Text>
                 <Text fontSize="sm" fontWeight="light" color="gray20">
-                  한 줄 소개
+                  {user?.introduction}
                 </Text>
               </Flex>
             ) : (
@@ -59,7 +73,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
           </Flex>
 
           {/* 버튼 섹션 */}
-          {token ? (
+          {isLoggedIn ? (
             <FlexRow>
               <Button variant="primary-outline" size="md" rounded="full">
                 나의 깃로그
@@ -86,7 +100,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
         </SidebarContent>
 
         {/* 하단 섹션 */}
-        {token && (
+        {isLoggedIn && (
           <FlexRow>
             <Button variant="secondary" size="sm" rounded="full">
               설정

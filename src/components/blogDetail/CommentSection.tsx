@@ -4,8 +4,9 @@ import { flexColumn, flexColumnCenter } from '@/styles/common.styled';
 import { Comment } from '@/types/post';
 import { Textarea, Button, Image } from '@/components';
 import { formatPostDate } from '@/utils/formatPostDate';
-import { MeatballSvg } from '@/assets';
-import { useState } from 'react';
+import { DefaultProfileSvg, MeatballSvg } from '@/assets';
+import { useReducer, useState } from 'react';
+import { useUser } from '@/context/UserContext';
 
 const CommentSectionWrapper = styled.div`
   ${flexColumn}
@@ -62,19 +63,12 @@ interface CommentSectionProps {
   commentCount: number;
   comments: Comment[];
   isLoggedIn: boolean;
-  writerNickName: string;
-  writerProfileImage: string;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({
-  commentCount,
-  comments,
-  isLoggedIn,
-  writerNickName,
-  writerProfileImage,
-}) => {
+const CommentSection: React.FC<CommentSectionProps> = ({ commentCount, comments, isLoggedIn }) => {
   const [commentList, setCommentList] = useState<Comment[]>(comments);
   const [newComment, setNewComment] = useState<string>('');
+  const { user } = useUser();
 
   const hasComments = comments.length > 0;
 
@@ -85,8 +79,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   const handleCommentSubmit = () => {
     const newCommentData: Comment = {
       id: Date.now(),
-      nickName: writerNickName,
-      profileImage: writerProfileImage,
+      nickName: user?.nickname || '',
+      profileImage: user?.profilePicture || '',
       createAt: new Date().toISOString(),
       content: newComment.trim(),
     };
@@ -143,16 +137,20 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       {isLoggedIn ? (
         <CommentInputWrapper>
           <CommentInputTop>
-            <Image
-              src={writerProfileImage}
-              alt="내 프로필"
-              width="24px"
-              height="24px"
-              borderRadius="50%"
-              objectFit="cover"
-            />
+            {user?.profilePicture ? (
+              <Image
+                src={user.profilePicture}
+                alt="내 프로필"
+                width="24px"
+                height="24px"
+                borderRadius="50%"
+                objectFit="cover"
+              />
+            ) : (
+              <DefaultProfileSvg width="24px" height="24px" />
+            )}
             <Text fontSize="sm" fontWeight="regular" color="gray20">
-              {writerNickName}
+              {user?.nickname}
             </Text>
           </CommentInputTop>
 

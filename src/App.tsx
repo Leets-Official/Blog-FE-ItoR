@@ -5,6 +5,7 @@ import theme from '@/styles/theme.styled';
 import GlobalStyles from '@/styles/global.styled';
 import { ModalProvider } from '@/context/ModalContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { UserProvider } from '@/context/UserContext';
 
 const queryClient = new QueryClient();
 
@@ -13,9 +14,11 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        <ModalProvider>
-          <RouterProvider router={router} />
-        </ModalProvider>
+        <UserProvider>
+          <ModalProvider>
+            <RouterProvider router={router} />
+          </ModalProvider>
+        </UserProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

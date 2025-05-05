@@ -37,8 +37,6 @@ const BlogDetail: React.FC = () => {
           commentCount={post.commentCount}
           isLoggedIn={isLoggedIn}
           comments={post.comments}
-          writerNickName={post.nickName}
-          writerProfileImage={post.profileImage || ''}
         />
         <BlogFooter />
       </DetailWrapper>
