@@ -33,7 +33,7 @@ const BlogTitle: React.FC<BlogTitleProps> = ({ post }) => {
     <BlogTitleContainer>
       <TextWrapper>
         <TitleText>{post.title}</TitleText>
-        <BlogMeta post={post} />
+        <BlogMeta post={post} isBlogDetail={true} />
       </TextWrapper>
     </BlogTitleContainer>
   );
