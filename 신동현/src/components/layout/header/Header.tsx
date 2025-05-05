@@ -41,9 +41,10 @@ const RightContainer = styled.div`
 
 interface HeaderProps {
   type : "main" | "write" | "detail" | "mypage";
+  onPublish?: () => void;
 }
 
-const Header = ({ type }: HeaderProps) => {
+const Header = ({ type, onPublish }: HeaderProps) => {
   const { isSideBarOpen, setIsSideBarOpen } = useContext(SideBarContext);
   const isLogin = localStorage.getItem("accessToken") ? true : false;
 
@@ -60,7 +61,7 @@ const Header = ({ type }: HeaderProps) => {
         </LeftContainer>
         <RightContainer>
           {type === "main" && <MainHeader />}
-          {type === "write" && <WriteHeader />}
+          {type === "write" && <WriteHeader onPublish={onPublish} />}
           {type === "detail" && <DetailHeader />}
           {type === "mypage" && <MyPageHeader />}
         </RightContainer>

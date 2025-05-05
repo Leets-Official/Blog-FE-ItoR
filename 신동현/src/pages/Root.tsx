@@ -28,7 +28,7 @@ const Root = () => {
 
   return (
     <SideBarContext.Provider value={{ isSideBarOpen, setIsSideBarOpen }}>
-        <Header type={getHeaderType()} />
+        {getHeaderType() === 'write' ? null : <Header type={getHeaderType()} />}
         <Outlet />
     </SideBarContext.Provider>
   )

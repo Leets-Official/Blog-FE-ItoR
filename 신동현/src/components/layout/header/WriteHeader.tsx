@@ -7,7 +7,16 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const WriteHeader = () => {
+interface WriteHeaderProps {
+  onPublish?: () => void;
+}
+
+const WriteHeader = ({ onPublish }: WriteHeaderProps) => {
+  const handlePublishClick = () => {
+    console.log("버튼 클릭됨");
+    onPublish?.();
+  };
+
   return (
     <Container>
       <Button
@@ -25,7 +34,7 @@ const WriteHeader = () => {
         fontSize="14px"
         color="#000000"
         backgroundColor="#FFFFFF"
-        onClick={() => { }}
+        onClick={handlePublishClick}
       > 게시하기
       </Button>
     </Container>

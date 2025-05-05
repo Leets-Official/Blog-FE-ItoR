@@ -21,7 +21,7 @@ const MainHeader = () => {
         backgroundColor="#FFFFFF"
         icon={<Create width="24px" height="24px" fill="#333333" />}
         onClick={() => {
-          navigate("/Write");
+          navigate("/write");
         }}
       >
         깃로그 쓰기
