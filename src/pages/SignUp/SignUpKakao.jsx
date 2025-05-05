@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { Header, Image, Button, Input, Modal, SignUpHeader } from '@/components';
-import { AddPhoto, Profile } from '@/assets';
+import { AddPhoto, Profile, KakaoIcon } from '@/assets';
 import GlobalStyle from '@/styles/global';
 import { useNavigate } from 'react-router-dom';
-import { EmailSignUp } from '@/api/SignUp';
+import { KakaoSignUp } from '@/api/SignUp';
 import { useMutation } from '@tanstack/react-query';
 import { createInputFields } from '@/constant/SignupFields';
 import { onValiadation } from '@/utils/validation';
-import { Container, Content, Text } from '@/styles/SignupStyles';
+import { Container, Content, Text, SocialBox } from '@/styles/SignupStyles';
 
-const SignUpEmail = () => {
+const SignUpKakao = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -31,10 +31,9 @@ const SignUpEmail = () => {
 
   const signupMutation = useMutation({
     mutationFn: () =>
-      EmailSignUp({
+      KakaoSignUp({
         email: formData.email,
         nickname: formData.nickname,
-        password: formData.password,
         profilePicture: '',
         birthDate: formData.birth,
         name: formData.name,
@@ -42,7 +41,7 @@ const SignUpEmail = () => {
       }),
     onSuccess: (data) => {
       if (data.error) {
-        onValiadation(formData, setFormError, data.message); // 사용 중인 이메일, 닉네임 여부 확인
+        onValiadation(formData, setFormError, data.message);
         console.log(data.message);
       } else {
         setModalOpen(true);
@@ -80,6 +79,11 @@ const SignUpEmail = () => {
           >
             프로필 사진 추가
           </Button>
+          <Text>소셜 로그인</Text>
+          <SocialBox disabled>
+            <KakaoIcon />
+            카카오 로그인
+          </SocialBox>
           {inputFields.map((field) => (
             <div key={field.name}>
               <Text>{field.label}</Text>
@@ -87,12 +91,12 @@ const SignUpEmail = () => {
                 width='100%'
                 height='45px'
                 radius='3px'
-                placeholder={field.placeholder}
                 phSize='14px'
+                placeholder={field.placeholder}
+                type={field.type}
+                name={field.name}
                 value={field.value}
                 onChange={field.onChange}
-                name={field.name}
-                type={field.type}
                 errorState={field.error}
               />
             </div>
@@ -121,4 +125,4 @@ const SignUpEmail = () => {
   );
 };
 
-export default SignUpEmail;
+export default SignUpKakao;

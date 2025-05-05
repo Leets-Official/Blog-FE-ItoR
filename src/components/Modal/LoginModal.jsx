@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { ClearIcon, GITLOG, KakaoIcon } from '@/assets';
 import { Input, Button } from '@/components';
 import { useLogin } from '@/context/LoginContext';
+import { useMutation } from '@tanstack/react-query';
+import { KakaoLogin, EmailLogin } from '@/api/Login';
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -118,27 +120,53 @@ const LoginModal = ({ isOpen, onClose }) => {
   const [errorState, setErrorState] = useState(null); // 비밀번호 오류 상태
   const { setIsLogin } = useLogin();
 
-  const handleLogin = () => {
-    const errors = [
-      { value: email === 'jcw0522@gachon.ac.kr', message: '이메일을 다시 입력해주세요.' },
-      {
-        value: password === '123456',
-        message: '비밀번호가 일치하지 않습니다.',
-      },
-    ];
-
-    const error = errors.find((e) => !e.value);
-    if (error) {
-      setErrorState({ message: error.message });
-    } else {
-      setErrorState(null);
+  const loginMutation = useMutation({
+    mutationFn: EmailLogin,
+    onSuccess: (data) => {
+      if (data.error) {
+        // status에 따라 에러 메시지 분기
+        if (data.status === 400) {
+          setErrorState({ message: '이메일을 다시 확인해주세요.' });
+        } else if (data.status === 401) {
+          setErrorState({ message: '비밀번호를 다시 확인해주세요.' });
+        } else {
+          setErrorState({ message: data.message });
+        }
+        setIsLogin(false);
+        return;
+      }
       setIsLogin(true);
+      setErrorState(null);
       onClose();
+    },
+    onError: (error) => {
+      setErrorState({ message: error.message });
+      setIsLogin(false);
+    },
+  });
+
+  const handleLogin = () => {
+    if (!email) {
+      setErrorState({ message: '이메일을 입력해주세요.' });
+      return;
     }
+    if (!email.includes('@')) {
+      setErrorState({ message: '올바른 이메일 형식이 아닙니다.' });
+      return;
+    }
+    if (!password) {
+      setErrorState({ message: '비밀번호를 입력해주세요.' });
+      return;
+    }
+    // 로그인 요청
+    loginMutation.mutate({ email, password });
+  };
+
+  const onKakaoLogin = () => {
+    KakaoLogin();
   };
 
   if (!isOpen) return null;
-
   return (
     <ModalOverlay onClick={onClose}>
       <ModalContent onClick={(e) => e.stopPropagation()}>
@@ -185,6 +213,7 @@ const LoginModal = ({ isOpen, onClose }) => {
             bgColor='#FEE500'
             radius='6px'
             icon={KakaoIcon}
+            onClick={onKakaoLogin}
           >
             카카오로 로그인
           </Button>
