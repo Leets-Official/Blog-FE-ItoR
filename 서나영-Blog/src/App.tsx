@@ -18,6 +18,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/blog/editor' element={<BlogEditor />} />
+          <Route path='/blog/editor/:postId' element={<BlogEditor />} />
           <Route path='/blog/:postId' element={<BlogDetail />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/signup/select' element={<SignupSelect />} />
