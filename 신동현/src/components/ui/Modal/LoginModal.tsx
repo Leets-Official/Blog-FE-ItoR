@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { EamilLogin, KakaoLogin } from "@/api/login";
 import Toast from "../Toast";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 const Overlay = styled.div`
   position: fixed;
@@ -208,7 +208,7 @@ const Login = ({ open, onClose }: LoginProps) => {
             <SnsContent>SNS</SnsContent>
             <SignButton width="100%" disabled={false} onClick={onKakaoLogin} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
             <InputContent>
-              <Link to="/signUp" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
+              <Link to="/signUp" onClick={onClose} style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
             </InputContent>
           </ButtonContainer>
         </SubmitContainer>

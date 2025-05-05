@@ -1,5 +1,4 @@
 import { Add_photo } from "@/assets";
-import Header from "@/components/layout/header/Header";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import styled from "styled-components";

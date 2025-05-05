@@ -1,4 +1,3 @@
-import Header from "@/components/layout/header/Header";
 import { GITLOG, Kakao } from "@/assets";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +15,7 @@ const ContentContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 100px;
 
   @media (max-width: 700px) {
     margin-top: 100px;
