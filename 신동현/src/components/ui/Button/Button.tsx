@@ -37,6 +37,7 @@ const StyledButton = styled.button<{
 `;
 
 const IconContainer = styled.span`
+  object-fit: contain;
   display: inline-flex;
   align-items: center;
   justify-content: center;
