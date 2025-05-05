@@ -54,4 +54,8 @@ const writeSchema = z.object({
   content: z.string().min(1, { message: "내용을 입력해주세요." }).max(1000, { message: "내용은 최대 1000글자 입니다." }),
 });
 
-export { loginSchema, signUpEmailSchema, signUpSocialSchema, writeSchema };
+const commentSchema = z.object({
+  content: z.string().min(1, { message: "댓글을 입력해주세요." }).max(1000, { message: "댓글은 최대 1000글자 입니다." }),
+});
+
+export { loginSchema, signUpEmailSchema, signUpSocialSchema, writeSchema, commentSchema };

@@ -10,19 +10,19 @@ const api = axios.create({
 });
 
 const getRefreshToken = async () => {
-  const refreshToken = localStorage.getItem("refreshToken");
-  if (!refreshToken) {
-    throw new Error('Refresh token not found');
-  }
   try {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      throw new Error('Refresh token not found');
+    }
     const response = await api.post("/auth/reissue", {
-      refreshToken,
+      refreshToken: refreshToken,
     });
 
-    if (response.status === 200) {
-      const { accessToken, refreshToken: newRefreshToken } = response.data;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", newRefreshToken);
+    if (response.data.code === 200) {
+      const { accessToken, refreshToken: newRefreshToken } = response.data.data;
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', newRefreshToken);
       return {
         accessToken,
         refreshToken: newRefreshToken,
@@ -35,32 +35,26 @@ const getRefreshToken = async () => {
   }
 };
 
-api.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
-  const accessToken = localStorage.getItem("accessToken");
-  const refreshToken = localStorage.getItem("refreshToken");
+api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
 
-  const newHeaders = new AxiosHeaders(config.headers);
+  const newHeaders = new AxiosHeaders(config.headers || {});
 
   if (accessToken) {
-    newHeaders.set("Authorization", `Bearer ${accessToken}`);
+    newHeaders.set('Authorization', `Bearer ${accessToken}`);
   }
-
   if (refreshToken) {
-    newHeaders.set("Refresh", `Bearer ${refreshToken}`);
+    newHeaders.set('Authorization_refresh', `Bearer ${refreshToken}`);
   }
 
-  return {
-    ...config,
-    headers: newHeaders,
-  };
+  return { ...config, headers: newHeaders };
 }, (error) => {
   return Promise.reject(error);
 });
 
 api.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
@@ -68,25 +62,19 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const tokens = await getRefreshToken();
-        if (!tokens) {
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          window.location.href = '/';
-          return Promise.reject(error);
-        }
-        originalRequest.headers.Authorization = `Bearer ${tokens.accessToken}`;
-        originalRequest.headers.Refresh = `Bearer ${tokens.refreshToken}`;
-        return api(originalRequest);
-      } catch (error) {
-        console.error("Failed to refresh access token", error);
+        const { accessToken } = await getRefreshToken();
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        return api(originalRequest); 
+      } catch (refreshError) {
+        console.error('재발급 실패: ', refreshError);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         window.location.href = '/';
       }
     }
+
     return Promise.reject(error);
-  }
+  },
 );
 export { BaseUrl, api };
 

@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import Modal from "@/components/ui/Modal/Modal";
 import LoginModal from "@/components/ui/Modal/LoginModal";
 import Posts from "@/components/layout/post/PostList";
-import { getBlogList } from "@/api/blog";
+import { getPostList } from "@/api/post";
 
 const Home = () => {
   const location = useLocation();
@@ -28,7 +28,7 @@ const Home = () => {
 
   const getTotalPage = async () => {
 
-    const response = await getBlogList(10000, 0);
+    const response = await getPostList(10000, 0);
     setTotalPostCount(response.data.length);
   }
 

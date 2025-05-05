@@ -4,4 +4,5 @@ export interface BlogComment {
   createdAt: string;
   nickName: string;
   profileUrl: string;
+  isOwner: boolean;
 }

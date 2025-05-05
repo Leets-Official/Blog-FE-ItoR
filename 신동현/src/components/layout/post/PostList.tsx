@@ -2,7 +2,7 @@ import Pagination from "@/components/pagination/Pagination";
 import { useEffect, useState } from "react";
 import { Post } from "../../../assets/type/Post";
 import PostItem from "./PostItem";
-import { getBlogList } from "@/api/blog";
+import { getPostList } from "@/api/post";
 
 interface PostListProps {
   totalPostCount: number;
@@ -18,7 +18,7 @@ const PostList = ({ totalPostCount }: PostListProps) => {
   const [postList, setPostList] = useState<Post[]>([]);
 
   const fetchBlogList = async () => {
-    const response = await getBlogList(10, page - 1);
+    const response = await getPostList(10, page - 1);
     setPostList(response.data);
   }
 

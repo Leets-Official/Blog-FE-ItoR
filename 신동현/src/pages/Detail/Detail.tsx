@@ -5,7 +5,7 @@ import { Profile } from "@/assets";
 import DetailContent from "./DetailContent";
 import DetailComment from "./DetailComment";
 import DetailCommentInput from "./DetailCommentInput";
-import { getBlogDetail } from "@/api/blog";
+import { getPostDetail } from "@/api/post";
 import Image from "@/components/ui/Image";
 import { PostContent } from "@/assets/type/PostContent";
 import { BlogComment } from "@/assets/type/PostCommnet";
@@ -103,7 +103,7 @@ const Detail = () => {
     const fetchBlogDetail = async () => {
       if (!id) return;
       try {
-        const response = await getBlogDetail(id);
+        const response = await getPostDetail(id);
         if (response.code === 200) {
           setPostComment(response.data.comments);
           setPostContent({

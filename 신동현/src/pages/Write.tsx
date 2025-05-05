@@ -2,14 +2,14 @@ import { Add_photo } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import styled from "styled-components";
-import { useState, createContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { writeSchema } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import Header from "@/components/layout/header/Header";
 import Toast from "@/components/ui/Toast";
-import { postBlog } from "@/api/blog";
+import { postBlog } from "@/api/post";
 import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
@@ -66,6 +66,7 @@ const Write = () => {
     resolver: zodResolver(writeSchema),
     defaultValues: {
       title: "",
+      content: "",
     },
   });
 
