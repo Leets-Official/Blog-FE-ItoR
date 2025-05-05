@@ -7,6 +7,7 @@ import CancelandSave from '@/components/layout/header/CancelandSave';
 import Button from '@/components/ui/Button';
 import Sidebar from '@/components/layout/sidebar/Sidebar';
 import styled from 'styled-components';
+import { BlogPostDetail } from '@/types/blogPost';
 
 type HeaderType = 'DelandCreate' | 'ChatandMore' | 'CreateLog' | 'Edit' | 'CancelandSave' | 'None';
 
@@ -16,7 +17,10 @@ interface HeaderProps {
   navigateEditor?: string;
   title?: string;
   content?: string;
+  blocks?: { content: string; type: 'TEXT' | 'IMAGE' }[];
   commentRef?: React.RefObject<HTMLDivElement | null>;
+  postId?: string;
+  post?: BlogPostDetail;
 }
 
 const HeaderContainer = styled.div`
@@ -67,7 +71,10 @@ const getRightComponent = (
   navigateEditor?: ReturnType<typeof useNavigate>,
   title?: string,
   content?: string,
+  blocks?: { content: string; type: 'TEXT' | 'IMAGE' }[],
   commentRef?: React.RefObject<HTMLDivElement | null>,
+  postId?: string,
+  post?: BlogPostDetail,
 ) => {
   switch (type) {
     case 'CreateLog':
@@ -82,9 +89,16 @@ const getRightComponent = (
         </Button>
       );
     case 'DelandCreate':
-      return <DelandCreate title={title ?? ''} content={content ?? ''} />;
+      return (
+        <DelandCreate
+          title={title ?? ''}
+          content={content ?? ''}
+          blocks={blocks ?? []}
+          postId={postId}
+        />
+      );
     case 'ChatandMore':
-      return <ChatandMore commentRef={commentRef} />;
+      return <ChatandMore commentRef={commentRef} postId={postId} post={post} />;
     case 'CancelandSave':
       return <CancelandSave />;
     case 'Edit':
@@ -100,7 +114,16 @@ const getRightComponent = (
   }
 };
 
-const Header = ({ type, onEditClick, title, content, commentRef }: HeaderProps) => {
+const Header = ({
+  type,
+  onEditClick,
+  title,
+  content,
+  blocks,
+  commentRef,
+  postId,
+  post,
+}: HeaderProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -123,7 +146,17 @@ const Header = ({ type, onEditClick, title, content, commentRef }: HeaderProps) 
           />
         </HeaderLeftSection>
         <HeaderRightSection>
-          {getRightComponent(type, onEditClick, navigate, title, content, commentRef)}
+          {getRightComponent(
+            type,
+            onEditClick,
+            navigate,
+            title,
+            content,
+            blocks,
+            commentRef,
+            postId,
+            post,
+          )}
         </HeaderRightSection>
       </HeaderContainer>
 

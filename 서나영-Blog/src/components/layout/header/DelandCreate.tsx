@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToast } from '@/components/ui/Toast';
 import Modal from '@/components/ui/Modal';
+import { createPost, updatePost } from '@/api/blog/postDetailAPI';
+import { Block } from '@/types/blogPost';
 
 type TextType = 'Delete' | 'Create';
 
@@ -22,12 +24,15 @@ const Text = styled.p<{ type: TextType }>`
 interface Props {
   title: string;
   content: string;
+  blocks: Block[];
+  postId?: string;
 }
 
-const DelandCreate = ({ title, content }: Props) => {
-  const [isModalOpen, setModalOpen] = useState(false);
+const DelandCreate = ({ title, content, blocks, postId }: Props) => {
   const navigate = useNavigate();
   const { showToast } = useToast();
+
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const handleDeleteClick = () => {
     setModalOpen(true);
@@ -40,12 +45,35 @@ const DelandCreate = ({ title, content }: Props) => {
     navigate('/');
   };
 
-  const handleCreateClick = () => {
-    if (!title.trim() || !content.trim()) {
+  const handleCreateClick = async () => {
+    const hasValidContent = blocks.some(
+      (block) => block.type === 'IMAGE' || block.content.trim() !== '',
+    );
+
+    if (!title.trim() || !hasValidContent) {
       showToast('내용을 입력해주세요', 'negative');
-    } else {
-      showToast('저장되었습니다!', 'positive');
-      navigate('/');
+      return;
+    }
+
+    try {
+      const postContents = blocks.map((block, index) => ({
+        contentOrder: index + 1,
+        content: block.content,
+        contentType: block.type,
+      }));
+
+      if (postId) {
+        await updatePost(postId, { title, contents: postContents });
+        showToast('수정되었습니다!', 'positive');
+        navigate(`/blog/${postId}`);
+      } else {
+        await createPost(title, postContents);
+        showToast('저장되었습니다!', 'positive');
+        navigate('/');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('게시 실패. 다시 시도해주세요.', 'negative');
     }
   };
 

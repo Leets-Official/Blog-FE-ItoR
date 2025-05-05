@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button';
 const ImageUploadWrapper = styled.div`
   display: flex;
   position: fixed;
-  top: 100px;
+  top: 72px;
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -36,15 +36,15 @@ const HiddenInput = styled.input`
 `;
 
 interface ImageUploadProps {
-  onAddImage: (imageUrl: string) => void;
+  onAddImage: (file: File) => void;
 }
 
 const ImageUpload = ({ onAddImage }: ImageUploadProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    console.log('파일 선택됨:', file);
     if (file) {
-      const url = URL.createObjectURL(file);
-      onAddImage(url);
+      onAddImage(file);
     }
   };
 
@@ -56,7 +56,7 @@ const ImageUpload = ({ onAddImage }: ImageUploadProps) => {
           사진 추가하기
         </StyledButton>
       </label>
-      <HiddenInput type='file' id='imageUpload' accept='image/*' onChange={handleFileChange} />
+      <HiddenInput type='file' id='imageUpload' onChange={handleFileChange} />
     </ImageUploadWrapper>
   );
 };
