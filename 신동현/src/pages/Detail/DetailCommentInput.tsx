@@ -88,7 +88,9 @@ const DetailCommentInput = () => {
         setToast({ message: response.message, type: "error" });
       } else {
         setToast({ message: "댓글을 작성했습니다.", type: "success" });
-        window.location.reload();
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
     } catch (error: any) {
       console.error(error);

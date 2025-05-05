@@ -2,6 +2,7 @@ import { deleteComment } from "@/api/post";
 import { More_vert } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal/Modal";
+import Toast from "@/components/ui/Toast";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -74,7 +75,7 @@ interface CommentItemProps {
 
 const CommentItem = ({ commentId, profileImage, nickname, date, content, isMyComment }: CommentItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null); 
   const openModal = () => {
     setIsModalOpen(true);
   }
@@ -88,12 +89,16 @@ const CommentItem = ({ commentId, profileImage, nickname, date, content, isMyCom
     if (response.error) {
       console.error(response.message);
     } else {
-      window.location.reload();
+      setToast({ message: "삭제가 완료되었습니다!.", type: "success" });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   }
-  
+
   return (
     <Wrapper>
+      {toast && <Toast key={toast.message} message={toast.message} type={toast.type} />}
       <WriteInfoContainer>
         <ProfileContainer>
           {profileImage}

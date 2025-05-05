@@ -9,6 +9,7 @@ import { getPostDetail } from "@/api/post";
 import Image from "@/components/ui/Image";
 import { PostContent } from "@/assets/type/PostContent";
 import { BlogComment } from "@/assets/type/PostCommnet";
+import Header from "@/components/layout/header/Header";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -127,6 +128,7 @@ const Detail = () => {
 
   return (
     <>
+      <Header type="detail" isOwner={isOwner} />
       <Wrapper>
         <Container>
           <DetailContent postContent={postContent} />

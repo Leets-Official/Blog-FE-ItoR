@@ -57,7 +57,6 @@ interface DetailCommentProps {
 }
 
 const DetailComment = ({ postComment }: DetailCommentProps) => {
-  console.log(postComment)
   return (
     <CommentContainer>
       <CommentTitleContainer>

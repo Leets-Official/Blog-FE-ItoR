@@ -110,4 +110,20 @@ const deleteComment = async (commentId: string) => {
   }
 };
 
-export { postBlog, getPostList, getPostDetail, postComment, deleteComment };
+const deletePost = async (postId: string) => {
+  try {
+    const response = await api.delete('/posts', {
+      params: {
+        postId: postId
+      }
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error(error);
+    return {
+      error: true,
+      message: error.response?.data?.message || "블로그 삭제에 실패했습니다."
+    };
+  }
+};
+export { postBlog, getPostList, getPostDetail, postComment, deleteComment, deletePost };

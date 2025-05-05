@@ -27,8 +27,12 @@ const Home = () => {
   }
 
   const getTotalPage = async () => {
-    const response = await getPostList(10000, 0);
-    setTotalPostCount(response.data.totalCount);
+    try {
+      const response = await getPostList(10000, 0);
+      setTotalPostCount(response.data.totalCount);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {

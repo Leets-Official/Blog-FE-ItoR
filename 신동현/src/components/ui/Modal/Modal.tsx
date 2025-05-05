@@ -46,10 +46,12 @@ const Container = styled.div<{ animation?: string }>`
   border-radius: 8px;
   position: relative;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
+  max-width: 700px;
   margin: auto;
-  width: 326px;
-  height: 100px;
+  width: auto;
+  height: auto;
+  min-width: 340px;
+  max-width: 95vw;
   animation: ${(props) => props.animation === 'fadeIn' ? fadeIn : slideIn} 0.3s ease-in-out;
 `;
 
@@ -58,10 +60,10 @@ const ButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
-  position: absolute;
   bottom: 2rem;
   left: 2rem;
   right: 2rem;
+  margin-top: 32px;
 `;
 
 const ModalTitle = styled.h2`
@@ -71,9 +73,8 @@ const ModalTitle = styled.h2`
 `;
 
 const ModalSubTitle = styled.p`
-  font-size: 18px;
+  font-size: 14px;
   color: #666;
-  margin-bottom: 32px;
 `;
 
 const Modal = ({ title, subTitle, open, onClose, onCancel, onConfirm, animation, cancelText, confirmText, cancelType, confirmType }: ModalProps) => {
