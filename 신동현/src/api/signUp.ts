@@ -21,7 +21,7 @@ const EmailSignUp = async (email: string, nickname: string, password: string, pr
   }
 };
 
-const KakaoSignUp = async (email: string, nickname: string, profilePicture: string, birthDate: string, name: string, introduction: string) => {
+const KakaoSignUp = async (email: string, nickname: string, profilePicture: string, birthDate: string, name: string, introduction: string, kakaoId: string) => {
   try {
     const response = await api.post("/auth/register-oauth", {
       email,
@@ -30,6 +30,7 @@ const KakaoSignUp = async (email: string, nickname: string, profilePicture: stri
       birthDate,
       name,
       introduction,
+      kakaoId,
     });
     return response.data;
   } catch (error: any) {

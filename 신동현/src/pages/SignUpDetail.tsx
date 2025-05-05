@@ -236,7 +236,6 @@ const SignUpDetail = () => {
   const location = useLocation();
   const type = location.search.split("=")[1];
 
-
   const { control: controlEmail, handleSubmit: handleSubmitEmail } = useForm<z.infer<typeof signUpEmailSchema>>({
     resolver: zodResolver(signUpEmailSchema),
     defaultValues: {
@@ -303,8 +302,6 @@ const SignUpDetail = () => {
       }
     }
 
-    console.log(presignedImage);
-
     if (type === "email") {
       const response = await EmailSignUp(
         (data as z.infer<typeof signUpEmailSchema>).email.toString(),
@@ -323,13 +320,16 @@ const SignUpDetail = () => {
         openConfirmModal();
       }
     } else {
+      const kakaoId = localStorage.getItem("kakaoId");
+
       const response = await KakaoSignUp(
         (data as z.infer<typeof signUpSocialSchema>).email.toString(),
         (data as z.infer<typeof signUpSocialSchema>).nickname.toString(),
-        presignedImage,
+        presignedImage === "" ? profilePicture as string : presignedImage,
         (data as z.infer<typeof signUpSocialSchema>).birth.toString(),
         name as string,
         (data as z.infer<typeof signUpSocialSchema>).bio.toString(),
+        kakaoId as string,
       );
 
       if (response.error) {
@@ -375,6 +375,7 @@ const SignUpDetail = () => {
           <ProfileContent>프로필 사진</ProfileContent>
           <ProfileChangeContainer>
             <input type="file" ref={ImgInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
+
             <ProfileImageContainer>
               <ProfileButton onClick={handleProfileImageChange} icon={profileImage ? <img src={profileImage} alt="profile" /> : <Profile width="90px" height="90px" />} />
             </ProfileImageContainer>

@@ -16,33 +16,33 @@ const KakaoLoginLoading = () => {
       try {
         const response = await KakaoRedirect(code);
         console.log(response);
-        if ( response.code === 200 ) {
-          if (response.message === "OAuth2 회원가입이 필요합니다.") {
-            localStorage.setItem('name', response.data.nickname);
-            localStorage.setItem('profilePicture', response.data.picture);
-            window.location.href = "/signUp/detail?type=kakao";
-          } else {
-            console.log(response.data);
-            localStorage.setItem('accessToken', response.data.accessToken);
-            localStorage.setItem('refreshToken', response.data.refreshToken);
-            localStorage.setItem('nickname', response.data.nickname);
-            localStorage.setItem('profilePicture', response.data.profilePicture);
-            window.location.href = "/";
-          }
+        if (response.code === 401) {
+          localStorage.setItem('name', response.data.nickname);
+          localStorage.setItem('profilePicture', response.data.picture);
+          localStorage.setItem('kakaoId', response.data.kakaoId);
+          window.location.href = "/signUp/detail?type=kakao";
+        } else if (response.code === 200) {
+          console.log(response.data);
+          localStorage.setItem('accessToken', response.data.accessToken);
+          localStorage.setItem('refreshToken', response.data.refreshToken);
+          localStorage.setItem('nickname', response.data.nickname);
+          localStorage.setItem('profilePicture', response.data.profilePicture);
+          localStorage.setItem('bio', response.data.introduction);
+          window.location.href = "/";
         } else {
-          console.log("카카오 로그인 실패 : ", response.message);
-        }
-      } catch (error: any) {
-        console.log("카카오 로그인 실패 : ", error);
+        console.log("카카오 로그인 실패 : ", response.message);
       }
-    };
+    } catch (error: any) {
+      console.log("카카오 로그인 실패 : ", error);
+    }
+  };
 
-    handleKakaoLogin();
-  }, []);
+  handleKakaoLogin();
+}, []);
 
-  return (
-    <div>로딩중...</div>
-  )
+return (
+  <div>로딩중...</div>
+)
 };
 
 export default KakaoLoginLoading;
