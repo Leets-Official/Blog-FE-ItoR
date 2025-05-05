@@ -9,7 +9,12 @@ import { useRef } from 'react';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useForm, Path } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SignupSchema, signupSchema } from '@/schema/auth';
+import { kakaoSignupSchema, SignupSchema, signupSchema, KakaoSignupSchema } from '@/schema/auth';
+import { getFileUrl, getPresignedUrl } from '@/api/file/file';
+import { kakaoSignupApi, signupApi } from '@/api/auth/auth';
+import { useModal } from '@/context/ModalContext';
+import { useLocation } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
 
 interface SignupFieldProps {
   signupType: 'email' | 'kakao';
@@ -47,25 +52,98 @@ export const ProfileSection = styled.div`
 `;
 
 const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
-  const readOnlyFields = ['socialLogin', 'email', 'name'];
+  const readOnlyFields = ['socialLogin', 'name'];
   const isKakao = signupType === 'kakao';
   const fields = isKakao ? kakaoSignupFields : emailSignupFields;
   const inputRef = useRef<HTMLInputElement>(null);
-  const { previewUrl, handleImageChange } = useImageUpload();
+  const { previewUrl, handleImageChange, imageFile } = useImageUpload();
+  const { openModal } = useModal();
+  const location = useLocation();
 
   const handleClick = () => inputRef.current?.click();
+
+  const kakaoUserName = isKakao ? (localStorage.getItem('nickname') ?? '') : '';
+
+  type CurrentSchema = SignupSchema | KakaoSignupSchema;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupSchema>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<CurrentSchema>({
+    resolver: zodResolver(isKakao ? kakaoSignupSchema : signupSchema),
+    defaultValues: {
+      name: kakaoUserName,
+    },
   });
 
-  const onSubmit = (data: SignupSchema) => {
-    console.log('Form Data:', data);
-    // TODO:  회원가입 api 요청
+  // 자체 회원가입 mutation
+  const emailSignupMutation = useMutation({
+    mutationFn: signupApi,
+    onSuccess: () => {
+      openModal('signup');
+    },
+    onError: (error) => {
+      console.error('자체 회원가입 오류', error);
+      alert('자체 회원가입에 실패했습니다.');
+    },
+  });
+
+  // 카카오 회원가입 Mutation
+  const kakaoSignupMutation = useMutation({
+    mutationFn: kakaoSignupApi,
+    onSuccess: () => {
+      openModal('signup');
+    },
+    onError: (error) => {
+      console.error('카카오 회원가입 오류', error);
+      alert('카카오 회원가입에 실패했습니다.');
+    },
+  });
+
+  const onSubmit = async (data: SignupSchema | KakaoSignupSchema) => {
+    let profilePicture = '';
+
+    if (imageFile) {
+      try {
+        const fileName = imageFile.name;
+
+        // presignedUrl 요청
+        const presignedUrlResponse = await getFileUrl(fileName);
+        const presignedUrl =
+          typeof presignedUrlResponse === 'string'
+            ? presignedUrlResponse
+            : presignedUrlResponse?.data;
+
+        if (!presignedUrl) {
+          console.error('presigned URL이 없습니다.');
+          return;
+        }
+        console.log('presigned URL:', presignedUrl);
+
+        // s3에 업로드
+        await getPresignedUrl(imageFile, presignedUrl);
+        // presignedUrl에서 ? 이전 부분만 저장
+        profilePicture = presignedUrl.split('?')[0];
+      } catch (error) {
+        console.error('프로필 사진 업로드 오류', error);
+        alert('프로필 사진 업로드에 실패했습니다.');
+        return;
+      }
+
+      const isEmailSignup = location.pathname === '/signup/email';
+
+      const signupData = {
+        ...(data as SignupSchema),
+        profilePicture,
+      };
+
+      if (isEmailSignup) {
+        emailSignupMutation.mutate(signupData);
+      } else {
+        kakaoSignupMutation.mutate(signupData as KakaoSignupSchema);
+      }
+    }
   };
   return (
     <Wrapper>
@@ -118,7 +196,7 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
               type={type}
               readOnly={isKakao && readOnlyFields.includes(name)}
               icon={name === 'socialLogin' ? <KakaoSvg /> : undefined}
-              errorMessage={errors[name as keyof SignupSchema]?.message}
+              errorMessage={(errors as Record<string, { message?: string }>)[name]?.message}
             />
           </InputWrapper>
         ))}

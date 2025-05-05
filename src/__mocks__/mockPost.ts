@@ -11,7 +11,7 @@ export const mockPosts: Post[] = Array.from({ length: 100 }, (_, i) => {
 
   const comments = Array.from({ length: commentCount }, (_, idx) => ({
     id: idx + 1,
-    nickName: faker.internet.userName(),
+    nickName: faker.internet.username(),
     profileImage: faker.image.avatar(),
     createAt: createdAt,
     content: faker.lorem.sentence(),

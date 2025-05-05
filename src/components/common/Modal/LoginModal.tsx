@@ -8,6 +8,11 @@ import Button from '@/components/common/Button/Button';
 import { FlexRow } from '@/components/common/SideBar/SideBar.styled';
 import { useNavigate } from 'react-router-dom';
 import { useModal } from '@/context/ModalContext';
+import { loginApi } from '@/api/auth/auth';
+import { LoginSchema, loginSchema } from '@/schema/auth';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
 
 export const Wrapper = styled.div<{ bgColor?: string; height?: string }>`
   ${flexCenter}
@@ -70,10 +75,49 @@ export const SignupText = styled(Text)`
 
 const LoginModal: React.FC = () => {
   const { isOpen, closeModal, modalType } = useModal();
-
   const nav = useNavigate();
+  const BASE_URL = import.meta.env.VITE_API_URL;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const loginMutation = useMutation({
+    mutationFn: loginApi,
+    onSuccess: (res) => {
+      console.log('로그인 성공:', res.data);
+      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('refreshToken', res.data.refreshToken);
+      localStorage.setItem('nickname', res.data.nickname);
+      closeModal();
+      nav('/');
+    },
+    onError: (error: any) => {
+      console.error('로그인 실패:', error);
+      if (error.response?.status === 401) {
+        const message = error.response.data.message || '로그인에 실패했습니다';
+        setError('password', { message });
+      } else {
+        console.error('로그인 중 오류 발생', error);
+      }
+    },
+  });
 
   if (modalType !== 'login') return null;
+
+  const handleLogin = async (data: LoginSchema) => {
+    loginMutation.mutate(data);
+  };
+
+  const handleKakaoLogin = async () => {
+    const link = `${BASE_URL}/auth/kakao`;
+    window.location.href = link;
+  };
 
   return (
     <BaseModal isOpen={isOpen} onRequestClose={closeModal} maxWidth="880px">
@@ -87,10 +131,20 @@ const LoginModal: React.FC = () => {
             You can make anything by writing
           </Text>
         </LeftSection>
-        <RightSection>
-          <Input placeholder="이메일" />
-          <Input placeholder="비밀번호" />
-          <Button variant="primary" size="lg" rounded="md" fullWidth>
+        <RightSection as="form" onSubmit={handleSubmit(handleLogin)}>
+          <Input
+            placeholder="이메일"
+            type="email"
+            {...register('email')}
+            errorMessage={errors.email?.message}
+          />
+          <Input
+            placeholder="비밀번호"
+            type="password"
+            {...register('password')}
+            errorMessage={errors.password?.message}
+          />
+          <Button variant="primary" size="lg" rounded="md" fullWidth type="submit">
             이메일로 로그인
           </Button>
           <FlexRow>
@@ -100,7 +154,7 @@ const LoginModal: React.FC = () => {
             </Text>
             <LineSvg stroke="#333" />
           </FlexRow>
-          <Button variant="kakao" size="lg" rounded="md" fullWidth>
+          <Button variant="kakao" size="lg" rounded="md" fullWidth onClick={handleKakaoLogin}>
             <KakaoSvg /> 카카오로 로그인
           </Button>
           <SignupText

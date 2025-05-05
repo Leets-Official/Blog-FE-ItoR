@@ -1,7 +1,7 @@
 import { CommentSvg, MeatballSvg } from '@/assets';
 import { SectionWrapper } from '@/components/common/Header/Header.styled';
 import { useState } from 'react';
-import DetailModal from '../Modal/DetailModal';
+import DetailModal from '@/components/common/Modal/DetailModal';
 
 const DetailRight: React.FC<{ onClick?: (action: string) => void }> = ({ onClick }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);

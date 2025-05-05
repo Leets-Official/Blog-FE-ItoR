@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { HomePage, MyPage, Post, Signup, BlogDetail } from '@/pages';
-import { Layout } from '@/components';
+import { KakaoLogin, Layout } from '@/components';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +13,7 @@ const router = createBrowserRouter([
       { path: '/signup/:type', element: <Signup /> },
       { path: '/post/write', element: <Post /> },
       { path: '/post/:postId', element: <BlogDetail /> },
+      { path: '/oauth/kakao/success', element: <KakaoLogin /> },
     ],
   },
 ]);

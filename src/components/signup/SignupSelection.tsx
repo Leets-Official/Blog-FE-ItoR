@@ -12,6 +12,13 @@ const SignupSelection: React.FC = () => {
     nav(`/signup/${type}`);
   };
 
+  const BASE_URL = import.meta.env.VITE_API_URL;
+
+  const handleKakaoLogin = async () => {
+    const link = `${BASE_URL}/auth/kakao`;
+    window.location.href = link;
+  };
+
   return (
     <Wrapper bgColor="white">
       <LeftSection>
@@ -37,13 +44,7 @@ const SignupSelection: React.FC = () => {
           </Text>
           <LineSvg stroke="#f5f5f5" />
         </FlexRow>
-        <Button
-          variant="kakao"
-          size="lg"
-          rounded="md"
-          fullWidth
-          onClick={() => handleSelect('kakao')}
-        >
+        <Button variant="kakao" size="lg" rounded="md" fullWidth onClick={handleKakaoLogin}>
           <KakaoSvg /> 카카오로 회원가입
         </Button>
       </RightSection>
