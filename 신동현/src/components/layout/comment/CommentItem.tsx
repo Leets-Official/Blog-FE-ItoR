@@ -1,3 +1,4 @@
+import { deleteComment } from "@/api/post";
 import { More_vert } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal/Modal";
@@ -63,6 +64,7 @@ const CommentContentText = styled.p`
 
 
 interface CommentItemProps {
+  commentId: string;
   profileImage: React.ReactNode;
   nickname: string;
   date: string;
@@ -70,7 +72,7 @@ interface CommentItemProps {
   isMyComment: boolean;
 }
 
-const CommentItem = ({ profileImage, nickname, date, content, isMyComment }: CommentItemProps) => {
+const CommentItem = ({ commentId, profileImage, nickname, date, content, isMyComment }: CommentItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -79,6 +81,15 @@ const CommentItem = ({ profileImage, nickname, date, content, isMyComment }: Com
 
   const closeModal = () => {
     setIsModalOpen(false);
+  }
+
+  const onDeleteComment = async () => {
+    const response = await deleteComment(commentId);
+    if (response.error) {
+      console.error(response.message);
+    } else {
+      window.location.reload();
+    }
   }
   
   return (
@@ -108,7 +119,7 @@ const CommentItem = ({ profileImage, nickname, date, content, isMyComment }: Com
       <CommentContent>
         <CommentContentText>{content}</CommentContentText>
       </CommentContent>
-      <Modal open={isModalOpen} onClose={closeModal} title="댓글을 삭제할까요?" onCancel={closeModal} onConfirm={closeModal} cancelText="취소" confirmText="삭제하기" cancelType="default" confirmType="negative" />
+      <Modal open={isModalOpen} onClose={closeModal} title="댓글을 삭제할까요?" onCancel={closeModal} onConfirm={onDeleteComment} cancelText="취소" confirmText="삭제하기" cancelType="default" confirmType="negative" />
     </Wrapper>
   );
 };

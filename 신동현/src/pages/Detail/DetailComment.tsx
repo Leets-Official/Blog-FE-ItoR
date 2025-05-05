@@ -72,7 +72,7 @@ const DetailComment = ({ postComment }: DetailCommentProps) => {
       ) : (
         <CommentListContainer>
           {postComment.map((comment) => (
-            <CommentItem key={comment.commentId} profileImage={comment.profileUrl} nickname={comment.nickName} date={dayjs(comment.createdAt).format("MMM DD.YYYY.").toString()} content={comment.content} isMyComment={comment.isOwner} />
+            <CommentItem key={comment.commentId} commentId={comment.commentId} profileImage={comment.profileUrl} nickname={comment.nickName} date={dayjs(comment.createdAt).format("MMM DD.YYYY.").toString()} content={comment.content} isMyComment={comment.isOwner} />
           ))}
         </CommentListContainer>
       )}

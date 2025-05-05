@@ -34,7 +34,7 @@ const getPostList = async (size: number, page: number) => {
       });
       return response.data;
     } else {
-      const response = await api.get("/posts/token", {
+      const response = await api.get("/posts/all/token", {
         params: {
           size: size,
           page: page
@@ -97,4 +97,17 @@ const postComment = async (postId: string, content: string) => {
   }
 };
 
-export { postBlog, getPostList, getPostDetail, postComment };
+const deleteComment = async (commentId: string) => {
+  try {
+    const response = await api.delete(`/comments/${commentId}`);
+    return response.data;
+  } catch (error: any) {
+    console.error(error);
+    return {
+      error: true,
+      message: error.response?.data?.message || "댓글 삭제에 실패했습니다."
+    };
+  }
+};
+
+export { postBlog, getPostList, getPostDetail, postComment, deleteComment };
