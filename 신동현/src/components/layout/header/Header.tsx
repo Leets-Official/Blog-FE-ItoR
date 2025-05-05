@@ -46,7 +46,7 @@ interface HeaderProps {
 
 const Header = ({ type, onPublish }: HeaderProps) => {
   const { isSideBarOpen, setIsSideBarOpen } = useContext(SideBarContext);
-  const isLogin = localStorage.getItem("accessToken") ? true : false;
+  const isLogin = localStorage.getItem("refreshToken") ? true : false;
 
   const setSideBarOpen = () => {
     setIsSideBarOpen(!isSideBarOpen);

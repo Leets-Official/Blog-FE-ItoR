@@ -9,6 +9,8 @@ import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import Header from "@/components/layout/header/Header";
 import Toast from "@/components/ui/Toast";
+import { postBlog } from "@/api/blog";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -57,6 +59,7 @@ const Textarea = styled.textarea`
 `;
 
 const Write = () => {
+  const navigate = useNavigate();
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
   const { control: controlWrite, handleSubmit: handleSubmitWrite, formState: { errors } } = useForm<z.infer<typeof writeSchema>>({
@@ -74,8 +77,21 @@ const Write = () => {
     }
   }, [errors.content]);
 
-  const onSubmit = (data: z.infer<typeof writeSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof writeSchema>) => {
+    const { title, content } = data;
+    try {
+      const response = await postBlog(title, content, 1, "TEXT");
+      if (response.error) {
+        setToast({ message: response.message, type: "error" });
+      } else {
+        setToast({ message: "블로그 작성에 성공했습니다!", type: "success" });
+        setTimeout(() => {
+          navigate("/", { replace: true });
+        }, 1000);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   return (
@@ -94,7 +110,7 @@ const Write = () => {
         control={controlWrite}
         name="content"
         render={({ field }) => (
-            <Textarea placeholder="어떠한 것을 깨달았나요?" cols={15} rows={100} value={field.value} onChange={field.onChange} />
+          <Textarea placeholder="어떠한 것을 깨달았나요?" cols={15} rows={100} value={field.value} onChange={field.onChange} />
         )}
       />
     </Wrapper>

@@ -13,7 +13,6 @@ interface WriteHeaderProps {
 
 const WriteHeader = ({ onPublish }: WriteHeaderProps) => {
   const handlePublishClick = () => {
-    console.log("버튼 클릭됨");
     onPublish?.();
   };
 
