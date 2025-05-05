@@ -9,10 +9,10 @@ const api = axios.create({
   },
 });
 
-const getAccessToken = async () => {
+const getRefreshToken = async () => {
   const refreshToken = localStorage.getItem("refreshToken");
   if (!refreshToken) {
-    return;
+    throw new Error('Refresh token not found');
   }
   try {
     const response = await api.post("/auth/reissue", {
@@ -20,12 +20,12 @@ const getAccessToken = async () => {
     });
 
     if (response.status === 200) {
-      const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken: newRefreshToken } = response.data;
       localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("refreshToken", newRefreshToken);
       return {
         accessToken,
-        refreshToken,
+        refreshToken: newRefreshToken,
       };
     }
     throw new Error("Failed to refresh access token");
@@ -64,11 +64,11 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const tokens = await getAccessToken();
+        const tokens = await getRefreshToken();
         if (!tokens) {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
@@ -79,6 +79,7 @@ api.interceptors.response.use(
         originalRequest.headers.Refresh = `Bearer ${tokens.refreshToken}`;
         return api(originalRequest);
       } catch (error) {
+        console.error("Failed to refresh access token", error);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         window.location.href = '/';

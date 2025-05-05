@@ -88,16 +88,16 @@ const PostItem = ({ post }: PostItemProps) => {
         <ContentContainer>
           <PostInfoContainer>
             <PostContentContainer>
-              <Link to={`/detail/${post.id}`} style={{ textDecoration: "none" }}>
+              <Link to={`/detail/${post.postId}`} style={{ textDecoration: "none" }}>
                 <Title>{post.title}</Title>
               </Link>
-              <PostContent>{post.content}</PostContent>
+              <PostContent>{post.contents[0].content}</PostContent>
             </PostContentContainer>
             <ImageContainer>
-              {post.postImage}
+              {post.contents[0].contentType === "IMAGE" && <img src={post.contents[0].content} alt="post" />}
             </ImageContainer>
           </PostInfoContainer>
-          <WriterInfoContainer userProfileImage={post.userProfileImage} userName={post.userName} writeDate={dayjs(post.writeDate).format("MMM DD. YYYY.").toString()} commentCount={post.commentCount} />
+          {/* <WriterInfoContainer userProfileImage={post.userProfileImage} userName={post.userName} writeDate={dayjs(post.writeDate).format("MMM DD. YYYY.").toString()} commentCount={post.commentCount} /> */}
         </ContentContainer>
         <Hr />
       </Container>

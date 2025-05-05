@@ -30,7 +30,6 @@ const Pagination = ({ currentPage, totalPosts, limitPost, limitPage, setPage }: 
   const firstPage = Math.floor((currentPage - 1) / limitPage) * limitPage + 1;
   const lastPage = Math.min(firstPage + limitPage - 1, numPages);
 
-
   const pageMap = Array.from({ length: lastPage - firstPage + 1 }, (_, i) => i + firstPage);
 
   return (

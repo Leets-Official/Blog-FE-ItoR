@@ -82,6 +82,7 @@ const Detail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { id } = useParams();
+  
   const isLogin = false;
   return (
     <>

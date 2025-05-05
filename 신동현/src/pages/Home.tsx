@@ -3,13 +3,14 @@ import { useLocation } from "react-router-dom";
 import Modal from "@/components/ui/Modal/Modal";
 import LoginModal from "@/components/ui/Modal/LoginModal";
 import Posts from "@/components/layout/post/PostList";
-import DummyPostList from "@/components/layout/post/DummyPostList";
+import { getBlogList } from "@/api/blog";
 
 const Home = () => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  
+  const [totalPostCount, setTotalPostCount] = useState(0);
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     if (searchParams.get('type') === 'login') {
@@ -24,12 +25,22 @@ const Home = () => {
   const closeLoginModal = () => {
     setIsLoginModalOpen(false);
   }
-  
-  const postList = DummyPostList({ postCount: 123 });
+
+  const getTotalPage = async () => {
+
+    const response = await getBlogList(10000, 0);
+    setTotalPostCount(response.data.length);
+    console.log(response.data.length);
+  }
+
+  useEffect(() => {
+    getTotalPage();
+  }, []);
+
   return (
     <>
-      <Posts postList={postList} />
-      
+      <Posts totalPostCount={totalPostCount} />
+
       <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => { }} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">
       </Modal>
       <LoginModal open={isLoginModalOpen} onClose={closeLoginModal} />
