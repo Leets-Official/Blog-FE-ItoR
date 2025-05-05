@@ -158,20 +158,19 @@ const Login = ({ open, onClose }: LoginProps) => {
   });
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    console.log(data);
     const response = await EamilLogin(data.email, data.password);
-    console.log(response);
 
     const stateCode = response.code;
     if (stateCode !== 200 || response.error) {
       setToast({ message: response.message, type: "error" });
       return;
     }
-    
+    console.log(response.data);
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
     localStorage.setItem("nickname", response.data.nickname);
     localStorage.setItem("profilePicture", response.data.profilePicture);
+    localStorage.setItem("bio", response.data.introduction);
     
     setToast({ message: "로그인에 성공했습니다.", type: "success" });
     setTimeout(() => {

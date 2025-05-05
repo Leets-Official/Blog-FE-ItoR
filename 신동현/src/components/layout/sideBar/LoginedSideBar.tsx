@@ -56,13 +56,13 @@ const FooterButtonContainer = styled(ButtonContainer)`
 
 const LoginedSideBar = () => {
   const navigate = useNavigate();
-  
+
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const openLogoutModal = () => {
     setIsLogoutModalOpen(true);
   }
-  
+
   const closeLogoutModal = () => {
     setIsLogoutModalOpen(false);
   }
@@ -72,30 +72,30 @@ const LoginedSideBar = () => {
     navigate("/");
     window.location.reload();
   }
-  
+
   const nickname = localStorage.getItem("nickname");
   const profilePicture = localStorage.getItem("profilePicture");
   const bio = localStorage.getItem("bio");
 
-    return (
-      <Container>
-        <ProfileContainer>
-          <Button onClick={() => { navigate("/mypage") }} icon={<Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
-          <Nickname>{nickname}</Nickname>
-          <Bio>{bio}</Bio>
-        </ProfileContainer>
-        <ButtonContainer>
-          <SideBarButton onClick={() => { }} type="blue">나의 깃로그</SideBarButton>
-          <SideBarButton onClick={() => { navigate("/write") }} type="blue">깃로그 쓰기</SideBarButton>
-        </ButtonContainer>
-        <FooterButtonContainer>
-          <SideBarButton onClick={() => { }} type="gray">설정</SideBarButton>
-          <SideBarButton onClick={openLogoutModal} type="gray">로그아웃</SideBarButton>
-        </FooterButtonContainer>
+  return (
+    <Container>
+      <ProfileContainer>
+        <Button onClick={() => { navigate("/mypage") }} icon={profilePicture ? <img src={profilePicture} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
+        <Nickname>{nickname}</Nickname>
+        <Bio>{bio}</Bio>
+      </ProfileContainer>
+      <ButtonContainer>
+        <SideBarButton onClick={() => { }} type="blue">나의 깃로그</SideBarButton>
+        <SideBarButton onClick={() => { navigate("/write") }} type="blue">깃로그 쓰기</SideBarButton>
+      </ButtonContainer>
+      <FooterButtonContainer>
+        <SideBarButton onClick={() => { }} type="gray">설정</SideBarButton>
+        <SideBarButton onClick={openLogoutModal} type="gray">로그아웃</SideBarButton>
+      </FooterButtonContainer>
 
-        <Modal open={isLogoutModalOpen} onClose={closeLogoutModal} title="로그아웃을 진행할게요" onCancel={closeLogoutModal} onConfirm={onLogout} cancelText="취소" confirmText="로그아웃" cancelType="default" confirmType="positive" />
-      </Container>
-    )
+      <Modal open={isLogoutModalOpen} onClose={closeLogoutModal} title="로그아웃을 진행할게요" onCancel={closeLogoutModal} onConfirm={onLogout} cancelText="취소" confirmText="로그아웃" cancelType="default" confirmType="positive" />
+    </Container>
+  )
 }
 
 export default LoginedSideBar;  

@@ -1,5 +1,4 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import Header from "@/components/layout/header/Header";
 import styled from "styled-components";
 import Button from "@/components/ui/Button/Button";
 import { Add_photo, Kakao, Profile } from "@/assets";
@@ -13,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { EmailSignUp, KakaoSignUp } from "@/api/signUp";
 import Toast from "@/components/ui/Toast";
+import { getPresignedUrl, uploadImage } from "@/api/convertImage";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -226,7 +226,8 @@ const SignUpDetail = () => {
   const profilePicture = localStorage.getItem("profilePicture");
   const name = localStorage.getItem("name");
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-  const [profileImage, setProfileImage] = useState<string>(profilePicture || "");
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+  const [profileImage, setProfileImage] = useState<string | null>(profilePicture);
   const ImgInputRef = useRef<HTMLInputElement>(null);
   const [isOpenConfirmModal, setIsOpenConfirmModal] = useState(false);
 
@@ -266,7 +267,7 @@ const SignUpDetail = () => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith("image/")) {
@@ -276,6 +277,7 @@ const SignUpDetail = () => {
       setToast(null);
       const reader = new FileReader();
       reader.onloadend = () => {
+        setProfileImageFile(file);
         setProfileImage(reader.result as string);
       };
       reader.readAsDataURL(file);
@@ -283,12 +285,32 @@ const SignUpDetail = () => {
   };
 
   const onSubmit = async (data: z.infer<typeof signUpEmailSchema> | z.infer<typeof signUpSocialSchema>) => {
+    let presignedImage: string = "";
+
+    if (profileImageFile) {
+      try {
+        const presignedUrl = await getPresignedUrl(profileImageFile.name);
+        if (presignedUrl.error) {
+          setToast({ message: presignedUrl.message, type: "error" });
+          return;
+        }
+        await uploadImage(profileImageFile, presignedUrl.data);
+
+        presignedImage = presignedUrl.data.split("?")[0];
+      } catch (error) {
+        setToast({ message: "이미지 업로드에 실패했습니다.", type: "error" });
+        return;
+      }
+    }
+
+    console.log(presignedImage);
+
     if (type === "email") {
       const response = await EmailSignUp(
         (data as z.infer<typeof signUpEmailSchema>).email.toString(),
         (data as z.infer<typeof signUpEmailSchema>).nickname.toString(),
         (data as z.infer<typeof signUpEmailSchema>).password.toString(),
-        profileImage,
+        presignedImage,
         (data as z.infer<typeof signUpEmailSchema>).birth.toString(),
         (data as z.infer<typeof signUpEmailSchema>).name.toString(),
         (data as z.infer<typeof signUpEmailSchema>).bio.toString(),
@@ -304,7 +326,7 @@ const SignUpDetail = () => {
       const response = await KakaoSignUp(
         (data as z.infer<typeof signUpSocialSchema>).email.toString(),
         (data as z.infer<typeof signUpSocialSchema>).nickname.toString(),
-        profileImage,
+        presignedImage,
         (data as z.infer<typeof signUpSocialSchema>).birth.toString(),
         name as string,
         (data as z.infer<typeof signUpSocialSchema>).bio.toString(),
