@@ -1,4 +1,5 @@
 import Button from "@/components/ui/Button/Button";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -12,6 +13,7 @@ interface WriteHeaderProps {
 }
 
 const WriteHeader = ({ onPublish }: WriteHeaderProps) => {
+  const navigate = useNavigate();
   const handlePublishClick = () => {
     onPublish?.();
   };
@@ -24,7 +26,9 @@ const WriteHeader = ({ onPublish }: WriteHeaderProps) => {
         fontSize="14px"
         color="#FF3F3F"
         backgroundColor="#FFFFFF"
-        onClick={() => { }}
+        onClick={() => {
+          navigate(-1);
+        }}
       > 삭제하기
       </Button>
       <Button

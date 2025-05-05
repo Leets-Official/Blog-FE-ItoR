@@ -21,7 +21,6 @@ const Root = () => {
   const getHeaderType = () => {
     if (location.pathname === '/' || location.pathname === '/signUp' || location.pathname === '/signUp/detail') return 'main';
     if (location.pathname === '/mypage') return 'mypage';
-    if (location.pathname === '/write') return 'write';
     return null;
   };
 

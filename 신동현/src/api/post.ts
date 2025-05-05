@@ -29,7 +29,7 @@ const getPostList = async (size: number, page: number) => {
       const response = await api.get("/posts/all", {
         params: {
           size: size,
-        page: page
+          page: page
         }
       });
       return response.data;
@@ -126,4 +126,27 @@ const deletePost = async (postId: string) => {
     };
   }
 };
-export { postBlog, getPostList, getPostDetail, postComment, deleteComment, deletePost };
+
+const updatePost = async (postId: string, title: string, content: string, contentOrder: number, contentType: string) => {
+  try {
+    const response = await api.patch(`/posts?postId=${postId}`, {
+      title: title,
+      contents: [
+        {
+          contentOrder: contentOrder,
+          content: content,
+          contentType: contentType
+        }
+      ]
+    });
+    return response.data;
+  } catch (error: any) {
+    console.error(error);
+    return {
+      error: true,
+      message: error.response?.data?.message || "블로그 수정에 실패했습니다."
+    };
+  }
+};
+
+export { postBlog, getPostList, getPostDetail, postComment, deleteComment, deletePost, updatePost };

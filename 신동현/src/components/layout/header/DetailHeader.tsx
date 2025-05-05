@@ -90,7 +90,9 @@ const DetailHeader = ({ isOwner }: { isOwner: boolean }) => {
             fontSize="14px"
             color="#000000"
             backgroundColor="#FFFFFF"
-            onClick={() => { }}
+            onClick={() => {
+              navigate(`/update/${id}`);
+            }}
           >
             수정하기
           </OptionButton>

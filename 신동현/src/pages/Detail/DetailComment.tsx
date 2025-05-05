@@ -1,6 +1,5 @@
 import { BlogComment } from "@/assets/type/PostCommnet";
 import CommentItem from "@/components/layout/comment/CommentItem";
-import DummyCommentList from "@/components/layout/comment/DummyCommentList";
 import dayjs from "dayjs";
 
 import styled from "styled-components";

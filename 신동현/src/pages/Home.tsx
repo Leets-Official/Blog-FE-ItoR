@@ -29,7 +29,7 @@ const Home = () => {
   const getTotalPage = async () => {
     try {
       const response = await getPostList(10000, 0);
-      setTotalPostCount(response.data.totalCount);
+      setTotalPostCount(response.data.length);
     } catch (error) {
       console.error(error);
     }
