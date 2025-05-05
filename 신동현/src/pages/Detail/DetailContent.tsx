@@ -2,6 +2,8 @@ import styled from "styled-components";
 import WriterInfoContainer from "@/components/layout/common/WriterInfoContainer";
 import { Profile } from "@/assets";
 import dayjs from "dayjs";
+import { PostContent } from "@/assets/type/PostContent";
+import Image from "@/components/ui/Image";
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -28,17 +30,23 @@ const Hr = styled.hr`
   border-color: #cccccc;
 `;
 
-interface DetailContentContainerProps {
-  commentCount: number;
+interface DetailContentProps {
+  postContent: PostContent;
 }
 
-const DetailContent = ({ commentCount }: DetailContentContainerProps) => {
+const DetailContent = ({ postContent }: DetailContentProps) => {
+
   return (
     <ContentContainer>
-      <ContentTitle>32 Title one line</ContentTitle>
-      <WriterInfoContainer userProfileImage={<Profile width="20px" height="20px" />} userName="닉네임" writeDate={dayjs(new Date()).format("MMM DD.YYYY.").toString()} commentCount={commentCount} /> 
+      <ContentTitle>{postContent.title}</ContentTitle>
+      <WriterInfoContainer
+        userProfileImage={postContent.profileUrl ? <Image src={postContent.profileUrl} alt="profile" width="20px" height="20px" style={{ borderRadius: "50%" }} /> : <Profile width="20px" height="20px" />}
+        userName={postContent.nickName}
+        writeDate={dayjs(postContent.createdAt).format("MMM DD.YYYY.").toString()}
+        commentCount={postContent.commentCount}
+      />
       <Hr />
-      <Content>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.  </Content>
+      <Content>{postContent.content}</Content>
     </ContentContainer>
   );
 };

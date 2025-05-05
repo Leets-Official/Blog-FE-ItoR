@@ -1,11 +1,14 @@
-import Header from "@/components/layout/header/Header";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Profile } from "@/assets";
 import DetailContent from "./DetailContent";
 import DetailComment from "./DetailComment";
 import DetailCommentInput from "./DetailCommentInput";
+import { getBlogDetail } from "@/api/blog";
+import Image from "@/components/ui/Image";
+import { PostContent } from "@/assets/type/PostContent";
+import { BlogComment } from "@/assets/type/PostCommnet";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -77,30 +80,68 @@ const WriterBio = styled.p`
   margin: 0;
 `;
 
+
+
 const Detail = () => {
-  const [commentCount, setCommentCount] = useState(10);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
+  const [postContent, setPostContent] = useState<PostContent>({
+    title: "",
+    contentOrder: 0,
+    content: "",
+    contentType: "",
+    nickName: "",
+    profileUrl: "",
+    createdAt: "",
+    commentCount: 0,
+  });
+  const [postComment, setPostComment] = useState<BlogComment[]>([]);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { id } = useParams();
-  
-  const isLogin = false;
+
+  useEffect(() => {
+    const fetchBlogDetail = async () => {
+      if (!id) return;
+      try {
+        const response = await getBlogDetail(id);
+        if (response.code === 200) {
+          setPostComment(response.data.comments);
+          setPostContent({
+            title: response.data.title,
+            contentOrder: response.data.contents[0].contentOrder,
+            content: response.data.contents[0].content,
+            contentType: response.data.contents[0].contentType,
+            nickName: response.data.nickName,
+            profileUrl: response.data.profileUrl,
+            createdAt: response.data.createdAt,
+            commentCount: postComment.length,
+          });
+          setIsOwner(response.data.isOwner);
+        }
+      } catch (error: any) {
+        console.error(error);
+      }
+    };
+    fetchBlogDetail();
+  }, []);
+
   return (
     <>
       <Wrapper>
         <Container>
-          <DetailContent commentCount={commentCount} />
-          <DetailComment commentCount={commentCount} />
-          <DetailCommentInput isLogin={isLogin} />
+          <DetailContent postContent={postContent} />
+          <DetailComment postComment={postComment} />
+          <DetailCommentInput />
         </Container>
       </Wrapper>
       <Footer>
         <FooterContainer>
           <WriterProfileImageContainer>
-            <Profile width="64px" height="64px" />
+            {postContent.profileUrl ? <Image src={postContent.profileUrl} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />}
           </WriterProfileImageContainer>
           <WriterTextContainer>
-            <WriterNickname>닉네임</WriterNickname>
-            <WriterBio>한 줄 소개</WriterBio>
+            <WriterNickname>{postContent.nickName}</WriterNickname>
+            {/* <WriterBio>한 줄 소개</WriterBio> */}
           </WriterTextContainer>
         </FooterContainer>
       </Footer>

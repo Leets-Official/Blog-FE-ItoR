@@ -35,9 +35,29 @@ const getBlogList = async (size: number, page: number) => {
     console.error(error);
     return {
       error: true,
+      message: error.response?.data?.message || "블로그 리스트 조회에 실패했습니다."
+    };
+  }
+};
+
+const getBlogDetail = async (id: string) => {
+  try {
+    const response = await api.get('/posts',
+      {
+        params: {
+          postId: id
+        }
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(error);
+    return {
+      error: true,
       message: error.response?.data?.message || "블로그 조회에 실패했습니다."
     };
   }
 };
 
-export { postBlog, getBlogList };
+
+export { postBlog, getBlogList, getBlogDetail };

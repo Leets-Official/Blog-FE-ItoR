@@ -1,5 +1,6 @@
 import { Profile } from "@/assets";
 import SubmitButton from "@/components/ui/Button/SubmitButton";
+import Image from "@/components/ui/Image";
 import styled from "styled-components";
 
 const UserProfileContainer = styled.div`
@@ -49,20 +50,20 @@ const Textarea = styled.textarea`
   }  
 `;
 
-interface DetailCommentInputProps {
-  isLogin: boolean;
-}
+const DetailCommentInput = () => {
+  const isLogin = localStorage.getItem("refreshToken") ? true : false;
+  const nickName = localStorage.getItem("nickName");
+  const profilePicture = localStorage.getItem("profilePicture");
 
-const DetailCommentInput = ({ isLogin }: DetailCommentInputProps) => {
   return (
     <CommentInputContainer>
     {isLogin ? (
       <>
         <UserProfileContainer>
           <UserProfileImageContainer>
-            <Profile width="20px" height="20px" />
+            {profilePicture ? <Image src={profilePicture} alt="profile" width="20px" height="20px" style={{ borderRadius: "50%" }} /> : <Profile width="20px" height="20px" />}
           </UserProfileImageContainer>
-          <UserProfileNickname>닉네임</UserProfileNickname>
+          <UserProfileNickname>{nickName}</UserProfileNickname>
         </UserProfileContainer>
         <Textarea placeholder="댓글을 입력해주세요." value="" cols={15} rows={10} />
         <SubmitButtonContainer>

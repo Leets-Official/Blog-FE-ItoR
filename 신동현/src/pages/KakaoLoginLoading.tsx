@@ -25,7 +25,7 @@ const KakaoLoginLoading = () => {
           console.log(response.data);
           localStorage.setItem('accessToken', response.data.accessToken);
           localStorage.setItem('refreshToken', response.data.refreshToken);
-          localStorage.setItem('nickname', response.data.nickname);
+          localStorage.setItem('nickName', response.data.nickname);
           localStorage.setItem('profilePicture', response.data.profilePicture);
           localStorage.setItem('bio', response.data.introduction);
           window.location.href = "/";

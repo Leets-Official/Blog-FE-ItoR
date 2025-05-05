@@ -30,7 +30,6 @@ const Home = () => {
 
     const response = await getBlogList(10000, 0);
     setTotalPostCount(response.data.length);
-    console.log(response.data.length);
   }
 
   useEffect(() => {

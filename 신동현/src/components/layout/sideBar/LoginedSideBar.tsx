@@ -5,6 +5,7 @@ import styled from "styled-components"
 import Modal from "@/components/ui/Modal/Modal";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Image from "@/components/ui/Image";
 
 const Container = styled.div`
   padding-left: 16px;
@@ -73,15 +74,15 @@ const LoginedSideBar = () => {
     window.location.reload();
   }
 
-  const nickname = localStorage.getItem("nickname");
+  const nickName = localStorage.getItem("nickName");
   const profilePicture = localStorage.getItem("profilePicture");
   const bio = localStorage.getItem("bio");
 
   return (
     <Container>
       <ProfileContainer>
-        <Button onClick={() => { navigate("/mypage") }} icon={profilePicture ? <img src={profilePicture} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
-        <Nickname>{nickname}</Nickname>
+        <Button onClick={() => { navigate("/mypage") }} icon={profilePicture ? <Image src={profilePicture} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
+        <Nickname>{nickName}</Nickname>
         <Bio>{bio}</Bio>
       </ProfileContainer>
       <ButtonContainer>

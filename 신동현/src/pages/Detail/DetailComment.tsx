@@ -1,3 +1,4 @@
+import { BlogComment } from "@/assets/type/PostCommnet";
 import CommentItem from "@/components/layout/comment/CommentItem";
 import DummyCommentList from "@/components/layout/comment/DummyCommentList";
 import dayjs from "dayjs";
@@ -52,28 +53,26 @@ const CommentEmpty = styled.p`
 `;
 
 interface DetailCommentProps {
-  commentCount: number;
+  postComment: BlogComment[];
 }
 
-const DetailComment = ({ commentCount }: DetailCommentProps) => {
-  const commentList = DummyCommentList({ commentCount });
-
+const DetailComment = ({ postComment }: DetailCommentProps) => {
   return (
     <CommentContainer>
       <CommentTitleContainer>
         <CommentTitle>댓글</CommentTitle>
-        <CommentCount>{commentCount}</CommentCount>
+        <CommentCount>{postComment.length}</CommentCount>
       </CommentTitleContainer>
-      {commentCount === 0 ? (
+      {postComment.length === 0 ? (
         <CommentEmptyContainer>
           <CommentEmpty>작성된 댓글이 없습니다.</CommentEmpty>
           <CommentEmpty>응원의 첫 번째 댓글을 달아주세요.</CommentEmpty>
         </CommentEmptyContainer>
       ) : (
         <CommentListContainer>
-          {commentList.map((comment) => (
-            <CommentItem key={comment.id} profileImage={comment.profileImage} nickname={comment.nickname} date={dayjs(comment.writeDate).format("MMM DD.YYYY.").toString()} content={comment.content} isMyComment={true} />
-          ))} 
+          {postComment.map((comment) => (
+            <CommentItem key={comment.commentId} profileImage={comment.profileUrl} nickname={comment.nickName} date={dayjs(comment.createdAt).format("MMM DD.YYYY.").toString()} content={comment.content} isMyComment={true} />
+          ))}
         </CommentListContainer>
       )}
     </CommentContainer>
