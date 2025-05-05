@@ -133,9 +133,12 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
 
       const isEmailSignup = location.pathname === '/signup/email';
 
+      const kakaoId = localStorage.getItem('kakaoId');
+
       const signupData = {
         ...(data as SignupSchema),
         profilePicture,
+        kakaoId,
       };
 
       if (isEmailSignup) {

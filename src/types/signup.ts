@@ -5,6 +5,7 @@ export interface kakaoSignup {
   nickname: string;
   profilePicture: string;
   introduction: string;
+  kakaoId: number;
 }
 
 export interface emailSignup {

@@ -9,13 +9,14 @@ const KakaoLogin = () => {
   const kakaoLoginMutation = useMutation({
     mutationFn: kakaoLoginApi,
     onSuccess: (res) => {
-      if (res.code === 200) {
-        console.log('카카오 로그인 성공', res);
+      if (res.code === 401) {
+        console.log('카카오 회원가입 성공', res);
         localStorage.setItem('nickname', res.data.nickname);
+        localStorage.setItem('kakaoId', res.data.kakaoId);
         nav('/signup/kakao');
-      } else {
-        console.error('카카오 로그인 실패:', res.message);
-        nav('/signup');
+      } else if (res.code === 200) {
+        console.log('카카오 로그인 성공:', res.message);
+        nav('/');
       }
     },
     onError: (error) => {
