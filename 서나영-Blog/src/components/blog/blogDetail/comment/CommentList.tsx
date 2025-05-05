@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Comment from '@/components/blog/blogDetail/comment/Comment';
-import { BlogPost } from '@/types/blogPost';
+import { BlogPostDetail } from '@/types/blogPost';
 import CommentInput from '@/components/blog/blogDetail/comment/CommentInput';
 
 const CommentListContainer = styled.div`
@@ -52,7 +52,7 @@ const NoCommentText = styled.span`
 `;
 
 interface CommentListProps {
-  post: BlogPost;
+  post: BlogPostDetail;
 }
 
 const CommentList: React.FC<CommentListProps> = ({ post }) => {

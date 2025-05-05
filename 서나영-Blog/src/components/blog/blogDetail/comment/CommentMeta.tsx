@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { BlogPost } from '@/types/blogPost';
+import { BlogPostDetail } from '@/types/blogPost';
 import { formatPostDate } from '@/utils/date';
 import { MoreVert, Profile } from '@/assets';
 import Modal from '@/components/ui/Modal';
@@ -56,7 +56,7 @@ const IconWrapper = styled.div`
 `;
 
 interface CommentMetaProps {
-  post: BlogPost;
+  post: BlogPostDetail;
   isInput?: boolean;
 }
 
