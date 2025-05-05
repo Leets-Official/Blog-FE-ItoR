@@ -134,7 +134,6 @@ const Mypage = () => {
 
   return (
     <Wrapper>
-      <Header type="mypage" />
       <TopContainer>
         <ProfileContainer>
           <ProfileImageContainer>

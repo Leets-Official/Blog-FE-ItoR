@@ -29,7 +29,6 @@ const Home = () => {
   const postList = DummyPostList({ postCount: 123 });
   return (
     <>
-      <Header type="main" />
       <Posts postList={postList} />
       
       <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => { }} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">

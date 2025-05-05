@@ -56,7 +56,6 @@ const Write = () => {
   const [title, setTitle] = useState("");
   return (
     <Wrapper>
-      <Header type="write" />
       <Hr />
       <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF">사진 추가하기</Button>      
       <Container>

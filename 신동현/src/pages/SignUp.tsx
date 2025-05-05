@@ -110,7 +110,6 @@ const SignUp = () => {
 
   return (
     <Container>
-      <Header type="main" />
       <TitleContainer>
         <Title>회원가입</Title>
       </TitleContainer>

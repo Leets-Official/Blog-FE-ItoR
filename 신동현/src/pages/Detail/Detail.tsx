@@ -85,7 +85,6 @@ const Detail = () => {
   const isLogin = false;
   return (
     <>
-      <Header type="detail" />
       <Wrapper>
         <Container>
           <DetailContent commentCount={commentCount} />

@@ -342,7 +342,6 @@ const SignUpDetail = () => {
   return (
     <Wrapper>
       {toast && <Toast key={Date.now()} message={toast.message} type={toast.type} />}
-      <Header type="write" />
       <TitleContainer>
         <TitleContentContainer>
           <Title>회원가입</Title>
