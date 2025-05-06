@@ -9,14 +9,19 @@ interface User {
 interface UserContextType {
   user: User | null;
   setUser: (user: User | null) => void;
+  isLoggedIn?: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const accessToken = localStorage.getItem('accessToken');
+  const isLoggedIn = Boolean(accessToken && user);
 
-  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user, setUser, isLoggedIn }}>{children}</UserContext.Provider>
+  );
 };
 
 export const useUser = () => {

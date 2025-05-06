@@ -19,8 +19,6 @@ const BlogDetail: React.FC = () => {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const isLoggedIn = Boolean(localStorage.getItem('accessToken'));
-
   useEffect(() => {
     if (!postId) return;
 
@@ -53,11 +51,7 @@ const BlogDetail: React.FC = () => {
           commentCount={post.commentCount || 0}
         />
         <ContentSection contents={post.contents ?? []} />
-        <CommentSection
-          commentCount={post.commentCount}
-          isLoggedIn={isLoggedIn}
-          comments={post.comments}
-        />
+        <CommentSection commentCount={post.commentCount} comments={post.comments} />
         <BlogFooter />
       </DetailWrapper>
     </div>

@@ -62,13 +62,12 @@ const TextareaWrapper = styled.div`
 interface CommentSectionProps {
   commentCount: number;
   comments: Comment[];
-  isLoggedIn: boolean;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({ commentCount, comments, isLoggedIn }) => {
+const CommentSection: React.FC<CommentSectionProps> = ({ commentCount, comments }) => {
   const [commentList, setCommentList] = useState<Comment[]>(comments);
   const [newComment, setNewComment] = useState<string>('');
-  const { user } = useUser();
+  const { user, isLoggedIn } = useUser();
 
   const hasComments = comments.length > 0;
 
@@ -134,7 +133,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ commentCount, comments,
         </FlexColumn>
       )}
 
-      {isLoggedIn ? (
+      {isLoggedIn && user ? (
         <CommentInputWrapper>
           <CommentInputTop>
             {user?.profilePicture ? (
