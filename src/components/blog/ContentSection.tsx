@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { DeleteSvg, PhotoSvg } from '@/assets';
 import { Textarea, Image, Button } from '@/components';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import theme from '@/styles/theme.styled';
 import { flexCenter } from '@/styles/common.styled';
+import { ContentBlock } from '@/types/post';
 
 const SectionWrapper = styled.div`
   display: flex;
@@ -31,24 +32,19 @@ const PhotoButton = styled.div`
   margin-bottom: 16px;
 `;
 
-interface ContentBlock {
-  id: number;
-  type: 'text' | 'image';
-  value: string;
-  url?: string;
-  isActive?: boolean;
+interface ContentSectionProps {
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+  contentBlocks: ContentBlock[];
+  setContentBlocks: React.Dispatch<React.SetStateAction<ContentBlock[]>>;
 }
 
-const ContentSection: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>([
-    {
-      id: Date.now(),
-      type: 'text',
-      value: '',
-    },
-  ]);
-
+const ContentSection: React.FC<ContentSectionProps> = ({
+  title,
+  setTitle,
+  contentBlocks,
+  setContentBlocks,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { handleImageChange } = useImageUpload();
 

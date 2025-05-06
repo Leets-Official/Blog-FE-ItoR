@@ -17,3 +17,17 @@ export interface Comment {
   createAt: string;
   content: string;
 }
+
+export interface ContentBlock {
+  id: number;
+  type: 'text' | 'image';
+  value: string;
+  url?: string;
+  isActive?: boolean;
+}
+
+export interface PostContent {
+  contentOrder: number;
+  content: string;
+  contentType: 'TEXT' | 'IMAGE';
+}
