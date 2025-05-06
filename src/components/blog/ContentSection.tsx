@@ -46,7 +46,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   setContentBlocks,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { handleImageChange } = useImageUpload();
+  const { handleImageChange, uploadedUrl, reset } = useImageUpload();
 
   const handleTextChange = (id: number, value: string) => {
     setContentBlocks((prev) =>
@@ -54,16 +54,16 @@ const ContentSection: React.FC<ContentSectionProps> = ({
     );
   };
 
-  const handleAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    handleImageChange(e);
-    if (!e.target.files?.[0]) return;
-    const fileUrl = URL.createObjectURL(e.target.files[0]);
+  const handleAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    await handleImageChange(e);
+    if (!uploadedUrl) return;
+
     const now = Date.now();
     const newImageBlock: ContentBlock = {
       id: now,
       type: 'image',
       value: '',
-      url: fileUrl,
+      url: uploadedUrl,
     };
     const textBlockAfter: ContentBlock = {
       id: now + 1,
@@ -71,6 +71,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
       value: '',
     };
     setContentBlocks((prev) => [...prev, newImageBlock, textBlockAfter]);
+    reset();
   };
 
   const handleRemoveBlock = (id: number) => {
@@ -103,7 +104,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
 
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
-  }, []);
+  }, [setContentBlocks]);
 
   return (
     <SectionWrapper>
