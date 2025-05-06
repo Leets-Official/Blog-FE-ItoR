@@ -70,7 +70,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
   const nav = useNavigate();
 
   const handleClick = () => {
-    nav(`/post/${post.id}`);
+    nav(`/post/${post.postId}`);
   };
 
   return (

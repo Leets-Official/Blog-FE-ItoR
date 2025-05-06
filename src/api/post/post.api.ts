@@ -1,14 +1,14 @@
 import { ContentBlock, PostContent } from '@/types/post';
-import api from '../api';
+import api from '@/api/api';
 
 const PATH = '/posts';
 
+// POST
 export interface PostRequestBody {
   title: string;
   contents: PostContent[];
 }
 
-// POST
 const postApi = async (title: string, blocks: ContentBlock[]) => {
   const postData: PostRequestBody = {
     title,
@@ -29,4 +29,26 @@ const postApi = async (title: string, blocks: ContentBlock[]) => {
 // PATCH
 
 // GET
-export { postApi };
+interface GetPostsParams {
+  size: number;
+  page: number;
+}
+
+// 토큰 O
+const getPostsWithTokenApi = async ({ size, page }: GetPostsParams) => {
+  const response = await api.get(`${PATH}/all/token`, {
+    params: { size, page },
+  });
+
+  return response.data;
+};
+
+// 토큰 X
+const getPostsApi = async ({ size, page }: GetPostsParams) => {
+  const response = await api.get(`${PATH}/all`, {
+    params: { size, page },
+  });
+
+  return response.data;
+};
+export { postApi, getPostsWithTokenApi, getPostsApi };

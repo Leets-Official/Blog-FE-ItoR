@@ -16,7 +16,7 @@ const BlogDetail: React.FC = () => {
   const { postId } = useParams<{ postId: string }>();
 
   const isLoggedIn = Boolean(localStorage.getItem('accessToken'));
-  const post = mockPosts.find((post) => post.id === Number(postId));
+  const post = mockPosts.find((post) => post.postId === Number(postId));
   if (!post) {
     return <div>게시글을 찾을 수 없습니다.</div>;
   }

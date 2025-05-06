@@ -43,13 +43,13 @@ const Post: React.FC = () => {
       return;
     }
 
-    const contents = contentBlocks
-      .filter((block) => block.value.trim() || block.url)
-      .map((block, index) => ({
-        contentOrder: index + 1,
-        content: block.type === 'text' ? block.value : block.url || '',
-        contentType: block.type === 'text' ? 'TEXT' : 'IMAGE',
-      }));
+    // const contents = contentBlocks
+    //   .filter((block) => block.value.trim() || block.url)
+    //   .map((block, index) => ({
+    //     contentOrder: index + 1,
+    //     content: block.type === 'text' ? block.value : block.url || '',
+    //     contentType: block.type === 'text' ? 'TEXT' : 'IMAGE',
+    //   }));
 
     try {
       console.log('[게시물 작성 데이터]', {
