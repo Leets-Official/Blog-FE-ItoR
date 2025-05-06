@@ -1,5 +1,5 @@
 export interface Post {
-  postId: number;
+  postId: string;
   title: string;
   contents: PostContent[];
   nickName: string;
@@ -13,9 +13,9 @@ export interface Post {
 
 export interface Comment {
   id: number;
-  nickName: string;
+  nickname: string;
   profileImage: string;
-  createAt: string;
+  createdAt: string;
   content: string;
 }
 

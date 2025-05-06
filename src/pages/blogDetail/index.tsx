@@ -51,7 +51,11 @@ const BlogDetail: React.FC = () => {
           commentCount={post.commentCount || 0}
         />
         <ContentSection contents={post.contents ?? []} />
-        <CommentSection commentCount={post.commentCount} comments={post.comments} />
+        <CommentSection
+          postId={postId || ''}
+          commentCount={post.commentCount}
+          comments={post.comments}
+        />
         <BlogFooter />
       </DetailWrapper>
     </div>

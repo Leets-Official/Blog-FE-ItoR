@@ -7,6 +7,7 @@ import { formatPostDate } from '@/utils/formatPostDate';
 import { DefaultProfileSvg, MeatballSvg } from '@/assets';
 import { useState } from 'react';
 import { useUser } from '@/context/UserContext';
+import { postCommentApi } from '@/api/comment/comment.api';
 
 const CommentSectionWrapper = styled.div`
   ${flexColumn}
@@ -60,11 +61,12 @@ const TextareaWrapper = styled.div`
 `;
 
 interface CommentSectionProps {
+  postId: string;
   commentCount: number;
   comments: Comment[];
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({ commentCount, comments }) => {
+const CommentSection: React.FC<CommentSectionProps> = ({ postId, commentCount, comments }) => {
   const [commentList, setCommentList] = useState<Comment[]>(comments);
   const [newComment, setNewComment] = useState<string>('');
   const { user, isLoggedIn } = useUser();
@@ -75,18 +77,27 @@ const CommentSection: React.FC<CommentSectionProps> = ({ commentCount, comments 
     setNewComment(e.target.value);
   };
 
-  const handleCommentSubmit = () => {
-    const newCommentData: Comment = {
-      id: Date.now(),
-      nickName: user?.nickname || '',
-      profileImage: user?.profilePicture || '',
-      createAt: new Date().toISOString(),
-      content: newComment.trim(),
-    };
+  const handleCommentSubmit = async () => {
+    if (!newComment.trim()) return;
 
-    setCommentList((prev) => [...prev, newCommentData]);
-    setNewComment('');
+    try {
+      await postCommentApi(postId, newComment.trim());
+      const newCommentData: Comment = {
+        id: Date.now(),
+        nickname: user?.nickname || '',
+        profileImage: user?.profilePicture || '',
+        createdAt: new Date().toISOString(),
+        content: newComment.trim(),
+      };
+
+      setCommentList((prev) => [...prev, newCommentData]);
+      setNewComment('');
+    } catch (error) {
+      console.error('댓글 등록 실패: ', error);
+      alert('댓글 등록에 실패했습니다.');
+    }
   };
+
   return (
     <CommentSectionWrapper>
       <Text fontSize="md" fontWeight="medium">
@@ -109,10 +120,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({ commentCount, comments 
                 <ColumnItems>
                   <div>
                     <Text fontSize="sm" color="gray20">
-                      {comment.nickName}
+                      {comment.nickname}
                     </Text>
                     <Text fontSize="xs" color="gray56">
-                      {formatPostDate(comment.createAt)}
+                      {formatPostDate(comment.createdAt)}
                     </Text>
                   </div>
                   <Text fontSize="sm">{comment.content}</Text>
