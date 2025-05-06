@@ -1,7 +1,7 @@
 import { postApi } from '@/api/post/post.api';
-import { Header } from '@/components';
+import { Header, Toast } from '@/components';
 import ContentSection from '@/components/blog/ContentSection';
-import { useImageUpload } from '@/hooks/useImageUpload';
+import useToastMessage from '@/hooks/useToastMessage';
 import { flexColumnCenter } from '@/styles/common.styled';
 import { ContentBlock } from '@/types/post';
 import { useState } from 'react';
@@ -26,7 +26,23 @@ const Post: React.FC = () => {
     { id: Date.now(), type: 'text', value: '' },
   ]);
 
+  const { toastMessage, toastType, showToast, showToastMessage } = useToastMessage();
+
   const handlePost = async () => {
+    const hasContent = contentBlocks.some(
+      (block) => (block.type === 'text' && block.value.trim()) || block.url,
+    );
+
+    if (!title.trim()) {
+      showToastMessage('제목을 입력해주세요.');
+      return;
+    }
+
+    if (!hasContent) {
+      showToastMessage('내용을 입력해주세요.');
+      return;
+    }
+
     const contents = contentBlocks
       .filter((block) => block.value.trim() || block.url)
       .map((block, index) => ({
@@ -65,6 +81,7 @@ const Post: React.FC = () => {
           setContentBlocks={setContentBlocks}
         />
       </ContentWrapper>
+      {showToast && <Toast message={toastMessage} type={toastType} />}
     </Container>
   );
 };
