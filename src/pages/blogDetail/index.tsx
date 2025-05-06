@@ -43,7 +43,7 @@ const BlogDetail: React.FC = () => {
 
   return (
     <div>
-      <Header variant="detail" />
+      <Header {...(post.isOwner ? { variant: 'detail' } : {})} />
       <DetailWrapper>
         <TitleSection
           title={post.title}

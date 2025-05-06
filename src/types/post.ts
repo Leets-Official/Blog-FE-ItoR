@@ -8,6 +8,7 @@ export interface Post {
   commentCount: number;
   comments: Comment[];
   profileUrl?: string;
+  isOwner?: boolean;
 }
 
 export interface Comment {
