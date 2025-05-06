@@ -1,7 +1,7 @@
 import { ContentBlock, PostContent } from '@/types/post';
 import api from '../api';
 
-const PATH = '/post';
+const PATH = '/posts';
 
 export interface PostRequestBody {
   title: string;
@@ -19,6 +19,7 @@ const postApi = async (title: string, blocks: ContentBlock[]) => {
     })),
   };
 
+  console.log('postData: ', postData);
   const response = await api.post(`${PATH}`, postData);
   return response.data;
 };
