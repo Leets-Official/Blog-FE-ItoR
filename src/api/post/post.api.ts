@@ -29,6 +29,7 @@ const postApi = async (title: string, blocks: ContentBlock[]) => {
 // PATCH
 
 // GET
+// 게시물 목록
 interface GetPostsParams {
   size: number;
   page: number;
@@ -51,4 +52,13 @@ const getPostsApi = async ({ size, page }: GetPostsParams) => {
 
   return response.data;
 };
-export { postApi, getPostsWithTokenApi, getPostsApi };
+
+// 상세 게시물
+const getPostItemApi = async (postId: string) => {
+  const response = await api.get(`${PATH}`, {
+    params: { postId },
+  });
+  return response.data;
+};
+
+export { postApi, getPostsWithTokenApi, getPostsApi, getPostItemApi };

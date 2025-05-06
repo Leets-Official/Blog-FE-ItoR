@@ -1,13 +1,13 @@
 export interface Post {
   postId: number;
   title: string;
-  content: string;
+  contents: PostContent[];
   nickName: string;
-  createAt: string;
+  createdAt: string;
   image?: string;
   commentCount: number;
   comments: Comment[];
-  profileImage?: string;
+  profileUrl?: string;
 }
 
 export interface Comment {

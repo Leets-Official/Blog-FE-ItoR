@@ -1,11 +1,7 @@
 import { ContentWrapper } from '@/pages/post';
 import styled from 'styled-components';
 import { Image } from '@/components';
-
-interface ContentSectionProps {
-  content: string;
-  image?: string;
-}
+import { PostContent } from '@/types/post';
 
 const Paragraph = styled.div`
   font-size: ${({ theme }) => theme.FONT_SIZE.sm};
@@ -17,19 +13,28 @@ export const ContentSectionWrapper = styled(ContentWrapper)`
   margin: 20px 0 40px 0;
 `;
 
-const ContentSection: React.FC<ContentSectionProps> = ({ content, image }) => {
+interface ContentSectionProps {
+  contents: PostContent[];
+}
+
+const ContentSection: React.FC<ContentSectionProps> = ({ contents }) => {
   return (
     <ContentSectionWrapper>
-      <Paragraph>{content}</Paragraph>
-      {image && (
-        <Image
-          src={image}
-          alt="post-image"
-          width="100%"
-          height="auto"
-          borderRadius="4px"
-          objectFit="cover"
-        />
+      {contents.map((block, idx) =>
+        block.contentType === 'TEXT' ? (
+          <Paragraph key={idx}>{block.content}</Paragraph>
+        ) : (
+          <Image
+            key={idx}
+            src={block.content}
+            alt={`image-${idx}`}
+            width="100%"
+            height="auto"
+            borderRadius="4px"
+            objectFit="cover"
+            style={{ marginBottom: '24px' }}
+          />
+        ),
       )}
     </ContentSectionWrapper>
   );
