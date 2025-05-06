@@ -8,7 +8,7 @@ import Button from '@/components/common/Button/Button';
 import { FlexRow } from '@/components/common/SideBar/SideBar.styled';
 import { useNavigate } from 'react-router-dom';
 import { useModal } from '@/context/ModalContext';
-import { loginApi } from '@/api/auth/auth';
+import { loginApi } from '@/api/auth/auth.api';
 import { LoginSchema, loginSchema } from '@/schema/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';

@@ -2,6 +2,7 @@ import { Header } from '@/components';
 import ContentSection from '@/components/blog/ContentSection';
 import PhotoSection from '@/components/blog/PhotoSection';
 import TitleSection from '@/components/blog/TitleSection';
+import { useImageUpload } from '@/hooks/useImageUpload';
 import { flexColumnCenter } from '@/styles/common.styled';
 import styled from 'styled-components';
 
@@ -23,8 +24,6 @@ const Post: React.FC = () => {
     <Container>
       <Header variant="action" confirmLabel="게시하기" negativeLabel="삭제하기" />
       <ContentWrapper>
-        <PhotoSection />
-        <TitleSection />
         <ContentSection />
       </ContentWrapper>
     </Container>

@@ -5,7 +5,7 @@ import { Comment } from '@/types/post';
 import { Textarea, Button, Image } from '@/components';
 import { formatPostDate } from '@/utils/formatPostDate';
 import { DefaultProfileSvg, MeatballSvg } from '@/assets';
-import { useReducer, useState } from 'react';
+import { useState } from 'react';
 import { useUser } from '@/context/UserContext';
 
 const CommentSectionWrapper = styled.div`

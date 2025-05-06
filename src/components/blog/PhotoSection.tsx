@@ -2,12 +2,14 @@ import { PhotoSvg } from '@/assets';
 import { Button } from '@/components';
 import { ButtonWrapper } from '@/components/signup/SignupField';
 import theme from '@/styles/theme.styled';
-import { useImageUpload } from '@/hooks/useImageUpload';
 import { useRef } from 'react';
 
-const PhotoSection: React.FC = () => {
+interface PhotoSectionProps {
+  onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const PhotoSection: React.FC<PhotoSectionProps> = ({ onImageChange }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { previewUrl, selectedFile, handleImageChange, reset } = useImageUpload();
 
   const handleClick = () => {
     inputRef.current?.click();
@@ -20,7 +22,7 @@ const PhotoSection: React.FC = () => {
         type="file"
         accept="image/*"
         style={{ display: 'none' }}
-        onChange={handleImageChange}
+        onChange={onImageChange}
       />
 
       <ButtonWrapper onClick={handleClick}>

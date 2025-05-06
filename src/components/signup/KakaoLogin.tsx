@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { kakaoLoginApi } from '@/api/auth/auth';
+import { kakaoLoginApi } from '@/api/auth/auth.api';
 import { useMutation } from '@tanstack/react-query';
 
 const KakaoLogin = () => {
@@ -16,6 +16,7 @@ const KakaoLogin = () => {
         nav('/signup/kakao');
       } else if (res.code === 200) {
         console.log('카카오 로그인 성공:', res.message);
+
         nav('/');
       }
     },
