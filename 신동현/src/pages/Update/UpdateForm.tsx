@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { writeSchema } from "@/schema/auth";
 import { Control, Controller } from "react-hook-form";
 import { z } from "zod";
-import { FormControlContext } from "./Write";
+import { FormControlContext } from "./Update";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -54,7 +54,7 @@ const Textarea = styled.textarea`
   }  
 `;
 
-const WriteForm = () => {
+const UpdateForm = () => {
   const formContext = useContext(FormControlContext) as { control: Control<z.infer<typeof writeSchema>> };
   const { control } = formContext;
   return (
@@ -63,7 +63,7 @@ const WriteForm = () => {
       <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF">사진 추가하기</Button>
       <Container>
         <TitleInputContainer>
-          <Input type="text" placeholder="제목" style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} name="title" control={control} value={""} />
+          <Input type="text" placeholder="제목" value={""} style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} name="title" control={control} />
         </TitleInputContainer>
         <Hr />
       </Container>
@@ -78,4 +78,4 @@ const WriteForm = () => {
   )
 }
 
-export default WriteForm;
+export default UpdateForm;
