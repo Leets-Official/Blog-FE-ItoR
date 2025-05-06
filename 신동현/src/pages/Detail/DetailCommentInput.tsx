@@ -83,7 +83,6 @@ const DetailCommentInput = () => {
   const onSubmit = async (data: z.infer<typeof commentSchema>) => {
     try {
       const response = await postComment(id as string, data.content);
-      console.log(response);
       if (response.error) {
         setToast({ message: response.message, type: "error" });
       } else {

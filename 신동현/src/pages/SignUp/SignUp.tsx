@@ -101,7 +101,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleEmailSignUp = () => {
-    navigate("/signUp/detail?type=email");
+    navigate("/signUp/detail/email");
   };
 
   const handleKakaoSignUp = () => {

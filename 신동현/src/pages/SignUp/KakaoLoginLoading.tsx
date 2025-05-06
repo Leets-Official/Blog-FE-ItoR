@@ -20,7 +20,7 @@ const KakaoLoginLoading = () => {
           localStorage.setItem('name', response.data.nickname);
           localStorage.setItem('profilePicture', response.data.picture);
           localStorage.setItem('kakaoId', response.data.kakaoId);
-          window.location.href = "/signUp/detail?type=kakao";
+          navigate("/signUp/detail/kakao", { replace: true });
         } else if (response.code === 200) {
           console.log(response.data);
           localStorage.setItem('accessToken', response.data.accessToken);
@@ -28,7 +28,7 @@ const KakaoLoginLoading = () => {
           localStorage.setItem('nickName', response.data.nickname);
           localStorage.setItem('profilePicture', response.data.profilePicture);
           localStorage.setItem('bio', response.data.introduction);
-          window.location.href = "/";
+          navigate("/", { replace: true });
         } else {
         console.log("카카오 로그인 실패 : ", response.message);
       }

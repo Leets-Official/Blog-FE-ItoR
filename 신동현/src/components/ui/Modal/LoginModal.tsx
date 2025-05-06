@@ -165,7 +165,6 @@ const Login = ({ open, onClose }: LoginProps) => {
       setToast({ message: response.message, type: "error" });
       return;
     }
-    console.log(response.data);
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
     localStorage.setItem("nickName", response.data.nickname);
@@ -175,7 +174,7 @@ const Login = ({ open, onClose }: LoginProps) => {
     setToast({ message: "로그인에 성공했습니다.", type: "success" });
     setTimeout(() => {
       onClose();
-      navigate("/");
+      navigate("/", { replace: true });
       window.location.reload();
     }, 3000);
   }
