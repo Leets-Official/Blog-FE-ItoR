@@ -66,7 +66,7 @@ const KaKaoForm = () => {
           </SocialBoxContext>
         </SocialBox>
       </SocialBoxContainer>
-      <Input title="이메일" type="email" placeholder="이메일" control={control} name="email" value={""} />
+      <Input title="이메일" type="email" placeholder="이메일" control={control} name="email" />
       <SocialBoxContainer>
         <SocialBoxTitle>이름</SocialBoxTitle>
         <SocialBox>
@@ -75,9 +75,9 @@ const KaKaoForm = () => {
           </SocialBoxContext>
         </SocialBox>
       </SocialBoxContainer>
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" value={""} />
-      <Input title="닉네임" type="text" placeholder="닉네임" control={control} name="nickname" value={""} />
-      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" value={""} />
+      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth"/>
+      <Input title="닉네임" type="text" placeholder="닉네임" control={control} name="nickname"/>
+      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio"/>
     </InputContainer>
   )
 }

@@ -63,7 +63,7 @@ const WriteForm = () => {
       <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF">사진 추가하기</Button>
       <Container>
         <TitleInputContainer>
-          <Input type="text" placeholder="제목" style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} name="title" control={control} value={""} />
+          <Input type="text" placeholder="제목" style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} name="title" control={control} />
         </TitleInputContainer>
         <Hr />
       </Container>
@@ -71,7 +71,7 @@ const WriteForm = () => {
         control={control}
         name="content"
         render={({ field }) => (
-          <Textarea placeholder="어떠한 것을 깨달았나요?" cols={15} rows={100} value={field.value} onChange={field.onChange} />
+          <Textarea placeholder="어떠한 것을 깨달았나요?" cols={15} rows={100} onChange={field.onChange} />
         )}
       />
     </Wrapper>

@@ -113,7 +113,7 @@ const DetailCommentInput = () => {
             render={({ field }) => (
               <Textarea placeholder="댓글을 입력해주세요." cols={15} rows={8} style={{
                 marginTop: "20px"
-              }} value={field.value} onChange={field.onChange} />
+              }} onChange={field.onChange} />
             )}
           />
           <SubmitButtonContainer>

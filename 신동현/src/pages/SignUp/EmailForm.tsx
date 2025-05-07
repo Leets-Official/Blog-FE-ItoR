@@ -20,13 +20,13 @@ const EmailForm = () => {
   const { control } = emailContext;
   return (
     <InputContainer>
-      <Input title="이메일" type="text" placeholder="이메일" control={control} name="email" value={""} />
-      <Input title="비밀번호" type="password" placeholder="비밀번호" control={control} name="password" value={""} />
-      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" control={control} name="passwordCheck" value={""} />
-      <Input title="이름" type="text" placeholder="이름" control={control} name="name" value={""} />
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" value={""} />
-      <Input title="닉네임" type="text" placeholder="닉네임" control={control} name="nickname" value={""} />
-      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" value={""} />
+      <Input title="이메일" type="text" placeholder="이메일" control={control} name="email" />
+      <Input title="비밀번호" type="password" placeholder="비밀번호" control={control} name="password" />
+      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" control={control} name="passwordCheck" />
+      <Input title="이름" type="text" placeholder="이름" control={control} name="name" />
+      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" />
+      <Input title="닉네임" type="text" placeholder="닉네임" control={control} name="nickname" />
+      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio" />
     </InputContainer>
   )
 }

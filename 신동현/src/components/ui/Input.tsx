@@ -59,7 +59,6 @@ interface InputProps<T extends FieldValues> extends React.InputHTMLAttributes<HT
   height?: string;
   type: string;
   placeholder: string;
-  value: string;
   disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   noneBorder?: boolean;
@@ -68,7 +67,7 @@ interface InputProps<T extends FieldValues> extends React.InputHTMLAttributes<HT
   name: Path<T>;
 }
 
-const Input = <T extends FieldValues>({ title, subTitle, type, placeholder, value, disabled, onChange, noneBorder, name, control, ...rest }: InputProps<T>) => {
+const Input = <T extends FieldValues>({ title, subTitle, type, placeholder, disabled, onChange, noneBorder, name, control, ...rest }: InputProps<T>) => {
 
   return (
     <Controller
@@ -80,7 +79,6 @@ const Input = <T extends FieldValues>({ title, subTitle, type, placeholder, valu
           <StyledInput
             type={type}
             placeholder={placeholder}
-            value={field.value}
             onChange={field.onChange}
             disabled={disabled}
             noneBorder={noneBorder}

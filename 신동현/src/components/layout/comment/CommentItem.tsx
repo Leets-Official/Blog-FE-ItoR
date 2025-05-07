@@ -89,7 +89,7 @@ const CommentItem = ({ commentId, profileImage, nickname, date, content, isMyCom
     if (response.error) {
       console.error(response.message);
     } else {
-      setToast({ message: "삭제가 완료되었습니다!.", type: "success" });
+      setToast({ message: "삭제가 완료되었습니다!", type: "success" });
       setTimeout(() => {
         window.location.reload();
       }, 1000);

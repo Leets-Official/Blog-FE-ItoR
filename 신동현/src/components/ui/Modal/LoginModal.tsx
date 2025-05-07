@@ -198,8 +198,8 @@ const Login = ({ open, onClose }: LoginProps) => {
         </ImageContainer>
         <SubmitContainer>
           <InputContainer>
-            <Input width="100%" height="46px" type="text" placeholder="이메일" value="" onChange={() => { }} control={control} name="email" />
-            <Input width="100%" height="46px" type="password" placeholder="비밀번호" value="" onChange={() => { }} control={control} name="password" />
+            <Input width="100%" height="46px" type="text" placeholder="이메일" onChange={() => { }} control={control} name="email" />
+            <Input width="100%" height="46px" type="password" placeholder="비밀번호" onChange={() => { }} control={control} name="password" />
           </InputContainer>
           <ButtonContainer>
             <SignButton width="100%" disabled={false} onClick={handleSubmit(onSubmit)} type="email">이메일로 로그인</SignButton>
