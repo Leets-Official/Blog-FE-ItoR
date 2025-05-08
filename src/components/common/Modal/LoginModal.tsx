@@ -8,11 +8,12 @@ import Button from '@/components/common/Button/Button';
 import { FlexRow } from '@/components/common/SideBar/SideBar.styled';
 import { useNavigate } from 'react-router-dom';
 import { useModal } from '@/context/ModalContext';
-import { loginApi } from '@/api/auth/auth';
+import { loginApi } from '@/api/auth/auth.api';
 import { LoginSchema, loginSchema } from '@/schema/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
+import { useUser } from '@/context/UserContext';
 
 export const Wrapper = styled.div<{ bgColor?: string; height?: string }>`
   ${flexCenter}
@@ -87,13 +88,19 @@ const LoginModal: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
 
+  const { setUser } = useUser();
+
   const loginMutation = useMutation({
     mutationFn: loginApi,
     onSuccess: (res) => {
       console.log('로그인 성공:', res.data);
+      const { nickname, introduction, profilePicture } = res.data;
+
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('refreshToken', res.data.refreshToken);
       localStorage.setItem('nickname', res.data.nickname);
+
+      setUser({ nickname, introduction, profilePicture });
       closeModal();
       nav('/');
     },

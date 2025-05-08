@@ -1,8 +1,9 @@
 import { flexColumn } from '@/styles/common.styled';
-import { faker } from '@faker-js/faker';
 import styled from 'styled-components';
 import { Image } from '@/components';
 import { Text } from '@/components/home/PostItem';
+import { useUser } from '@/context/UserContext';
+import { DefaultProfileSvg } from '@/assets';
 
 const FooterWrapper = styled.div`
   display: flex;
@@ -21,29 +22,29 @@ const FooterContent = styled.div`
   padding: 0 20px;
 `;
 
-const myData = {
-  profileImage: faker.image.avatar(),
-  name: '다현쓰',
-  bio: '이건 제 한줄소개입니다',
-};
-
 const BlogFooter: React.FC = () => {
+  const { user } = useUser();
+
   return (
     <FooterWrapper>
       <FooterContent>
-        <Image
-          src={myData.profileImage}
-          alt="profile-image"
-          width="80px"
-          height="80px"
-          borderRadius="50%"
-          objectFit="cover"
-        />
+        {user?.profilePicture ? (
+          <Image
+            src={user.profilePicture}
+            alt="profile-image"
+            width="80px"
+            height="80px"
+            borderRadius="50%"
+            objectFit="cover"
+          />
+        ) : (
+          <DefaultProfileSvg width="80px" height="80px" />
+        )}
         <Text fontSize="xl" fontWeight="medium">
-          {localStorage.getItem('nickname')}
+          {user?.nickname}
         </Text>
         <Text fontSize="sm" fontWeight="light" color="gray20">
-          {myData.bio}
+          {user?.introduction}
         </Text>
       </FooterContent>
     </FooterWrapper>

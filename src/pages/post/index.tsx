@@ -1,8 +1,11 @@
-import { Header } from '@/components';
+import { postApi } from '@/api/post/post.api';
+import { Header, Toast } from '@/components';
 import ContentSection from '@/components/blog/ContentSection';
-import PhotoSection from '@/components/blog/PhotoSection';
-import TitleSection from '@/components/blog/TitleSection';
+import useToastMessage from '@/hooks/useToastMessage';
 import { flexColumnCenter } from '@/styles/common.styled';
+import { ContentBlock } from '@/types/post';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const ContentWrapper = styled.div`
@@ -19,14 +22,64 @@ const Container = styled.div`
 `;
 
 const Post: React.FC = () => {
+  const nav = useNavigate();
+
+  const [title, setTitle] = useState('');
+  const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>([
+    { id: Date.now(), type: 'text', value: '' },
+  ]);
+
+  const { toastMessage, toastType, showToast, showToastMessage } = useToastMessage();
+
+  const handlePost = async () => {
+    const hasContent = contentBlocks.some(
+      (block) => (block.type === 'text' && block.value.trim()) || block.url,
+    );
+
+    if (!title.trim()) {
+      showToastMessage('제목을 입력해주세요.');
+      return;
+    }
+
+    if (!hasContent) {
+      showToastMessage('내용을 입력해주세요.');
+      return;
+    }
+
+    try {
+      console.log('[게시물 작성 데이터]', {
+        title,
+        contentBlocks,
+      });
+
+      await postApi(title, contentBlocks);
+      showToastMessage('저장되었습니다!', 'success');
+      setTimeout(() => {
+        nav('/');
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+      showToastMessage('게시물 작성에 실패했습니다', 'error');
+    }
+  };
+
   return (
     <Container>
-      <Header variant="action" confirmLabel="게시하기" negativeLabel="삭제하기" />
+      <Header
+        variant="action"
+        confirmLabel="게시하기"
+        negativeLabel="삭제하기"
+        onClickConfirm={handlePost}
+      />
       <ContentWrapper>
-        <PhotoSection />
-        <TitleSection />
-        <ContentSection />
+        <ContentSection
+          title={title}
+          setTitle={setTitle}
+          contentBlocks={contentBlocks}
+          setContentBlocks={setContentBlocks}
+        />
       </ContentWrapper>
+      {showToast && <Toast message={toastMessage} type={toastType} />}
     </Container>
   );
 };

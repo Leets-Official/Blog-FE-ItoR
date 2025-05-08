@@ -1,19 +1,34 @@
 export interface Post {
-  id: number;
+  postId: string;
   title: string;
-  content: string;
+  contents: PostContent[];
   nickName: string;
-  createAt: string;
+  createdAt: string;
   image?: string;
   commentCount: number;
   comments: Comment[];
-  profileImage?: string;
+  profileUrl?: string;
+  isOwner?: boolean;
 }
 
 export interface Comment {
   id: number;
-  nickName: string;
+  nickname: string;
   profileImage: string;
-  createAt: string;
+  createdAt: string;
   content: string;
+}
+
+export interface ContentBlock {
+  id: number;
+  type: 'text' | 'image';
+  value: string;
+  url?: string;
+  isActive?: boolean;
+}
+
+export interface PostContent {
+  contentOrder: number;
+  content: string;
+  contentType: 'TEXT' | 'IMAGE';
 }

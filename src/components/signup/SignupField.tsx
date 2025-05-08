@@ -10,8 +10,8 @@ import { useImageUpload } from '@/hooks/useImageUpload';
 import { useForm, Path } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { kakaoSignupSchema, SignupSchema, signupSchema, KakaoSignupSchema } from '@/schema/auth';
-import { getFileUrl, getPresignedUrl } from '@/api/file/file';
-import { kakaoSignupApi, signupApi } from '@/api/auth/auth';
+import { getFileUrl, getPresignedUrl } from '@/api/file/file.api';
+import { kakaoSignupApi, signupApi } from '@/api/auth/auth.api';
 import { useModal } from '@/context/ModalContext';
 import { useLocation } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
@@ -133,9 +133,12 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
 
       const isEmailSignup = location.pathname === '/signup/email';
 
+      const kakaoId = localStorage.getItem('kakaoId');
+
       const signupData = {
         ...(data as SignupSchema),
         profilePicture,
+        kakaoId,
       };
 
       if (isEmailSignup) {

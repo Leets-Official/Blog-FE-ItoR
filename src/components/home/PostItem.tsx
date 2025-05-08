@@ -70,7 +70,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
   const nav = useNavigate();
 
   const handleClick = () => {
-    nav(`/post/${post.id}`);
+    nav(`/post/${post.postId}`);
   };
 
   return (
@@ -80,7 +80,13 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
           <Text fontWeight="medium" fontSize="md">
             {post.title}
           </Text>
-          <Text color="gray33">{post.content}</Text>
+          <Text color="gray33">
+            {post.contents
+              ?.filter((c) => c.contentType === 'TEXT')
+              .map((c) => c.content)
+              .join(' ')
+              .slice(0, 100) || '내용 없음'}
+          </Text>
         </TextContent>
         {post.image && (
           <Image
@@ -95,7 +101,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
       </FlexItem>
       <FooterItem>
         <Image
-          src={post.profileImage!}
+          src={post.profileUrl!}
           alt="profile-img"
           width="20px"
           height="20px"
@@ -104,7 +110,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
         />
 
         <Text color="gray20">{post.nickName}</Text>
-        <Text color="gray56">{formatPostDate(post.createAt)}</Text>
+        <Text color="gray56">{formatPostDate(post.createdAt)}</Text>
         <Text color="gray56">댓글{post.commentCount}</Text>
       </FooterItem>
     </ItemContainer>

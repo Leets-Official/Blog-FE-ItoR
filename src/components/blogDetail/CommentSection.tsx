@@ -4,8 +4,10 @@ import { flexColumn, flexColumnCenter } from '@/styles/common.styled';
 import { Comment } from '@/types/post';
 import { Textarea, Button, Image } from '@/components';
 import { formatPostDate } from '@/utils/formatPostDate';
-import { MeatballSvg } from '@/assets';
+import { DefaultProfileSvg, MeatballSvg } from '@/assets';
 import { useState } from 'react';
+import { useUser } from '@/context/UserContext';
+import { postCommentApi } from '@/api/comment/comment.api';
 
 const CommentSectionWrapper = styled.div`
   ${flexColumn}
@@ -59,22 +61,15 @@ const TextareaWrapper = styled.div`
 `;
 
 interface CommentSectionProps {
+  postId: string;
   commentCount: number;
   comments: Comment[];
-  isLoggedIn: boolean;
-  writerNickName: string;
-  writerProfileImage: string;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({
-  commentCount,
-  comments,
-  isLoggedIn,
-  writerNickName,
-  writerProfileImage,
-}) => {
+const CommentSection: React.FC<CommentSectionProps> = ({ postId, commentCount, comments }) => {
   const [commentList, setCommentList] = useState<Comment[]>(comments);
   const [newComment, setNewComment] = useState<string>('');
+  const { user, isLoggedIn } = useUser();
 
   const hasComments = comments.length > 0;
 
@@ -82,18 +77,27 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     setNewComment(e.target.value);
   };
 
-  const handleCommentSubmit = () => {
-    const newCommentData: Comment = {
-      id: Date.now(),
-      nickName: writerNickName,
-      profileImage: writerProfileImage,
-      createAt: new Date().toISOString(),
-      content: newComment.trim(),
-    };
+  const handleCommentSubmit = async () => {
+    if (!newComment.trim()) return;
 
-    setCommentList((prev) => [...prev, newCommentData]);
-    setNewComment('');
+    try {
+      await postCommentApi(postId, newComment.trim());
+      const newCommentData: Comment = {
+        id: Date.now(),
+        nickname: user?.nickname || '',
+        profileImage: user?.profilePicture || '',
+        createdAt: new Date().toISOString(),
+        content: newComment.trim(),
+      };
+
+      setCommentList((prev) => [...prev, newCommentData]);
+      setNewComment('');
+    } catch (error) {
+      console.error('댓글 등록 실패: ', error);
+      alert('댓글 등록에 실패했습니다.');
+    }
   };
+
   return (
     <CommentSectionWrapper>
       <Text fontSize="md" fontWeight="medium">
@@ -116,10 +120,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({
                 <ColumnItems>
                   <div>
                     <Text fontSize="sm" color="gray20">
-                      {comment.nickName}
+                      {comment.nickname}
                     </Text>
                     <Text fontSize="xs" color="gray56">
-                      {formatPostDate(comment.createAt)}
+                      {formatPostDate(comment.createdAt)}
                     </Text>
                   </div>
                   <Text fontSize="sm">{comment.content}</Text>
@@ -140,19 +144,23 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         </FlexColumn>
       )}
 
-      {isLoggedIn ? (
+      {isLoggedIn && user ? (
         <CommentInputWrapper>
           <CommentInputTop>
-            <Image
-              src={writerProfileImage}
-              alt="내 프로필"
-              width="24px"
-              height="24px"
-              borderRadius="50%"
-              objectFit="cover"
-            />
+            {user?.profilePicture ? (
+              <Image
+                src={user.profilePicture}
+                alt="내 프로필"
+                width="24px"
+                height="24px"
+                borderRadius="50%"
+                objectFit="cover"
+              />
+            ) : (
+              <DefaultProfileSvg width="24px" height="24px" />
+            )}
             <Text fontSize="sm" fontWeight="regular" color="gray20">
-              {writerNickName}
+              {user?.nickname}
             </Text>
           </CommentInputTop>
 

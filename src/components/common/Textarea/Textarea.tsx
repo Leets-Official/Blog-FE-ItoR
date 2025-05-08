@@ -6,6 +6,7 @@ interface TextareaProps {
   rows?: number;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onInput?: (e: React.FormEvent<HTMLTextAreaElement>) => void;
   readOnly?: boolean;
   hasBorder?: boolean;
   placeholderColor?: string;
@@ -21,6 +22,7 @@ const Textarea: React.FC<TextareaProps> = ({
   rows = 5,
   value,
   onChange,
+  onInput,
   readOnly = false,
   hasBorder = true,
   placeholderColor,
@@ -45,6 +47,7 @@ const Textarea: React.FC<TextareaProps> = ({
         inputColor={inputColor}
         inputSize={inputSize}
         inputWeight={inputWeight}
+        onInput={onInput}
       />
     </TextareaWrapper>
   );
