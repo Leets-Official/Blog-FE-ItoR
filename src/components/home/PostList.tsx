@@ -29,12 +29,13 @@ const PostList: React.FC<PostListProps> = ({ posts = [], currentPage, onPageChan
 
   return (
     <Wrapper>
-      {posts.map((post) => (
-        <div key={post.postId}>
-          <PostItem post={post} />
-          <Line />
-        </div>
-      ))}
+      {Array.isArray(posts) &&
+        posts.map((post) => (
+          <div key={post.postId}>
+            <PostItem post={post} />
+            <Line />
+          </div>
+        ))}
 
       <Pagination
         currentPage={currentPage}

@@ -5,6 +5,7 @@ import useToastMessage from '@/hooks/useToastMessage';
 import { flexColumnCenter } from '@/styles/common.styled';
 import { ContentBlock } from '@/types/post';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const ContentWrapper = styled.div`
@@ -21,6 +22,8 @@ const Container = styled.div`
 `;
 
 const Post: React.FC = () => {
+  const nav = useNavigate();
+
   const [title, setTitle] = useState('');
   const [contentBlocks, setContentBlocks] = useState<ContentBlock[]>([
     { id: Date.now(), type: 'text', value: '' },
@@ -50,10 +53,13 @@ const Post: React.FC = () => {
       });
 
       await postApi(title, contentBlocks);
-      alert('게시물 작성 완료!');
+      showToastMessage('저장되었습니다!', 'success');
+      setTimeout(() => {
+        nav('/');
+      }, 2000);
     } catch (err) {
       console.error(err);
-      alert('게시물 작성 실패');
+      showToastMessage('게시물 작성에 실패했습니다', 'error');
     }
   };
 
