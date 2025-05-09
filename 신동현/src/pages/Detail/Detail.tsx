@@ -8,7 +8,7 @@ import DetailCommentInput from "./DetailCommentInput";
 import { getPostDetail } from "@/api/post/post";
 import Image from "@/components/ui/Image";
 import { PostContent } from "@/assets/type/PostContent";
-import { BlogComment } from "@/assets/type/PostCommnet";
+import { PostComment } from "@/assets/type/PostCommnet";
 import Header from "@/components/layout/header/Header";
 
 const Wrapper = styled.div`
@@ -95,7 +95,7 @@ const Detail = () => {
     createdAt: "",
     commentCount: 0,
   });
-  const [postComment, setPostComment] = useState<BlogComment[]>([]);
+  const [postComment, setPostComment] = useState<PostComment[]>([]);
   // const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { id } = useParams();
@@ -106,16 +106,17 @@ const Detail = () => {
       try {
         const response = await getPostDetail(id);
         if (response.code === 200) {
-          setPostComment(response.data.comments);
+          const data = response.data;
+          setPostComment(data.comments);
           setPostContent({
-            title: response.data.title,
-            contentOrder: response.data.contents[0].contentOrder,
-            content: response.data.contents[0].content,
-            contentType: response.data.contents[0].contentType,
-            nickName: response.data.nickName,
-            profileUrl: response.data.profileUrl,
-            createdAt: response.data.createdAt,
-            commentCount: postComment.length,
+            title: data.title,
+            contentOrder: data.contents[0].contentOrder,
+            content: data.contents[0].content,
+            contentType: data.contents[0].contentType,
+            nickName: data.nickName,
+            profileUrl: data.profileUrl,
+            createdAt: data.createdAt,
+            commentCount: data.commentCount,
           });
           setIsOwner(response.data.isOwner);
         }

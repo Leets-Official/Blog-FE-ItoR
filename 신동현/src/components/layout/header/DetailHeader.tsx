@@ -30,6 +30,8 @@ const OptionContainer = styled.div`
 
 const OptionButton = styled(Button)`
   width: 100%;
+  height: 100%;
+  background-color: #FFFFFF;
   font-size: 14px;
   text-align: left;
   justify-content: flex-start;
@@ -85,11 +87,7 @@ const DetailHeader = ({ isOwner }: { isOwner: boolean }) => {
       {isOwner && isOptionOpen && (
         <OptionContainer>
           <OptionButton
-            width="100%"
-            height="100%"
-            fontSize="14px"
             color="#000000"
-            backgroundColor="#FFFFFF"
             onClick={() => {
               navigate(`/update/${id}`);
             }}
@@ -97,11 +95,7 @@ const DetailHeader = ({ isOwner }: { isOwner: boolean }) => {
             수정하기
           </OptionButton>
           <OptionButton
-            width="100%"
-            height="100%"
-            fontSize="14px"
             color="#FF3F3F"
-            backgroundColor="#FFFFFF"
             onClick={() => {
               setIsModalOpen(true);
             }}

@@ -7,7 +7,7 @@ const KakaoLoginLoading = () => {
   useEffect(() => {
     const handleKakaoLogin = async () => {
       const code = new URL(window.location.href).searchParams.get("code");
-
+      console.log(code);
       if (!code) {
         console.log("Authorization code is not found");
         return;
@@ -30,19 +30,19 @@ const KakaoLoginLoading = () => {
           localStorage.setItem('bio', response.data.introduction);
           navigate("/", { replace: true });
         } else {
-        console.log("카카오 로그인 실패 : ", response.message);
+          console.log("카카오 로그인 실패 : ", response.message);
+        }
+      } catch (error: any) {
+        console.log("카카오 로그인 실패 : ", error);
       }
-    } catch (error: any) {
-      console.log("카카오 로그인 실패 : ", error);
-    }
-  };
+    };
 
-  handleKakaoLogin();
-}, []);
+    handleKakaoLogin();
+  }, []);
 
-return (
-  <div>로딩중...</div>
-)
+  return (
+    <div>로딩중...</div>
+  )
 };
 
 export default KakaoLoginLoading;

@@ -19,7 +19,7 @@ const PostList = ({ totalPostCount }: PostListProps) => {
 
   const fetchBlogList = async () => {
     const response = await getPostList(10, page - 1);
-    setPostList(response.data);
+    setPostList(response.data.post);
   }
 
   useEffect(() => {
