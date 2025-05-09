@@ -39,11 +39,10 @@ const Home = () => {
   useEffect(() => {
     getTotalPage();
   }, []);
-  
+
   return (
     <>
       <Posts totalPostCount={totalPostCount} />
-
       <Modal open={isModalOpen} title="가입되지 않은 계정이에요." subTitle="회원가입을 진행할까요?" onCancel={closeModal} onConfirm={() => { }} onClose={closeModal} cancelText="취소" confirmText="회원가입 하기" animation="fadeIn">
       </Modal>
       <LoginModal open={isLoginModalOpen} onClose={closeLoginModal} />

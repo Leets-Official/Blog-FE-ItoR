@@ -52,6 +52,7 @@ const Textarea = styled.textarea`
   @media (max-width: 700px) {
     width: 90%;
   }  
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
 const UpdateForm = () => {
