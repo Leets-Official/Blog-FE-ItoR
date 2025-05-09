@@ -7,7 +7,7 @@ import { loginSchema } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { EamilLogin, KakaoLogin } from "@/api/login";
+import { EamilLogin, KakaoLogin } from "@/api/login/login";
 import Toast from "../Toast";
 import { useState, useContext } from "react";
 

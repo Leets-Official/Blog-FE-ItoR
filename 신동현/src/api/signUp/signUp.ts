@@ -1,4 +1,4 @@
-import { api } from "./api";
+import { api } from "../api";
 
 const EmailSignUp = async (email: string, nickname: string, password: string, profilePicture: string, birthDate: string, name: string, introduction: string) => {
   try {

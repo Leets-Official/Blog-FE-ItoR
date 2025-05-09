@@ -2,7 +2,7 @@ import { GITLOG, Kakao } from "@/assets";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import SignButton from "@/components/ui/Button/SignButton";
-import { KakaoLogin } from "@/api/login";
+import { KakaoLogin } from "@/api/login/login";
 
 const Container = styled.div`
   width: 100vw;

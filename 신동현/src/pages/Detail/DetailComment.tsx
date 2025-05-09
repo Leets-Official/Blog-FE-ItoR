@@ -1,4 +1,4 @@
-import { BlogComment } from "@/assets/type/PostCommnet";
+import { PostComment } from "@/assets/type/PostCommnet";
 import CommentItem from "@/components/layout/comment/CommentItem";
 import dayjs from "dayjs";
 
@@ -52,7 +52,7 @@ const CommentEmpty = styled.p`
 `;
 
 interface DetailCommentProps {
-  postComment: BlogComment[];
+  postComment: PostComment[];
 }
 
 const DetailComment = ({ postComment }: DetailCommentProps) => {

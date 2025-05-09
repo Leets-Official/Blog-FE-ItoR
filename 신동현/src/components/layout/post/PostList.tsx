@@ -2,7 +2,7 @@ import Pagination from "@/components/pagination/Pagination";
 import { useEffect, useState } from "react";
 import { Post } from "../../../assets/type/Post";
 import PostItem from "./PostItem";
-import { getPostList } from "@/api/post";
+import { getPostList } from "@/api/post/post";
 
 interface PostListProps {
   totalPostCount: number;

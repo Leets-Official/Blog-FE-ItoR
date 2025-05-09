@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Control } from "react-hook-form";
 import { z } from "zod";
 import { createContext, useEffect, useState } from "react";
-import { postBlog } from "@/api/post";
+import { postBlog } from "@/api/post/post";
 import Toast from "@/components/ui/Toast";
 
 export const FormControlContext = createContext<{ control: Control<z.infer<typeof writeSchema>> } | null>(null);

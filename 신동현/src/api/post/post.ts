@@ -1,4 +1,4 @@
-import { api } from "./api";
+import { api } from "../api";
 
 const postBlog = async (title: string, content: string, contentOrder: number, contentType: string) => {
   try {

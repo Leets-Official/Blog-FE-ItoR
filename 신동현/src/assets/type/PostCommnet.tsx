@@ -1,4 +1,4 @@
-export interface BlogComment {
+export interface PostComment {
   commentId: string;
   content: string;
   createdAt: string;

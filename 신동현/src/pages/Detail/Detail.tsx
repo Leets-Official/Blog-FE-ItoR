@@ -5,7 +5,7 @@ import { Profile } from "@/assets";
 import DetailContent from "./DetailContent";
 import DetailComment from "./DetailComment";
 import DetailCommentInput from "./DetailCommentInput";
-import { getPostDetail } from "@/api/post";
+import { getPostDetail } from "@/api/post/post";
 import Image from "@/components/ui/Image";
 import { PostContent } from "@/assets/type/PostContent";
 import { BlogComment } from "@/assets/type/PostCommnet";

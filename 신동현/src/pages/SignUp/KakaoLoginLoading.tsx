@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { KakaoRedirect } from "@/api/login";
+import { KakaoRedirect } from "@/api/login/login";
 import { useNavigate } from "react-router-dom";
 const KakaoLoginLoading = () => {
   const navigate = useNavigate();

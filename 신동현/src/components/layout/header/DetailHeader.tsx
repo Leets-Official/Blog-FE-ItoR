@@ -1,4 +1,4 @@
-import { deletePost } from "@/api/post";
+import { deletePost } from "@/api/post/post";
 import { Chat, More_vert } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal/Modal";

@@ -9,7 +9,7 @@ import { signUpEmailSchema, signUpSocialSchema } from "@/schema/auth";
 import { Control, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { EmailSignUp, KakaoSignUp } from "@/api/signUp";
+import { EmailSignUp, KakaoSignUp } from "@/api/signUp/signUp";
 import Toast from "@/components/ui/Toast";
 import { getPresignedUrl, uploadImage } from "@/api/convertImage";
 

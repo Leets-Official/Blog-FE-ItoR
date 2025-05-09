@@ -1,6 +1,6 @@
-import { getPostDetail } from "@/api/post";
+import { getPostDetail } from "@/api/post/post";
 import { useParams } from "react-router-dom";
-import { updatePost } from "@/api/post";
+import { updatePost } from "@/api/post/post";
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/header/Header";
 import { writeSchema } from "@/schema/auth";

@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import Modal from "@/components/ui/Modal/Modal";
 import LoginModal from "@/components/ui/Modal/LoginModal";
 import Posts from "@/components/layout/post/PostList";
-import { getPostList } from "@/api/post";
+import { getPostList } from "@/api/post/post";
 
 const Home = () => {
   const location = useLocation();

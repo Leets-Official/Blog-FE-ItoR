@@ -1,4 +1,4 @@
-import { deleteComment } from "@/api/post";
+import { deleteComment } from "@/api/post/post";
 import { More_vert } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal/Modal";

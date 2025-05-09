@@ -1,4 +1,4 @@
-import { postComment } from "@/api/post";
+import { postComment } from "@/api/post/post";
 import { Profile } from "@/assets";
 import SubmitButton from "@/components/ui/Button/SubmitButton";
 import Image from "@/components/ui/Image";
