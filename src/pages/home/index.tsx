@@ -8,6 +8,7 @@ import { useUser } from '@/context/UserContext';
 const HomePage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [pageMax, setPageMax] = useState(1);
   const size = 10;
 
   const { isLoggedIn, user } = useUser();
@@ -20,6 +21,7 @@ const HomePage: React.FC = () => {
           : await getPostsApi({ page, size });
 
       setPosts(response.post);
+      setPageMax(response.pageMax);
       console.log('게시물 조회 성공', response);
     } catch (err) {
       console.error('게시물 조회 실패', err);
@@ -33,7 +35,12 @@ const HomePage: React.FC = () => {
   return (
     <div>
       <Header variant="write" />
-      <PostList posts={posts} currentPage={currentPage} onPageChange={setCurrentPage} />
+      <PostList
+        posts={posts}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        pageMax={pageMax}
+      />
     </div>
   );
 };
