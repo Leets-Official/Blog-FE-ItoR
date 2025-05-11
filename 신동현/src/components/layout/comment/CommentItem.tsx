@@ -1,6 +1,8 @@
+import { deleteComment } from "@/api/post/post";
 import { More_vert } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal/Modal";
+import Toast from "@/components/ui/Toast";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -63,6 +65,7 @@ const CommentContentText = styled.p`
 
 
 interface CommentItemProps {
+  commentId: string;
   profileImage: React.ReactNode;
   nickname: string;
   date: string;
@@ -70,9 +73,9 @@ interface CommentItemProps {
   isMyComment: boolean;
 }
 
-const CommentItem = ({ profileImage, nickname, date, content, isMyComment }: CommentItemProps) => {
+const CommentItem = ({ commentId, profileImage, nickname, date, content, isMyComment }: CommentItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null); 
   const openModal = () => {
     setIsModalOpen(true);
   }
@@ -80,9 +83,22 @@ const CommentItem = ({ profileImage, nickname, date, content, isMyComment }: Com
   const closeModal = () => {
     setIsModalOpen(false);
   }
-  
+
+  const onDeleteComment = async () => {
+    const response = await deleteComment(commentId);
+    if (response.error) {
+      console.error(response.message);
+    } else {
+      setToast({ message: "삭제가 완료되었습니다!", type: "success" });
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
+  }
+
   return (
     <Wrapper>
+      {toast && <Toast key={toast.message} message={toast.message} type={toast.type} />}
       <WriteInfoContainer>
         <ProfileContainer>
           {profileImage}
@@ -108,7 +124,7 @@ const CommentItem = ({ profileImage, nickname, date, content, isMyComment }: Com
       <CommentContent>
         <CommentContentText>{content}</CommentContentText>
       </CommentContent>
-      <Modal open={isModalOpen} onClose={closeModal} title="댓글을 삭제할까요?" onCancel={closeModal} onConfirm={closeModal} cancelText="취소" confirmText="삭제하기" cancelType="default" confirmType="negative" />
+      <Modal open={isModalOpen} onClose={closeModal} title="댓글을 삭제할까요?" onCancel={closeModal} onConfirm={onDeleteComment} cancelText="취소" confirmText="삭제하기" cancelType="default" confirmType="negative" />
     </Wrapper>
   );
 };

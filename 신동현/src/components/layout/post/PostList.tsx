@@ -1,31 +1,42 @@
 import Pagination from "@/components/pagination/Pagination";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Post } from "../../../assets/type/Post";
 import PostItem from "./PostItem";
+import { getPostList } from "@/api/post/post";
 
-interface PostsProps {
-  postList: Post[];
+interface PostListProps {
+  totalPostCount: number;
 }
 
-const PostList = ({ postList }: PostsProps) => {
+const PostList = ({ totalPostCount }: PostListProps) => {
   const [page, setPage] = useState(1);
   const size = 10;
 
   const firstPage = (page - 1) * size;
   const lastPage = firstPage + size;
-  const currentPosts = postList.slice(firstPage, lastPage);
+
+  const [postList, setPostList] = useState<Post[]>([]);
+
+  const fetchBlogList = async () => {
+    const response = await getPostList(10, page - 1);
+    setPostList(response.data.post);
+  }
+
+  useEffect(() => {
+    fetchBlogList();
+  }, [page]);
 
   const handlePageChange = (newPage: number) => {
     const clampedPage = Math.max(1, Math.min(newPage, lastPage));
-    setPage(clampedPage);    
+    setPage(clampedPage);
   }
 
   return (
     <>
-      {currentPosts.map((post) => (
-        <PostItem key={post.id} post={post} />
+      {postList.map((post) => (
+        <PostItem key={post.postId} post={post} />
       ))}
-      <Pagination currentPage={page} totalPosts={postList.length} limitPost={size} limitPage={5} setPage={handlePageChange} />
+      <Pagination currentPage={page} totalPosts={totalPostCount} limitPost={size} limitPage={5} setPage={handlePageChange} />
     </>
   );
 };

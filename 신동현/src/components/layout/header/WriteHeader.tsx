@@ -1,4 +1,5 @@
 import Button from "@/components/ui/Button/Button";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -7,7 +8,16 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const WriteHeader = () => {
+interface WriteHeaderProps {
+  onPublish?: () => void;
+}
+
+const WriteHeader = ({ onPublish }: WriteHeaderProps) => {
+  const navigate = useNavigate();
+  const handlePublishClick = () => {
+    onPublish?.();
+  };
+
   return (
     <Container>
       <Button
@@ -16,7 +26,9 @@ const WriteHeader = () => {
         fontSize="14px"
         color="#FF3F3F"
         backgroundColor="#FFFFFF"
-        onClick={() => { }}
+        onClick={() => {
+          navigate(-1);
+        }}
       > 삭제하기
       </Button>
       <Button
@@ -25,7 +37,7 @@ const WriteHeader = () => {
         fontSize="14px"
         color="#000000"
         backgroundColor="#FFFFFF"
-        onClick={() => { }}
+        onClick={handlePublishClick}
       > 게시하기
       </Button>
     </Container>

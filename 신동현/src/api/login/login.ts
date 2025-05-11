@@ -1,4 +1,4 @@
-import { BaseUrl, api } from "./api";
+import { BaseUrl, api } from "../api";
 
 const EamilLogin = async (email: string, password: string) => {
   try {

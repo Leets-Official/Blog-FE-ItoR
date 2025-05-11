@@ -49,6 +49,9 @@ const ToastContainer = styled.div<{ type: "success" | "error" }>`
 
 const ToastText = styled.div`
   font-size: 14px;
+  display: flex;
+  align-items: center;
+  height: 25px;
 `;
 
 interface ToastProps {
@@ -79,8 +82,8 @@ const Toast = ({ message, type }: ToastProps) => {
   return (
     <Wrapper isVisible={isVisible}>
       <ToastContainer type={type}>
-        {type === "error" && <Error width={25} height={25} fill={"#FF3F3F"} />}
-        {type === "success" && <Done width={25} height={25} fill={"#15DC5E"} />}
+          {type === "error" && <Error width={25} height={25} fill="#FF3F3F" style={{ transform: "translateY(1px)" }} />}
+          {type === "success" && <Done width={25} height={25} fill={"#15DC5E"} style={{ transform: "translateY(1px)" }} />}
         <ToastText>{message}</ToastText>
       </ToastContainer>
     </Wrapper>

@@ -1,6 +1,15 @@
+import { postComment } from "@/api/post/post";
 import { Profile } from "@/assets";
 import SubmitButton from "@/components/ui/Button/SubmitButton";
+import Image from "@/components/ui/Image";
+import Toast from "@/components/ui/Toast";
+import { commentSchema } from "@/schema/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { z } from "zod";
 
 const UserProfileContainer = styled.div`
   width: 100%;
@@ -49,32 +58,74 @@ const Textarea = styled.textarea`
   }  
 `;
 
-interface DetailCommentInputProps {
-  isLogin: boolean;
-}
+const DetailCommentInput = () => {
+  const { id } = useParams();
+  const isLogin = localStorage.getItem("refreshToken") ? true : false;
+  const nickName = localStorage.getItem("nickName");
+  const profilePicture = localStorage.getItem("profilePicture");
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
 
-const DetailCommentInput = ({ isLogin }: DetailCommentInputProps) => {
+  const { control, handleSubmit, formState: { errors } } = useForm<z.infer<typeof commentSchema>>({
+    resolver: zodResolver(commentSchema),
+    defaultValues: {
+      content: "",
+    },
+  });
+
+  useEffect(() => {
+    if (errors.content) {
+      setToast({ message: "댓글을 입력해주세요.", type: "error" });
+    } else {
+      setToast(null);
+    }
+  }, [errors.content]);
+
+  const onSubmit = async (data: z.infer<typeof commentSchema>) => {
+    try {
+      const response = await postComment(id as string, data.content);
+      if (response.error) {
+        setToast({ message: response.message, type: "error" });
+      } else {
+        setToast({ message: "댓글을 작성했습니다.", type: "success" });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      }
+    } catch (error: any) {
+      console.error(error);
+    }
+  }
+
   return (
     <CommentInputContainer>
-    {isLogin ? (
-      <>
-        <UserProfileContainer>
-          <UserProfileImageContainer>
-            <Profile width="20px" height="20px" />
-          </UserProfileImageContainer>
-          <UserProfileNickname>닉네임</UserProfileNickname>
-        </UserProfileContainer>
-        <Textarea placeholder="댓글을 입력해주세요." value="" cols={15} rows={10} />
-        <SubmitButtonContainer>
-          <SubmitButton onClick={() => { }} >등록</SubmitButton>
-        </SubmitButtonContainer>
-      </>
-    ) : (
-      <Textarea placeholder="로그인을 하고 댓글을 달아보세요!" value="" cols={15} rows={8} style={{
-        marginTop: "20px"
-      }} />
-    )}
-  </CommentInputContainer>
+      {isLogin ? (
+        <>
+          {toast && <Toast key={Date.now()} message={toast.message} type={toast.type} />}
+          <UserProfileContainer>
+            <UserProfileImageContainer>
+              {profilePicture ? <Image src={profilePicture} alt="profile" width="20px" height="20px" style={{ borderRadius: "50%" }} /> : <Profile width="20px" height="20px" />}
+            </UserProfileImageContainer>
+            <UserProfileNickname>{nickName}</UserProfileNickname>
+          </UserProfileContainer>
+          <Controller
+            control={control}
+            name="content"
+            render={({ field }) => (
+              <Textarea placeholder="댓글을 입력해주세요." cols={15} rows={8} style={{
+                marginTop: "20px"
+              }} onChange={field.onChange} />
+            )}
+          />
+          <SubmitButtonContainer>
+            <SubmitButton onClick={handleSubmit(onSubmit)} >등록</SubmitButton>
+          </SubmitButtonContainer>
+        </>
+      ) : (
+        <Textarea placeholder="로그인을 하고 댓글을 달아보세요!" cols={15} rows={8} style={{
+          marginTop: "20px"
+        }} />
+      )}
+    </CommentInputContainer>
   );
 };
 

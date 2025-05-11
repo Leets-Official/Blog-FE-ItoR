@@ -3,10 +3,11 @@ import styled from "styled-components";
 import MainHeader from "./MainHeader";
 import WriteHeader from "./WriteHeader";
 import DetailHeader from "./DetailHeader";
-import { useState } from "react";
 import SideBar from "@/components/layout/sideBar/SideBar";
 import Button from "@/components/ui/Button/Button";
 import MyPageHeader from "./MyPageHeader";
+import { useContext } from "react";
+import { SideBarContext } from "@/pages/Root";
 
 const HeaderContainer = styled.div`
   margin-top: 0px;
@@ -40,14 +41,16 @@ const RightContainer = styled.div`
 
 interface HeaderProps {
   type : "main" | "write" | "detail" | "mypage";
+  onPublish?: () => void;
+  isOwner?: boolean;
 }
 
-const Header = ({ type }: HeaderProps) => {
-  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const isLogin = localStorage.getItem("accessToken") ? true : false;
+const Header = ({ type, onPublish, isOwner }: HeaderProps) => {
+  const { isSideBarOpen, setIsSideBarOpen } = useContext(SideBarContext);
+  const isLogin = localStorage.getItem("refreshToken") ? true : false;
 
   const setSideBarOpen = () => {
-    setIsSideBarOpen((current) => !current);
+    setIsSideBarOpen(!isSideBarOpen);
   }
 
   return (
@@ -59,8 +62,8 @@ const Header = ({ type }: HeaderProps) => {
         </LeftContainer>
         <RightContainer>
           {type === "main" && <MainHeader />}
-          {type === "write" && <WriteHeader />}
-          {type === "detail" && <DetailHeader />}
+          {type === "write" && <WriteHeader onPublish={onPublish} />}
+          {type === "detail" && <DetailHeader isOwner={isOwner || false} />}
           {type === "mypage" && <MyPageHeader />}
         </RightContainer>
       </HeaderContainer>

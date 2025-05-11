@@ -7,9 +7,9 @@ import { loginSchema } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { EamilLogin, KakaoLogin } from "@/api/login";
+import { EamilLogin, KakaoLogin } from "@/api/login/login";
 import Toast from "../Toast";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 const Overlay = styled.div`
   position: fixed;
@@ -158,25 +158,23 @@ const Login = ({ open, onClose }: LoginProps) => {
   });
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    console.log(data);
     const response = await EamilLogin(data.email, data.password);
-    console.log(response);
 
     const stateCode = response.code;
     if (stateCode !== 200 || response.error) {
       setToast({ message: response.message, type: "error" });
       return;
     }
-    
     localStorage.setItem("accessToken", response.data.accessToken);
     localStorage.setItem("refreshToken", response.data.refreshToken);
-    localStorage.setItem("nickname", response.data.nickname);
+    localStorage.setItem("nickName", response.data.nickname);
     localStorage.setItem("profilePicture", response.data.profilePicture);
+    localStorage.setItem("bio", response.data.introduction);
     
     setToast({ message: "로그인에 성공했습니다.", type: "success" });
     setTimeout(() => {
       onClose();
-      navigate("/");
+      navigate("/", { replace: true });
       window.location.reload();
     }, 3000);
   }
@@ -200,15 +198,15 @@ const Login = ({ open, onClose }: LoginProps) => {
         </ImageContainer>
         <SubmitContainer>
           <InputContainer>
-            <Input width="100%" height="46px" type="text" placeholder="이메일" value="" onChange={() => { }} control={control} name="email" />
-            <Input width="100%" height="46px" type="password" placeholder="비밀번호" value="" onChange={() => { }} control={control} name="password" />
+            <Input width="100%" height="46px" type="text" placeholder="이메일" onChange={() => { }} control={control} name="email" />
+            <Input width="100%" height="46px" type="password" placeholder="비밀번호" onChange={() => { }} control={control} name="password" />
           </InputContainer>
           <ButtonContainer>
             <SignButton width="100%" disabled={false} onClick={handleSubmit(onSubmit)} type="email">이메일로 로그인</SignButton>
             <SnsContent>SNS</SnsContent>
             <SignButton width="100%" disabled={false} onClick={onKakaoLogin} icon={<Kakao />} type="kakao">카카오로 로그인</SignButton>
             <InputContent>
-              <Link to="/signUp" style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
+              <Link to="/signUp" onClick={onClose} style={{ textDecoration: "none", color: "#909090" }}>또는 회원가입</Link>
             </InputContent>
           </ButtonContainer>
         </SubmitContainer>

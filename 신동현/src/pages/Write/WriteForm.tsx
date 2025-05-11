@@ -1,9 +1,12 @@
 import { Add_photo } from "@/assets";
-import Header from "@/components/layout/header/Header";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import styled from "styled-components";
-import { useState } from "react";
+import { useContext } from "react";
+import { writeSchema } from "@/schema/auth";
+import { Control, Controller } from "react-hook-form";
+import { z } from "zod";
+import { FormControlContext } from "./Write";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -48,26 +51,32 @@ const Textarea = styled.textarea`
   font-weight: 300;
   @media (max-width: 700px) {
     width: 90%;
-  }  
+  }
+  font-family: 'Noto Sans KR', sans-serif;
 `;
 
-
-const Write = () => {
-  const [title, setTitle] = useState("");
+const WriteForm = () => {
+  const formContext = useContext(FormControlContext) as { control: Control<z.infer<typeof writeSchema>> };
+  const { control } = formContext;
   return (
     <Wrapper>
-      <Header type="write" />
       <Hr />
-      <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF">사진 추가하기</Button>      
+      <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF">사진 추가하기</Button>
       <Container>
         <TitleInputContainer>
-          <Input type="text" placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} />
+          <Input type="text" placeholder="제목" style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} name="title" control={control} />
         </TitleInputContainer>
         <Hr />
       </Container>
-        <Textarea placeholder="어떠한 것을 깨달았나요?" cols={15} rows={1000}/>
+      <Controller
+        control={control}
+        name="content"
+        render={({ field }) => (
+          <Textarea placeholder="어떠한 것을 깨달았나요?" cols={15} rows={100} onChange={field.onChange} />
+        )}
+      />
     </Wrapper>
   )
 }
 
-export default Write;
+export default WriteForm;

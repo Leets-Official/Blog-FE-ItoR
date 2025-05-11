@@ -1,4 +1,3 @@
-import Header from "@/components/layout/header/Header";
 import styled from "styled-components";
 import { Kakao, ProfilePlus } from "@/assets";
 import Button from "@/components/ui/Button/Button";
@@ -134,7 +133,6 @@ const Mypage = () => {
 
   return (
     <Wrapper>
-      <Header type="mypage" />
       <TopContainer>
         <ProfileContainer>
           <ProfileImageContainer>

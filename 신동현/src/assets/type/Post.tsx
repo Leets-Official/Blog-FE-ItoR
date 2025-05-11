@@ -1,10 +1,19 @@
 export interface Post {
-  id: string;
+  postId: string;
   title: string;
-  content: string;
-  userProfileImage?: React.ReactNode;
-  userName: string;
-  writeDate: Date;
-  commentCount: number;
-  postImage?: React.ReactNode;
+  contents: {
+    contentOrder: number;
+    content: string;
+    contentType: string;
+  }[];
+  isOwner: boolean;
+  commentCount: number;  
+  // id: string;
+  // title: string;
+  // content: string;
+  // userProfileImage?: React.ReactNode;
+  // userName: string;
+  // writeDate: Date;
+  // commentCount: number;
+  // postImage?: React.ReactNode;
 }

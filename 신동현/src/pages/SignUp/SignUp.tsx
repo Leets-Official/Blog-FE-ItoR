@@ -1,9 +1,8 @@
-import Header from "@/components/layout/header/Header";
 import { GITLOG, Kakao } from "@/assets";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import SignButton from "@/components/ui/Button/SignButton";
-import { KakaoLogin } from "@/api/login";
+import { KakaoLogin } from "@/api/login/login";
 
 const Container = styled.div`
   width: 100vw;
@@ -16,6 +15,7 @@ const ContentContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 100px;
 
   @media (max-width: 700px) {
     margin-top: 100px;
@@ -101,7 +101,7 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const handleEmailSignUp = () => {
-    navigate("/signUp/detail?type=email");
+    navigate("/signUp/detail/email");
   };
 
   const handleKakaoSignUp = () => {
@@ -110,7 +110,6 @@ const SignUp = () => {
 
   return (
     <Container>
-      <Header type="main" />
       <TitleContainer>
         <Title>회원가입</Title>
       </TitleContainer>
