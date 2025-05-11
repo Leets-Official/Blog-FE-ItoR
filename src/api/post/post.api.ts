@@ -40,7 +40,6 @@ const getPostsWithTokenApi = async ({ size, page }: GetPostsParams) => {
   const response = await api.get(`${PATH}/all/token`, {
     params: { size, page },
   });
-  console.log('response: ', response);
   return response.data.data;
 };
 
@@ -50,7 +49,6 @@ const getPostsApi = async ({ size, page }: GetPostsParams) => {
     params: { size, page },
   });
 
-  console.log('response: ', response);
   return response.data.data;
 };
 
