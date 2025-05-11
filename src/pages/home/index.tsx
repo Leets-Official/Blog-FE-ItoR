@@ -7,7 +7,7 @@ import { useUser } from '@/context/UserContext';
 
 const HomePage: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const size = 10;
 
   const { isLoggedIn, user } = useUser();
@@ -19,8 +19,8 @@ const HomePage: React.FC = () => {
           ? await getPostsWithTokenApi({ page, size })
           : await getPostsApi({ page, size });
 
-      setPosts(response.data);
-      console.log('게시물 조회 성공');
+      setPosts(response.post);
+      console.log('게시물 조회 성공', response);
     } catch (err) {
       console.error('게시물 조회 실패', err);
     }

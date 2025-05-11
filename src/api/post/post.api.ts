@@ -40,8 +40,8 @@ const getPostsWithTokenApi = async ({ size, page }: GetPostsParams) => {
   const response = await api.get(`${PATH}/all/token`, {
     params: { size, page },
   });
-
-  return response.data;
+  console.log('response: ', response);
+  return response.data.data;
 };
 
 // 토큰 X
@@ -50,7 +50,8 @@ const getPostsApi = async ({ size, page }: GetPostsParams) => {
     params: { size, page },
   });
 
-  return response.data;
+  console.log('response: ', response);
+  return response.data.data;
 };
 
 // 상세 게시물
