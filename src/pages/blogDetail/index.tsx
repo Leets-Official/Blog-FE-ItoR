@@ -48,12 +48,12 @@ const BlogDetail: React.FC = () => {
           nickName={post.nickName}
           profileImage={post.profileUrl || ''}
           createAt={post.createdAt}
-          commentCount={post.commentCount || 0}
+          commentCount={post.comments.length || 0}
         />
         <ContentSection contents={post.contents ?? []} />
         <CommentSection
           postId={postId || ''}
-          commentCount={post.commentCount}
+          commentCount={post.comments.length}
           comments={post.comments}
         />
         <BlogFooter />
