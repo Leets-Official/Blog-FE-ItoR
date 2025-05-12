@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+//https://blog.leets.land
 const BaseUrl = import.meta.env.VITE_API_URL;
 
 const Axios = axios.create({
@@ -57,17 +57,19 @@ Axios.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     //accessToekn 만료
-    if (error.response?.status === 401 && !originalRequest.retry) {
+    if (
+      (error.response?.status === 500 || error.response?.status === 401) &&
+      !originalRequest.retry
+    ) {
       originalRequest.retry = true;
 
       try {
-        const { accessToken, refreshToken } = await getRefreshToken();
+        const { accessToken } = await getRefreshToken();
         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-        originalRequest.headers['Authorization_refresh'] = `Bearer ${refreshToken}`;
 
         return Axios(originalRequest);
       } catch (refreshError) {
-        console.error('새로운 엑세스 토큰 발행에 실패했습니다!');
+        console.error('새로운 엑세스 토큰 발행에 실패했습니다!', refreshError);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         alert('로그인이 만료되었습니다');

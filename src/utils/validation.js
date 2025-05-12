@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-export const onValiadation = (formData, setFormError, msg = '') => {
+export const onValidation = (formData, setFormError, msg = '', myPageCheck, isKakao = false) => {
   const errors = {};
   const todayString = dayjs().format('YYYY년 M월 D일');
   const today = dayjs();
@@ -20,8 +20,12 @@ export const onValiadation = (formData, setFormError, msg = '') => {
     nickname: '닉네임',
   };
 
+  const fieldsCheck = isKakao
+    ? Object.keys(formDataFields).filter((field) => field !== 'password')
+    : Object.keys(formDataFields);
+
   //formDataFieldsr객체를 배열로 만듦 -> forEach로 순서대로 값을 가져옴
-  Object.keys(formDataFields).forEach((field) => {
+  fieldsCheck.forEach((field) => {
     if (!formData[field]?.trim()) {
       errors[field] = {
         message: `${formDataFields[field]}는 반드시 입력해야하는 필수 사항입니다.`,
@@ -29,17 +33,31 @@ export const onValiadation = (formData, setFormError, msg = '') => {
     }
   });
 
+  if (myPageCheck) {
+    const isSameEmail = formData.email === myPageCheck.email;
+    const isSameNickname = formData.nickname === myPageCheck.nickname;
+
+    if (isSameEmail && isSameNickname) {
+      errors.email = { message: '이전과 동일한 이메일입니다.' };
+      errors.nickname = { message: '이전과 동일한 닉네임입니다.' };
+    } else if (isSameNickname) {
+      errors.nickname = { message: '이전과 동일한 닉네임입니다.' };
+    }
+  }
+
   if (email && email.trim() && !emailRegex.test(email)) {
     errors.email = { message: '이메일 형식이 올바르지 않습니다.' };
   } else if (msg.includes('이메일')) {
     errors.email = { message: '이미 사용중인 이메일입니다.' };
   }
 
-  if (password && password.trim()) {
-    if (password.length < 8 || password.length > 64) {
-      errors.password = { message: '비밀번호는 최소 8자 이상, 최대 64자 이하여야 합니다.' };
-    } else if (!passwordRegex.test(password)) {
-      errors.password = { message: '비밀번호 8~64자, 영문, 숫자, 특수문자가 필수입니다.' };
+  if (!isKakao) {
+    if (password && password.trim()) {
+      if (password.length < 8 || password.length > 64) {
+        errors.password = { message: '비밀번호는 최소 8자 이상, 최대 64자 이하여야 합니다.' };
+      } else if (!passwordRegex.test(password)) {
+        errors.password = { message: '비밀번호 8~64자, 영문, 숫자, 특수문자가 필수입니다.' };
+      }
     }
   }
 

@@ -3,14 +3,18 @@ import { useState, useEffect } from 'react';
 import { Header, Image, Input } from '@/components';
 import { Profile } from '@/assets';
 import GlobalStyle from '@/styles/global';
-import SetMypage from '@/components/layout/Header/EditLog';
+import { createInputFields } from '@/constant/SignupFields';
+import { onValidation } from '@/utils/validation';
+import { getUserInfo, updateUserInfo, updateNickname, updatePassword } from '@/api/users';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import userDummy from '@/data/userDummy';
 
 const Container = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
-  height: 420px;
+  height: 410px;
 
   @media (max-width: 700px) {
     height: 390px;
@@ -23,7 +27,7 @@ const Content = styled.div`
   margin: 0 auto;
   width: 37%;
   min-width: 600px;
-  min-height: 1000px;
+  min-height: 1100px;
   padding: 40px;
   gap: 20px;
 
@@ -37,153 +41,160 @@ const Content = styled.div`
 const ProfileContent = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 600px;
-  padding-top: 100px;
-  gap: 20px;
-
-  @media (max-width: 700px) {
-    min-width: 440px;
-    padding-top: 80px;
-  }
-`;
-
-const InputContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 15px;
-  margin-bottom: 40px;
+  margin: 85px 0 40px 0;
   gap: 40px;
 `;
 
-const Styledgap = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+const ImageWrapper = styled.div`
+  position: relative;
+  width: 64px;
+  height: 64px;
 `;
 
-const Text = styled.div`
+const EditButton = styled.button`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: #464646;
+  border: 2px solid white;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+`;
+
+export const Text = styled.div`
   color: #9e9e9e;
   font-size: 14px;
-  margin-top: 20px;
-  margin-left: 7px;
+  margin: 15px 0 13px 7px;
 `;
 
 const Mypage = () => {
-  const [userInfo, setUserInfo] = useState({
-    nickname: '',
-    bio: '',
+  const queryClient = useQueryClient();
+
+  const [formData, setFormData] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
     name: '',
     birth: '',
+    nickname: '',
+    bio: '',
+    profilePicture: '',
+  });
+  const [formError, setFormError] = useState({});
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['userInfo'],
+    queryFn: getUserInfo,
   });
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('userInfo'));
-    if (storedUser) {
-      setUserInfo(storedUser);
+    if (data) {
+      setFormData((prev) => ({
+        ...prev,
+        email: data.email,
+        nickname: data.nickname,
+        profilePicture: data.profilePicture || '',
+        // TODO: 이름, 생년월일, 소개
+        name: userDummy.name,
+        birth: userDummy.birthDate,
+        bio: userDummy.introduction,
+      }));
     }
-  }, []);
+  }, [data]);
 
-  const inputFields = [
-    { label: '이메일', value: userInfo?.email || '', placeholder: '이메일' },
-    { label: '비밀번호', value: userInfo?.password || '', placeholder: '......', type: 'password' },
-    {
-      label: '비밀번호 확인',
-      value: userInfo?.password || '',
-      placeholder: '......',
-      type: 'password',
-    },
-    { label: '이름', value: userInfo?.name || '', placeholder: '이름' },
-    { label: '생년월일', value: userInfo?.birth || '', placeholder: 'YYYY-MM-DD' },
-  ];
+  if (isLoading) return <div>로딩 중...</div>;
+  if (isError) return <div>유저 정보를 불러올 수 없습니다.</div>;
 
+  const handleSave = async () => {
+    const nicknameCheck = formData.nickname !== data.nickname;
+    const emailCheck = formData.email !== data.email;
+    const passwordCheck = formData.password === formData.confirmPassword;
+
+    const isValid = onValidation(formData, setFormError, '', data);
+    if (!isValid) return;
+
+    try {
+      // 유저 정보 전체 변경
+      if (nicknameCheck && emailCheck) {
+        await updateUserInfo({
+          email: formData.email,
+          nickname: formData.nickname,
+          password: formData.password,
+          profilePicture: formData.profilePicture,
+          birthDate: formData.birth,
+          name: formData.name,
+          introduction: formData.bio,
+        });
+        console.log('유저 정보가 업데이트 되었습니다.');
+      }
+      // 닉네임 업데이트
+      else if (nicknameCheck) {
+        await updateNickname(formData.nickname);
+        console.log('닉네임이 업데이트 되었습니다.');
+      }
+      //비밀번호 업데이트
+      else if (formData.password && passwordCheck) {
+        await updatePassword(formData.password);
+        console.log('비밀번호가 업데이트 되었습니다.');
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ['userInfo'] });
+    } catch (err) {
+      console.error('유저 정보 저장 중 오류 발생:', err);
+    }
+  };
+
+  const inputFields = createInputFields(formData, setFormData, formError, false, true);
   return (
     <>
       <GlobalStyle />
       <Container>
-        <Header setMypage={<SetMypage />} />
+        <Header onSave={handleSave} />
         <Content>
           <ProfileContent>
-            <Image src={Profile} alt='프로필' width='64px' height='64px' radius='50%' />
-            <InputContent>
+            <ImageWrapper>
+              <Image src={Profile} alt='프로필' width='64px' height='64px' radius='50%' />
+              <EditButton onClick={() => alert('프로필 수정 클릭')}>+</EditButton>
+            </ImageWrapper>
+            {['nickname', 'bio'].map((field) => (
               <Input
-                width='100%'
-                height='60px'
-                fontSize='24px'
-                radius='3px'
-                placeholder='닉네임'
-                phSize='24px'
+                key={field}
+                height={field === 'nickname' ? '60px' : '45px'}
+                fontSize={field === 'nickname' ? '24px' : undefined}
+                placeholder={field === 'nickname' ? '닉네임' : '한 줄 소개'}
+                phSize={field === 'nickname' ? '24px' : '14px'}
                 bgColor='#f5f5f5'
-                value={userInfo?.nickname || ''}
-                disabled
+                value={formData[field] || ''}
+                onChange={(e) => setFormData((prev) => ({ ...prev, [field]: e.target.value }))}
+                errorState={field === 'nickname' ? formError.nickname : ''}
+                showHint={field === 'nickname'}
               />
-              <Input
-                width='100%'
-                height='45px'
-                radius='3px'
-                placeholder='한 줄 소개'
-                phSize='14px'
-                bgColor='#f5f5f5'
-                value={userInfo?.bio || ''}
-                disabled
-              />
-            </InputContent>
+            ))}
           </ProfileContent>
-          <Styledgap>
-            <Text>이메일</Text>
-            <Input
-              width='100%'
-              height='45px'
-              radius='3px'
-              placeholder='이메일'
-              phSize='14px'
-              value={userInfo?.email || ''}
-              disabled
-            />
-            <Text>비밀번호</Text>
-            <Input
-              width='100%'
-              height='45px'
-              radius='3px'
-              placeholder='......'
-              phSize='14px'
-              value={userInfo?.password || ''}
-              type='password'
-              disabled
-            />
-            <Text>비밀번호 확인</Text>
-            <Input
-              width='100%'
-              height='45px'
-              radius='3px'
-              placeholder='......'
-              phSize='14px'
-              value={userInfo?.password || ''}
-              type='password'
-              disabled
-            />
-            <Text>이름</Text>
-            <Input
-              width='100%'
-              height='45px'
-              radius='3px'
-              placeholder='이름'
-              phSize='14px'
-              value={userInfo?.name || ''}
-              disabled
-            />
-            <Text>생년월일</Text>
-            <Input
-              width='100%'
-              height='45px'
-              radius='3px'
-              placeholder='YYYY-MM-DD'
-              phSize='14px'
-              value={userInfo?.birth || ''}
-              disabled
-            />
-          </Styledgap>
+          {inputFields.map((field) => (
+            <div key={field.name}>
+              <Text>{field.label}</Text>
+              <Input
+                placeholder={field.placeholder}
+                type={field.type}
+                name={field.name}
+                value={field.value}
+                onChange={field.onChange}
+                errorState={field.error}
+              />
+            </div>
+          ))}
         </Content>
       </Container>
     </>
