@@ -1,16 +1,19 @@
 import { flexColumn } from '@/styles/common.styled';
 import styled from 'styled-components';
-import { Image } from '@/components';
+import { Button, Image } from '@/components';
 import { Text } from '@/components/home/PostItem';
 import { useUser } from '@/context/UserContext';
-import { DefaultProfileSvg } from '@/assets';
+import { DefaultProfileSvg, SettingSvg } from '@/assets';
+import { ButtonWrapper } from '../signup/SignupField';
+import theme from '@/styles/theme.styled';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const FooterWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
   background-color: ${({ theme }) => theme.COLORS.gray[96]};
-  margin-bottom: 60px;
+  margin: 72px 0 60px 0;
   padding: 60px 0;
 `;
 
@@ -24,6 +27,13 @@ const FooterContent = styled.div`
 
 const BlogFooter: React.FC = () => {
   const { user } = useUser();
+  const location = useLocation();
+  const nav = useNavigate();
+  const handleClick = () => {
+    nav('/my/setting');
+  };
+
+  const isMyPage = location.pathname === '/my';
 
   return (
     <FooterWrapper>
@@ -46,6 +56,21 @@ const BlogFooter: React.FC = () => {
         <Text fontSize="sm" fontWeight="light" color="gray20">
           {user?.introduction}
         </Text>
+        {isMyPage && (
+          <ButtonWrapper onClick={handleClick}>
+            <Button
+              variant="text"
+              size="md"
+              rounded="sm"
+              height="25px"
+              borderColor={theme.COLORS.gray[90]}
+              textColor={theme.COLORS.gray[56]}
+              backgroundColor="transparent"
+            >
+              <SettingSvg fill={theme.COLORS.gray[56]} />내 프로필 설정
+            </Button>
+          </ButtonWrapper>
+        )}
       </FooterContent>
     </FooterWrapper>
   );

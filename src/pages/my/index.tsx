@@ -1,7 +1,11 @@
+import { Header } from '@/components';
+import BlogFooter from '@/components/blogDetail/BlogFooter';
+
 const MyPage: React.FC = () => {
   return (
     <div>
-      <h1>My Page</h1>
+      <Header variant="write" />
+      <BlogFooter />
     </div>
   );
 };

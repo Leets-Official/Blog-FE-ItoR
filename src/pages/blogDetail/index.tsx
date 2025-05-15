@@ -26,6 +26,7 @@ const BlogDetail: React.FC = () => {
       try {
         const response = await getPostItemApi(postId);
         setPost(response.data);
+        console.log('게시물 상세 조회 성공', response.data);
       } catch (err) {
         console.error('게시물 상세 조회 실패 ', err);
       } finally {

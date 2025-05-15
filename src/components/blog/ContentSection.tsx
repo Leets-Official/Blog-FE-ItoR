@@ -46,7 +46,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   setContentBlocks,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { handleImageChange, uploadedUrl, reset } = useImageUpload();
+  const { handleImageChange, reset } = useImageUpload();
 
   const handleTextChange = (id: number, value: string) => {
     setContentBlocks((prev) =>
@@ -55,15 +55,15 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   };
 
   const handleAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    await handleImageChange(e);
-    if (!uploadedUrl) return;
+    const imageUrl = await handleImageChange(e);
+    if (!imageUrl) return;
 
     const now = Date.now();
     const newImageBlock: ContentBlock = {
       id: now,
       type: 'image',
       value: '',
-      url: uploadedUrl,
+      url: imageUrl,
     };
     const textBlockAfter: ContentBlock = {
       id: now + 1,
