@@ -42,7 +42,6 @@ interface ImageUploadProps {
 const ImageUpload = ({ onAddImage }: ImageUploadProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log('파일 선택됨:', file);
     if (file) {
       onAddImage(file);
     }
@@ -56,7 +55,7 @@ const ImageUpload = ({ onAddImage }: ImageUploadProps) => {
           사진 추가하기
         </StyledButton>
       </label>
-      <HiddenInput type='file' id='imageUpload' onChange={handleFileChange} />
+      <HiddenInput type='file' id='imageUpload' accept='image/*' onChange={handleFileChange} />
     </ImageUploadWrapper>
   );
 };
