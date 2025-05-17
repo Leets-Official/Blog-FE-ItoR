@@ -51,11 +51,13 @@ const NavButton = styled(PageButton)`
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
   const getVisiblePages = () => {
     const maxVisible = 5;
-    let start = Math.floor((currentPage - 1) / maxVisible) * maxVisible + 1;
-    let end = Math.min(start + maxVisible - 1, totalPages);
+    const pages: number[] = [];
 
-    const pages = [];
-    for (let i = start; i <= end; i++) {
+    const total = totalPages;
+    const start = Math.floor(currentPage / maxVisible) * maxVisible;
+    const end = Math.min(start + maxVisible, total);
+
+    for (let i = start; i < end && i < total; i++) {
       pages.push(i);
     }
 
@@ -63,45 +65,32 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
   };
 
   const handlePrev = () => {
-    const target = Math.max(1, currentPage - 5);
+    const target = Math.max(0, currentPage - 5);
     if (target !== currentPage) onPageChange(target);
   };
 
   const handleNext = () => {
-    const target = Math.min(totalPages, currentPage + 5);
+    const target = Math.min(totalPages - 1, currentPage + 5);
     if (target !== currentPage) onPageChange(target);
   };
 
-  const isPrevDisabled = currentPage <= 5;
-  const isNextDisabled = currentPage > totalPages - 5;
+  const isPrevDisabled = currentPage < 5;
+  const isNextDisabled = currentPage + 5 >= totalPages;
 
   return (
     <PaginationContainer>
       <NavButton onClick={handlePrev} disabled={isPrevDisabled}>
-        <Left
-          width={14}
-          height={14}
-          fill={isPrevDisabled ? '#D9D9D9' : currentPage !== 1 ? '#000' : '#1890FF'}
-        />
+        <Left width={14} height={14} fill={isPrevDisabled ? '#D9D9D9' : '#1890FF'} />
       </NavButton>
 
       {getVisiblePages().map((page) => (
-        <PageButton
-          key={page}
-          onClick={() => onPageChange(page)}
-          $isActive={page === currentPage}
-          disabled={false}
-        >
-          {page}
+        <PageButton key={page} onClick={() => onPageChange(page)} $isActive={page === currentPage}>
+          {page + 1}
         </PageButton>
       ))}
 
       <NavButton onClick={handleNext} disabled={isNextDisabled}>
-        <Right
-          width={14}
-          height={14}
-          fill={isNextDisabled ? '#D9D9D9' : currentPage !== 1 ? '#000' : '#1890FF'}
-        />
+        <Right width={14} height={14} fill={isNextDisabled ? '#D9D9D9' : '#1890FF'} />
       </NavButton>
     </PaginationContainer>
   );

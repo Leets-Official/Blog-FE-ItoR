@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Header from '@/components/layout/header/Header';
 import Pagination from '@/components/pagination/Pagination';
 import PostList from '@/components/blog/PostList';
 import { getPostList, getPostListWithToken } from '@/api/blog/postAPI';
-import { BlogPost } from '@/types/blogPost';
+import { BlogPostListResponse } from '@/types/blogPost';
+import { useQuery } from '@tanstack/react-query';
 
 const pageSize = 5;
 
@@ -14,36 +14,31 @@ const HomeContainer = styled.div`
 `;
 
 const Home = () => {
-  const location = useLocation();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
 
-  const fetchPosts = async () => {
-    try {
-      const token = localStorage.getItem('accessToken');
-      const fetcher = token ? getPostListWithToken : getPostList;
-      const data = await fetcher(currentPage, pageSize);
+  const token = localStorage.getItem('accessToken');
+  const fetcher = token ? getPostListWithToken : getPostList;
 
-      setPosts(data);
-      setTotalPages(Math.ceil(data.length / pageSize) || 1);
-    } catch (error) {
-      console.error('게시글 목록을 불러오지 못했습니다.', error);
-    }
-  };
+  const queryKey = ['posts', currentPage, token];
+  const queryFn = () => fetcher(currentPage, pageSize);
 
-  useEffect(() => {
-    fetchPosts();
-  }, [currentPage, location.state?.refresh]);
+  const { data, isLoading, error } = useQuery<BlogPostListResponse>({
+    queryKey,
+    queryFn,
+    placeholderData: (previousData) => previousData,
+  });
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (error) return <div>게시글을 불러오는 데 실패했습니다.</div>;
 
   return (
     <HomeContainer>
       <Header type='CreateLog' />
-      <PostList posts={posts} />
+      <PostList posts={data?.post || []} />
       <Pagination
         currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={(page) => setCurrentPage(page)}
+        totalPages={data?.pageMax || 1}
+        onPageChange={setCurrentPage}
       />
     </HomeContainer>
   );
