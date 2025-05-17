@@ -65,7 +65,7 @@ const Image = ({
   };
   return (
     <ImageFrame {...styleProps}>
-      <StyledImage {...styleProps} {...rest} />
+      <StyledImage loading='lazy' {...styleProps} {...rest} />
     </ImageFrame>
   );
 };
