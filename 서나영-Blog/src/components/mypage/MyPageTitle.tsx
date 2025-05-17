@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Profile, Settings } from '@/assets';
 import TextInput from '@/components/ui/TextInput';
 import { profileSchema, ProfileSchema } from '@/schema/auth';
+import { UpdateUserInfoRequest } from '@/types/user';
+import ProfileUpload from '../signup/ProfileUpload';
 
 const MyPageTitleWrapper = styled.div`
   width: 100%;
@@ -83,11 +85,22 @@ const ErrorMessage = styled.p`
   font-family: 'Noto Sans L';
 `;
 
-const MyPageTitle: React.FC<{ isMyPageSetting?: boolean; editable?: boolean }> = ({
+interface MyPageTitleProps {
+  isMyPageSetting?: boolean;
+  editable?: boolean;
+  setEditData?: React.Dispatch<React.SetStateAction<UpdateUserInfoRequest>>;
+}
+
+const MyPageTitle: React.FC<MyPageTitleProps> = ({
   isMyPageSetting = false,
   editable = false,
+  setEditData,
 }) => {
   const navigate = useNavigate();
+
+  const profilePicture = localStorage.getItem('profilePicture') || '';
+  const nickname = localStorage.getItem('nickname') || '닉네임';
+  const introduction = localStorage.getItem('introduction') || 'You can make anything by writing';
 
   const {
     register,
@@ -104,15 +117,37 @@ const MyPageTitle: React.FC<{ isMyPageSetting?: boolean; editable?: boolean }> =
   return (
     <MyPageTitleWrapper>
       <ContentWrapper>
-        <Profile width={60} height={60} />
-        {isMyPageSetting ? (
+        {!isMyPageSetting ? (
           <>
+            {profilePicture ? (
+              <img
+                src={profilePicture}
+                alt='프로필'
+                width={60}
+                height={60}
+                style={{ borderRadius: '50%' }}
+              />
+            ) : (
+              <Profile width={60} height={60} />
+            )}
+            <NickName>{nickname}</NickName>
+            <Description>{introduction}</Description>
+          </>
+        ) : (
+          <>
+            <ProfileUpload
+              initialImage={profilePicture}
+              onImageChange={(url) => setEditData?.((prev) => ({ ...prev, profilePicture: url }))}
+              size={60}
+              showLabel={false}
+              hideButton
+            />
             <InputWrapper>
               <TextInput
                 {...register('nickName')}
                 name='nickName'
                 width='100%'
-                placeholder='닉네임'
+                placeholder={nickname}
                 style={{
                   borderRadius: '4px',
                   fontFamily: 'Noto Sans M',
@@ -122,6 +157,9 @@ const MyPageTitle: React.FC<{ isMyPageSetting?: boolean; editable?: boolean }> =
                   backgroundColor: '#F5F5F5',
                 }}
                 disabled={!editable}
+                onChange={(e) => {
+                  setEditData?.((prev) => ({ ...prev, nickname: e.target.value }));
+                }}
               />
               {!errors.nickName && (
                 <span
@@ -141,10 +179,10 @@ const MyPageTitle: React.FC<{ isMyPageSetting?: boolean; editable?: boolean }> =
             </InputWrapper>
 
             <TextInput
-              {...register('bio')}
-              name='bio'
+              {...register('introduction')}
+              name='introduction'
               width='100%'
-              placeholder='한 줄 소개'
+              placeholder={introduction}
               style={{
                 borderRadius: '4px',
                 fontFamily: 'Noto Sans L',
@@ -155,13 +193,12 @@ const MyPageTitle: React.FC<{ isMyPageSetting?: boolean; editable?: boolean }> =
                 backgroundColor: '#F5F5F5',
               }}
               disabled={!editable}
+              onChange={(e) => {
+                register('introduction').onChange(e);
+                setEditData?.((prev) => ({ ...prev, introduction: e.target.value }));
+              }}
             />
-            {errors.bio && <ErrorMessage>{errors.bio.message}</ErrorMessage>}
-          </>
-        ) : (
-          <>
-            <NickName>Guest</NickName>
-            <Description>한 줄 소개</Description>
+            {errors.introduction && <ErrorMessage>{errors.introduction.message}</ErrorMessage>}
           </>
         )}
       </ContentWrapper>

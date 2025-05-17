@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import styled from 'styled-components';
@@ -6,6 +6,7 @@ import SignupInput from '../signup/SignupInput';
 import { Kakao } from '@/assets';
 import { signupSchema, SignupSchema } from '@/schema/auth';
 import { getInputFields } from '@/components/constants/inputFields';
+import { UpdateUserInfoRequest } from '@/types/user';
 
 const FormContainer = styled.div`
   width: 100%;
@@ -43,17 +44,70 @@ const SocialLabel = styled.div`
   font-family: 'Noto Sans L';
 `;
 
-const MyPageForm = ({ editable = false }: { editable?: boolean }) => {
-  const [isKakaoLogin, setIsKakaoLogin] = useState(true);
-  const inputFields = getInputFields(isKakaoLogin);
+interface UserInfo {
+  id: number;
+  email: string;
+  nickname: string;
+  profilePicture: string;
+}
+
+interface MyPageFormProps {
+  editable?: boolean;
+  userInfo: UserInfo;
+  setEditData?: React.Dispatch<React.SetStateAction<UpdateUserInfoRequest>>;
+}
+
+const MyPageForm = ({ editable = false, userInfo, setEditData }: MyPageFormProps) => {
+  const [isKakaoLogin, setIsKakaoLogin] = useState(false);
+
+  useEffect(() => {
+    const kakaoLoginFlag = localStorage.getItem('isKakaoLogin') === 'true';
+    setIsKakaoLogin(kakaoLoginFlag);
+  }, []);
+
+  const inputFields = getInputFields(isKakaoLogin, 'mypage');
 
   const {
     register,
+    watch,
     formState: { errors },
+    reset,
   } = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
     mode: 'onBlur',
+    defaultValues: {
+      email: userInfo.email,
+      password: '',
+      confirmPassword: '',
+      name: '',
+      birthDate: '',
+    },
   });
+
+  // 유저 정보가 변경되면 폼 초기화
+  useEffect(() => {
+    if (userInfo) {
+      reset({
+        email: userInfo.email,
+        password: '',
+        confirmPassword: '',
+        name: '',
+        birthDate: '',
+      });
+    }
+  }, [userInfo, reset]);
+
+  // 입력값 변화 감지해서 editData 업데이트
+  useEffect(() => {
+    const subscription = watch((values) => {
+      setEditData?.((prev) => ({
+        ...prev,
+        ...values,
+      }));
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, setEditData]);
 
   return (
     <FormContainer>
@@ -67,7 +121,8 @@ const MyPageForm = ({ editable = false }: { editable?: boolean }) => {
         </>
       )}
       {inputFields.map((field) => {
-        const isAlwaysDisabled = field.name === 'email' || field.name === 'name';
+        const isEmailField = field.name === 'email';
+        const isAlwaysDisabled = isEmailField && !isKakaoLogin;
 
         return (
           <SignupInput
@@ -82,10 +137,16 @@ const MyPageForm = ({ editable = false }: { editable?: boolean }) => {
                 : undefined
             }
             register={register}
-            disabled={isAlwaysDisabled || !editable}
+            disabled={!editable}
             isMyPage
             editable={editable}
             isAlwaysDisabled={isAlwaysDisabled}
+            onChange={(e) => {
+              setEditData?.((prev) => ({
+                ...prev,
+                [field.name]: e.target.value,
+              }));
+            }}
           />
         );
       })}
