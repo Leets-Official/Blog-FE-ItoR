@@ -41,10 +41,6 @@ const ChatandMore = ({ commentRef, postId, post }: ChatandMoreProps) => {
     if (item === '삭제하기') {
       setModalOpen(true);
     } else if (item === '수정하기') {
-      if (!post?.isOwner) {
-        showToast('게시글 수정 권한이 없습니다!', 'negative');
-        return;
-      }
       if (postId) {
         navigate(`/blog/editor/${postId}`, {
           state: {
@@ -101,7 +97,7 @@ const ChatandMore = ({ commentRef, postId, post }: ChatandMoreProps) => {
           <MoreVert width={24} height={24} />
         </IconWrapper>
       </Container>
-      {isOpen && (
+      {post?.isOwner && isOpen && (
         <Dropdown
           ref={dropdownRef}
           isOpen={isOpen}
