@@ -39,6 +39,7 @@ const Sidebar = ({ isOpen, onClose, onLogout }: SideProps) => {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
+    if (!isOpen) return;
     const token = localStorage.getItem('accessToken');
     setIsLogin(!!token);
   }, [isOpen]);
@@ -53,6 +54,8 @@ const Sidebar = ({ isOpen, onClose, onLogout }: SideProps) => {
     document.addEventListener('mousedown', handleOutsideClick);
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [onClose]);
+
+  if (!isOpen) return null;
 
   return (
     <>
