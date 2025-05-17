@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import CommentMeta from '@/components/blog/blogDetail/comment/CommentMeta';
-import { BlogPost, BlogComment } from '@/types/blogPost';
+import { BlogPostDetail, BlogComment } from '@/types/blogPost';
 
 const CommentWrapper = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const CommentText = styled.span`
 `;
 
 interface CommentProps {
-  post: BlogPost;
+  post: BlogPostDetail;
   comment: BlogComment;
 }
 

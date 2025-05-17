@@ -1,28 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from '@/components/layout/header/Header';
 import Pagination from '@/components/pagination/Pagination';
 import PostList from '@/components/blog/PostList';
-import { mockPosts } from '@/mocks/mockPosts';
+import { getPostList, getPostListWithToken } from '@/api/blog/postAPI';
+import { BlogPost } from '@/types/blogPost';
+
+const pageSize = 5;
 
 const HomeContainer = styled.div`
   padding-top: 32px;
 `;
 
-const pageSize = 5;
-
 const Home = () => {
+  const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const totalPages = Math.ceil(mockPosts.length / pageSize);
+  const fetchPosts = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+      const fetcher = token ? getPostListWithToken : getPostList;
+      const data = await fetcher(currentPage, pageSize);
 
-  const startIdx = (currentPage - 1) * pageSize;
-  const currentPosts = mockPosts.slice(startIdx, startIdx + pageSize);
+      setPosts(data);
+      setTotalPages(Math.ceil(data.length / pageSize) || 1);
+    } catch (error) {
+      console.error('게시글 목록을 불러오지 못했습니다.', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, [currentPage, location.state?.refresh]);
 
   return (
     <HomeContainer>
       <Header type='CreateLog' />
-      <PostList posts={currentPosts} />
+      <PostList posts={posts} />
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

@@ -41,23 +41,37 @@ const StyledCommentCount = styled.span`
   font-weight: 300;
 `;
 
-interface PostMetaProps {
-  post: BlogPost;
+interface BlogPostWithOptionalDetail extends BlogPost {
+  createdAt?: string;
+  comments?: Comment[];
+  nickName?: string;
+  profileUrl?: string;
 }
 
-const BlogMeta: React.FC<PostMetaProps> = ({ post }) => {
+interface PostMetaProps {
+  post: BlogPostWithOptionalDetail;
+  isBlogDetail?: boolean;
+}
+
+const BlogMeta: React.FC<PostMetaProps> = ({ post, isBlogDetail = false }) => {
+  const profilePicture = isBlogDetail && post.profileUrl ? post.profileUrl : '';
+  const nickName = isBlogDetail && post.nickName ? post.nickName : '닉네임';
+  const createdAt = isBlogDetail && post.createdAt ? post.createdAt : '';
+
   return (
     <MetaContainer>
-      {post.profileUrl ? (
-        <ProfileImage src={post.profileUrl} alt='profile' />
+      {profilePicture ? (
+        <ProfileImage src={profilePicture} alt='profile' />
       ) : (
         <Profile width={20} height={20} />
       )}
-      <StyledNickName>{post.nickName}</StyledNickName>
+      <StyledNickName>{nickName}</StyledNickName>
       <Dot />
-      <StyledCreatedAt>{formatPostDate(post.createdAt)}</StyledCreatedAt>
+      <StyledCreatedAt>{formatPostDate(createdAt)}</StyledCreatedAt>
       <Dot />
-      <StyledCommentCount>댓글 {post.comments.length}</StyledCommentCount>
+      <StyledCommentCount>
+        댓글 {isBlogDetail ? (post.comments?.length ?? 0) : (post.commentCount ?? 0)}
+      </StyledCommentCount>
     </MetaContainer>
   );
 };

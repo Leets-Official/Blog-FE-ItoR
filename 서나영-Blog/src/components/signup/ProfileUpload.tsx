@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Profile, AddPhoto } from '@/assets';
-import { getPresignedUrl, uploadImage } from '@/api/ImageAPI';
+import { getPresignedUrl, uploadImage } from '@/api/image/ImageAPI';
 
 const ProfileContainer = styled.div`
   display: flex;

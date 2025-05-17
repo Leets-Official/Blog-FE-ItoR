@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import CommentMeta from './CommentMeta';
 import Button from '@/components/ui/Button';
-import { BlogPost } from '@/types/blogPost';
+import { BlogPostDetail } from '@/types/blogPost';
 
 const CommentInputWrapper = styled.div`
   padding: 12px 16px;
@@ -72,7 +72,7 @@ const LoginMessage = styled.span`
 `;
 
 interface CommentInputProps {
-  post: BlogPost;
+  post: BlogPostDetail;
   placeholder?: string;
   isLogin: boolean;
 }
