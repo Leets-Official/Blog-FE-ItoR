@@ -17,6 +17,7 @@ export const getRefreshToken = async () => {
     const response = await api.post('/auth/reissue', {
       refreshToken,
     });
+    console.log('리프레시 응답:', response);
     if (response.data.code === 200) {
       const { accessToken, refreshToken: newRefreshToken } = response.data.data;
       localStorage.setItem('accessToken', accessToken);
@@ -50,19 +51,25 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const message = error?.response?.data?.message || '';
 
-    // accessToken 만료로 인한 401 에러, 재시도하지 않은 요청인 경우
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // 만료되었거나 유효하지 않은 토큰일 경우 처리
+    const isTokenExpired =
+      (error.response?.status === 401 || error.response?.status === 500) &&
+      message.includes('JWT expired');
+
+    if (isTokenExpired && !originalRequest._retry) {
       originalRequest._retry = true;
+
+      localStorage.removeItem('accessToken');
 
       try {
         const { accessToken } = await getRefreshToken();
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-        return api(originalRequest); // 재요청
+        return api(originalRequest);
       } catch (refreshError) {
         console.error('재발급 실패: ', refreshError);
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        localStorage.clear();
         window.location.href = '/';
       }
     }
