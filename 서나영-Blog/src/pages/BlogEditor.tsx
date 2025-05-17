@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import ContentEditor from '@/components/editor/ContentEditor';
@@ -62,10 +62,12 @@ const BlogEditor = () => {
   };
 
   // content는 blocks에서 추출
-  const plainTextContent = blocks
-    .filter((block) => block.type === 'TEXT')
-    .map((block) => block.content)
-    .join('\n\n');
+  const plainTextContent = useMemo(() => {
+    return blocks
+      .filter((block) => block.type === 'TEXT')
+      .map((block) => block.content)
+      .join('\n\n');
+  }, [blocks]);
 
   return (
     <BlogEditorContainer>
