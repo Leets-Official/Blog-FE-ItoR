@@ -80,6 +80,7 @@ const Input = <T extends FieldValues>({ title, subTitle, type, placeholder, disa
             type={type}
             placeholder={placeholder}
             onChange={field.onChange}
+            value={field.value ?? ""}
             disabled={disabled}
             noneBorder={noneBorder}
             {...rest}

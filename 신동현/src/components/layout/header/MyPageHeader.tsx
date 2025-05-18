@@ -1,8 +1,8 @@
 import Button from "@/components/ui/Button/Button";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { isModifyAtom } from "@/Atoms/atoms";
+import { useEffect } from "react";
 
 const Container = styled.div`
   display: flex;
@@ -10,13 +10,16 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const MyPageHeader = () => {
+const MyPageHeader = ({ onPublish }: { onPublish: () => void }) => {
   const [isModify, setIsModify] = useAtom(isModifyAtom);
   const handleModifyClick = () => {
     setIsModify((prev) => !prev);
   }
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    setIsModify(false);
+  }, []);
+
   return (
     <Container>
       {isModify ? (
@@ -36,7 +39,7 @@ const MyPageHeader = () => {
             fontSize="14px"
             color="#000000"
             backgroundColor="#FFFFFF"
-            onClick={() => navigate(-1)}
+            onClick={onPublish}
           > 저장하기
           </Button>
         </>

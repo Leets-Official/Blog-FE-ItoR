@@ -64,7 +64,7 @@ const Header = ({ type, onPublish, isOwner }: HeaderProps) => {
           {type === "main" && <MainHeader />}
           {type === "write" && <WriteHeader onPublish={onPublish} />}
           {type === "detail" && <DetailHeader isOwner={isOwner || false} />}
-          {type === "mypage" && <MyPageHeader />}
+          {type === "mypage" && onPublish && <MyPageHeader onPublish={onPublish} />}
         </RightContainer>
       </HeaderContainer>
       {isSideBarOpen && <SideBar isOpen={isSideBarOpen} onClose={setSideBarOpen} isLogin={isLogin} />}

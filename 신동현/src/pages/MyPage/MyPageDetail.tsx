@@ -3,7 +3,7 @@ import { Kakao, ProfilePlus } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import { Outlet, useLocation } from "react-router-dom";
-import { signUpEmailSchema } from "@/schema/auth";
+import { signUpEmailSchema, signUpSocialSchema } from "@/schema/auth";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,6 +11,9 @@ import { EmailControlContext } from "@/contexts/EmailControlContext";
 import Header from "@/components/layout/header/Header";
 import { useAtomValue } from "jotai";
 import { isModifyAtom } from "@/Atoms/atoms";
+import { useEffect, useState } from "react";
+import { UserInfo } from "@/api/user/userInfo";
+import { SocialControlContext } from "@/contexts/SocialControlContext";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -110,24 +113,60 @@ const SocialBoxTitle = styled.div`
 
 const MyPageDetail = () => {
   const type = useLocation().pathname.split("/")[3];
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const isModify = useAtomValue(isModifyAtom);
   
-  const { control: controlEmail, handleSubmit: handleSubmitEmail } = useForm<z.infer<typeof signUpEmailSchema>>({
+  const { control: controlEmail, setValue: setValueEmail, handleSubmit: handleSubmitEmail } = useForm<z.infer<typeof signUpEmailSchema>>({
     resolver: zodResolver(signUpEmailSchema),
     defaultValues: {
       email: "",
-      password: "",
-      passwordCheck: "",
-      name: "",
-      birth: "",
+      password: "qweasd123!",
+      passwordCheck: "qweasd123!",
+      name: "테스트입니다",
+      birth: "2023-10-10",
       nickname: "",
       bio: "",
     },
   });
 
+  const { control: controlSocial, setValue: setValueSocial, handleSubmit: handleSubmitSocial } = useForm<z.infer<typeof signUpSocialSchema>>({
+    resolver: zodResolver(signUpSocialSchema),
+    defaultValues: {
+      email: "",
+      birth: "",
+      nickname: "",
+      bio: "2023-10-10",
+    },
+  });
+
+  useEffect(() => {
+    if (!isModify) {
+      const initUserInfo = async () => {
+        const userInfo = await UserInfo();
+        if (type === "email") {
+          setValueEmail("email", userInfo.data.email);
+          setValueEmail("nickname", userInfo.data.nickname);
+          setValueEmail("bio", localStorage.getItem("bio") ?? "");
+          setProfileImage(userInfo.data.profilePicture);
+          console.log(userInfo.data);
+        } else {
+          setValueSocial("email", userInfo.data.email);
+          setValueSocial("nickname", userInfo.data.nickname);
+          setValueSocial("bio", userInfo.data.bio);
+          setProfileImage(userInfo.data.profilePicture);
+        }
+      }
+      initUserInfo();
+    }
+  }, [isModify]);
+
+  const onSubmit = async (data: z.infer<typeof signUpEmailSchema>) => {
+    console.log(data);
+  }
+
   return (
     <Wrapper>
-      <Header type="mypage" />
+      <Header type="mypage" onPublish={handleSubmitEmail(onSubmit)}/>
       <TopContainer>
         <ProfileContainer>
           <ProfileImageContainer>
@@ -135,7 +174,7 @@ const MyPageDetail = () => {
               width="64px"
               height="64px"
               backgroundColor="#F5F5F5"
-              icon={<ProfilePlus width="64px" height="64px" />}
+              icon={profileImage ? <img src={profileImage} alt="profile" /> : <ProfilePlus width="64px" height="64px" />}
               onClick={() => { }}
               disabled={!isModify}
             />
@@ -148,7 +187,7 @@ const MyPageDetail = () => {
       </TopContainer>
       <BottomContainer>
         <InputContainer>
-          <EmailControlContext.Provider value={{ control: controlEmail }}><Outlet /></EmailControlContext.Provider>
+          {type === "email" ? <EmailControlContext.Provider value={{ control: controlEmail }}><Outlet /></EmailControlContext.Provider> : <SocialControlContext.Provider value={{ control: controlSocial }}><Outlet /></SocialControlContext.Provider>}
         </InputContainer>
       </BottomContainer>
     </Wrapper>
