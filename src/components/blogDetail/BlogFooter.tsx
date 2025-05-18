@@ -8,7 +8,7 @@ import { ButtonWrapper } from '../signup/SignupField';
 import theme from '@/styles/theme.styled';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const FooterWrapper = styled.div`
+export const FooterWrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
@@ -17,7 +17,7 @@ const FooterWrapper = styled.div`
   padding: 60px 0;
 `;
 
-const FooterContent = styled.div`
+export const FooterContent = styled.div`
   ${flexColumn}
   gap:16px;
   width: 100%;

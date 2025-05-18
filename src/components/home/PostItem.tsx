@@ -46,7 +46,7 @@ export const Text = styled.div<{
 
 export const FlexItem = styled.div<{ hasImage?: boolean }>`
   ${flexJustifyCenter};
-  gap: ${({ hasImage }) => (hasImage ? '24px' : '0')};
+  gap: ${({ hasImage }) => (hasImage ? '36px' : '0')};
 `;
 
 export const ItemContainer = styled.div`
@@ -78,7 +78,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) => {
 
   return (
     <ItemContainer onClick={handleClick}>
-      <FlexItem hasImage={!!post.image}>
+      <FlexItem hasImage={!!imageContent}>
         <TextContent>
           <Text fontWeight="medium" fontSize="md">
             {post.title}
