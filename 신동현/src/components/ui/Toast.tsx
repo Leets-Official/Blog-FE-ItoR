@@ -24,7 +24,7 @@ const slideOut = keyframes`
   }
 `;
 
-const Wrapper = styled.div<{ isVisible: boolean }>`
+const Wrapper = styled.div<{ $isVisible: boolean }>`
   position: fixed;
   top: 20px;
   left: 50%;
@@ -33,7 +33,7 @@ const Wrapper = styled.div<{ isVisible: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: ${({ isVisible }) => isVisible ? slideIn : slideOut} 0.3s ease-in-out;
+  animation: ${({ $isVisible }) => $isVisible ? slideIn : slideOut} 0.3s ease-in-out;
 `;
 
 const ToastContainer = styled.div<{ type: "success" | "error" }>`
@@ -80,7 +80,7 @@ const Toast = ({ message, type }: ToastProps) => {
   if (!isRender) return null;
 
   return (
-    <Wrapper isVisible={isVisible}>
+    <Wrapper $isVisible={isVisible}>
       <ToastContainer type={type}>
           {type === "error" && <Error width={25} height={25} fill="#FF3F3F" style={{ transform: "translateY(1px)" }} />}
           {type === "success" && <Done width={25} height={25} fill={"#15DC5E"} style={{ transform: "translateY(1px)" }} />}

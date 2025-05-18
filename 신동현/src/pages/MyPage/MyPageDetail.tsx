@@ -152,7 +152,7 @@ const MyPageDetail = () => {
         } else {
           setValueSocial("email", userInfo.data.email);
           setValueSocial("nickname", userInfo.data.nickname);
-          setValueSocial("bio", userInfo.data.bio);
+          setValueSocial("bio", localStorage.getItem("bio") ?? "");
           setProfileImage(userInfo.data.profilePicture);
         }
       }

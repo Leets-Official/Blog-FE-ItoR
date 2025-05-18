@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { EamilLogin, KakaoLogin } from "@/api/login/login";
 import Toast from "../Toast";
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 const Overlay = styled.div`
   position: fixed;
