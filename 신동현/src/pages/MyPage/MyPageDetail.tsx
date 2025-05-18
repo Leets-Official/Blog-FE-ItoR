@@ -2,7 +2,15 @@ import styled from "styled-components";
 import { Kakao, ProfilePlus } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { signUpEmailSchema } from "@/schema/auth";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EmailControlContext } from "@/contexts/EmailControlContext";
+import Header from "@/components/layout/header/Header";
+import { useAtomValue } from "jotai";
+import { isModifyAtom } from "@/Atoms/atoms";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -22,6 +30,7 @@ const TopContainer = styled.div`
   background-color: #F5F5F5;
   margin-bottom: 50px;
 `;
+
 
 const ProfileContainer = styled.div`
   width: 668px;
@@ -97,42 +106,28 @@ const SocialBoxTitle = styled.div`
   color: #909090;
 `;
 
-const EmailUI = () => {
-  return (
-    <InputContainer>
-      <Input title="메일" type="text" placeholder="이메일" value="ahksjhd@gmail.com" onChange={() => { }} />
-      <Input title="비밀번호" type="password" placeholder="비밀번호" value="12345678" onChange={() => { }} />
-      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" value="12345678" onChange={() => { }} />
-      <Input title="이름" type="text" placeholder="이름" value="" onChange={() => { }} />
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" value="" onChange={() => { }} />
-    </InputContainer>
-  )
-}
-const KaKaoUI = () => {
-  return (
-    <InputContainer>
-      <SocialBoxContainer>
-        <SocialBoxTitle>소셜로그인</SocialBoxTitle>
-        <SocialBox>
-          <SocialBoxContext>
-            <Kakao />
-            카카오 로그인
-          </SocialBoxContext>
-        </SocialBox>
-      </SocialBoxContainer>
-      <Input title="이메일" type="email" placeholder="111@naver.com" value="" disabled={true} onChange={() => { }} />
-      <Input title="이름" type="text" placeholder="신동동" value="" disabled={true} onChange={() => { }} />
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" value="" onChange={() => { }} />
-    </InputContainer>
-  )
-}
 
-const Mypage = () => {
-  const location = useLocation();
-  const type = location.search.split("=")[1];
+
+const MyPageDetail = () => {
+  const type = useLocation().pathname.split("/")[3];
+  const isModify = useAtomValue(isModifyAtom);
+  
+  const { control: controlEmail, handleSubmit: handleSubmitEmail } = useForm<z.infer<typeof signUpEmailSchema>>({
+    resolver: zodResolver(signUpEmailSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      passwordCheck: "",
+      name: "",
+      birth: "",
+      nickname: "",
+      bio: "",
+    },
+  });
 
   return (
     <Wrapper>
+      <Header type="mypage" />
       <TopContainer>
         <ProfileContainer>
           <ProfileImageContainer>
@@ -142,19 +137,22 @@ const Mypage = () => {
               backgroundColor="#F5F5F5"
               icon={<ProfilePlus width="64px" height="64px" />}
               onClick={() => { }}
+              disabled={!isModify}
             />
           </ProfileImageContainer>
           <ProfileContentContainer>
-            <Input type="text" placeholder="닉네임" value="닉네임" onChange={() => { }} subTitle="* 20글자 이내" style={{ fontSize: "24px", fontWeight: "500", color: "#000000", backgroundColor: "#F5F5F5" }} />
-            <Input type="text" placeholder="한 줄 소개" value="한 줄 소개" onChange={() => { }} style={{ fontSize: "14px", fontWeight: "300", color: "#000000", backgroundColor: "#F5F5F5" }} />
+            <Input type="text" placeholder="닉네임" control={controlEmail} name="nickname" subTitle="* 20글자 이내" style={{ fontSize: "24px", fontWeight: "500", color: "#000000", backgroundColor: "#F5F5F5" }} disabled={!isModify} />
+            <Input type="text" placeholder="한 줄 소개" control={controlEmail} name="bio" style={{ fontSize: "14px", fontWeight: "300", color: "#000000", backgroundColor: "#F5F5F5" }} disabled={!isModify} />
           </ProfileContentContainer>
         </ProfileContainer>
       </TopContainer>
       <BottomContainer>
-        {type === "email" ? <EmailUI /> : <KaKaoUI />}
+        <InputContainer>
+          <EmailControlContext.Provider value={{ control: controlEmail }}><Outlet /></EmailControlContext.Provider>
+        </InputContainer>
       </BottomContainer>
     </Wrapper>
   )
 }
 
-export default Mypage;  
+export default MyPageDetail;  

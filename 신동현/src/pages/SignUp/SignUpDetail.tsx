@@ -2,17 +2,18 @@ import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Button from "@/components/ui/Button/Button";
 import { Add_photo, Profile } from "@/assets";
-import { createContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Modal from "@/components/ui/Modal/Modal";
 import ActionButton from "@/components/ui/Button/ActionButton";
 import { signUpEmailSchema, signUpSocialSchema } from "@/schema/auth";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { EmailSignUp, KakaoSignUp } from "@/api/signUp/signUp";
 import Toast from "@/components/ui/Toast";
 import { getPresignedUrl, uploadImage } from "@/api/convertImage";
-
+import { EmailControlContext } from "@/contexts/EmailControlContext";
+import { SocialControlContext } from "@/contexts/SocialControlContext";
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -132,10 +133,6 @@ const ProfileButton = styled(Button)`
   padding: 0;
   background-color: transparent;
 `;
-
-export const EmailControlContext = createContext<{ control: Control<z.infer<typeof signUpEmailSchema>> } | null>(null);
-export const SocialControlContext = createContext<{ control: Control<z.infer<typeof signUpSocialSchema>> } | null>(null);
-
 
 const SignUpDetailForm = () => {
   const profilePicture = localStorage.getItem("profilePicture");

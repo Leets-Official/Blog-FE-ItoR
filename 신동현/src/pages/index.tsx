@@ -12,6 +12,8 @@ import UpdateForm from "./Update/UpdateForm";
 import Root from "./Root";
 import NotFound from "./Error/NotFound";
 import MyPage from "./MyPage/MyPage";
+import EmailUpdateForm from "./MyPage/EmailUpdateForm";
+import KaKaoUpdateForm from "./MyPage/KakaoUpdateForm";
 import MyPageDetail from "./MyPage/MyPageDetail";
 
-export { Home, SignUp, SignUpDetail, EmailForm, KaKaoForm, KakaoLoginLoading, Detail, Write, WriteForm, Update, UpdateForm, Root, NotFound, MyPage, MyPageDetail };
+export { Home, SignUp, SignUpDetail, EmailForm, KaKaoForm, KakaoLoginLoading, Detail, Write, WriteForm, Update, UpdateForm, Root, NotFound, MyPage, EmailUpdateForm, KaKaoUpdateForm, MyPageDetail };

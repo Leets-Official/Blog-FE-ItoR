@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Posts from "@/components/layout/post/PostList";
 import { getPostList } from "@/api/post/post";
 import styled from "styled-components";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UserInfo from "@/components/layout/common/UserInfo";
 import Header from "@/components/layout/header/Header";
 import Button from "@/components/ui/Button/Button";
@@ -39,6 +39,7 @@ const ProfileSettingButton = styled(Button)`
 `;
 
 const MyPage = () => {
+  const navigate = useNavigate();
   const [totalPostCount, setTotalPostCount] = useState(0);
   const { userNickname } = useParams();
 
@@ -73,7 +74,7 @@ const MyPage = () => {
               userName={userName as string}
               userBio={userBio as string}
             />
-            <ProfileSettingButton icon={<Settings fill="#909090" width="14px" height="14px"/>} onClick={() => { }}>내 프로필 설정</ProfileSettingButton>
+            <ProfileSettingButton icon={<Settings fill="#909090" width="14px" height="14px"/>} onClick={() => { navigate("/mypage/detail/email") }}>내 프로필 설정</ProfileSettingButton>
           </UserInfoContainer>
         </UserInfoWrapper>
       ) : null}

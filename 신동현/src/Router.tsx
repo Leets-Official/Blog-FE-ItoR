@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Root, Home, SignUp, SignUpDetail, KakaoLoginLoading, Detail, Write, WriteForm, Update, NotFound, UpdateForm, KaKaoForm, EmailForm, MyPageDetail, MyPage } from "./pages";
+import { Root, Home, SignUp, SignUpDetail, KakaoLoginLoading, Detail, Write, WriteForm, Update, NotFound, UpdateForm, KaKaoForm, EmailForm, MyPageDetail, MyPage, EmailUpdateForm } from "./pages";
+import KaKaoUpdateForm from "./pages/MyPage/KakaoUpdateForm";
 
 const Router = createBrowserRouter([
   {
@@ -55,11 +56,19 @@ const Router = createBrowserRouter([
       {
         path: "/mypage/:userNickname",
         element: <MyPage />,
+      },
+      {
+        path: "/mypage/detail",
+        element: <MyPageDetail />,
         children: [
           {
-            path: "detail",
-            element: <MyPageDetail />,
-          }, 
+            path: "email",
+            element: <EmailUpdateForm/>,
+          },
+          {
+            path: "kakao",
+            element: <KaKaoUpdateForm/>,
+          },
         ]
       },
       {
