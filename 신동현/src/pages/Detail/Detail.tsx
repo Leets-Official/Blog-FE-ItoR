@@ -10,6 +10,7 @@ import Image from "@/components/ui/Image";
 import { PostContent } from "@/assets/type/PostContent";
 import { PostComment } from "@/assets/type/PostCommnet";
 import Header from "@/components/layout/header/Header";
+import UserInfo from "@/components/layout/common/UserInfo";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -139,13 +140,11 @@ const Detail = () => {
       </Wrapper>
       <Footer>
         <FooterContainer>
-          <WriterProfileImageContainer>
-            {postContent.profileUrl ? <Image src={postContent.profileUrl} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />}
-          </WriterProfileImageContainer>
-          <WriterTextContainer>
-            <WriterNickname>{postContent.nickName}</WriterNickname>
-            {/* <WriterBio>한 줄 소개</WriterBio> */}
-          </WriterTextContainer>
+          <UserInfo
+            userProfileImage={postContent.profileUrl}
+            userName={postContent.nickName}
+            userBio={"한 줄 소개"}
+          />
         </FooterContainer>
       </Footer>
     </>

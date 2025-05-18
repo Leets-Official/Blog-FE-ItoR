@@ -1,6 +1,7 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const PostWriterInfoContainer = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -40,18 +41,20 @@ interface WriterInfoContainerProps {
   commentCount: number;
 }
 
-const WriterInfoContainer = ({ userProfileImage, userName, writeDate, commentCount }: WriterInfoContainerProps) => {
+const WriterInfo = ({ userProfileImage, userName, writeDate, commentCount }: WriterInfoContainerProps) => {
   return (
-    <PostWriterInfoContainer>
-      <UserInfoContainer>
-        <UserProfileImageContainer>
-          {userProfileImage}
-        </UserProfileImageContainer>
-        <UserName>{userName}</UserName>
-      </UserInfoContainer>
+    <Wrapper>
+      <Link to={`/mypage/${userName}`} style={{ textDecoration: "none", color: "inherit" }}>
+        <UserInfoContainer>
+          <UserProfileImageContainer>
+            {userProfileImage}
+          </UserProfileImageContainer>
+          <UserName>{userName}</UserName>
+        </UserInfoContainer>
+      </Link>
       <WriterInfoContent> · {writeDate} · 댓글({commentCount})</WriterInfoContent>
-    </PostWriterInfoContainer>
+    </Wrapper>
   );
 };
 
-export default WriterInfoContainer;
+export default WriterInfo;

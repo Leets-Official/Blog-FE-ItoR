@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import WriterInfoContainer from "@/components/layout/common/WriterInfoContainer";
 import { Profile } from "@/assets";
 import dayjs from "dayjs";
 import { PostContent } from "@/assets/type/PostContent";
 import Image from "@/components/ui/Image";
-import { Link } from "react-router-dom";
+import WriterInfo from "@/components/layout/common/WriterInfo";
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -40,14 +39,12 @@ const DetailContent = ({ postContent }: DetailContentProps) => {
   return (
     <ContentContainer>
       <ContentTitle>{postContent.title}</ContentTitle>
-      <Link to={`/mypage/${postContent.nickName}`} style={{ textDecoration: "none", color: "inherit" }}>
-        <WriterInfoContainer
-          userProfileImage={postContent.profileUrl ? <Image src={postContent.profileUrl} alt="profile" width="20px" height="20px" style={{ borderRadius: "50%" }} /> : <Profile width="20px" height="20px" />}
-          userName={postContent.nickName}
-          writeDate={dayjs(postContent.createdAt).format("MMM DD.YYYY.").toString()}
-          commentCount={postContent.commentCount}
-        />
-      </Link>
+      <WriterInfo
+        userProfileImage={postContent.profileUrl ? <Image src={postContent.profileUrl} alt="profile" width="20px" height="20px" style={{ borderRadius: "50%" }} /> : <Profile width="20px" height="20px" />}
+        userName={postContent.nickName}
+        writeDate={dayjs(postContent.createdAt).format("MMM DD.YYYY.").toString()}
+        commentCount={postContent.commentCount}
+      />
       <Hr />
       <Content>{postContent.content}</Content>
     </ContentContainer>
