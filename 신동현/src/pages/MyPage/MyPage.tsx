@@ -3,6 +3,10 @@ import Posts from "@/components/layout/post/PostList";
 import { getPostList } from "@/api/post/post";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
+import UserInfo from "@/components/layout/common/UserInfo";
+import Header from "@/components/layout/header/Header";
+import Button from "@/components/ui/Button/Button";
+import { Settings } from "@/assets";
 
 const UserInfoWrapper = styled.div`
   width: 100%;
@@ -24,6 +28,16 @@ const UserInfoContainer = styled.div`
   }  
 `;
 
+const ProfileSettingButton = styled(Button)`
+  width: 106px;
+  height: 25px;
+  color: #909090;
+  border: 1px solid #E6E6E6;
+  background-color: #F5F5F5;
+  font-size: 12px;
+  gap: 5px;
+`;
+
 const MyPage = () => {
   const [totalPostCount, setTotalPostCount] = useState(0);
   const { userNickname } = useParams();
@@ -34,7 +48,7 @@ const MyPage = () => {
     try {
       const response = await getPostList(100, 0);
       setTotalPostCount(response.data.post.length);
-      
+
     } catch (error) {
       console.error(error);
     }
@@ -44,14 +58,22 @@ const MyPage = () => {
     getTotalPage();
   }, []);
 
-  console.log(nickName, userNickname);
+  const userProfileImage = localStorage.getItem("profilePicture");
+  const userName = localStorage.getItem("nickName");
+  const userBio = localStorage.getItem("bio");
 
   return (
     <>
+      <Header type="main" />
       {nickName === userNickname ? (
         <UserInfoWrapper>
           <UserInfoContainer>
-            <h1>My Page</h1>
+            <UserInfo
+              userProfileImage={userProfileImage as string}
+              userName={userName as string}
+              userBio={userBio as string}
+            />
+            <ProfileSettingButton icon={<Settings fill="#909090" width="14px" height="14px"/>} onClick={() => { }}>내 프로필 설정</ProfileSettingButton>
           </UserInfoContainer>
         </UserInfoWrapper>
       ) : null}

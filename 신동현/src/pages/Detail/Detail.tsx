@@ -54,36 +54,6 @@ const FooterContainer = styled.div`
   }  
 `;
 
-const WriterProfileImageContainer = styled.div`
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-`;
-
-const WriterTextContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const WriterNickname = styled.p`
-  font-size: 24px;
-  font-weight: 500;
-  color: #000000;
-  margin: 0;
-`;
-
-const WriterBio = styled.p`
-  font-size: 14px;
-  font-weight: 300;
-  color: #333333;
-  margin: 0;
-`;
-
-
-
 const Detail = () => {
   const [isOwner, setIsOwner] = useState(false);
   const [postContent, setPostContent] = useState<PostContent>({

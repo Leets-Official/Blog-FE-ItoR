@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import LoginedSideBar from "./LoginedSideBar";
 import NotLoginedSideBar from "./NotLoginedSideBar";
+
 const SideBarContainer = styled.div`
   float: left;
   width: 240px;
