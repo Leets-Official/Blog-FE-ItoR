@@ -23,7 +23,7 @@ const KakaoLogin = async () => {
 
 const KakaoRedirect = async (code: string) => {
   const response = await api.get("/auth/kakao/redirect", {
-    params: { code }
+    params: { code },
   });
   return response.data;
 }

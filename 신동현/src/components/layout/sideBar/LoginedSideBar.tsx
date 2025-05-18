@@ -86,7 +86,7 @@ const LoginedSideBar = () => {
         <Bio>{bio}</Bio>
       </ProfileContainer>
       <ButtonContainer>
-        <SideBarButton onClick={() => { }} type="blue">나의 깃로그</SideBarButton>
+        <SideBarButton onClick={() => { navigate(`/mypage/${nickName}`) }} type="blue">나의 깃로그</SideBarButton>
         <SideBarButton onClick={() => { navigate("/write") }} type="blue">깃로그 쓰기</SideBarButton>
       </ButtonContainer>
       <FooterButtonContainer>

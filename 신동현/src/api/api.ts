@@ -58,6 +58,16 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
+    // 에러 응답 자세히 로깅
+    console.log('에러 상태:', error.response?.status);
+    console.log('에러 응답:', error.response);
+    console.log('에러 설정:', originalRequest);
+
+    // 401 에러 처리
+    if (error.response?.status === 401) {
+      return Promise.reject(error);
+    }
+
     if (error.response?.status === 500 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -69,7 +79,7 @@ api.interceptors.response.use(
         console.error('failed to refresh token: ', refreshError);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/';
+        // window.location.href = '/';
       }
     }
 

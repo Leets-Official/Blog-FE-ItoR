@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Root, Home, SignUp, SignUpDetail, Mypage, KakaoLoginLoading, Detail, Write, WriteForm, Update, NotFound, UpdateForm, KaKaoForm, EmailForm } from "./pages";
+import { Root, Home, SignUp, SignUpDetail, KakaoLoginLoading, Detail, Write, WriteForm, Update, NotFound, UpdateForm, KaKaoForm, EmailForm, MyPageDetail, MyPage } from "./pages";
 
 const Router = createBrowserRouter([
   {
@@ -53,8 +53,14 @@ const Router = createBrowserRouter([
         ]
       },
       {
-        path: "/mypage",
-        element: <Mypage />,
+        path: "/mypage/:userNickname",
+        element: <MyPage />,
+        children: [
+          {
+            path: "detail",
+            element: <MyPageDetail />,
+          }, 
+        ]
       },
       {
         path: "/oauth/kakao/success",

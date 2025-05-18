@@ -15,7 +15,7 @@ const KakaoLoginLoading = () => {
 
       try {
         const response = await KakaoRedirect(code);
-        console.log(response);
+        console.log(response.data);
         if (response.code === 401) {
           localStorage.setItem('name', response.data.nickname);
           localStorage.setItem('profilePicture', response.data.picture);
