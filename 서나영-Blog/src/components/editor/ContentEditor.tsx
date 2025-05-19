@@ -47,6 +47,7 @@ const ContentEditor = ({
   const [blocks, setBlocks] = useState<Block[]>([
     { type: 'TEXT', content: '' }, // 기본 텍스트 블록 하나
   ]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -69,6 +70,28 @@ const ContentEditor = ({
       onImageInsertHandled?.();
     }
   }, [imageToInsert]);
+
+  const handleImageSelect = (index: number) => {
+    setSelectedImageIndex((prev) => (prev === index ? null : index));
+  };
+
+  const handleImageDelete = (index: number) => {
+    setBlocks((prev) => {
+      const newBlocks = [...prev];
+
+      // 현재 이미지 삭제
+      newBlocks.splice(index, 1);
+
+      // 뒤에 따라오는 TEXT 블록이 존재하고 빈 텍스트라면 함께 삭제
+      if (newBlocks[index] && newBlocks[index].type === 'TEXT' && newBlocks[index].content === '') {
+        newBlocks.splice(index, 1);
+      }
+
+      return newBlocks;
+    });
+
+    setSelectedImageIndex(null);
+  };
 
   // blocks 변경 시 plain text 추출 및 전달
   useEffect(() => {
@@ -137,7 +160,14 @@ const ContentEditor = ({
           />
         ) : (
           <div key={index} style={{ margin: '24px 0' }}>
-            <Image src={block.content} alt={`uploaded-${index}`} />
+            <Image
+              src={block.content}
+              alt={`uploaded-${index}`}
+              fromContentEditor
+              isSelected={selectedImageIndex === index}
+              onSelect={() => handleImageSelect(index)}
+              onDelete={() => handleImageDelete(index)}
+            />
           </div>
         ),
       )}

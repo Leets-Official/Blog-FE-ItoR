@@ -7,7 +7,7 @@ import CancelandSave from '@/components/layout/header/CancelandSave';
 import Button from '@/components/ui/Button';
 import Sidebar from '@/components/layout/sidebar/Sidebar';
 import styled from 'styled-components';
-import { BlogPostDetail } from '@/types/blogPost';
+import { BlogPostDetail, Block } from '@/types/blogPost';
 import { UpdateUserInfoRequest } from '@/types/user';
 
 type HeaderType = 'DelandCreate' | 'ChatandMore' | 'CreateLog' | 'Edit' | 'CancelandSave' | 'None';
@@ -18,7 +18,7 @@ interface HeaderProps {
   navigateEditor?: ReturnType<typeof useNavigate>;
   title?: string;
   content?: string;
-  blocks?: { content: string; type: 'TEXT' | 'IMAGE' }[];
+  blocks?: Block[];
   commentRef?: React.RefObject<HTMLDivElement | null>;
   postId?: string;
   post?: BlogPostDetail;
