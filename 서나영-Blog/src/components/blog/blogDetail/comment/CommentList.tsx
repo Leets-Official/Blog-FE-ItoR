@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import Comment from '@/components/blog/blogDetail/comment/Comment';
 import { BlogPostDetail } from '@/types/blogPost';
 import CommentInput from '@/components/blog/blogDetail/comment/CommentInput';
@@ -53,9 +54,14 @@ const NoCommentText = styled.span`
 
 interface CommentListProps {
   post: BlogPostDetail;
+  postId: string;
+  onCommentSubmit: () => void;
 }
 
-const CommentList: React.FC<CommentListProps> = ({ post }) => {
+const CommentList: React.FC<CommentListProps> = ({ post, onCommentSubmit }) => {
+  const [editCommentId, setEditCommentId] = useState<string | null>(null);
+  const isLogin = !!localStorage.getItem('accessToken');
+
   const { comments } = post;
 
   return (
@@ -70,9 +76,19 @@ const CommentList: React.FC<CommentListProps> = ({ post }) => {
           작성된 댓글이 없습니다. {'\n'} 응원의 첫 번째 댓글을 달아주세요.
         </NoCommentText>
       ) : (
-        comments.map((comment) => <Comment key={comment.commentId} comment={comment} post={post} />)
+        comments.map((comment) => (
+          <Comment
+            key={comment.commentId}
+            comment={comment}
+            post={post}
+            onDeleteSuccess={onCommentSubmit}
+            isEditing={editCommentId === comment.commentId}
+            onEnterEdit={(id) => setEditCommentId(id)}
+            onExitEdit={() => setEditCommentId(null)}
+          />
+        ))
       )}
-      <CommentInput post={post} isLogin={true} />
+      <CommentInput post={post} isLogin={isLogin} onSuccess={onCommentSubmit} />
     </CommentListContainer>
   );
 };

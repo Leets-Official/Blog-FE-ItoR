@@ -31,10 +31,11 @@ export interface BlogPostDetail {
 }
 
 export interface BlogComment {
-  commentId: number;
+  commentId: string;
   content: string;
   nickName: string;
   isOwner: boolean;
+  createdAt: string;
 }
 
 export interface Block {

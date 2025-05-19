@@ -8,9 +8,11 @@ import InfoFooter from '@/components/blog/blogDetail/InfoFooter';
 import { getPostDetail } from '@/api/blog/postDetailAPI';
 import { BlogPostDetail } from '@/types/blogPost';
 import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 const BlogDetail = () => {
   const { postId } = useParams<{ postId: string }>();
+  const queryClient = useQueryClient();
   const commentRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -20,7 +22,7 @@ const BlogDetail = () => {
   } = useQuery<BlogPostDetail>({
     queryKey: ['postDetail', postId],
     queryFn: () => getPostDetail(postId!),
-    enabled: !!postId, // postId가 있을 때만 실행
+    enabled: !!postId,
   });
 
   if (isLoading) {
@@ -37,7 +39,13 @@ const BlogDetail = () => {
       <BlogTitle post={post} />
       <BlogContent contents={post.contents} />
       <div ref={commentRef}>
-        <CommentList post={post} />
+        <CommentList
+          post={post}
+          postId={postId!}
+          onCommentSubmit={() => {
+            queryClient.invalidateQueries({ queryKey: ['postDetail', postId!] });
+          }}
+        />
       </div>
       <InfoFooter post={post} />
     </div>
