@@ -59,6 +59,7 @@ interface ProfileUploadProps {
   hideButton?: boolean;
   size?: number;
   showLabel?: boolean;
+  disabled?: boolean;
 }
 
 const ProfileUpload = ({
@@ -67,6 +68,7 @@ const ProfileUpload = ({
   hideButton,
   size = 90,
   showLabel = true,
+  disabled = false,
 }: ProfileUploadProps) => {
   const [image, setImage] = useState<string | null>(initialImage || null);
   const { showToast } = useToast();
@@ -113,6 +115,7 @@ const ProfileUpload = ({
         accept='image/*'
         style={{ display: 'none' }}
         onChange={handleImageChange}
+        disabled={disabled}
       />
       {!hideButton && (
         <AddPhotoButton onClick={handleButtonClick}>

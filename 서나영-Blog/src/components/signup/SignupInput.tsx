@@ -12,7 +12,7 @@ interface SignupInputProps {
   disabled?: boolean;
   isMyPage?: boolean;
   editable?: boolean;
-  isAlwaysDisabled?: boolean;
+  defaultValue?: string;
 }
 
 const InputContainer = styled.div`
@@ -48,13 +48,9 @@ const SignupInput = ({
   disabled,
   isMyPage,
   editable,
-  isAlwaysDisabled,
+  defaultValue,
 }: SignupInputProps) => {
   let backgroundColor = '#FFF';
-
-  if (isAlwaysDisabled) {
-    backgroundColor = '#E6E6E6';
-  }
 
   return (
     <InputContainer>
@@ -65,13 +61,10 @@ const SignupInput = ({
         name={name}
         type={type}
         placeholder={placeholder}
+        defaultValue={defaultValue}
         width='100%'
         disabled={disabled}
-        style={
-          (!disabled && editable) || isMyPage || isAlwaysDisabled
-            ? { background: backgroundColor }
-            : undefined
-        }
+        style={(!disabled && editable) || isMyPage ? { background: backgroundColor } : undefined}
       />
       {error && <ErrorMessage>{error}</ErrorMessage>}
     </InputContainer>

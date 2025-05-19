@@ -121,9 +121,6 @@ const MyPageForm = ({ editable = false, userInfo, setEditData }: MyPageFormProps
         </>
       )}
       {inputFields.map((field) => {
-        const isEmailField = field.name === 'email';
-        const isAlwaysDisabled = isEmailField && !isKakaoLogin;
-
         return (
           <SignupInput
             key={field.name}
@@ -140,7 +137,13 @@ const MyPageForm = ({ editable = false, userInfo, setEditData }: MyPageFormProps
             disabled={!editable}
             isMyPage
             editable={editable}
-            isAlwaysDisabled={isAlwaysDisabled}
+            defaultValue={
+              field.name === 'email'
+                ? userInfo.email
+                : field.name === 'nickname'
+                  ? userInfo.nickname
+                  : ''
+            }
             onChange={(e) => {
               setEditData?.((prev) => ({
                 ...prev,

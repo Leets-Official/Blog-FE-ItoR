@@ -108,6 +108,10 @@ const MyPageTitle: React.FC<MyPageTitleProps> = ({
   } = useForm<ProfileSchema>({
     resolver: zodResolver(profileSchema),
     mode: 'onBlur',
+    defaultValues: {
+      nickName: nickname,
+      introduction: introduction,
+    },
   });
 
   const handleMyPageSettingClick = () => {
@@ -140,6 +144,7 @@ const MyPageTitle: React.FC<MyPageTitleProps> = ({
               onImageChange={(url) => setEditData?.((prev) => ({ ...prev, profilePicture: url }))}
               size={60}
               showLabel={false}
+              disabled={!editable}
               hideButton
             />
             <InputWrapper>
