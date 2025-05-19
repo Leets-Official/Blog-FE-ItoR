@@ -7,6 +7,7 @@ import { GITLOG, Kakao, Divider, Clear } from '@/assets';
 import Button from '@/components/ui/Button';
 import TextInput from '@/components/ui/TextInput';
 import { emailLogin } from '@/api/auth/emailLoginAPI';
+import { useToast } from '../ui/Toast';
 
 type LoginModalProps = {
   isOpen: boolean;
@@ -140,12 +141,14 @@ const SignUpButton = styled.div`
 
 const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const BASE_URL = import.meta.env.VITE_API_URL;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
   });
@@ -156,8 +159,21 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
       console.log(`${nickname}님 환영합니다!`);
       onLoginSuccess?.();
       onClose();
-    } catch (error) {
-      console.log('로그인 실패');
+      showToast('로그인에 성공했습니다.', 'positive');
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        setError('password', {
+          type: 'manual',
+          message: '* 비밀번호가 일치하지 않습니다.',
+        });
+      } else if (error.response?.status === 404) {
+        setError('email', {
+          type: 'manual',
+          message: '* 해당 이메일을 가진 계정이 존재하지 않습니다.',
+        });
+      } else {
+        console.error('로그인 중 오류 발생', error);
+      }
     }
   };
 
@@ -176,7 +192,7 @@ const LoginModal = ({ isOpen, onClose, onLoginSuccess }: LoginModalProps) => {
       const kakaoLink = `${BASE_URL}/auth/kakao`;
       window.location.href = kakaoLink;
     } catch (err) {
-      alert('카카오 로그인 URL을 불러오지 못했습니다.');
+      showToast('카카오 로그인 URL을 불러오지 못했습니다.', 'negative');
     }
   };
 
