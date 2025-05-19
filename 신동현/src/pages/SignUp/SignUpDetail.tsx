@@ -206,6 +206,10 @@ const SignUpDetailForm = () => {
         await uploadImage(profileImageFile, presignedUrl.data);
 
         presignedImage = presignedUrl.data.split("?")[0];
+
+        console.log("presignedUrl:", presignedUrl.data);
+        console.log("profileImageFile:", profileImageFile);
+        console.log("Content-Type:", profileImageFile?.type);        
       } catch (error) {
         setToast({ message: "이미지 업로드에 실패했습니다.", type: "error" });
         return;

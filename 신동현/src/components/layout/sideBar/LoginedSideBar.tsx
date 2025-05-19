@@ -81,7 +81,7 @@ const LoginedSideBar = () => {
   return (
     <Container>
       <ProfileContainer>
-        <Button onClick={() => { navigate("/mypage") }} icon={profilePicture ? <Image src={profilePicture} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
+        <Button onClick={() => { navigate(`/mypage/${nickName}`) }} icon={profilePicture ? <Image src={profilePicture} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
         <Nickname>{nickName}</Nickname>
         <Bio>{bio}</Bio>
       </ProfileContainer>
