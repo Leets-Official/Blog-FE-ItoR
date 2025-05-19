@@ -41,9 +41,23 @@ const CancelandSave = ({ editData }: CancelandSaveProps) => {
     try {
       if (!editData) return;
 
-      const { nickname, profilePicture, password, ...rest } = editData;
+      const { nickname, profilePicture, password, confirmPassword, ...rest } = editData;
       const localUpdates: Record<string, string> = {};
       const hasOtherData = Object.values(rest).some((v) => v !== '');
+
+      if (password && confirmPassword && !hasOtherData && !nickname && !profilePicture) {
+        await updatePassword(password);
+      }
+
+      if (!hasOtherData && nickname && !profilePicture && !password) {
+        await updateNickname(nickname);
+        localUpdates.nickname = nickname;
+      }
+
+      if (!hasOtherData && !nickname && profilePicture && !password) {
+        await updateProfilePicture(profilePicture);
+        localUpdates.profilePicture = profilePicture;
+      }
 
       if (hasOtherData) {
         const userInfoUpdateData: UpdateUserInfoRequest = {
@@ -55,21 +69,6 @@ const CancelandSave = ({ editData }: CancelandSaveProps) => {
         if (nickname) localUpdates.nickname = nickname;
         if (profilePicture) localUpdates.profilePicture = profilePicture;
         if (editData.introduction) localUpdates.introduction = editData.introduction;
-      } else if (nickname) {
-        // 닉네임만 수정된 경우
-        await updateNickname(nickname);
-        localUpdates.nickname = nickname;
-      }
-
-      // 프로필 이미지 단독 수정일 경우
-      if (!hasOtherData && !nickname && profilePicture) {
-        await updateProfilePicture(profilePicture);
-        localUpdates.profilePicture = profilePicture;
-      }
-
-      // 비밀번호는 항상 별도로 처리
-      if (password) {
-        await updatePassword(password);
       }
 
       // 저장된 항목 localStorage에 반영

@@ -75,27 +75,7 @@ const MyPageForm = ({ editable = false, userInfo, setEditData }: MyPageFormProps
   } = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
     mode: 'onBlur',
-    defaultValues: {
-      email: userInfo.email,
-      password: '',
-      confirmPassword: '',
-      name: '',
-      birthDate: '',
-    },
   });
-
-  // 유저 정보가 변경되면 폼 초기화
-  useEffect(() => {
-    if (userInfo) {
-      reset({
-        email: userInfo.email,
-        password: '',
-        confirmPassword: '',
-        name: '',
-        birthDate: '',
-      });
-    }
-  }, [userInfo, reset]);
 
   // 입력값 변화 감지해서 editData 업데이트
   useEffect(() => {
@@ -121,13 +101,15 @@ const MyPageForm = ({ editable = false, userInfo, setEditData }: MyPageFormProps
         </>
       )}
       {inputFields.map((field) => {
+        const placeholder = field.name === 'email' ? userInfo.email : field.placeholder;
+
         return (
           <SignupInput
             key={field.name}
             name={field.name}
             label={field.label}
             type={field.type}
-            placeholder={field.placeholder}
+            placeholder={placeholder}
             error={
               !field.disabled && editable
                 ? errors[field.name as keyof SignupSchema]?.message
@@ -137,13 +119,6 @@ const MyPageForm = ({ editable = false, userInfo, setEditData }: MyPageFormProps
             disabled={!editable}
             isMyPage
             editable={editable}
-            defaultValue={
-              field.name === 'email'
-                ? userInfo.email
-                : field.name === 'nickname'
-                  ? userInfo.nickname
-                  : ''
-            }
             onChange={(e) => {
               setEditData?.((prev) => ({
                 ...prev,

@@ -108,10 +108,6 @@ const MyPageTitle: React.FC<MyPageTitleProps> = ({
   } = useForm<ProfileSchema>({
     resolver: zodResolver(profileSchema),
     mode: 'onBlur',
-    defaultValues: {
-      nickName: nickname,
-      introduction: introduction,
-    },
   });
 
   const handleMyPageSettingClick = () => {
