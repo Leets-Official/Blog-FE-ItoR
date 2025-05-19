@@ -7,7 +7,7 @@ import { getPostList, getPostListWithToken } from '@/api/blog/postAPI';
 import { BlogPostListResponse } from '@/types/blogPost';
 import { useQuery } from '@tanstack/react-query';
 
-const pageSize = 5;
+const pageSize = 10;
 
 const HomeContainer = styled.div`
   padding-top: 32px;
