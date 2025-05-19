@@ -77,7 +77,7 @@ const MyPage = () => {
               userName={userName as string}
               userBio={userBio as string}
             />
-            <ProfileSettingButton icon={<Settings fill="#909090" width="14px" height="14px"/>} onClick={() => {isKakaoLogin ? navigate("/mypage/detail/kakao") : navigate("/mypage/detail/email") }}>내 프로필 설정</ProfileSettingButton>
+            <ProfileSettingButton icon={<Settings fill="#909090" width="14px" height="14px"/>} onClick={() => {isKakaoLogin === "true" ? navigate("/mypage/detail/kakao") : navigate("/mypage/detail/email") }}>내 프로필 설정</ProfileSettingButton>
           </UserInfoContainer>
         </UserInfoWrapper>
       ) : null}
