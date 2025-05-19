@@ -67,7 +67,7 @@ const KaKaoUpdateForm = () => {
         </SocialBox>
       </SocialBoxContainer>
       <Input title="이메일" type="email" placeholder="111@naver.com" disabled={true} control={control} name="email" />
-      <Input title="이름" type="text" placeholder="신동동" disabled={true} control={control} name="nickname" />
+      <Input title="이름" type="text" placeholder="신동동" disabled={true} control={control} name="birth" />
       <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" disabled={true} control={control} name="birth" />
     </InputContainer>
   )

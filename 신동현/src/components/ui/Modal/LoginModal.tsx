@@ -170,7 +170,7 @@ const Login = ({ open, onClose }: LoginProps) => {
     localStorage.setItem("nickName", response.data.nickname);
     localStorage.setItem("profilePicture", response.data.profilePicture);
     localStorage.setItem("bio", response.data.introduction);
-    
+    localStorage.setItem("isKakaoLogin", "false");
     setToast({ message: "로그인에 성공했습니다.", type: "success" });
     setTimeout(() => {
       onClose();

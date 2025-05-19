@@ -231,14 +231,6 @@ const MyPageDetail = () => {
     }
   };
 
-  const handleAnyButton = () => {
-    if (type === "email") {
-      handleSubmitEmail(onSubmit)();
-    } else {
-      handleSubmitSocial(onSubmit)();
-    }
-  };
-
   const showToast = (message: string, type: "success" | "error") => {
     setToast({ id: Date.now(), message, type });
     setTimeout(() => setToast(null), 3000);
@@ -247,7 +239,7 @@ const MyPageDetail = () => {
   return (
     <Wrapper>
       {toast && <Toast key={toast.id} message={toast.message} type={toast.type} />}
-      <Header type="mypage" onPublish={handleAnyButton} />
+      <Header type="mypage" onPublish={type === "email" ? handleSubmitEmail(onSubmit) : handleSubmitSocial(onSubmit)} />
       <TopContainer>
         <ProfileContainer>
           <ProfileImageContainer>
@@ -262,8 +254,47 @@ const MyPageDetail = () => {
             />
           </ProfileImageContainer>
           <ProfileContentContainer>
-            <Input type="text" placeholder="닉네임" control={controlEmail} name="nickname" subTitle="* 20글자 이내" style={{ fontSize: "24px", fontWeight: "500", color: "#000000", backgroundColor: "#F5F5F5" }} disabled={!isModify} />
-            <Input type="text" placeholder="한 줄 소개" control={controlEmail} name="bio" style={{ fontSize: "14px", fontWeight: "300", color: "#000000", backgroundColor: "#F5F5F5" }} disabled={true} />
+            {type === "email" ? (
+              <>
+                <Input
+                  type="text"
+                  placeholder="닉네임"
+                  control={controlEmail}
+                  name="nickname"
+                  subTitle="* 20글자 이내"
+                  style={{ fontSize: "24px", fontWeight: "500", color: "#000000", backgroundColor: "#F5F5F5" }}
+                  disabled={!isModify}
+                />
+                <Input
+                  type="text"
+                  placeholder="한 줄 소개"
+                  control={controlEmail}
+                  name="bio"
+                  style={{ fontSize: "14px", fontWeight: "300", color: "#000000", backgroundColor: "#F5F5F5" }}
+                  disabled={true}
+                />
+              </>
+            ) : (
+              <>
+                <Input
+                  type="text"
+                  placeholder="닉네임"
+                  control={controlSocial}
+                  name="nickname"
+                  subTitle="* 20글자 이내"
+                  style={{ fontSize: "24px", fontWeight: "500", color: "#000000", backgroundColor: "#F5F5F5" }}
+                  disabled={!isModify}
+                />
+                <Input
+                  type="text"
+                  placeholder="한 줄 소개"
+                  control={controlSocial}
+                  name="bio"
+                  style={{ fontSize: "14px", fontWeight: "300", color: "#000000", backgroundColor: "#F5F5F5" }}
+                  disabled={true}
+                />
+              </>
+            )}
           </ProfileContentContainer>
         </ProfileContainer>
       </TopContainer>

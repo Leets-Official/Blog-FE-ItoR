@@ -42,6 +42,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const [totalPostCount, setTotalPostCount] = useState(0);
   const { userNickname } = useParams();
+  const isKakaoLogin = localStorage.getItem("isKakaoLogin");
 
   const nickName = localStorage.getItem("nickName");
 
@@ -63,6 +64,8 @@ const MyPage = () => {
   const userName = localStorage.getItem("nickName");
   const userBio = localStorage.getItem("bio");
 
+  console.log(isKakaoLogin);
+
   return (
     <>
       <Header type="main" />
@@ -74,7 +77,7 @@ const MyPage = () => {
               userName={userName as string}
               userBio={userBio as string}
             />
-            <ProfileSettingButton icon={<Settings fill="#909090" width="14px" height="14px"/>} onClick={() => { navigate("/mypage/detail/email") }}>내 프로필 설정</ProfileSettingButton>
+            <ProfileSettingButton icon={<Settings fill="#909090" width="14px" height="14px"/>} onClick={() => {isKakaoLogin ? navigate("/mypage/detail/kakao") : navigate("/mypage/detail/email") }}>내 프로필 설정</ProfileSettingButton>
           </UserInfoContainer>
         </UserInfoWrapper>
       ) : null}

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { KakaoRedirect } from "@/api/login/login";
 import { useNavigate } from "react-router-dom";
+
 const KakaoLoginLoading = () => {
   const navigate = useNavigate();
 
@@ -28,6 +29,7 @@ const KakaoLoginLoading = () => {
           localStorage.setItem('nickName', response.data.nickname);
           localStorage.setItem('profilePicture', response.data.profilePicture);
           localStorage.setItem('bio', response.data.introduction);
+          localStorage.setItem('isKakaoLogin', "true");
           navigate("/", { replace: true });
         } else {
           console.log("카카오 로그인 실패 : ", response.message);
