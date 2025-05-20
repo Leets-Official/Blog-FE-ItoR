@@ -4,6 +4,7 @@ import Image from '@/components/common/Image/Image';
 import Input from '@/components/common/Input/Input';
 import { Text } from '@/components/home/PostItem';
 import styled from 'styled-components';
+import { useUser } from '@/context/UserContext';
 
 interface ProfileSectionProps {
   isEditing: boolean;
@@ -49,13 +50,15 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
   onChange,
   onImageChange,
 }) => {
+  const { user } = useUser();
+
   return (
     <FooterWrapper>
       <FooterContent>
         <ProfileImageContainer>
-          {previewUrl ? (
+          {previewUrl || user?.profilePicture ? (
             <Image
-              src={previewUrl}
+              src={previewUrl || user?.profilePicture || ''}
               alt="profile-image"
               width="80px"
               height="80px"
@@ -96,7 +99,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({
         </div>
         <Input
           type="text"
-          value={introduction}
+          value={introduction || user?.introduction}
           onChange={onChange('introduction')}
           readOnly={!isEditing}
           readOnlyBgColor="#F5F5F5"

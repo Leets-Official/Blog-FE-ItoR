@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { getMyInfo, patchMyInfo } from '@/api/my/my.api';
 import { useEffect, useState } from 'react';
 import { useImageUpload } from '@/hooks/useImageUpload';
+import { useUser } from '@/context/UserContext';
 
 const InputWrapper = styled.div`
   ${flexColumn}
@@ -17,13 +18,21 @@ const InputWrapper = styled.div`
 `;
 
 const MyPageSetting = () => {
+  const { user, setUser } = useUser();
+
   const [editMode, setEditMode] = useState(false);
-  const [email, setEmail] = useState('');
   const [form, setForm] = useState({
+    email: '',
     nickname: '',
     introduction: '',
+    birthDate: '',
   });
-  const [original, setOriginal] = useState({ nickname: '', introduction: '' });
+  const [original, setOriginal] = useState({
+    email: '',
+    nickname: '',
+    introduction: '',
+    birthDate: '',
+  });
 
   const { previewUrl, uploadedUrl, handleImageChange, reset: resetImageUpload } = useImageUpload();
 
@@ -31,13 +40,18 @@ const MyPageSetting = () => {
     const fetchMyInfo = async () => {
       try {
         const data = await getMyInfo();
-        setForm((prev) => ({
-          ...prev,
+        setForm({
+          email: data.email,
           nickname: data.nickname,
           introduction: data.introduction,
-        }));
-        setOriginal({ nickname: data.nickname, introduction: data.introduction });
-        setEmail(data.email);
+          birthDate: data.birthDate,
+        });
+        setOriginal({
+          email: data.email,
+          nickname: data.nickname,
+          introduction: data.introduction,
+          birthDate: data.birthDate,
+        });
       } catch (error) {
         console.error('내 정보를 가져오는 데 실패했습니다.', error);
       }
@@ -46,7 +60,7 @@ const MyPageSetting = () => {
   }, []);
 
   const onChange =
-    (field: 'nickname' | 'introduction') =>
+    (field: 'email' | 'nickname' | 'introduction' | 'birthDate') =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
     };
@@ -61,13 +75,26 @@ const MyPageSetting = () => {
   // 저장하기 ( 내 정보 수정 api 요청 )
   const handleSave = async () => {
     await patchMyInfo({
+      email: form.email,
+      password: 'dummy123!', // 임시값
       nickname: form.nickname,
       introduction: form.introduction,
-      profileImageUrl: uploadedUrl ?? undefined,
+      profileImageUrl: uploadedUrl ?? user?.profilePicture,
+      birthDate: '2002-01-01', // 임시값
+      name: '홍길동', // 임시값
     });
+    console.log('내 정보 : ', form);
+    console.log('업로드된 이미지 URL : ', uploadedUrl);
+
     setOriginal({ ...form });
+    resetImageUpload();
     setEditMode(false);
-    setEditMode(false);
+    setUser({
+      ...user,
+      nickname: form.nickname,
+      introduction: form.introduction,
+      profilePicture: uploadedUrl ?? user?.profilePicture ?? '',
+    });
   };
 
   return (
@@ -94,8 +121,9 @@ const MyPageSetting = () => {
             <Input
               key="email"
               label="메일"
-              value={email}
-              readOnly
+              value={form.email}
+              onChange={onChange(field.name as keyof typeof form)}
+              readOnly={!editMode}
               readOnlyBgColor="#fff"
               readOnlyTextColor="#c8c8c8"
               readOnlyBorderColor="#c8c8c8"
