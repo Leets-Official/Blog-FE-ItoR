@@ -1,39 +1,91 @@
-import { useUser } from '@/context/UserContext';
 import { FooterContent, FooterWrapper } from '@/components/blogDetail/BlogFooter';
-import { DefaultProfileSvg } from '@/assets';
+import { DefaultProfileSvg, PlusSvg } from '@/assets';
 import Image from '@/components/common/Image/Image';
-import Input from '../common/Input/Input';
-import { Text } from '../home/PostItem';
-import { useImageUpload } from '@/hooks/useImageUpload';
+import Input from '@/components/common/Input/Input';
+import { Text } from '@/components/home/PostItem';
+import styled from 'styled-components';
 
 interface ProfileSectionProps {
   isEditing: boolean;
+  nickname: string;
+  introduction: string;
+  previewUrl: string | null;
+  onChange: (
+    field: 'nickname' | 'introduction',
+  ) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ProfileSection: React.FC = ({ isEditing }) => {
-  const { user } = useUser();
-  const { previewUrl, handleImageChange } = useImageUpload();
+const ProfileImageContainer = styled.div`
+  position: relative;
+  width: 80px;
+  height: 80px;
+`;
 
+const PlusButtonWrapper = styled.label`
+  position: absolute;
+  bottom: -10px;
+  right: -5px;
+  cursor: pointer;
+`;
+
+const PlusButton = styled.div`
+  width: 36px;
+  height: 36px;
+  background-color: ${({ theme }) => theme.COLORS.gray[20]};
+  border: 3px solid white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const ProfileSection: React.FC<ProfileSectionProps> = ({
+  isEditing,
+  nickname,
+  introduction,
+  previewUrl,
+  onChange,
+  onImageChange,
+}) => {
   return (
     <FooterWrapper>
       <FooterContent>
-        {user?.profilePicture ? (
-          <Image
-            src={user.profilePicture}
-            alt="profile-image"
-            width="80px"
-            height="80px"
-            borderRadius="50%"
-            objectFit="cover"
-          />
-        ) : (
-          <DefaultProfileSvg width="80px" height="80px" />
-        )}
+        <ProfileImageContainer>
+          {previewUrl ? (
+            <Image
+              src={previewUrl}
+              alt="profile-image"
+              width="80px"
+              height="80px"
+              borderRadius="50%"
+              objectFit="cover"
+            />
+          ) : (
+            <DefaultProfileSvg width="80px" height="80px" />
+          )}
+          {isEditing && (
+            <PlusButtonWrapper>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={onImageChange}
+                style={{ display: 'none' }}
+                id="profile-upload"
+              />
+              <PlusButton htmlFor="profile-upload" as="label">
+                <PlusSvg />
+              </PlusButton>
+            </PlusButtonWrapper>
+          )}
+        </ProfileImageContainer>
         <div style={{ display: 'flex', gap: '6px', flexDirection: 'column' }}>
           <Input
             type="text"
-            value={user?.nickname}
-            readOnly
+            value={nickname}
+            onChange={onChange('nickname')}
+            readOnly={!isEditing}
             readOnlyBgColor="#F5F5F5"
             fontSize="xl"
             readOnlyBorderColor="#e6e6e6"
@@ -44,8 +96,9 @@ const ProfileSection: React.FC = ({ isEditing }) => {
         </div>
         <Input
           type="text"
-          value={user?.introduction}
-          readOnly
+          value={introduction}
+          onChange={onChange('introduction')}
+          readOnly={!isEditing}
           readOnlyBgColor="#F5F5F5"
           readOnlyBorderColor="#e6e6e6"
         />

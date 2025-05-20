@@ -3,8 +3,9 @@ import ProfileSection from '@/components/my/ProfileSection';
 import { settingFields } from '@/constants';
 import { flexColumn } from '@/styles/common.styled';
 import styled from 'styled-components';
-import { getMyInfo } from '@/api/my/my.api';
+import { getMyInfo, patchMyInfo } from '@/api/my/my.api';
 import { useEffect, useState } from 'react';
+import { useImageUpload } from '@/hooks/useImageUpload';
 
 const InputWrapper = styled.div`
   ${flexColumn}
@@ -16,12 +17,26 @@ const InputWrapper = styled.div`
 `;
 
 const MyPageSetting = () => {
+  const [editMode, setEditMode] = useState(false);
   const [email, setEmail] = useState('');
+  const [form, setForm] = useState({
+    nickname: '',
+    introduction: '',
+  });
+  const [original, setOriginal] = useState({ nickname: '', introduction: '' });
+
+  const { previewUrl, uploadedUrl, handleImageChange, reset: resetImageUpload } = useImageUpload();
 
   useEffect(() => {
     const fetchMyInfo = async () => {
       try {
         const data = await getMyInfo();
+        setForm((prev) => ({
+          ...prev,
+          nickname: data.nickname,
+          introduction: data.introduction,
+        }));
+        setOriginal({ nickname: data.nickname, introduction: data.introduction });
         setEmail(data.email);
       } catch (error) {
         console.error('내 정보를 가져오는 데 실패했습니다.', error);
@@ -30,11 +45,49 @@ const MyPageSetting = () => {
     fetchMyInfo();
   }, []);
 
-  const handleEdit = () => {};
+  const onChange =
+    (field: 'nickname' | 'introduction') =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setForm((prev) => ({ ...prev, [field]: e.target.value }));
+    };
+
+  // 취소하기 ( 원래 정보로 되돌림 )
+  const handleCancel = () => {
+    setForm(original);
+    resetImageUpload();
+    setEditMode(false);
+  };
+
+  // 저장하기 ( 내 정보 수정 api 요청 )
+  const handleSave = async () => {
+    await patchMyInfo({
+      nickname: form.nickname,
+      introduction: form.introduction,
+      profileImageUrl: uploadedUrl ?? undefined,
+    });
+    setOriginal({ ...form });
+    setEditMode(false);
+    setEditMode(false);
+  };
+
   return (
     <div>
-      <Header variant="action" confirmLabel="수정하기" onClickConfirm={handleEdit} />
-      <ProfileSection />
+      <Header
+        variant="action"
+        confirmLabel={editMode ? '저장하기' : '수정하기'}
+        negativeLabel={editMode ? '취소하기' : undefined}
+        onClickConfirm={editMode ? handleSave : () => setEditMode(true)}
+        onClickNegative={editMode ? handleCancel : undefined}
+      />
+
+      <ProfileSection
+        isEditing={editMode}
+        nickname={form.nickname}
+        introduction={form.introduction}
+        previewUrl={previewUrl}
+        onChange={onChange}
+        onImageChange={handleImageChange}
+      />
       <InputWrapper>
         {settingFields.map((field) =>
           field.name === 'email' ? (

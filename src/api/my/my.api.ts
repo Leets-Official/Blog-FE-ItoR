@@ -8,4 +8,10 @@ const getMyInfo = async () => {
   return res.data.data;
 };
 
-export { getMyInfo };
+// PATCH
+const patchMyInfo = async (data: any) => {
+  const res = await api.patch(`${PATH}`, data);
+  return res.data.data;
+};
+
+export { getMyInfo, patchMyInfo };
