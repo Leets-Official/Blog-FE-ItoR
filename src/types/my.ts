@@ -1,5 +1,8 @@
 export interface MyFormData {
+  email: string;
   nickname: string;
   introduction: string;
-  profilePicture: string;
+  profileImageUrl: string;
+  birthDate: string;
+  name: string;
 }

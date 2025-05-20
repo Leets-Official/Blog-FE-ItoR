@@ -1,4 +1,5 @@
 import api from '@/api/api';
+import { MyFormData } from '@/types/my';
 
 const PATH = '/users';
 
@@ -9,7 +10,7 @@ const getMyInfo = async () => {
 };
 
 // PATCH
-const patchMyInfo = async (data: any) => {
+const patchMyInfo = async (data: MyFormData) => {
   const res = await api.patch(`${PATH}`, data);
   return res.data.data;
 };

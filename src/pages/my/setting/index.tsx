@@ -26,12 +26,14 @@ const MyPageSetting = () => {
     nickname: '',
     introduction: '',
     birthDate: '',
+    profilePicture: '',
   });
   const [original, setOriginal] = useState({
     email: '',
     nickname: '',
     introduction: '',
     birthDate: '',
+    profilePicture: '',
   });
 
   const { previewUrl, uploadedUrl, handleImageChange, reset: resetImageUpload } = useImageUpload();
@@ -45,12 +47,14 @@ const MyPageSetting = () => {
           nickname: data.nickname,
           introduction: data.introduction,
           birthDate: data.birthDate,
+          profilePicture: data.profilePicture,
         });
         setOriginal({
           email: data.email,
           nickname: data.nickname,
           introduction: data.introduction,
           birthDate: data.birthDate,
+          profilePicture: data.profilePicture,
         });
       } catch (error) {
         console.error('내 정보를 가져오는 데 실패했습니다.', error);
@@ -60,7 +64,7 @@ const MyPageSetting = () => {
   }, []);
 
   const onChange =
-    (field: 'email' | 'nickname' | 'introduction' | 'birthDate') =>
+    (field: 'email' | 'nickname' | 'introduction' | 'birthDate' | 'profilePicture') =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
     };
@@ -74,26 +78,29 @@ const MyPageSetting = () => {
 
   // 저장하기 ( 내 정보 수정 api 요청 )
   const handleSave = async () => {
+    const newProfilePicture = uploadedUrl ?? form.profilePicture;
+
     await patchMyInfo({
       email: form.email,
       password: 'dummy123!', // 임시값
       nickname: form.nickname,
       introduction: form.introduction,
-      profileImageUrl: uploadedUrl ?? user?.profilePicture,
+      profileImageUrl: newProfilePicture,
       birthDate: '2002-01-01', // 임시값
       name: '홍길동', // 임시값
     });
     console.log('내 정보 : ', form);
     console.log('업로드된 이미지 URL : ', uploadedUrl);
 
-    setOriginal({ ...form });
+    setForm((prev) => ({ ...prev, profilePicture: newProfilePicture }));
+    setOriginal((prev) => ({ ...prev, profilePicture: newProfilePicture }));
     resetImageUpload();
     setEditMode(false);
     setUser({
       ...user,
       nickname: form.nickname,
       introduction: form.introduction,
-      profilePicture: uploadedUrl ?? user?.profilePicture ?? '',
+      profilePicture: newProfilePicture,
     });
   };
 
