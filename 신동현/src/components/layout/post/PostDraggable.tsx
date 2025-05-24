@@ -2,7 +2,7 @@ import { Draggable } from "@hello-pangea/dnd";
 import { Post, postElementsAtom } from "@/Atoms/atoms";
 import { useSetAtom } from "jotai";
 import styled from "styled-components";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 
 const MoveButton = styled.div`
   width: 20px;
@@ -126,4 +126,4 @@ const PostDraggable = ({ index, element, isNew }: { index: number, element: Post
   )
 }
 
-export default PostDraggable;
+export default React.memo(PostDraggable);

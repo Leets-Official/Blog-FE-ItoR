@@ -86,8 +86,16 @@ const WriteEditor = () => {
   const { control } = formContext;
   const [postElements, setPostElements] = useAtom(postElementsAtom);
 
-  const handleDragEnd = (result: DropResult) => {
-    console.log(result);
+  const handleDragEnd = ({ destination, source }: DropResult) => {
+    if (!destination) return;
+
+    setPostElements(prev => {
+      const postCopy = [...prev];
+      const taskObj = postCopy[source.index];
+      postCopy.splice(source.index, 1);
+      postCopy.splice(destination.index, 0, taskObj);
+      return postCopy
+    });
   }
 
   const addPostElement = () => {
