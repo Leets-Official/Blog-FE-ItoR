@@ -52,7 +52,6 @@ const SocialBoxTitle = styled.div`
 `;
 
 const KaKaoUpdateForm = () => {
-  const name = localStorage.getItem("name");
   const socialContext = useContext(SocialControlContext) as { control: Control<z.infer<typeof signUpSocialSchema>> };
   const { control } = socialContext;
   return (

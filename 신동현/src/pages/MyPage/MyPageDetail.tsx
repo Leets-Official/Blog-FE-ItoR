@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Kakao, ProfilePlus } from "@/assets";
+import { ProfilePlus } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";

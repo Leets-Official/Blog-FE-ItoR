@@ -20,7 +20,6 @@ const PostList = ({ totalPostCount, loadMyPage = false }: PostListProps) => {
 
   const fetchBlogList = async () => {
     const response = await getPostList(10, page - 1);
-    console.log(response.data.post);
     if (loadMyPage) {
       const postList: Post[] = [];
       response.data.post.map((post: Post) => {

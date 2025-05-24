@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Profile } from "@/assets";
 import dayjs from "dayjs";
-import { PostContent } from "@/assets/type/PostContent";
 import Image from "@/components/ui/Image";
 import WriterInfo from "@/components/layout/common/WriterInfo";
 import { postContentAtom } from "@/Atoms/atoms";
