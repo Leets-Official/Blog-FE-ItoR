@@ -7,6 +7,7 @@ import UserInfo from "@/components/layout/common/UserInfo";
 import Header from "@/components/layout/header/Header";
 import Button from "@/components/ui/Button/Button";
 import { Settings } from "@/assets";
+import { Post } from "@/assets/type/Post";
 
 const UserInfoWrapper = styled.div`
   width: 100%;
@@ -49,7 +50,13 @@ const MyPage = () => {
   const getTotalPage = async () => {
     try {
       const response = await getPostList(100, 0);
-      setTotalPostCount(response.data.post.length);
+      let count = 0;
+      response.data.post.map((post: Post) => {
+        if (post.isOwner) {
+          count++;
+        }
+      });
+      setTotalPostCount(count);
 
     } catch (error) {
       console.error(error);
@@ -63,8 +70,6 @@ const MyPage = () => {
   const userProfileImage = localStorage.getItem("profilePicture");
   const userName = localStorage.getItem("nickName");
   const userBio = localStorage.getItem("bio");
-
-  console.log(isKakaoLogin);
 
   return (
     <>
@@ -81,7 +86,7 @@ const MyPage = () => {
           </UserInfoContainer>
         </UserInfoWrapper>
       ) : null}
-      <Posts totalPostCount={totalPostCount} />
+      <Posts totalPostCount={totalPostCount} loadMyPage={true} />
     </>
   )
 }

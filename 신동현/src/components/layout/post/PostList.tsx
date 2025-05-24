@@ -6,9 +6,10 @@ import { getPostList } from "@/api/post/post";
 
 interface PostListProps {
   totalPostCount: number;
+  loadMyPage?: boolean;
 }
 
-const PostList = ({ totalPostCount }: PostListProps) => {
+const PostList = ({ totalPostCount, loadMyPage = false }: PostListProps) => {
   const [page, setPage] = useState(1);
   const size = 10;
 
@@ -19,7 +20,18 @@ const PostList = ({ totalPostCount }: PostListProps) => {
 
   const fetchBlogList = async () => {
     const response = await getPostList(10, page - 1);
-    setPostList(response.data.post);
+    console.log(response.data.post);
+    if (loadMyPage) {
+      const postList: Post[] = [];
+      response.data.post.map((post: Post) => {
+        if (post.isOwner) {
+          postList.push(post);
+        }
+      });
+      setPostList(postList);
+    } else {
+      setPostList(response.data.post);
+    }
   }
 
   useEffect(() => {
@@ -34,7 +46,7 @@ const PostList = ({ totalPostCount }: PostListProps) => {
   return (
     <>
       {postList.map((post) => (
-        <PostItem key={post.postId} post={post} />
+        <PostItem key={post.postId + new Date().getTime()} post={post} />
       ))}
       <Pagination currentPage={page} totalPosts={totalPostCount} limitPost={size} limitPage={5} setPage={handlePageChange} />
     </>
