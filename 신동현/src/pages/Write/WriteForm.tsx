@@ -2,12 +2,15 @@ import { Add_photo } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import styled from "styled-components";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { writeSchema } from "@/schema/auth";
 import { Control, Controller } from "react-hook-form";
 import { z } from "zod";
 import { FormControlContext } from "./Write";
 import PostEditor from "@/components/layout/post/PostEditor";
+import Toast from "@/components/ui/Toast";
+import { postElementsAtom } from "@/Atoms/atoms";
+import { useSetAtom } from "jotai";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -59,12 +62,43 @@ const Textarea = styled.textarea`
 
 const WriteEditor = () => {
   const formContext = useContext(FormControlContext) as { control: Control<z.infer<typeof writeSchema>> };
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const setPostElements = useSetAtom(postElementsAtom);
   const { control } = formContext;
+
+  const handleFileInput = async () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        if (!file.type.startsWith("image/")) {
+          setToast({ message: "이미지 파일만 업로드 가능합니다.", type: "error" });
+          return;
+        }
+        setToast(null);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64 = reader.result as string;
+          setPostElements(prev => [...prev, { 
+            type: "image", 
+            url: base64, 
+            children: [{ text: file.name }] 
+          }]);
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  };
+
 
   return (
     <Wrapper>
+      {toast && <Toast key={Date.now()} message={toast.message} type={toast.type} />}
       <Hr />
-      <Button onClick={() => { }} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF">사진 추가하기</Button>
+      <Button onClick={handleFileInput} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF">사진 추가하기</Button>
       <Container>
         <TitleInputContainer>
           <Input type="text" placeholder="제목" style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} name="title" control={control} />

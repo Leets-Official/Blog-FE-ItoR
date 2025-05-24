@@ -16,6 +16,7 @@ import Profile from '@/assets/icons/profile.svg?react';
 import Left from '@/assets/icons/Left.svg?react';
 import Right from '@/assets/icons/Right.svg?react';
 import ProfilePlus from '@/assets/icons/profilePlus.svg?react';
+import Delete_icon from '@/assets/icons/delete_speech_bubble.svg?react';
 
 export {
     Add_photo,
@@ -23,6 +24,7 @@ export {
     Clear,
     Create,
     Delete,
+    Delete_icon,
     Done,
     Error,
     Folder_open,

@@ -49,6 +49,8 @@ const PostEditor = () => {
     setPostElements([...postElements, { type: "paragraph", children: [{ text: "" }] }]);
   }
 
+  console.log(postElements);
+
   return (
     <>
       {postElements.length > 0 ? (

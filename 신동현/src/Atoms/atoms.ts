@@ -1,10 +1,10 @@
 import { atom } from "jotai";
 
-export interface Post {
+export type Post = {
   type: "paragraph" | "image";
   url?: string;
   children: { text: string }[];
-}
+};
 
 export const isModifyAtom = atom(false);
 

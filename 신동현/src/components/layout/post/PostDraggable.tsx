@@ -3,6 +3,8 @@ import { Post, postElementsAtom } from "@/Atoms/atoms";
 import { useSetAtom } from "jotai";
 import styled from "styled-components";
 import React, { useEffect, useRef } from "react";
+import Image from "@/components/ui/Image";
+import { Delete_icon } from "@/assets";
 
 const MoveButton = styled.div`
   width: 20px;
@@ -21,6 +23,33 @@ const PostContent = styled.div`
   word-break: break-all;
 `;
 
+const DeleteButton = styled.div`
+  position: absolute;
+  left: 50%;
+  top: -65px;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  z-index: 10;
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: #00A1FF;
+  }
+
+  &:hover ${DeleteButton} {
+    opacity: 1;
+  }
+`;
+
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -36,6 +65,7 @@ const Wrapper = styled.div`
 const PostDraggable = ({ index, element, isNew }: { index: number, element: Post, isNew?: boolean }) => {
   const setPostElements = useSetAtom(postElementsAtom);
   const contentRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     if (isNew && contentRef.current) {
@@ -116,9 +146,20 @@ const PostDraggable = ({ index, element, isNew }: { index: number, element: Post
             >
               {element.children[0].text}
             </PostContent>
-          ) : (
-            <div>Image</div>
-          )}
+          ) : element.type === "image" ? (
+            <ImageContainer>
+              <Image 
+                src={element.url as string} 
+                alt={element.children[0].text} 
+                width="auto"
+                height="auto"
+                $objectFit="contain"
+              />
+              <DeleteButton onClick={handleDelete}>
+                <Delete_icon fill="#909090" width="72px" height="56px" />
+              </DeleteButton>
+            </ImageContainer>
+          ) : null}
           <MoveButton {...provided.dragHandleProps}>::</MoveButton>
         </Wrapper>
       )}
