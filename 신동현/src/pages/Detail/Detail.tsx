@@ -58,7 +58,7 @@ const Detail = () => {
   const setIsOwner = useSetAtom(isOwnerAtom);
   const [postContent, setPostContent] = useAtom(postContentAtom);
   const setPostComment = useSetAtom(postCommentAtom);
-  
+
   const { id } = useParams();
 
   useEffect(() => {
@@ -66,7 +66,6 @@ const Detail = () => {
       if (!id) return;
       try {
         const response = await getPostDetail(id);
-        console.log(response);
         if (response.code === 200) {
           const data = response.data;
           setPostComment(data.comments);

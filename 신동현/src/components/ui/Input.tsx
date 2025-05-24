@@ -8,10 +8,10 @@ const Container = styled.div`
   gap: 8px;
 `;
 
-const StyledInput = styled.input<{ noneBorder?: boolean }>`
+const StyledInput = styled.input<{ $noneBorder?: boolean }>`
   width: ${({ width }) => width || "100%"};
   height: ${({ height }) => height || "40px"};
-  border: ${({ noneBorder }) => noneBorder ? "none" : "1px solid #E0E0E0"};
+  border: ${({ $noneBorder }) => $noneBorder ? "none" : "1px solid #E0E0E0"};
   border-radius: 4px;
   padding: 0px;
   background-color: ${({ disabled }) => disabled ? "#E6E6E6" : "#FFFFFF"};
@@ -24,7 +24,7 @@ const StyledInput = styled.input<{ noneBorder?: boolean }>`
     font-weight: 300;
   }
 
-  ${({ noneBorder }) => noneBorder && `
+  ${({ $noneBorder }) => $noneBorder && `
     &:focus {
       outline: none;
     }
@@ -82,7 +82,7 @@ const Input = <T extends FieldValues>({ title, subTitle, type, placeholder, disa
             onChange={field.onChange}
             value={field.value ?? ""}
             disabled={disabled}
-            noneBorder={noneBorder}
+            $noneBorder={noneBorder}
             {...rest}
           />
           {subTitle && <SubTitle>{subTitle}</SubTitle>}

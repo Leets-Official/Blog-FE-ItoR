@@ -3,11 +3,6 @@ import { api } from "../api";
 
 const postBlog = async (title: string, contents: Content[]) => {
   try {
-    console.log(contents.map((content, index) => ({
-      contentOrder: index + 1,
-      content: content.content,
-      contentType: content.contentType
-    })));    
     const response = await api.post("/posts", {
       title: title,
       contents: contents.map((content, index) => ({
@@ -131,17 +126,15 @@ const deletePost = async (postId: string) => {
   }
 };
 
-const updatePost = async (postId: string, title: string, content: string, contentOrder: number, contentType: string) => {
+const updatePost = async (postId: string, title: string, contents: Content[]) => {
   try {
     const response = await api.patch(`/posts?postId=${postId}`, {
       title: title,
-      contents: [
-        {
-          contentOrder: contentOrder,
-          content: content,
-          contentType: contentType
-        }
-      ]
+      contents: contents.map((content, index) => ({
+        contentOrder: index + 1,
+        content: content.content,
+        contentType: content.contentType
+      }))
     });
     return response.data;
   } catch (error: any) {

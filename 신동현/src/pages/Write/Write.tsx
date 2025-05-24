@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Header from "@/components/layout/header/Header";
-import { writeSchema } from "@/schema/auth";
+import { postFormSchema } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Control } from "react-hook-form";
 import { z } from "zod";
@@ -11,21 +11,22 @@ import { postElementsAtom } from "@/Atoms/atoms";
 import { useAtomValue } from "jotai";
 import { getPresignedUrl, uploadImage } from "@/api/convertImage";
 import { Content } from "@/assets/type/PostContent";
+import PostForm from "@/components/layout/post/PostForm";
 
-export const FormControlContext = createContext<{ control: Control<z.infer<typeof writeSchema>> } | null>(null);
+export const FormControlContext = createContext<{ control: Control<z.infer<typeof postFormSchema>> } | null>(null);
 
 const Write = () => {
   const navigate = useNavigate();
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const postElements = useAtomValue(postElementsAtom);
-  const { control: controlWrite, handleSubmit: handleSubmitWrite } = useForm<z.infer<typeof writeSchema>>({
-    resolver: zodResolver(writeSchema),
+  const { control, handleSubmit: handleSubmitWrite } = useForm<z.infer<typeof postFormSchema>>({
+    resolver: zodResolver(postFormSchema),
     defaultValues: {
       title: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof writeSchema>) => {
+  const onSubmit = async (data: z.infer<typeof postFormSchema>) => {
     const { title } = data;
 
     if (postElements.length === 0) {
@@ -59,6 +60,7 @@ const Write = () => {
       setToast({ message: "블로그 작성에 성공했습니다!", type: "success" });
       setTimeout(() => {
         navigate("/", { replace: true });
+        window.location.reload();
       }, 1000);
     } catch (error: any) {
       console.log(error);
@@ -66,11 +68,11 @@ const Write = () => {
   };
 
   return (
-    <FormControlContext.Provider value={{ control: controlWrite }}>
+    <>
       <Header type="write" onPublish={handleSubmitWrite(onSubmit)} />
       {toast && <Toast key={Date.now()} message={toast.message} type={toast.type} />}
-      <Outlet />
-    </FormControlContext.Provider>
+      <PostForm FormControl={control} />
+    </>
   );
 };
 

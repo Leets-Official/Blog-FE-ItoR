@@ -3,10 +3,9 @@ import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import styled from "styled-components";
 import { useContext, useState } from "react";
-import { writeSchema } from "@/schema/auth";
+import { postFormSchema } from "@/schema/auth";
 import { Control } from "react-hook-form";
 import { z } from "zod";
-import { FormControlContext } from "./Write";
 import PostEditor from "@/components/layout/post/PostEditor";
 import Toast from "@/components/ui/Toast";
 import { postElementsAtom } from "@/Atoms/atoms";
@@ -44,11 +43,9 @@ const TitleInputContainer = styled.div`
   margin: 50px 0;
 `;
 
-const WriteEditor = () => {
-  const formContext = useContext(FormControlContext) as { control: Control<z.infer<typeof writeSchema>> };
+const PostForm = ({ FormControl }: { FormControl: Control<z.infer<typeof postFormSchema>> }) => {
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const setPostElements = useSetAtom(postElementsAtom);
-  const { control } = formContext;
 
   const handleFileInput = async () => {
     const input = document.createElement('input');
@@ -86,7 +83,7 @@ const WriteEditor = () => {
       <Button onClick={handleFileInput} icon={<Add_photo fill="#909090" />} fontSize="12px" width="130px" height="25px" color="#909090" backgroundColor="#FFFFFF">사진 추가하기</Button>
       <Container>
         <TitleInputContainer>
-          <Input type="text" placeholder="제목" style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} name="title" control={control} />
+          <Input type="text" placeholder="제목" style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} name="title" control={FormControl} />
         </TitleInputContainer>
         <Hr />
         <PostEditor />
@@ -95,4 +92,4 @@ const WriteEditor = () => {
   )
 }
 
-export default WriteEditor;
+export default PostForm;
