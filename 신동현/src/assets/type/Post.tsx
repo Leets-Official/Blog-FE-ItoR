@@ -14,5 +14,5 @@ export type PostAtom = {
   type: "paragraph" | "image";
   url?: string;
   file?: File;
-  children: { text: string }[];
+  content: string;
 };

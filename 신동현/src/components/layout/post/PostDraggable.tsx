@@ -1,10 +1,11 @@
 import { Draggable } from "@hello-pangea/dnd";
-import { Post, postElementsAtom } from "@/Atoms/atoms";
+import { postElementsAtom } from "@/Atoms/atoms";
 import { useSetAtom } from "jotai";
 import styled from "styled-components";
 import React, { useEffect, useRef } from "react";
 import Image from "@/components/ui/Image";
 import { Delete_icon } from "@/assets";
+import { PostAtom } from "@/assets/type/Post";
 
 const MoveButton = styled.div`
   width: 20px;
@@ -62,7 +63,7 @@ const Wrapper = styled.div`
   }
 `;
 
-const PostDraggable = ({ index, element, isNew }: { index: number, element: Post, isNew?: boolean }) => {
+const PostDraggable = ({ index, element, isNew }: { index: number, element: PostAtom, isNew?: boolean }) => {
   const setPostElements = useSetAtom(postElementsAtom);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -75,9 +76,9 @@ const PostDraggable = ({ index, element, isNew }: { index: number, element: Post
 
   const UpdatePostElement = (text: string) => {
     setPostElements(prev => {
-      const newContent: Post = {
+      const newContent: PostAtom = {
         type: "paragraph",
-        children: [{ text: text }],
+        content: text,
       };
       prev.splice(index, 1);
       prev.splice(index, 0, newContent);
@@ -115,7 +116,7 @@ const PostDraggable = ({ index, element, isNew }: { index: number, element: Post
       UpdatePostElement(currentText);
 
       // 새 요소 추가
-      setPostElements(prev => [...prev, { type: "paragraph", children: [{ text: "" }] }]);
+      setPostElements(prev => [...prev, { type: "paragraph", content: "" }]);
 
       // 다음 요소에 포커스
       setTimeout(() => {
@@ -144,13 +145,13 @@ const PostDraggable = ({ index, element, isNew }: { index: number, element: Post
               onInput={handleInput}
               onKeyDown={handleKeyDown}
             >
-              {element.children[0].text}
+              {element.content}
             </PostContent>
           ) : element.type === "image" ? (
             <ImageContainer>
               <Image 
                 src={element.url as string} 
-                alt={element.children[0].text} 
+                alt={element.content} 
                 width="auto"
                 height="auto"
                 $objectFit="contain"

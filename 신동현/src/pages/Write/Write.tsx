@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/layout/header/Header";
 import { postFormSchema } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,7 +37,7 @@ const Write = () => {
       const contents = await Promise.all(postElements.map(async (element): Promise<Content> => {
         if (element.type === "paragraph") {
           return {
-            content: element.children[0].text,
+            content: element.content,
             contentType: "TEXT",
           }
         } else {

@@ -22,7 +22,7 @@ const Update = () => {
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const { id } = useParams();
   const [postElements, setPostElements] = useAtom(postElementsAtom);
-  const { control: controlUpdate, handleSubmit: handleSubmitUpdate, setValue, reset } = useForm<z.infer<typeof postFormSchema>>({
+  const { control: controlUpdate, handleSubmit: handleSubmitUpdate, setValue } = useForm<z.infer<typeof postFormSchema>>({
     resolver: zodResolver(postFormSchema),
     defaultValues: {
       title: "",
@@ -38,7 +38,7 @@ const Update = () => {
           setValue("title", response.data.title);
           setPostElements(response.data.contents.map((content: Content) => ({
             type: content.contentType === "TEXT" ? "paragraph" : "image",
-            children: [{ text: content.content }],
+            content: content.content,
             url: content.contentType === "IMAGE" ? content.content : "",
           })));
         }
@@ -49,22 +49,13 @@ const Update = () => {
     fetchBlogDetail();
   }, []);
 
-  // useEffect(() => {
-  //   if (postContent) {
-  //     reset({
-  //       title: postContent.title,
-  //       content: postContent.content,
-  //     });
-  //   }
-  // }, [postContent, reset]);
-
   const onSubmit = async (data: z.infer<typeof postFormSchema>) => {
     const { title } = data;
     try {
       const contents = await Promise.all(postElements.map(async (element): Promise<Content> => {
         if (element.type === "paragraph") {
           return {
-            content: element.children[0].text,
+            content: element.content,
             contentType: "TEXT",
           }
         } else {

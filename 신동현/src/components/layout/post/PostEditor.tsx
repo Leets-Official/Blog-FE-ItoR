@@ -46,7 +46,7 @@ const PostEditor = () => {
   }
 
   const addPostElement = () => {
-    setPostElements([...postElements, { type: "paragraph", children: [{ text: "" }] }]);
+    setPostElements([...postElements, { type: "paragraph", content: "" }]);
   }
 
   return (

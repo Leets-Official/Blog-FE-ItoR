@@ -2,7 +2,7 @@ import { Add_photo } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import styled from "styled-components";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { postFormSchema } from "@/schema/auth";
 import { Control } from "react-hook-form";
 import { z } from "zod";
@@ -66,7 +66,7 @@ const PostForm = ({ FormControl }: { FormControl: Control<z.infer<typeof postFor
             type: "image", 
             url: base64, 
             file: file,
-            children: [{ text: file.name }] 
+            content: file.name
           }]);
         };
         reader.readAsDataURL(file);
