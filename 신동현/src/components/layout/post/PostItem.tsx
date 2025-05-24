@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Post } from "../../../assets/type/Post";
+import { Post } from "../../../type/Post/Post";
 import { Link } from "react-router-dom";
 import WriterInfoContainer from "../common/WriterInfo";
 import dayjs from "dayjs";

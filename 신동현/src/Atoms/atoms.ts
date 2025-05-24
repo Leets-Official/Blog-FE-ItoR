@@ -1,6 +1,6 @@
-import { PostAtom } from "@/assets/type/Post";
-import { PostComment } from "@/assets/type/PostCommnet";
-import { PostContent } from "@/assets/type/PostContent";
+import { PostAtom } from "@/type/Post/Post";
+import { PostComment } from "@/type/Post/PostCommnet";
+import { PostContent } from "@/type/Post/PostContent";
 import { atom } from "jotai";
 
 export const isModifyAtom = atom(false);

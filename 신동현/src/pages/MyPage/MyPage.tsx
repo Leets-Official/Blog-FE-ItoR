@@ -7,7 +7,7 @@ import UserInfo from "@/components/layout/common/UserInfo";
 import Header from "@/components/layout/header/Header";
 import Button from "@/components/ui/Button/Button";
 import { Settings } from "@/assets";
-import { Post } from "@/assets/type/Post";
+import { Post } from "@/type/Post/Post";
 
 const UserInfoWrapper = styled.div`
   width: 100%;

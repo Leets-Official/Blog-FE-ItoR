@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import Toast from "@/components/ui/Toast";
 import { postElementsAtom } from "@/Atoms/atoms";
 import { useAtom } from "jotai";
-import { Content } from "@/assets/type/PostContent";
+import { Content } from "@/type/Post/PostContent";
 import PostForm from "@/components/layout/post/PostForm";
 import { uploadImage } from "@/api/convertImage";
 import { getPresignedUrl } from "@/api/convertImage";

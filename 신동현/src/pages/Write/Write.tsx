@@ -10,7 +10,7 @@ import Toast from "@/components/ui/Toast";
 import { postElementsAtom } from "@/Atoms/atoms";
 import { useAtomValue } from "jotai";
 import { getPresignedUrl, uploadImage } from "@/api/convertImage";
-import { Content } from "@/assets/type/PostContent";
+import { Content } from "@/type/Post/PostContent";
 import PostForm from "@/components/layout/post/PostForm";
 
 export const FormControlContext = createContext<{ control: Control<z.infer<typeof postFormSchema>> } | null>(null);

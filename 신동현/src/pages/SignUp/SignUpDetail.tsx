@@ -14,6 +14,8 @@ import Toast from "@/components/ui/Toast";
 import { getPresignedUrl, uploadImage } from "@/api/convertImage";
 import { EmailControlContext } from "@/contexts/EmailControlContext";
 import { SocialControlContext } from "@/contexts/SocialControlContext";
+import { useMutation } from "@tanstack/react-query";
+import { KakaoSignUpData, SignUpData } from "@/type/User/SignUp";
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -193,6 +195,30 @@ const SignUpDetailForm = () => {
     }
   };
 
+  const emailSignUpMutation = useMutation({
+    mutationFn: (data: SignUpData) => EmailSignUp(data),
+    onSuccess: () => {
+      setToast({ message: "회원가입에 성공했습니다!", type: "success" });
+      openConfirmModal();
+    },
+    onError: (error) => {
+      setToast({ message: "회원가입에 실패했습니다.", type: "error" });
+      console.log(error);
+    }
+  });
+
+  const kakaoSignUpMutation = useMutation({
+    mutationFn: (data: KakaoSignUpData) => KakaoSignUp(data),
+    onSuccess: () => {
+      setToast({ message: "회원가입에 성공했습니다!", type: "success" });
+      openConfirmModal();
+    },
+    onError: (error) => {
+      setToast({ message: "회원가입에 실패했습니다.", type: "error" });
+      console.log(error);
+    }
+  });
+
   const onSubmit = async (data: z.infer<typeof signUpEmailSchema> | z.infer<typeof signUpSocialSchema>) => {
     let presignedImage: string = "";
 
@@ -206,10 +232,6 @@ const SignUpDetailForm = () => {
         await uploadImage(profileImageFile, presignedUrl.data);
 
         presignedImage = presignedUrl.data.split("?")[0];
-
-        console.log("presignedUrl:", presignedUrl.data);
-        console.log("profileImageFile:", profileImageFile);
-        console.log("Content-Type:", profileImageFile?.type);        
       } catch (error) {
         setToast({ message: "이미지 업로드에 실패했습니다.", type: "error" });
         return;
@@ -217,43 +239,31 @@ const SignUpDetailForm = () => {
     }
 
     if (type === "email") {
-      const response = await EmailSignUp(
-        (data as z.infer<typeof signUpEmailSchema>).email.toString(),
-        (data as z.infer<typeof signUpEmailSchema>).nickname.toString(),
-        (data as z.infer<typeof signUpEmailSchema>).password.toString(),
-        presignedImage,
-        (data as z.infer<typeof signUpEmailSchema>).birth.toString(),
-        (data as z.infer<typeof signUpEmailSchema>).name.toString(),
-        (data as z.infer<typeof signUpEmailSchema>).bio.toString(),
-      );
+      const emailSignUpData = {
+        email: (data as z.infer<typeof signUpEmailSchema>).email.toString(),
+        nickname: (data as z.infer<typeof signUpEmailSchema>).nickname.toString(),
+        password: (data as z.infer<typeof signUpEmailSchema>).password.toString(),
+        profilePicture: presignedImage,
+        birth: (data as z.infer<typeof signUpEmailSchema>).birth.toString(),
+        name: (data as z.infer<typeof signUpEmailSchema>).name.toString(),
+        introduction: (data as z.infer<typeof signUpEmailSchema>).bio.toString(),
+      }      
 
-      if (response.error) {
-        setToast({ message: response.message, type: "error" });
-      } else {
-        setToast({ message: "회원가입에 성공했습니다!", type: "success" });
-        openConfirmModal();
-      }
+      emailSignUpMutation.mutate(emailSignUpData);
     } else {
       const kakaoId = localStorage.getItem("kakaoId");
 
-      const response = await KakaoSignUp(
-        (data as z.infer<typeof signUpSocialSchema>).email.toString(),
-        (data as z.infer<typeof signUpSocialSchema>).nickname.toString(),
-        presignedImage === "" ? profilePicture as string : presignedImage,
-        (data as z.infer<typeof signUpSocialSchema>).birth.toString(),
-        name as string,
-        (data as z.infer<typeof signUpSocialSchema>).bio.toString(),
-        kakaoId as string,
-      );
+      const kakaoSignUpData = {
+        email: (data as z.infer<typeof signUpSocialSchema>).email.toString(),
+        nickname: (data as z.infer<typeof signUpSocialSchema>).nickname.toString(),
+        profilePicture: presignedImage === "" ? profilePicture as string : presignedImage,
+        birth: (data as z.infer<typeof signUpSocialSchema>).birth.toString(),
+        name: name as string,
+        introduction: (data as z.infer<typeof signUpSocialSchema>).bio.toString(),
+        kakaoId: kakaoId as string,
+      };
 
-      if (response.error) {
-        setToast({ message: response.message, type: "error" });
-      } else {
-        setToast({ message: "회원가입에 성공했습니다!", type: "success" });
-        console.log(response);
-        openConfirmModal();
-      }
-      console.log(data);
+      kakaoSignUpMutation.mutate(kakaoSignUpData);
     }
   }
 
@@ -274,8 +284,6 @@ const SignUpDetailForm = () => {
     closeConfirmModal();
     navigate("/?type=login", { replace: true });
   }
-
-//  console.log(profileImageFile?.name);
 
   return (
     <Wrapper>

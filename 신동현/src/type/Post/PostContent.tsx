@@ -11,3 +11,10 @@ export interface PostContent {
   createdAt: string;
   commentCount: number;
 }
+
+export interface PostListResponse {
+  data: {
+    post: PostContent[];
+    totalPostCount: number;
+  }
+}

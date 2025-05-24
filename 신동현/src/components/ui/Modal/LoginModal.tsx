@@ -10,6 +10,8 @@ import { z } from "zod";
 import { EamilLogin, KakaoLogin } from "@/api/login/login";
 import Toast from "../Toast";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { EmailLoginData } from "@/type/User/Login";
 
 const Overlay = styled.div`
   position: fixed;
@@ -146,7 +148,7 @@ interface LoginProps {
 
 const Login = ({ open, onClose }: LoginProps) => {
   if (!open) return null;
-  
+
   const navigate = useNavigate();
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const { control, handleSubmit } = useForm<z.infer<typeof loginSchema>>({
@@ -157,27 +159,40 @@ const Login = ({ open, onClose }: LoginProps) => {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
-    const response = await EamilLogin(data.email, data.password);
+  const emailLoginMutation = useMutation({
+    mutationFn: (data: EmailLoginData) => EamilLogin(data.email, data.password),
+    onSuccess: (data) => {
+      const stateCode = data.code;
+      if (stateCode !== 200 || data.error) {
+        setToast({ message: data.message, type: "error" });
+        return;
+      }
 
-    const stateCode = response.code;
-    if (stateCode !== 200 || response.error) {
-      setToast({ message: response.message, type: "error" });
-      return;
+      localStorage.setItem("accessToken", data.data.accessToken);
+      localStorage.setItem("refreshToken", data.data.refreshToken);
+      localStorage.setItem("nickName", data.data.nickname);
+      localStorage.setItem("profilePicture", data.data.profilePicture);
+      localStorage.setItem("bio", data.data.introduction);
+      localStorage.setItem("isKakaoLogin", "false");
+      
+      setToast({ message: "로그인에 성공했습니다.", type: "success" });
+      setTimeout(() => {
+        onClose();
+        navigate("/", { replace: true });
+        window.location.reload();
+      }, 3000);
+    },
+    onError: (error) => {
+      setToast({ message: "로그인에 실패했습니다.", type: "error" });
+      console.log(error);
     }
-    localStorage.setItem("accessToken", response.data.accessToken);
-    localStorage.setItem("refreshToken", response.data.refreshToken);
-    localStorage.setItem("nickName", response.data.nickname);
-    localStorage.setItem("profilePicture", response.data.profilePicture);
-    localStorage.setItem("bio", response.data.introduction);
-    localStorage.setItem("isKakaoLogin", "false");
-    setToast({ message: "로그인에 성공했습니다.", type: "success" });
-    setTimeout(() => {
-      onClose();
-      navigate("/", { replace: true });
-      window.location.reload();
-    }, 3000);
+  });
+
+  const onSubmit = async (data: z.infer<typeof loginSchema>) => {
+    emailLoginMutation.mutate({ email: data.email, password: data.password });
   }
+
+
 
   const onKakaoLogin = async () => {
     await KakaoLogin();

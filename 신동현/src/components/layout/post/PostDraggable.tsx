@@ -5,7 +5,7 @@ import styled from "styled-components";
 import React, { useEffect, useRef } from "react";
 import Image from "@/components/ui/Image";
 import { Delete_icon } from "@/assets";
-import { PostAtom } from "@/assets/type/Post";
+import { PostAtom } from "@/type/Post/Post";
 
 const MoveButton = styled.div`
   width: 20px;
