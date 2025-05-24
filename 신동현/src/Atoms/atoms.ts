@@ -1,6 +1,5 @@
-import { PostAtom } from "@/type/Post/Post";
-import { PostComment } from "@/type/Post/PostCommnet";
-import { PostContent } from "@/type/Post/PostContent";
+import { PostAtom, PostContent, Comment } from "@/type/Post/Post";
+
 import { atom } from "jotai";
 
 export const isModifyAtom = atom(false);
@@ -10,12 +9,14 @@ export const postElementsAtom = atom<PostAtom[]>([]);
 export const isOwnerAtom = atom(false);
 
 export const postContentAtom = atom<PostContent>({
+  postId: '',
   title: '',
   contents: [],
+  isOwner: false,
+  comments: [],
   nickName: '',
   profileUrl: '',
-  createdAt: '',
-  commentCount: 0
+  createdAt: ''
 });
 
-export const postCommentAtom = atom<PostComment[]>([]);
+export const postCommentAtom = atom<Comment[]>([]);

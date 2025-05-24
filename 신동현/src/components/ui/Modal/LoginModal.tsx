@@ -174,7 +174,7 @@ const Login = ({ open, onClose }: LoginProps) => {
       localStorage.setItem("profilePicture", data.data.profilePicture);
       localStorage.setItem("bio", data.data.introduction);
       localStorage.setItem("isKakaoLogin", "false");
-      
+
       setToast({ message: "로그인에 성공했습니다.", type: "success" });
       setTimeout(() => {
         onClose();
@@ -191,8 +191,6 @@ const Login = ({ open, onClose }: LoginProps) => {
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     emailLoginMutation.mutate({ email: data.email, password: data.password });
   }
-
-
 
   const onKakaoLogin = async () => {
     await KakaoLogin();

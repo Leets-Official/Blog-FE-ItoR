@@ -42,7 +42,7 @@ const DetailContent = () => {
         userProfileImage={postContent.profileUrl ? <Image src={postContent.profileUrl} alt="profile" width="20px" height="20px" style={{ borderRadius: "50%" }} /> : <Profile width="20px" height="20px" />}
         userName={postContent.nickName}
         writeDate={dayjs(postContent.createdAt).format("MMM DD.YYYY.").toString()}
-        commentCount={postContent.commentCount}
+        commentCount={postContent.comments.length}
       />
       <Hr />
       {postContent.contents.map((content) => 

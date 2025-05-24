@@ -7,7 +7,8 @@ import UserInfo from "@/components/layout/common/UserInfo";
 import Header from "@/components/layout/header/Header";
 import Button from "@/components/ui/Button/Button";
 import { Settings } from "@/assets";
-import { Post } from "@/type/Post/Post";
+import { useQuery } from "@tanstack/react-query";
+import { PostContent, PostListResponse } from "@/type/Post/Post";
 
 const UserInfoWrapper = styled.div`
   width: 100%;
@@ -44,32 +45,33 @@ const MyPage = () => {
   const [totalPostCount, setTotalPostCount] = useState(0);
   const { userNickname } = useParams();
   const isKakaoLogin = localStorage.getItem("isKakaoLogin");
-
   const nickName = localStorage.getItem("nickName");
 
-  const getTotalPage = async () => {
-    try {
-      const response = await getPostList(100, 0);
-      let count = 0;
-      response.data.post.map((post: Post) => {
-        if (post.isOwner) {
-          count++;
-        }
-      });
-      setTotalPostCount(count);
+  const queryKey = ['post'];
+  const queryFn = () => getPostList(100, 0);
 
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const { data, isLoading, isError } = useQuery<PostListResponse>({ 
+    queryKey, 
+    queryFn
+  });
 
   useEffect(() => {
-    getTotalPage();
-  }, []);
+    let count = 0;
+    data?.data.post.map((post: PostContent) => {
+      if (post.isOwner) {
+        count++;  
+      }
+    });
+  
+    setTotalPostCount(count);
+  }, [data]);
 
   const userProfileImage = localStorage.getItem("profilePicture");
   const userName = localStorage.getItem("nickName");
   const userBio = localStorage.getItem("bio");
+
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error</div>
 
   return (
     <>

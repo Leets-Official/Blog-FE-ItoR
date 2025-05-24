@@ -5,7 +5,7 @@ import LoginModal from "@/components/ui/Modal/LoginModal";
 import Posts from "@/components/layout/post/PostList";
 import { getPostList } from "@/api/post/post";
 import { useQuery } from "@tanstack/react-query";
-import { PostListResponse } from "@/type/Post/PostContent";
+import { PostListResponse } from "@/type/Post/Post";
 const Home = () => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);

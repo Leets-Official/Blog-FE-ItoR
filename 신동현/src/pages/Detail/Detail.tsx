@@ -1,16 +1,18 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import DetailContent from "./DetailContent";
 import DetailComment from "./DetailComment";
 import DetailCommentInput from "./DetailCommentInput";
 import { getPostDetail } from "@/api/post/post";
-import { Content } from "@/type/Post/PostContent";
-import { PostComment } from "@/type/Post/PostCommnet";
+import { Content } from "@/type/Post/Post";
+import { Comment } from "@/type/Post/Post";
 import Header from "@/components/layout/header/Header";
 import UserInfo from "@/components/layout/common/UserInfo";
 import { isOwnerAtom, postCommentAtom, postContentAtom } from "@/Atoms/atoms";
 import { useAtom, useSetAtom } from "jotai";
+import { PostContent } from "@/type/Post/Post";
+import { useQuery } from "@tanstack/react-query";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -61,33 +63,37 @@ const Detail = () => {
 
   const { id } = useParams();
 
+  const queryKey = ['postDetail', id];
+  const queryFn = () => getPostDetail(id as string);
+
+  const { data, isLoading, isError } = useQuery<{ data: PostContent }>({
+    queryKey,
+    queryFn
+  });
+
   useEffect(() => {
-    const fetchBlogDetail = async () => {
-      if (!id) return;
-      try {
-        const response = await getPostDetail(id);
-        if (response.code === 200) {
-          const data = response.data;
-          setPostComment(data.comments);
-          setPostContent({
-            title: data.title,
-            contents: data.contents.map((content: Content) => ({
-              content: content.content,
-              contentType: content.contentType,
-            })),
-            nickName: data.nickName,
-            profileUrl: data.profileUrl,
-            createdAt: data.createdAt,
-            commentCount: data.commentCount,
-          });
-          setIsOwner(response.data.isOwner);
-        }
-      } catch (error: any) {
-        console.error(error);
-      }
-    };
-    fetchBlogDetail();
-  }, []);
+    if (!data?.data) return;
+    
+    setPostComment(data.data.comments);
+    setPostContent({
+      postId: data.data.postId,
+      title: data.data.title,
+      contents: data.data.contents.map((content) => ({
+        contentOrder: content.contentOrder,
+        content: content.content,
+        contentType: content.contentType,
+      })),
+      isOwner: data.data.isOwner,
+      comments: data.data.comments,
+      nickName: data.data.nickName,
+      profileUrl: data.data.profileUrl,
+      createdAt: data.data.createdAt,
+    });
+    setIsOwner(data.data.isOwner);
+  }, [data]);
+
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error</div>
 
   return (
     <>
