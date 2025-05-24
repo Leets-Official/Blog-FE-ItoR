@@ -5,8 +5,6 @@ import DetailContent from "./DetailContent";
 import DetailComment from "./DetailComment";
 import DetailCommentInput from "./DetailCommentInput";
 import { getPostDetail } from "@/api/post/post";
-import { Content } from "@/type/Post/Post";
-import { Comment } from "@/type/Post/Post";
 import Header from "@/components/layout/header/Header";
 import UserInfo from "@/components/layout/common/UserInfo";
 import { isOwnerAtom, postCommentAtom, postContentAtom } from "@/Atoms/atoms";

@@ -1,7 +1,5 @@
-import { GITLOG } from "@/assets";
 import { postCommentAtom } from "@/Atoms/atoms";
 import CommentItem from "@/components/layout/comment/CommentItem";
-import dayjs from "dayjs";
 import { useAtomValue } from "jotai";
 
 import styled from "styled-components";
@@ -70,7 +68,7 @@ const DetailComment = () => {
       ) : (
         <CommentListContainer>
           {postComment.map((comment) => (
-            <CommentItem key={comment.commentId} commentId={comment.commentId} profileImage={<GITLOG fill="#333333" width="20px" height="20px" />} nickname={comment.nickName} date={dayjs(Date.now()).format("MMM DD.YYYY.").toString()} content={comment.content} isMyComment={comment.isOwner} />
+            <CommentItem key={comment.commentId} comment={comment} />
           ))}
         </CommentListContainer>
       )}

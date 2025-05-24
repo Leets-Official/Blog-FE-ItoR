@@ -1,8 +1,10 @@
 import styled from "styled-components";
-import { Post } from "../../../type/Post/Post";
+import type { PostContent } from "../../../type/Post/Post";
 import { Link } from "react-router-dom";
-import WriterInfoContainer from "../common/WriterInfo";
-import dayjs from "dayjs";
+
+type PostItemProps = {
+  post: PostContent;
+};
 
 const Wrapper = styled.div`
   width: 100%;
@@ -77,9 +79,6 @@ const Hr = styled.hr`
   border-color: #cccccc;
 `;
 
-interface PostItemProps {
-  post: Post;
-}
 
 const PostItem = ({ post }: PostItemProps) => {
   return (

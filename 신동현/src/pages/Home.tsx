@@ -6,10 +6,16 @@ import Posts from "@/components/layout/post/PostList";
 import { getPostList } from "@/api/post/post";
 import { useQuery } from "@tanstack/react-query";
 import { PostListResponse } from "@/type/Post/Post";
+import { postElementsAtom } from "@/Atoms/atoms";
+import { useSetAtom } from "jotai";
+
 const Home = () => {
   const location = useLocation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const setPostElements = useSetAtom(postElementsAtom);
+
+  setPostElements([]);
 
   const queryKey = ['post'];
   const queryFn = () => getPostList(100, 0);

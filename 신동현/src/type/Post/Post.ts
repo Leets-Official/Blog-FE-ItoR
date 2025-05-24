@@ -36,3 +36,9 @@ export interface PostListResponse {
   }
 }
 
+export interface PostListProps {
+  totalPostCount: number;
+  loadMyPage?: boolean;
+}
+
+

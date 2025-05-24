@@ -1,14 +1,8 @@
 import Pagination from "@/components/pagination/Pagination";
 import { useEffect, useState } from "react";
-import { Post } from "../../../type/Post/Post";
+import { PostContent, PostListProps } from "@/type/Post/Post";
 import PostItem from "./PostItem";
 import { getPostList } from "@/api/post/post";
-
-interface PostListProps {
-  totalPostCount: number;
-  loadMyPage?: boolean;
-  postList?: any;
-}
 
 const PostList = ({ totalPostCount, loadMyPage = false }: PostListProps) => {
   const [page, setPage] = useState(1);
@@ -17,13 +11,13 @@ const PostList = ({ totalPostCount, loadMyPage = false }: PostListProps) => {
   const firstPage = (page - 1) * size;
   const lastPage = firstPage + size;
 
-  const [postList, setPostList] = useState<Post[]>([]);
+  const [postList, setPostList] = useState<PostContent[]>([]);
 
   const fetchBlogList = async () => {
     const response = await getPostList(10, page - 1);
     if (loadMyPage) {
-      const postList: Post[] = [];
-      response.data.post.map((post: Post) => {
+      const postList: PostContent[] = [];
+      response.data.post.map((post: PostContent) => {
         if (post.isOwner) {
           postList.push(post);
         }

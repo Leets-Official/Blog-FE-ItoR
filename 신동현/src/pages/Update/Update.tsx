@@ -11,10 +11,11 @@ import { useEffect, useState } from "react";
 import Toast from "@/components/ui/Toast";
 import { postElementsAtom } from "@/Atoms/atoms";
 import { useAtom } from "jotai";
-import { Content } from "@/type/Post/PostContent";
+import { Content, PostAtom } from "@/type/Post/Post";
 import PostForm from "@/components/layout/post/PostForm";
 import { uploadImage } from "@/api/convertImage";
 import { getPresignedUrl } from "@/api/convertImage";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 
 const Update = () => {
@@ -29,66 +30,76 @@ const Update = () => {
     },
   });
 
+  const queryKey = ["post", id];
+  const queryFn = () => getPostDetail(id as string);
+
+  const { data, isLoading, error } = useQuery<{ data: { title: string; contents: Content[] } }>({
+    queryKey,
+    queryFn,
+  });
+
   useEffect(() => {
-    const fetchBlogDetail = async () => {
-      if (!id) return;
-      try {
-        const response = await getPostDetail(id);
-        if (response.code === 200) {
-          setValue("title", response.data.title);
-          setPostElements(response.data.contents.map((content: Content) => ({
-            type: content.contentType === "TEXT" ? "paragraph" : "image",
-            content: content.content,
-            url: content.contentType === "IMAGE" ? content.content : "",
-          })));
+    if (isLoading || !data?.data) return;
+    setValue("title", data.data.title);
+    setPostElements(data.data.contents.map((content: Content) => ({
+      type: content.contentType === "TEXT" ? "paragraph" : "image",
+      content: content.content,
+      url: content.contentType === "IMAGE" ? content.content : "",
+    })));
+  }, [data, isLoading, setValue, setPostElements]);
+
+  const createSubmitData = async (postElements: PostAtom[]) => {
+    const contents = await Promise.all(postElements.map(async (element, index): Promise<Content> => {
+      if (element.type === "paragraph") {
+        return {
+          contentOrder: (index + 1).toString(),
+          content: element.content,
+          contentType: "TEXT",
         }
-      } catch (error: any) {
-        console.error(error);
+      } else {
+        if (element.file) {
+          const presignedUrl = await getPresignedUrl(encodeURIComponent(element.file!.name));
+          console.log("presignedUrl:", presignedUrl);
+          const uploadImageResponse = await uploadImage(element.file!, presignedUrl.data);
+          console.log("uploadImageResponse:", uploadImageResponse);
+          return {
+            contentOrder: (index + 1).toString(),
+            content: presignedUrl.data.split("?")[0],
+            contentType: "IMAGE",
+          }
+        } else {
+          return {
+            contentOrder: (index + 1).toString(),
+            content: element.url!,
+            contentType: "IMAGE",
+          }
+        }
       }
-    };
-    fetchBlogDetail();
-  }, []);
+    }));
+    return contents;
+  }
+
+  const postBlogMutation = useMutation({
+    mutationFn: (data: { title: string; contents: Content[] }) => updatePost(id as string, data.title, data.contents),
+    onSuccess: () => {
+      setToast({ message: "저장되었습니다!", type: "success" });
+      setTimeout(() => {
+        navigate(`/detail/${id}`, { replace: true });
+      }, 1000);
+    },
+    onError: () => {
+      setToast({ message: "저장에 실패했습니다.", type: "error" });
+    },
+  });
 
   const onSubmit = async (data: z.infer<typeof postFormSchema>) => {
     const { title } = data;
-    try {
-      const contents = await Promise.all(postElements.map(async (element): Promise<Content> => {
-        if (element.type === "paragraph") {
-          return {
-            content: element.content,
-            contentType: "TEXT",
-          }
-        } else {
-          if (element.file) {
-            const presignedUrl = await getPresignedUrl(encodeURIComponent(element.file!.name));
-            console.log("presignedUrl:", presignedUrl);
-            const uploadImageResponse = await uploadImage(element.file!, presignedUrl.data);
-            console.log("uploadImageResponse:", uploadImageResponse);
-            return {
-              content: presignedUrl.data.split("?")[0],
-              contentType: "IMAGE",
-            }
-          } else {
-            return {
-              content: element.url!,
-              contentType: "IMAGE",
-            }
-          }
-        }
-      }));
-      const response = await updatePost(id as string, title, contents);
-      if (response.error) {
-        setToast({ message: response.message, type: "error" });
-      } else {
-        setToast({ message: "저장되었습니다!", type: "success" });
-        setTimeout(() => {
-          navigate(`/detail/${id}`, { replace: true });
-        }, 1000);
-      }
-    } catch (error: any) {
-      console.log(error);
-    }
+    const contents = await createSubmitData(postElements);
+    postBlogMutation.mutate({ title, contents });
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <>

@@ -10,8 +10,9 @@ import Toast from "@/components/ui/Toast";
 import { postElementsAtom } from "@/Atoms/atoms";
 import { useAtomValue } from "jotai";
 import { getPresignedUrl, uploadImage } from "@/api/convertImage";
-import { Content } from "@/type/Post/PostContent";
+import { Content, PostAtom } from "@/type/Post/Post";
 import PostForm from "@/components/layout/post/PostForm";
+import { useMutation } from "@tanstack/react-query";
 
 export const FormControlContext = createContext<{ control: Control<z.infer<typeof postFormSchema>> } | null>(null);
 
@@ -26,6 +27,40 @@ const Write = () => {
     },
   });
 
+  const createSubmitData = async (postElements: PostAtom[]) => {
+    const contents = await Promise.all(postElements.map(async (element, index): Promise<Content> => { 
+      if (element.type === "paragraph") {
+        return {
+          contentOrder: (index + 1).toString(),
+          content: element.content,
+          contentType: "TEXT",
+        }
+      } else {
+        const presignedUrl = await getPresignedUrl(encodeURIComponent(element.file!.name));
+        await uploadImage(element.file!, presignedUrl.data);
+        return {
+          contentOrder: (index + 1).toString(),
+          content: presignedUrl.data.split("?")[0],
+          contentType: "IMAGE",
+        }
+      }
+    }));
+    return contents;
+  }
+  const postBlogMutation = useMutation({
+    mutationFn: (data: { title: string; contents: Content[] }) => postBlog(data.title, data.contents),
+    onSuccess: () => {
+      setToast({ message: "블로그 작성에 성공했습니다!", type: "success" });
+      setTimeout(() => {
+        navigate("/", { replace: true });
+        window.location.reload();
+      }, 1000);
+    },
+    onError: () => {
+      setToast({ message: "블로그 작성에 실패했습니다.", type: "error" });
+    },
+  });
+  
   const onSubmit = async (data: z.infer<typeof postFormSchema>) => {
     const { title } = data;
 
@@ -33,38 +68,8 @@ const Write = () => {
       setToast({ message: "내용을 입력해주세요.", type: "error" });
       return;
     }
-    try {
-      const contents = await Promise.all(postElements.map(async (element): Promise<Content> => {
-        if (element.type === "paragraph") {
-          return {
-            content: element.content,
-            contentType: "TEXT",
-          }
-        } else {
-          const presignedUrl = await getPresignedUrl(encodeURIComponent(element.file!.name));
-          console.log("presignedUrl:", presignedUrl);
-          const uploadImageResponse = await uploadImage(element.file!, presignedUrl.data);
-          console.log("uploadImageResponse:", uploadImageResponse);
-          return {
-            content: presignedUrl.data.split("?")[0],
-            contentType: "IMAGE", 
-          }
-        }
-      }));
-
-      const response = await postBlog(title, contents);
-      if (response.error) {
-        setToast({ message: response.message, type: "error" });
-        return;
-      }
-      setToast({ message: "블로그 작성에 성공했습니다!", type: "success" });
-      setTimeout(() => {
-        navigate("/", { replace: true });
-        window.location.reload();
-      }, 1000);
-    } catch (error: any) {
-      console.log(error);
-    }
+    const contents = await createSubmitData(postElements);
+    postBlogMutation.mutate({ title, contents });
   };
 
   return (

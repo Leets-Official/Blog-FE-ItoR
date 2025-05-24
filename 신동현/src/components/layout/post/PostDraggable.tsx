@@ -112,7 +112,6 @@ const PostDraggable = ({ index, element, isNew }: { index: number, element: Post
       
       // 현재 텍스트를 커서 위치 기준으로 분할
       const beforeCursorContent = currentText.slice(0, cursorPosition);
-      console.log(currentText, beforeCursorContent);
       UpdatePostElement(currentText);
 
       // 새 요소 추가
@@ -154,6 +153,7 @@ const PostDraggable = ({ index, element, isNew }: { index: number, element: Post
                 alt={element.content} 
                 width="auto"
                 height="auto"
+                style={{ maxWidth: "100%", maxHeight: "100%" }}
                 $objectFit="contain"
               />
               <DeleteButton onClick={handleDelete}>
