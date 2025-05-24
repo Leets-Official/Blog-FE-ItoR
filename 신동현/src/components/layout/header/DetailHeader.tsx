@@ -1,8 +1,10 @@
 import { deletePost } from "@/api/post/post";
 import { Chat, More_vert } from "@/assets";
+import { isOwnerAtom } from "@/Atoms/atoms";
 import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal/Modal";
 import Toast from "@/components/ui/Toast";
+import { useAtomValue } from "jotai";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -38,7 +40,8 @@ const OptionButton = styled(Button)`
   padding-left: 10px;
 `;
 
-const DetailHeader = ({ isOwner }: { isOwner: boolean }) => {
+const DetailHeader = () => {
+  const isOwner = useAtomValue(isOwnerAtom);
   const [isOptionOpen, setIsOptionOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);

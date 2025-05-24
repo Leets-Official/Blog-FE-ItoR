@@ -19,18 +19,20 @@ const getPresignedUrl = async (image: string) => {
 
 const uploadImage = async (file: File, url: string) => {
   try {
-    const response = await api.put(url, file, {
+    const response = await fetch(url, {
+      method: 'PUT',
+      body: file,
       headers: {
         'Content-Type': file.type,
       },
     });
-    return response.data;
+    if (!response.ok) {
+      throw new Error('이미지 업로드에 실패했습니다.');
+    }
+    return response.url;
   } catch (error: any) {
     console.log("uploadImage Error", error);
-    return {
-      error: true,
-      message: error.response?.data?.message || "이미지 업로드에 실패했습니다.",
-    };
+    throw error;
   }
 };
 

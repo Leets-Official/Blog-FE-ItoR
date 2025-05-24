@@ -1,16 +1,20 @@
+import { Content } from "@/assets/type/PostContent";
 import { api } from "../api";
 
-const postBlog = async (title: string, content: string, contentOrder: number, contentType: string) => {
+const postBlog = async (title: string, contents: Content[]) => {
   try {
+    console.log(contents.map((content, index) => ({
+      contentOrder: index + 1,
+      content: content.content,
+      contentType: content.contentType
+    })));    
     const response = await api.post("/posts", {
       title: title,
-      contents: [
-        {
-          contentOrder: contentOrder,
-          content: content,
-          contentType: contentType
-        }
-      ]
+      contents: contents.map((content, index) => ({
+        contentOrder: index + 1,
+        content: content.content,
+        contentType: content.contentType
+      }))
     });
     return response.data;
   } catch (error: any) {

@@ -51,7 +51,6 @@ const signUpSocialSchema = z.object({
 
 const writeSchema = z.object({
   title: z.string().min(1, { message: "제목을 입력해주세요." }).max(100, { message: "제목은 최대 100글자 입니다." }),
-  content: z.string().min(1, { message: "내용을 입력해주세요." }).max(1000, { message: "내용은 최대 1000글자 입니다." }),
 });
 
 const commentSchema = z.object({

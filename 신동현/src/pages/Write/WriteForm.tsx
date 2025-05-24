@@ -4,7 +4,7 @@ import Input from "@/components/ui/Input";
 import styled from "styled-components";
 import { useContext, useState } from "react";
 import { writeSchema } from "@/schema/auth";
-import { Control, Controller } from "react-hook-form";
+import { Control } from "react-hook-form";
 import { z } from "zod";
 import { FormControlContext } from "./Write";
 import PostEditor from "@/components/layout/post/PostEditor";
@@ -44,22 +44,6 @@ const TitleInputContainer = styled.div`
   margin: 50px 0;
 `;
 
-const Textarea = styled.textarea`
-  width: 622px;
-  height: 100%;
-  border: none;
-  resize: none;
-  overflow: hidden;
-  outline: none;
-  font-size: 14px;
-  font-weight: 300;
-  @media (max-width: 700px) {
-    width: 90%;
-  }
-  font-family: 'Noto Sans KR', sans-serif;
-`;
-
-
 const WriteEditor = () => {
   const formContext = useContext(FormControlContext) as { control: Control<z.infer<typeof writeSchema>> };
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
@@ -84,6 +68,7 @@ const WriteEditor = () => {
           setPostElements(prev => [...prev, { 
             type: "image", 
             url: base64, 
+            file: file,
             children: [{ text: file.name }] 
           }]);
         };
@@ -106,14 +91,6 @@ const WriteEditor = () => {
         <Hr />
         <PostEditor />
       </Container>
-
-      <Controller
-        control={control}
-        name="content"
-        render={({ field }) => (
-          <Textarea placeholder="어떠한 것을 깨달았나요?" cols={15} rows={100} onChange={field.onChange} />
-        )}
-      />
     </Wrapper>
   )
 }

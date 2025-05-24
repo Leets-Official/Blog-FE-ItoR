@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 import { PostContent } from "@/assets/type/PostContent";
 import Image from "@/components/ui/Image";
 import WriterInfo from "@/components/layout/common/WriterInfo";
+import { postContentAtom } from "@/Atoms/atoms";
+import { useAtomValue } from "jotai";
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -21,6 +23,7 @@ const ContentTitle = styled.h2`
 const Content = styled.p`
   font-size: 14px;
   font-weight: 301;
+  margin : 0;
 `;
 
 const Hr = styled.hr`
@@ -30,11 +33,8 @@ const Hr = styled.hr`
   border-color: #cccccc;
 `;
 
-interface DetailContentProps {
-  postContent: PostContent;
-}
-
-const DetailContent = ({ postContent }: DetailContentProps) => {
+const DetailContent = () => {
+  const postContent = useAtomValue(postContentAtom);
 
   return (
     <ContentContainer>
@@ -46,7 +46,20 @@ const DetailContent = ({ postContent }: DetailContentProps) => {
         commentCount={postContent.commentCount}
       />
       <Hr />
-      <Content>{postContent.content}</Content>
+      {postContent.contents.map((content) => 
+        content.contentType === "TEXT" ? (
+          <Content key={content.content}>{content.content}</Content>
+        ) : (
+          <Image 
+            key={content.content} 
+            src={content.content} 
+            alt="image" 
+            width="100%" 
+            height="auto" 
+            style={{ objectFit: 'contain' }}
+          />
+        )
+      )}
     </ContentContainer>
   );
 };

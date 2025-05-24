@@ -4,43 +4,62 @@ import { writeSchema } from "@/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Control } from "react-hook-form";
 import { z } from "zod";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import { postBlog } from "@/api/post/post";
 import Toast from "@/components/ui/Toast";
+import { postElementsAtom } from "@/Atoms/atoms";
+import { useAtomValue } from "jotai";
+import { getPresignedUrl, uploadImage } from "@/api/convertImage";
+import { Content } from "@/assets/type/PostContent";
 
 export const FormControlContext = createContext<{ control: Control<z.infer<typeof writeSchema>> } | null>(null);
 
 const Write = () => {
   const navigate = useNavigate();
-  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);  
-  const { control: controlWrite, handleSubmit: handleSubmitWrite, formState: { errors } } = useForm<z.infer<typeof writeSchema>>({
+  const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
+  const postElements = useAtomValue(postElementsAtom);
+  const { control: controlWrite, handleSubmit: handleSubmitWrite } = useForm<z.infer<typeof writeSchema>>({
     resolver: zodResolver(writeSchema),
     defaultValues: {
       title: "",
-      content: "",
     },
   });
 
-  useEffect(() => {
-    if (errors.content) {
-      setToast({ message: "내용을 입력해주세요.", type: "error" });
-    } else {
-      setToast(null);
-    }
-  }, [errors.content]);
-
   const onSubmit = async (data: z.infer<typeof writeSchema>) => {
-    const { title, content } = data;
+    const { title } = data;
+
+    if (postElements.length === 0) {
+      setToast({ message: "내용을 입력해주세요.", type: "error" });
+      return;
+    }
     try {
-      const response = await postBlog(title, content, 1, "TEXT");
+      const contents = await Promise.all(postElements.map(async (element): Promise<Content> => {
+        if (element.type === "paragraph") {
+          return {
+            content: element.children[0].text,
+            contentType: "TEXT",
+          }
+        } else {
+          const presignedUrl = await getPresignedUrl(encodeURIComponent(element.file!.name));
+          console.log("presignedUrl:", presignedUrl);
+          const uploadImageResponse = await uploadImage(element.file!, presignedUrl.data);
+          console.log("uploadImageResponse:", uploadImageResponse);
+          return {
+            content: presignedUrl.data.split("?")[0],
+            contentType: "IMAGE", 
+          }
+        }
+      }));
+
+      const response = await postBlog(title, contents);
       if (response.error) {
         setToast({ message: response.message, type: "error" });
-      } else {
-        setToast({ message: "블로그 작성에 성공했습니다!", type: "success" });
-        setTimeout(() => {
-          navigate("/", { replace: true });
-        }, 1000);
+        return;
       }
+      setToast({ message: "블로그 작성에 성공했습니다!", type: "success" });
+      setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 1000);
     } catch (error: any) {
       console.log(error);
     }

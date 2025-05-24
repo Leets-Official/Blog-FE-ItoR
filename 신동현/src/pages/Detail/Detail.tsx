@@ -1,16 +1,16 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { Profile } from "@/assets";
 import DetailContent from "./DetailContent";
 import DetailComment from "./DetailComment";
 import DetailCommentInput from "./DetailCommentInput";
 import { getPostDetail } from "@/api/post/post";
-import Image from "@/components/ui/Image";
-import { PostContent } from "@/assets/type/PostContent";
+import { Content } from "@/assets/type/PostContent";
 import { PostComment } from "@/assets/type/PostCommnet";
 import Header from "@/components/layout/header/Header";
 import UserInfo from "@/components/layout/common/UserInfo";
+import { isOwnerAtom, postCommentAtom, postContentAtom } from "@/Atoms/atoms";
+import { useAtom, useSetAtom } from "jotai";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -55,20 +55,10 @@ const FooterContainer = styled.div`
 `;
 
 const Detail = () => {
-  const [isOwner, setIsOwner] = useState(false);
-  const [postContent, setPostContent] = useState<PostContent>({
-    title: "",
-    contentOrder: 0,
-    content: "",
-    contentType: "",
-    nickName: "",
-    profileUrl: "",
-    createdAt: "",
-    commentCount: 0,
-  });
-  const [postComment, setPostComment] = useState<PostComment[]>([]);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const setIsOwner = useSetAtom(isOwnerAtom);
+  const [postContent, setPostContent] = useAtom(postContentAtom);
+  const setPostComment = useSetAtom(postCommentAtom);
+  
   const { id } = useParams();
 
   useEffect(() => {
@@ -76,14 +66,16 @@ const Detail = () => {
       if (!id) return;
       try {
         const response = await getPostDetail(id);
+        console.log(response);
         if (response.code === 200) {
           const data = response.data;
           setPostComment(data.comments);
           setPostContent({
             title: data.title,
-            contentOrder: data.contents[0].contentOrder,
-            content: data.contents[0].content,
-            contentType: data.contents[0].contentType,
+            contents: data.contents.map((content: Content) => ({
+              content: content.content,
+              contentType: content.contentType,
+            })),
             nickName: data.nickName,
             profileUrl: data.profileUrl,
             createdAt: data.createdAt,
@@ -100,11 +92,11 @@ const Detail = () => {
 
   return (
     <>
-      <Header type="detail" isOwner={isOwner} />
+      <Header type="detail"/>
       <Wrapper>
         <Container>
-          <DetailContent postContent={postContent} />
-          <DetailComment postComment={postComment} />
+          <DetailContent/>
+          <DetailComment/>
           <DetailCommentInput />
         </Container>
       </Wrapper>

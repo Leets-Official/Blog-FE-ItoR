@@ -275,6 +275,7 @@ const SignUpDetailForm = () => {
     navigate("/?type=login", { replace: true });
   }
 
+//  console.log(profileImageFile?.name);
 
   return (
     <Wrapper>
