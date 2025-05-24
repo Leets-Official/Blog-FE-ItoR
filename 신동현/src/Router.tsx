@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Root, Home, SignUp, SignUpDetail, KakaoLoginLoading, Detail, Write, WriteForm, Update, NotFound, UpdateForm, KaKaoForm, EmailForm, MyPageDetail, MyPage, EmailUpdateForm } from "./pages";
+import { Root, Home, SignUp, SignUpDetail, KakaoLoginLoading, Detail, Write, WriteEditor, Update, NotFound, UpdateForm, KaKaoForm, EmailForm, MyPageDetail, MyPage, EmailUpdateForm } from "./pages";
 import KaKaoUpdateForm from "./pages/MyPage/KakaoUpdateForm";
 
 const Router = createBrowserRouter([
@@ -39,7 +39,7 @@ const Router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <WriteForm />,
+            element: <WriteEditor />,
           },
         ]
       },

@@ -2,11 +2,15 @@ import { Add_photo } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input";
 import styled from "styled-components";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { writeSchema } from "@/schema/auth";
 import { Control, Controller } from "react-hook-form";
 import { z } from "zod";
 import { FormControlContext } from "./Write";
+import { DragDropContext, Draggable, Droppable, DropResult } from "@hello-pangea/dnd";
+import { postElementsAtom } from "@/Atoms/atoms";
+import { useAtom } from "jotai";
+import PostDraggable from "@/components/layout/post/PostDraggable";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -40,6 +44,22 @@ const TitleInputContainer = styled.div`
   margin: 50px 0;
 `;
 
+const InputPlaceHolder = styled.div`
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  margin: 0px 23px;
+  color: #909090;
+`;
+
+const InputContainer = styled.div`
+  width: 622px;
+  margin: 0px 23px;
+  @media (max-width: 700px) {
+    width: 90%;
+  }
+`;
+
 const Textarea = styled.textarea`
   width: 622px;
   height: 100%;
@@ -55,9 +75,27 @@ const Textarea = styled.textarea`
   font-family: 'Noto Sans KR', sans-serif;
 `;
 
-const WriteForm = () => {
+const PostBoard = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+const WriteEditor = () => {
   const formContext = useContext(FormControlContext) as { control: Control<z.infer<typeof writeSchema>> };
   const { control } = formContext;
+  const [postElements, setPostElements] = useAtom(postElementsAtom);
+
+  const handleDragEnd = (result: DropResult) => {
+    console.log(result);
+  }
+
+  const addPostElement = () => {
+    setPostElements([...postElements, { type: "paragraph", children: [{ text: "" }] }]);
+  }
+
+  console.log(postElements);
+
   return (
     <Wrapper>
       <Hr />
@@ -67,7 +105,29 @@ const WriteForm = () => {
           <Input type="text" placeholder="제목" style={{ fontSize: "24px", fontWeight: "500" }} noneBorder={true} name="title" control={control} />
         </TitleInputContainer>
         <Hr />
+        {postElements.length > 0 ? (
+          <InputContainer>
+            <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="droppable">
+                {(provided) => (
+                  <PostBoard ref={provided.innerRef} {...provided.droppableProps}>
+                    {postElements.map((element, index) => (
+                      <PostDraggable key={index} index={index} element={element} isNew={index === postElements.length - 1} />
+                    ))}
+                    {provided.placeholder}
+                  </PostBoard>
+                )}
+              </Droppable>
+            </DragDropContext>
+            <Button onClick={addPostElement} width="100%" height="25px" backgroundColor="#FFFFFF"/>
+          </InputContainer>
+        ) : (
+          <>
+            <InputPlaceHolder onClick={addPostElement}>어떠한 것을 깨달았나요?</InputPlaceHolder>
+          </>
+        )}
       </Container>
+
       <Controller
         control={control}
         name="content"
@@ -79,4 +139,4 @@ const WriteForm = () => {
   )
 }
 
-export default WriteForm;
+export default WriteEditor;
