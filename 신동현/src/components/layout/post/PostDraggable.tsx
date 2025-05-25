@@ -108,10 +108,10 @@ const PostDraggable = ({ index, element, isNew }: { index: number, element: Post
         .replace(/<div>/g, '\n')
         .replace(/<\/div>/g, '')
         .replace(/<br>/g, '\n') || '';
-      const cursorPosition = window.getSelection()?.anchorOffset || 0;
       
       // 현재 텍스트를 커서 위치 기준으로 분할
-      const beforeCursorContent = currentText.slice(0, cursorPosition);
+      //const cursorPosition = window.getSelection()?.anchorOffset || 0;
+      // const beforeCursorContent = currentText.slice(0, cursorPosition);
       UpdatePostElement(currentText);
 
       // 새 요소 추가
