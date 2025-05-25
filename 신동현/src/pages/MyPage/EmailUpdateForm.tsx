@@ -23,11 +23,11 @@ const EmailUpdateForm = () => {
   const isModify = useAtomValue(isModifyAtom);
   return (
     <InputContainer>
-      <Input title="메일" type="text" placeholder="이메일" control={control} name="email" disabled={true}/>
-      <Input title="비밀번호" type="password" placeholder="비밀번호" control={control} name="password" disabled={!isModify}/>
-      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인"  control={control} name="passwordCheck" disabled={!isModify}/>
-      <Input title="이름" type="text" placeholder="이름" control={control} name="name" disabled={true}/>
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD"control={control} name="birth" disabled={true}/>
+      <Input title="메일" type="text" placeholder="이메일" control={control} name="email" disabled={true} />
+      <Input title="비밀번호" type="password" placeholder="비밀번호" control={control} name="password" disabled={!isModify} />
+      <Input title="비밀번호 확인" type="password" placeholder="비밀번호 확인" control={control} name="passwordCheck" disabled={!isModify} />
+      <Input title="이름" type="text" placeholder="이름" control={control} name="name" disabled={true} />
+      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth" disabled={true} />
     </InputContainer>
   )
 }
