@@ -30,10 +30,8 @@ export interface PostContent {
 }
 
 export interface PostListResponse {
-  data: {
-    post: PostContent[];
-    pageMax: number;
-  }
+  post: PostContent[];
+  pageMax: number;
 }
 
 export interface PostListProps {

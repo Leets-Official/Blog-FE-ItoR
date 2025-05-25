@@ -64,35 +64,35 @@ const Detail = () => {
   const queryKey = ['postDetail', id];
   const queryFn = () => getPostDetail(id as string);
 
-  const { data, isLoading, isError } = useQuery<{ data: PostContent }>({
+  const { data, isLoading, isError } = useQuery<PostContent>({
     queryKey,
     queryFn
   });
-
+  
   useEffect(() => {
-    if (!data?.data) return;
+    if (!data) return;
     
-    setPostComment(data.data.comments);
+    setPostComment(data.comments);
     setPostContent({
-      postId: data.data.postId,
-      title: data.data.title,
-      contents: data.data.contents.map((content) => ({
+      postId: data.postId,
+      title: data.title,
+      contents: data.contents.map((content) => ({
         contentOrder: content.contentOrder,
         content: content.content,
         contentType: content.contentType,
       })),
-      isOwner: data.data.isOwner,
-      comments: data.data.comments,
-      nickName: data.data.nickName,
-      profileUrl: data.data.profileUrl,
-      createdAt: data.data.createdAt,
+      isOwner: data.isOwner,
+      comments: data.comments,
+      nickName: data.nickName,
+      profileUrl: data.profileUrl,
+      createdAt: data.createdAt,
     });
-    setIsOwner(data.data.isOwner);
+    setIsOwner(data.isOwner);
   }, [data]);
 
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error</div>
-
+  
   return (
     <>
       <Header type="detail"/>

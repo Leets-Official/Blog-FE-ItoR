@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import Toast from "@/components/ui/Toast";
 import { postElementsAtom } from "@/Atoms/atoms";
 import { useAtom } from "jotai";
-import { Content, PostAtom } from "@/type/Post/Post";
+import { Content, PostAtom, PostContent } from "@/type/Post/Post";
 import PostForm from "@/components/layout/post/PostForm";
 import { uploadImage } from "@/api/convertImage";
 import { getPresignedUrl } from "@/api/convertImage";
@@ -33,15 +33,15 @@ const Update = () => {
   const queryKey = ["post", id];
   const queryFn = () => getPostDetail(id as string);
 
-  const { data, isLoading, error } = useQuery<{ data: { title: string; contents: Content[] } }>({
+  const { data, isLoading, error } = useQuery<PostContent>({
     queryKey,
     queryFn,
-  });
+    });
 
   useEffect(() => {
-    if (isLoading || !data?.data) return;
-    setValue("title", data.data.title);
-    setPostElements(data.data.contents.map((content: Content) => ({
+    if (isLoading || !data) return;
+    setValue("title", data.title);
+    setPostElements(data.contents.map((content: Content) => ({
       type: content.contentType === "TEXT" ? "paragraph" : "image",
       content: content.content,
       url: content.contentType === "IMAGE" ? content.content : "",

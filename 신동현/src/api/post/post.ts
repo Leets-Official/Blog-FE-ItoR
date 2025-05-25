@@ -31,7 +31,7 @@ const getPostList = async (size: number, page: number) => {
           page: page
         }
       });
-      return response.data;
+      return response.data.data;
     } else {
       const response = await api.get("/posts/all/token", {
         params: {
@@ -39,7 +39,7 @@ const getPostList = async (size: number, page: number) => {
           page: page
         }
       });
-      return response.data;
+      return response.data.data;
     }
   } catch (error: any) {
     console.error(error);
@@ -61,7 +61,7 @@ const getPostDetail = async (id: string) => {
           }
         }
       );
-      return response.data;
+      return response.data.data;
     } else {
       const response = await api.get('/posts/token',
         {
@@ -70,7 +70,7 @@ const getPostDetail = async (id: string) => {
           }
         }
       );
-      return response.data;
+      return response.data.data;
     }
   } catch (error: any) {
     console.error(error);
