@@ -1,4 +1,4 @@
-import { Content } from "@/type/Post/PostContent";
+import { Content } from "@/type/Post/Post";
 import { api } from "../api";
 
 const postBlog = async (title: string, contents: Content[]) => {
