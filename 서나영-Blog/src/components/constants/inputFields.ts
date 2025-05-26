@@ -6,7 +6,7 @@ export type InputField = {
   disabled?: boolean;
 };
 
-export const getInputFields = (isKakaoLogin: boolean): InputField[] => {
+export const getInputFields = (isKakaoLogin: boolean, mode: 'signup' | 'mypage'): InputField[] => {
   const commonFields: InputField[] = [
     {
       name: 'birthDate',
@@ -14,6 +14,9 @@ export const getInputFields = (isKakaoLogin: boolean): InputField[] => {
       type: 'date',
       placeholder: 'YYYY-MM-DD',
     },
+  ];
+
+  const extraSignupFields: InputField[] = [
     {
       name: 'nickname',
       label: '닉네임',
@@ -70,5 +73,11 @@ export const getInputFields = (isKakaoLogin: boolean): InputField[] => {
     },
   ];
 
-  return [...(isKakaoLogin ? kakaoFields : normalFields), ...commonFields];
+  const baseFields = isKakaoLogin ? kakaoFields : normalFields;
+
+  if (mode === 'signup') {
+    return [...baseFields, ...commonFields, ...extraSignupFields];
+  }
+
+  return [...baseFields, ...commonFields]; // mypage에서는 nickname, introduction 빼고
 };

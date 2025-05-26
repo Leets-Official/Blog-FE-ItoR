@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '@/components/layout/header/Header';
 import BlogTitle from '@/components/blog/blogDetail/BlogTitle';
@@ -7,37 +7,45 @@ import CommentList from '@/components/blog/blogDetail/comment/CommentList';
 import InfoFooter from '@/components/blog/blogDetail/InfoFooter';
 import { getPostDetail } from '@/api/blog/postDetailAPI';
 import { BlogPostDetail } from '@/types/blogPost';
+import { useQuery } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 const BlogDetail = () => {
-  const { postId } = useParams();
-  const [post, setPost] = useState<BlogPostDetail | null>(null);
+  const { postId } = useParams<{ postId: string }>();
+  const queryClient = useQueryClient();
   const commentRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        if (!postId) return;
-        const data = await getPostDetail(postId);
-        setPost(data);
-      } catch (error) {
-        console.error('게시글을 불러오지 못했습니다.', error);
-      }
-    };
+  const {
+    data: post,
+    isLoading,
+    isError,
+  } = useQuery<BlogPostDetail>({
+    queryKey: ['postDetail', postId],
+    queryFn: () => getPostDetail(postId!),
+    enabled: !!postId,
+  });
 
-    fetchPost();
-  }, [postId]);
+  if (isLoading) {
+    return <div>로딩 중입니다...</div>;
+  }
 
-  if (!post) {
+  if (isError || !post) {
     return <div>해당 포스트를 찾을 수 없습니다.</div>;
   }
 
   return (
     <div>
-      <Header type='ChatandMore' commentRef={commentRef} postId={postId} post={post} />
+      <Header type='ChatandMore' commentRef={commentRef} postId={postId!} post={post} />
       <BlogTitle post={post} />
       <BlogContent contents={post.contents} />
       <div ref={commentRef}>
-        <CommentList post={post} />
+        <CommentList
+          post={post}
+          postId={postId!}
+          onCommentSubmit={() => {
+            queryClient.invalidateQueries({ queryKey: ['postDetail', postId!] });
+          }}
+        />
       </div>
       <InfoFooter post={post} />
     </div>

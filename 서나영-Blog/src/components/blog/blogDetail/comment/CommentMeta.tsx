@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { BlogPostDetail } from '@/types/blogPost';
+import { BlogPostDetail, BlogComment } from '@/types/blogPost';
 import { formatPostDate } from '@/utils/date';
 import { MoreVert, Profile } from '@/assets';
 import Modal from '@/components/ui/Modal';
 import Dropdown from '@/components/ui/Dropdown';
 import useDropdown from '@/hooks/useDropdown';
 import { useToast } from '@/components/ui/Toast';
+import { deleteComment } from '@/api/blog/commentAPI';
 
 const CommentMetaContainer = styled.div`
   display: flex;
@@ -57,12 +58,24 @@ const IconWrapper = styled.div`
 
 interface CommentMetaProps {
   post: BlogPostDetail;
+  comment?: BlogComment;
   isInput?: boolean;
+  commentId?: string;
+  onDeleteSuccess?: () => void;
+  onEdit?: () => void;
 }
 
-const CommentMeta: React.FC<CommentMetaProps> = ({ post, isInput = false }) => {
+const CommentMeta: React.FC<CommentMetaProps> = ({
+  post,
+  comment,
+  isInput = false,
+  commentId,
+  onDeleteSuccess,
+  onEdit,
+}) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const displayName = isInput ? 'Guest' : post.nickName;
+  const profilePicture = localStorage.getItem('profilePicture') || '';
+  const nickname = localStorage.getItem('nickname') || 'Guest';
 
   const { showToast } = useToast();
   const { isOpen, toggleDropdown, closeDropdown, ref } = useDropdown();
@@ -70,21 +83,34 @@ const CommentMeta: React.FC<CommentMetaProps> = ({ post, isInput = false }) => {
   const handleDropdownSelect = (item: string) => {
     if (item === '삭제하기') {
       setModalOpen(true);
+    } else if (item === '수정하기') {
+      onEdit?.();
     }
     closeDropdown();
   };
 
-  const handleConfirmDelete = () => {
-    setModalOpen(false);
-    console.log('댓글 삭제됨');
-    showToast('삭제가 완료되었습니다!', 'positive');
+  const handleConfirmDelete = async () => {
+    if (commentId === undefined) return;
+    try {
+      await deleteComment(commentId);
+      showToast('삭제가 완료되었습니다!', 'positive');
+      setModalOpen(false);
+      onDeleteSuccess?.();
+    } catch (error) {
+      showToast('삭제에 실패했습니다. 다시 시도해 주세요.', 'negative');
+      console.error(error);
+    }
   };
 
   return (
     <CommentMetaContainer>
       <LeftSection>
         {isInput ? (
-          <Profile width={20} height={20} />
+          profilePicture && profilePicture.trim() !== '' ? (
+            <ProfileImage src={profilePicture} alt='profile' />
+          ) : (
+            <Profile width={20} height={20} />
+          )
         ) : post.profileUrl && post.profileUrl.trim() !== '' ? (
           <ProfileImage src={post.profileUrl} alt='profile' />
         ) : (
@@ -92,11 +118,14 @@ const CommentMeta: React.FC<CommentMetaProps> = ({ post, isInput = false }) => {
         )}
 
         <TextWrapper>
-          <StyledNickName>{displayName}</StyledNickName>
-          {!isInput && <StyledCreatedAt>{formatPostDate(post.createdAt)}</StyledCreatedAt>}
+          <StyledNickName>{isInput ? nickname : (comment?.nickName ?? 'Guest')}</StyledNickName>
+          {!isInput && (
+            <StyledCreatedAt>
+              {formatPostDate(comment?.createdAt ?? post.createdAt)}
+            </StyledCreatedAt>
+          )}
         </TextWrapper>
       </LeftSection>
-
       {!isInput && (
         <IconWrapper ref={ref}>
           <MoreVert
@@ -107,11 +136,14 @@ const CommentMeta: React.FC<CommentMetaProps> = ({ post, isInput = false }) => {
             onClick={toggleDropdown}
           />
           {isOpen && (
-            <Dropdown isOpen={isOpen} menuItems={['삭제하기']} onSelect={handleDropdownSelect} />
+            <Dropdown
+              isOpen={isOpen}
+              menuItems={['수정하기', '삭제하기']}
+              onSelect={handleDropdownSelect}
+            />
           )}
         </IconWrapper>
       )}
-
       <Modal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}

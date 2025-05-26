@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import CommentMeta from './CommentMeta';
 import Button from '@/components/ui/Button';
 import { BlogPostDetail } from '@/types/blogPost';
+import { useToast } from '@/components/ui/Toast';
+import { createComment, updateComment } from '@/api/blog/commentAPI';
 
 const CommentInputWrapper = styled.div`
   padding: 12px 16px;
@@ -54,8 +56,7 @@ const StyledButton = styled(Button)<{ $active: boolean }>`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
+  justify-content: flex-end;
   gap: 10px;
   align-self: stretch;
 `;
@@ -73,18 +74,50 @@ const LoginMessage = styled.span`
 
 interface CommentInputProps {
   post: BlogPostDetail;
-  placeholder?: string;
   isLogin: boolean;
+  onSuccess?: () => void;
+  initialValue?: string;
+  isEditMode?: boolean;
+  commentId?: string;
+  onCancel?: () => void;
 }
 
-const CommentInput: React.FC<CommentInputProps> = ({ post, placeholder, isLogin }) => {
-  const [value, setValue] = useState('');
+const CommentInput: React.FC<CommentInputProps> = ({
+  post,
+  isLogin,
+  onSuccess,
+  initialValue,
+  isEditMode,
+  commentId,
+  onCancel,
+}) => {
+  const [value, setValue] = useState(initialValue || '');
+  const { showToast } = useToast();
+
+  const handleSubmit = async () => {
+    if (!value.trim()) return;
+
+    try {
+      if (isEditMode && commentId) {
+        await updateComment(commentId, value);
+      } else {
+        await createComment(post.postId, value);
+      }
+      setValue('');
+      onSuccess?.();
+    } catch (e) {
+      console.error(isEditMode ? '댓글 수정 실패:' : '댓글 작성 실패:', e);
+      showToast(isEditMode ? '댓글 수정에 실패했습니다.' : '댓글 작성에 실패했습니다.', 'negative');
+    }
+  };
 
   if (!isLogin) {
     return (
-      <CommentInputContainer>
-        <LoginMessage>로그인을 하고 댓글을 달아보세요!</LoginMessage>
-      </CommentInputContainer>
+      <CommentInputWrapper>
+        <CommentInputContainer>
+          <LoginMessage>로그인을 하고 댓글을 달아보세요!</LoginMessage>
+        </CommentInputContainer>
+      </CommentInputWrapper>
     );
   }
 
@@ -98,7 +131,14 @@ const CommentInput: React.FC<CommentInputProps> = ({ post, placeholder, isLogin 
           onChange={(e) => setValue(e.target.value)}
         />
         <ButtonWrapper>
-          <StyledButton $active={value.trim().length > 0}>등록</StyledButton>
+          {isEditMode && onCancel && (
+            <StyledButton $active={false} onClick={onCancel}>
+              취소
+            </StyledButton>
+          )}
+          <StyledButton $active={value.trim().length > 0} onClick={handleSubmit}>
+            등록
+          </StyledButton>
         </ButtonWrapper>
       </CommentInputContainer>
     </CommentInputWrapper>

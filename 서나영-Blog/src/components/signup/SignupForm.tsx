@@ -64,7 +64,6 @@ const SignupForm = () => {
   const isKakaoLogin = location.state?.isKakaoLogin ?? false;
   const kakaoName = location.state?.name || '';
   const kakaoProfilePicture = location.state?.profilePicture || '';
-  const kakaoId = location.state?.kakaoId;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -106,7 +105,6 @@ const SignupForm = () => {
         nickname: data.nickname?.trim() || data.name,
         introduction: data.introduction ?? '',
         profilePicture: watch('profilePicture') || '',
-        kakaoId,
         isKakaoLogin,
       });
 
@@ -125,7 +123,7 @@ const SignupForm = () => {
     }
   };
 
-  const inputFields = getInputFields(isKakaoLogin);
+  const inputFields = getInputFields(isKakaoLogin, 'signup');
 
   return (
     <FormContainer>

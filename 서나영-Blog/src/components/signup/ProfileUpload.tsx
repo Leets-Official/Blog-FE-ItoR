@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Profile, AddPhoto } from '@/assets';
 import { getPresignedUrl, uploadImage } from '@/api/image/ImageAPI';
+import { useToast } from '@/components/ui/Toast';
 
 const ProfileContainer = styled.div`
   display: flex;
@@ -18,21 +19,23 @@ const Label = styled.label`
   font-size: 14px;
 `;
 
-const ProfileWrapper = styled.div`
+const ProfileWrapper = styled.div<{ size: number }>`
   display: flex;
-  width: 90px;
-  height: 90px;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   overflow: hidden;
+  cursor: pointer;
 `;
 
-const StyledProfile = styled.div<{ image: string | null }>`
-  width: 90px;
-  height: 90px;
-  background: ${({ image }) => (image ? `url(${image})` : 'none')} center/cover no-repeat;
+const StyledProfile = styled.img<{ size: number }>`
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  object-fit: cover;
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 const AddPhotoButton = styled.button`
@@ -53,10 +56,22 @@ const AddPhotoButton = styled.button`
 interface ProfileUploadProps {
   initialImage?: string;
   onImageChange?: (imageUrl: string, file?: File) => void;
+  hideButton?: boolean;
+  size?: number;
+  showLabel?: boolean;
+  disabled?: boolean;
 }
 
-const ProfileUpload = ({ initialImage, onImageChange }: ProfileUploadProps) => {
+const ProfileUpload = ({
+  initialImage,
+  onImageChange,
+  hideButton,
+  size = 90,
+  showLabel = true,
+  disabled = false,
+}: ProfileUploadProps) => {
   const [image, setImage] = useState<string | null>(initialImage || null);
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (initialImage) {
@@ -75,7 +90,7 @@ const ProfileUpload = ({ initialImage, onImageChange }: ProfileUploadProps) => {
       setImage(uploadedUrl);
       onImageChange?.(uploadedUrl, file);
     } catch (error) {
-      alert('이미지 업로드 실패');
+      showToast('이미지를 불러오지 못했습니다.', 'negative');
       console.error(error);
     }
   };
@@ -86,12 +101,12 @@ const ProfileUpload = ({ initialImage, onImageChange }: ProfileUploadProps) => {
 
   return (
     <ProfileContainer>
-      <Label>프로필 사진</Label>
-      <ProfileWrapper>
+      {showLabel && <Label>프로필 사진</Label>}
+      <ProfileWrapper size={size}>
         {image ? (
-          <StyledProfile image={image} onClick={handleButtonClick} />
+          <StyledProfile src={image} size={size} onClick={handleButtonClick} />
         ) : (
-          <Profile width='90px' height='90px' onClick={handleButtonClick} />
+          <Profile width={`${size}px`} height={`${size}px`} onClick={handleButtonClick} />
         )}
       </ProfileWrapper>
       <input
@@ -100,10 +115,13 @@ const ProfileUpload = ({ initialImage, onImageChange }: ProfileUploadProps) => {
         accept='image/*'
         style={{ display: 'none' }}
         onChange={handleImageChange}
+        disabled={disabled}
       />
-      <AddPhotoButton onClick={handleButtonClick}>
-        <AddPhoto width={14} height={14} /> 프로필 사진 추가
-      </AddPhotoButton>
+      {!hideButton && (
+        <AddPhotoButton onClick={handleButtonClick}>
+          <AddPhoto width={14} height={14} /> 프로필 사진 추가
+        </AddPhotoButton>
+      )}
     </ProfileContainer>
   );
 };

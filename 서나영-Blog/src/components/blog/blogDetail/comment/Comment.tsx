@@ -1,6 +1,8 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import CommentMeta from '@/components/blog/blogDetail/comment/CommentMeta';
 import { BlogPostDetail, BlogComment } from '@/types/blogPost';
+import CommentInput from '@/components/blog/blogDetail/comment/CommentInput';
 
 const CommentWrapper = styled.div`
   display: flex;
@@ -23,14 +25,47 @@ const CommentText = styled.span`
 interface CommentProps {
   post: BlogPostDetail;
   comment: BlogComment;
+  onDeleteSuccess: () => void;
+  onEnterEdit: (commentId: string) => void;
+  onExitEdit: () => void;
+  isEditing?: boolean;
 }
 
-const Comment: React.FC<CommentProps> = ({ post, comment }) => {
+const Comment: React.FC<CommentProps> = ({
+  post,
+  comment,
+  onDeleteSuccess,
+  onEnterEdit,
+  onExitEdit,
+  isEditing,
+}) => {
   return (
-    <CommentWrapper>
-      <CommentMeta post={post} />
-      <CommentText>{comment.content}</CommentText>
-    </CommentWrapper>
+    <>
+      {isEditing ? (
+        <CommentInput
+          post={post}
+          isLogin={true}
+          initialValue={comment.content}
+          isEditMode={true}
+          commentId={comment.commentId}
+          onCancel={onExitEdit}
+          onSuccess={() => {
+            onDeleteSuccess();
+            onExitEdit();
+          }}
+        />
+      ) : (
+        <CommentWrapper>
+          <CommentMeta
+            post={post}
+            commentId={comment.commentId}
+            onDeleteSuccess={onDeleteSuccess}
+            onEdit={() => onEnterEdit(comment.commentId)}
+          />
+          <CommentText>{comment.content}</CommentText>
+        </CommentWrapper>
+      )}
+    </>
   );
 };
 

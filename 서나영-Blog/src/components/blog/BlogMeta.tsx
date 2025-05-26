@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BlogPost } from '@/types/blogPost';
+import { BlogPost, BlogPostDetail } from '@/types/blogPost';
 import { Profile, Dot } from '@/assets';
 import { formatPostDate } from '@/utils/date';
 
@@ -41,22 +41,19 @@ const StyledCommentCount = styled.span`
   font-weight: 300;
 `;
 
-interface BlogPostWithOptionalDetail extends BlogPost {
-  createdAt?: string;
-  comments?: Comment[];
-  nickName?: string;
-  profileUrl?: string;
-}
-
-interface PostMetaProps {
-  post: BlogPostWithOptionalDetail;
+type PostMetaProps = {
+  post: BlogPost | BlogPostDetail;
   isBlogDetail?: boolean;
-}
+};
 
 const BlogMeta: React.FC<PostMetaProps> = ({ post, isBlogDetail = false }) => {
-  const profilePicture = isBlogDetail && post.profileUrl ? post.profileUrl : '';
-  const nickName = isBlogDetail && post.nickName ? post.nickName : '닉네임';
-  const createdAt = isBlogDetail && post.createdAt ? post.createdAt : '';
+  const profilePicture = post.profileUrl || '';
+  const nickName = post.nickName || '닉네임';
+  const createdAt = post.createdAt || '';
+
+  const isDetail = (p: BlogPost | BlogPostDetail): p is BlogPostDetail => 'comments' in p;
+
+  const commentCount = isDetail(post) ? post.comments.length : (post.commentCount ?? 0);
 
   return (
     <MetaContainer>
@@ -69,9 +66,7 @@ const BlogMeta: React.FC<PostMetaProps> = ({ post, isBlogDetail = false }) => {
       <Dot />
       <StyledCreatedAt>{formatPostDate(createdAt)}</StyledCreatedAt>
       <Dot />
-      <StyledCommentCount>
-        댓글 {isBlogDetail ? (post.comments?.length ?? 0) : (post.commentCount ?? 0)}
-      </StyledCommentCount>
+      <StyledCommentCount>댓글 {commentCount}</StyledCommentCount>
     </MetaContainer>
   );
 };

@@ -9,33 +9,33 @@ export interface BlogPost {
   contents: BlogPostContent[];
   isOwner: boolean;
   commentCount?: number;
+  nickName: string;
+  profileUrl: string;
+  createdAt: string;
+}
+
+export interface BlogPostListResponse {
+  post: BlogPost[];
+  pageMax: number;
 }
 
 export interface BlogPostDetail {
   postId: string;
   title: string;
-  contents: {
-    contentOrder: number;
-    content: string;
-    contentType: 'TEXT' | 'IMAGE';
-  }[];
+  contents: BlogPostContent[];
   isOwner: boolean;
-  comments: {
-    commentId: number;
-    content: string;
-    nickName: string;
-    isOwner: boolean;
-  }[];
+  comments: BlogComment[];
   nickName: string;
   profileUrl: string;
   createdAt: string;
 }
 
 export interface BlogComment {
-  commentId: number;
+  commentId: string;
   content: string;
   nickName: string;
   isOwner: boolean;
+  createdAt: string;
 }
 
 export interface Block {

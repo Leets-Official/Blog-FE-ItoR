@@ -38,6 +38,7 @@ const BlogContent: React.FC<BlogContentProps> = ({ contents }) => {
         if (block.contentType === 'IMAGE') {
           return (
             <Image
+              loading='lazy'
               key={index}
               src={block.content}
               alt={`본문 이미지 ${index + 1}`}

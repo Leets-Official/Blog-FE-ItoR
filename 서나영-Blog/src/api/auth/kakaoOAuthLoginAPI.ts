@@ -11,7 +11,6 @@ export const kakaoOAuthLogin = async (
   nickname?: string;
   profilePicture?: string;
   responseMessage: string;
-  kakaoId: number;
 }> => {
   const response = await api.get(`/auth/kakao/redirect`, {
     params: { code },
@@ -27,7 +26,6 @@ export const kakaoOAuthLogin = async (
     nickname,
     introduction,
     profilePicture: profilePicture,
-    kakaoId,
   } = result.data;
 
   // localStorage에 저장
@@ -36,7 +34,7 @@ export const kakaoOAuthLogin = async (
   localStorage.setItem('nickname', nickname);
   localStorage.setItem('profilePicture', profilePicture);
   localStorage.setItem('introduction', introduction);
-  localStorage.setItem('kakaoId', kakaoId);
+  localStorage.setItem('isKakaoLogin', 'true');
 
   return {
     code: result.code,
@@ -44,6 +42,5 @@ export const kakaoOAuthLogin = async (
     nickname: result.data?.nickname,
     profilePicture: result.data?.picture,
     responseMessage: result.data?.responseMessage,
-    kakaoId: result.data?.kakaoId,
   };
 };

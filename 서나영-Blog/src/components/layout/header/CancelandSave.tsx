@@ -1,8 +1,19 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/Toast';
+import {
+  updateUserInfo,
+  updateNickname,
+  updatePassword,
+  updateProfilePicture,
+} from '@/api/user/userAPI';
+import { UpdateUserInfoRequest } from '@/types/user';
 
 type TextType = 'Cancel' | 'Save';
+
+type CancelandSaveProps = {
+  editData?: UpdateUserInfoRequest;
+};
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +29,7 @@ const Text = styled.p<{ type: TextType }>`
   cursor: pointer;
 `;
 
-const CancelandSave = () => {
+const CancelandSave = ({ editData }: CancelandSaveProps) => {
   const navigate = useNavigate();
   const { showToast } = useToast();
 
@@ -26,9 +37,56 @@ const CancelandSave = () => {
     navigate(-1);
   };
 
-  const handleSave = () => {
-    showToast('저장되었습니다!', 'positive');
-    navigate('/mypage');
+  const handleSave = async () => {
+    try {
+      if (!editData) return;
+
+      const { nickname, profilePicture, password, confirmPassword, ...rest } = editData;
+      const localUpdates: Record<string, string> = {};
+      const hasOtherData = Object.values(rest).some((v) => v !== '');
+
+      // hasOtherData가 true인 경우, editData 전체를 사용하여 한 번에 업데이트
+      if (hasOtherData) {
+        const userInfoUpdateData: UpdateUserInfoRequest = {
+          ...editData,
+        };
+        await updateUserInfo(userInfoUpdateData);
+
+        if (nickname) localUpdates.nickname = nickname;
+        if (profilePicture) localUpdates.profilePicture = profilePicture;
+        if (editData.introduction) localUpdates.introduction = editData.introduction;
+      } else {
+        // hasOtherData가 false인 경우
+
+        // 비밀번호만 수정하는 경우
+        if (password && confirmPassword && !nickname && !profilePicture) {
+          await updatePassword(password);
+        }
+
+        // 닉네임만 수정하는 경우
+        if (nickname && !password && !profilePicture) {
+          await updateNickname(nickname);
+          localUpdates.nickname = nickname;
+        }
+
+        // 프로필 사진만 수정하는 경우
+        if (profilePicture && !password && !nickname) {
+          await updateProfilePicture(profilePicture);
+          localUpdates.profilePicture = profilePicture;
+        }
+      }
+
+      // 저장된 항목 localStorage에 반영
+      Object.entries(localUpdates).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
+
+      showToast('저장되었습니다!', 'positive');
+      navigate('/mypage');
+    } catch (error: any) {
+      showToast(error.response?.data?.message || '저장 중 오류가 발생했습니다.', 'negative');
+      console.error('에러:', error.response?.data?.message || error);
+    }
   };
 
   return (
