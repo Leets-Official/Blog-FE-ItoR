@@ -117,6 +117,7 @@ const MyPageTitle: React.FC<MyPageTitleProps> = ({
   return (
     <MyPageTitleWrapper>
       <ContentWrapper>
+        {/* 마이페이지 설정 화면이 아닌 경우 - 단순 정보 출력 */}
         {!isMyPageSetting ? (
           <>
             {profilePicture ? (
@@ -134,6 +135,7 @@ const MyPageTitle: React.FC<MyPageTitleProps> = ({
             <Description>{introduction}</Description>
           </>
         ) : (
+          // 마이페이지 설정 화면일 경우 - 프로필 수정 UI 렌더링
           <>
             <ProfileUpload
               initialImage={profilePicture}
@@ -203,7 +205,7 @@ const MyPageTitle: React.FC<MyPageTitleProps> = ({
           </>
         )}
       </ContentWrapper>
-
+      {/* 마이페이지 수정 화면이 아닌 경우 - "내 프로필 설정" 버튼 표시 */}
       {!isMyPageSetting && (
         <ButtonWrapper>
           <SettingButton onClick={handleMyPageSettingClick}>
