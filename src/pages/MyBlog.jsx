@@ -60,7 +60,7 @@ const BioText = styled.p`
 `;
 
 const Content = styled.div`
-  min-width: 700px;
+  width: 700px;
   margin: 60px auto;
 
   @media (max-width: 700px) {
@@ -70,6 +70,9 @@ const Content = styled.div`
 `;
 
 const MyBlog = () => {
+  const nickName = localStorage.getItem('nickname');
+  const profilePicture = localStorage.getItem('profilePicture');
+  const introduction = localStorage.getItem('introduction');
   return (
     <>
       <GlobalStyle />
@@ -78,9 +81,15 @@ const MyBlog = () => {
         <ProfileBox>
           <ProfileContent>
             <InputContent>
-              <Image src={Profile} alt='프로필' width='64px' height='64px' radius='50%' />
-              <Nickname>닉네임</Nickname>
-              <BioText>한 줄 소개</BioText>
+              <Image
+                src={profilePicture || Profile}
+                alt='프로필'
+                width='64px'
+                height='64px'
+                radius='50%'
+              />
+              <Nickname>{nickName}</Nickname>
+              <BioText>{introduction}</BioText>
               <Link to='/mypage'>
                 <Button
                   icon={SettingIcon}
@@ -99,7 +108,7 @@ const MyBlog = () => {
           </ProfileContent>
         </ProfileBox>
         <Content>
-          <BlogPostList />
+          <BlogPostList isOwner={true} />
         </Content>
       </Container>
     </>

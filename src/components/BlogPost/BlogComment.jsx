@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Button, Image, Modal, Toast } from '@/components';
+import { Button, Image, Modal } from '@/components';
 import { useLogin } from '@/context/LoginContext';
-import { MoreIcon } from '@/assets';
+import { MoreIcon, Profile } from '@/assets';
+import { postComment, deleteComment } from '@/api/comment';
+import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToast } from '@/context/ToastContext';
 
 const CommentContent = styled.div`
   max-width: 720px;
@@ -38,7 +43,7 @@ const CommentBox = styled.div`
   padding: 16px;
 `;
 
-const PostedCommetBox = styled.div`
+const PostedCommentBox = styled.div`
   display: flex;
   flex-direction: column;
   margin: 50px 0 60px;
@@ -107,38 +112,52 @@ const StyledMoreIcon = styled(MoreIcon)`
 `;
 
 const BlogComment = ({ post }) => {
+  const { id } = useParams();
   const { isLogin } = useLogin();
-  const [commentList, setCommentList] = useState([]);
   const [commentInput, setCommentInput] = useState('');
-  const [toastData, setToastData] = useState({ show: false, type: '', message: '' });
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const { showToast } = useToast();
+  const nickname = localStorage.getItem('nickname');
+  const profilePicture = localStorage.getItem('profilePicture');
 
-  const PostComment = () => {
-    if (!commentInput.trim()) return;
-    const newComment = {
-      id: Date.now(),
-      text: commentInput,
-    };
-    setCommentList((prev) => [...prev, newComment]);
-    setCommentInput('');
+  const queryClient = useQueryClient();
+
+  const createdAt = dayjs(post.createdAt).format('YYYY.M.D');
+  const commentList = post.comments;
+
+  const postCommentMutation = useMutation({
+    mutationFn: (comment) => postComment(id, comment),
+    onSuccess: () => {
+      setCommentInput('');
+      showToast('positive', '댓글이 등록되었습니다!');
+      queryClient.invalidateQueries(['postId', id]);
+    },
+  });
+
+  const deleteCommentMutation = useMutation({
+    mutationFn: (commentId) => deleteComment(commentId),
+    onSuccess: () => {
+      showToast('positive', '댓글이 삭제되었습니다!');
+      setModalOpen(false);
+      setDeleteId(null);
+      queryClient.invalidateQueries(['postId', id]);
+    },
+  });
+
+  const handlePostComment = () => {
+    if (!commentInput.trim()) return showToast('error', '댓글을 입력해주세요');
+    postCommentMutation.mutate(commentInput);
   };
 
-  const onToast = (message) => {
-    setToastData({ show: true, type: 'positive', message });
-    setTimeout(() => setToastData((prev) => ({ ...prev, show: false })), 2000);
-  };
-
-  const deleteComment = () => {
-    setCommentList((prev) => prev.filter((comment) => comment.id !== deleteId));
-    setModalOpen(false);
-    setDeleteId(null);
-    onToast('삭제가 완료되었습니다!');
+  const handleDeleteComment = () => {
+    if (deleteId) {
+      deleteCommentMutation.mutate(deleteId);
+    }
   };
 
   return (
-    <CommentContent id='comment'>
-      <Toast show={toastData.show} text={toastData.message} type={toastData.type} />
+    <CommentContent>
       <CommentHeader>
         댓글 <span>{commentList.length}</span>
       </CommentHeader>
@@ -149,28 +168,36 @@ const BlogComment = ({ post }) => {
         </NoComment>
       )}
       {commentList.map((comment) => (
-        <PostedCommetBox key={comment.id}>
+        <PostedCommentBox key={comment.commentId}>
           <PostedCommentContent>
             <InfoWrapper>
-              <Image width='20px' height='20px' src={post.profileImg} alt='프로필' />
-              <span style={{ color: '#333' }}>{post.nickname}</span>
+              <Image width='20px' height='20px' src={Profile} alt='프로필' />
+              <span style={{ color: '#333' }}>Leets</span>
             </InfoWrapper>
-            <StyledMoreIcon
-              onClick={() => {
-                setDeleteId(comment.id);
-                setModalOpen(true);
-              }}
-            />
+            {comment.isOwner && (
+              <StyledMoreIcon
+                onClick={() => {
+                  setDeleteId(comment.commentId);
+                  setModalOpen(true);
+                }}
+              />
+            )}
           </PostedCommentContent>
-          <CommentData>{post.date}</CommentData>
-          <PostedComment>{comment.text}</PostedComment>
-        </PostedCommetBox>
+          <CommentData>{createdAt}</CommentData>
+          <PostedComment>{comment.content}</PostedComment>
+        </PostedCommentBox>
       ))}
       {isLogin ? (
-        <CommentBox>
+        <CommentBox id='comment'>
           <InfoWrapper>
-            <Image width='20px' height='20px' src={post.profileImg} alt='프로필' />
-            <span style={{ color: '#333' }}>{post.nickname}</span>
+            <Image
+              width='20px'
+              height='20px'
+              radius='50%'
+              src={profilePicture || Profile}
+              alt='프로필'
+            />
+            <span style={{ color: '#333' }}>{nickname}</span>
           </InfoWrapper>
           <StyledTextarea
             placeholder='댓글을 입력해주세요.'
@@ -184,7 +211,7 @@ const BlogComment = ({ post }) => {
               borderStyle='1px solid #909090'
               color='#909090'
               radius='25px'
-              onClick={PostComment}
+              onClick={handlePostComment}
             >
               등록
             </Button>
@@ -200,7 +227,7 @@ const BlogComment = ({ post }) => {
         closeText='취소'
         bgColor='#FF3F3F'
         onClose={() => setModalOpen(false)}
-        onConfirm={deleteComment}
+        onConfirm={handleDeleteComment}
       />
     </CommentContent>
   );

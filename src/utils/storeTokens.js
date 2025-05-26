@@ -4,3 +4,11 @@ export const storeTokens = (accessToken, refreshToken) => {
     localStorage.setItem('refreshToken', refreshToken);
   }
 };
+
+export const storeInfo = (nickname, introduction, profilePicture) => {
+  if (nickname && introduction && profilePicture !== undefined) {
+    localStorage.setItem('nickname', nickname);
+    localStorage.setItem('introduction', introduction);
+    localStorage.setItem('profilePicture', profilePicture);
+  }
+};

@@ -1,13 +1,23 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Header, Image, Input } from '@/components';
-import { Profile } from '@/assets';
+import { Profile, KakaoIcon } from '@/assets';
 import GlobalStyle from '@/styles/global';
-import { createInputFields } from '@/constant/SignupFields';
+import { createInputFields } from '@/utils/SignupFields';
 import { onValidation } from '@/utils/validation';
-import { getUserInfo, updateUserInfo, updateNickname, updatePassword } from '@/api/users';
+import {
+  getUserInfo,
+  updateUserInfo,
+  updateNickname,
+  updatePassword,
+  updatePicture,
+} from '@/api/users';
+import { uploadImage, getPresignedUrl } from '@/api/Image';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import userDummy from '@/data/userDummy';
+import { SocialBox } from '@/styles/SignupStyles';
+import { storeInfo } from '@/utils/storeTokens';
+import { useToast } from '@/context/ToastContext';
 
 const Container = styled.div`
   position: relative;
@@ -51,7 +61,7 @@ const ImageWrapper = styled.div`
   height: 64px;
 `;
 
-const EditButton = styled.button`
+const ProfileButton = styled.button`
   position: absolute;
   bottom: 0;
   right: 0;
@@ -68,7 +78,7 @@ const EditButton = styled.button`
   cursor: pointer;
 
   &:hover {
-    filter: brightness(0.9);
+    filter: brightness(0.8);
   }
 `;
 
@@ -79,8 +89,12 @@ export const Text = styled.div`
 `;
 
 const Mypage = () => {
+  const [isEditMode, setIsEditMode] = useState(false);
   const queryClient = useQueryClient();
-
+  const { showToast } = useToast();
+  const fileInputRef = useRef(null);
+  const isKakao = localStorage.getItem('isKakao') === 'true';
+  const introduction = localStorage.getItem('introduction');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -92,6 +106,8 @@ const Mypage = () => {
     profilePicture: '',
   });
   const [formError, setFormError] = useState({});
+  const [profileImage, setProfileImage] = useState('');
+  const [previewImage, setPreviewImage] = useState('');
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['userInfo'],
@@ -108,8 +124,9 @@ const Mypage = () => {
         // TODO: 이름, 생년월일, 소개
         name: userDummy.name,
         birth: userDummy.birthDate,
-        bio: userDummy.introduction,
+        bio: introduction,
       }));
+      setPreviewImage(data.profilePicture || '');
     }
   }, [data]);
 
@@ -119,34 +136,50 @@ const Mypage = () => {
   const handleSave = async () => {
     const nicknameCheck = formData.nickname !== data.nickname;
     const emailCheck = formData.email !== data.email;
-    const passwordCheck = formData.password === formData.confirmPassword;
-
-    const isValid = onValidation(formData, setFormError, '', data);
-    if (!isValid) return;
+    const passwordCheck = formData.password && formData.password === formData.confirmPassword;
+    const isPasswordOnly = passwordCheck && !nicknameCheck && !emailCheck;
 
     try {
-      // 유저 정보 전체 변경
-      if (nicknameCheck && emailCheck) {
-        await updateUserInfo({
-          email: formData.email,
-          nickname: formData.nickname,
-          password: formData.password,
-          profilePicture: formData.profilePicture,
-          birthDate: formData.birth,
-          name: formData.name,
-          introduction: formData.bio,
-        });
-        console.log('유저 정보가 업데이트 되었습니다.');
+      if (profileImage) {
+        const updateImage = await updatePicture(profileImage);
+        if (updateImage) {
+          showToast('positive', '프로필이 업데이트 되었습니다.');
+          setPreviewImage(profileImage);
+          setFormData((prev) => ({
+            ...prev,
+            profilePicture: profileImage,
+          }));
+          localStorage.setItem('profilePicture', profileImage);
+        }
       }
-      // 닉네임 업데이트
-      else if (nicknameCheck) {
-        await updateNickname(formData.nickname);
-        console.log('닉네임이 업데이트 되었습니다.');
-      }
-      //비밀번호 업데이트
-      else if (formData.password && passwordCheck) {
+      if (isPasswordOnly) {
         await updatePassword(formData.password);
-        console.log('비밀번호가 업데이트 되었습니다.');
+        showToast('positive', '비밀번호가 업데이트 되었습니다.');
+      } else {
+        const isValid = isKakao
+          ? onValidation(formData, setFormError, '', data, true)
+          : onValidation(formData, setFormError, '', data);
+        if (!isValid) return;
+        if (nicknameCheck && emailCheck && passwordCheck) {
+          await updateUserInfo({
+            email: formData.email,
+            nickname: formData.nickname,
+            password: formData.password,
+            profilePicture: formData.profilePicture,
+            birthDate: formData.birth,
+            name: formData.name,
+            introduction: formData.bio,
+          });
+          storeInfo(formData.nickname, formData.bio, formData.profilePicture);
+          showToast('positive', '유저 정보가 업데이트 되었습니다.');
+        } else if (nicknameCheck) {
+          await updateNickname(formData.nickname);
+          localStorage.setItem('nickname', formData.nickname);
+          showToast('positive', '닉네임이 업데이트 되었습니다.');
+        } else if (passwordCheck) {
+          await updatePassword(formData.password);
+          showToast('positive', '비밀번호가 업데이트 되었습니다.');
+        }
       }
 
       await queryClient.invalidateQueries({ queryKey: ['userInfo'] });
@@ -155,17 +188,57 @@ const Mypage = () => {
     }
   };
 
+  const handleProfileClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const previewUrl = URL.createObjectURL(file);
+    setPreviewImage(previewUrl);
+
+    try {
+      const presignedUrl = await getPresignedUrl(file.name);
+      const uploadedUrl = await uploadImage(presignedUrl, file);
+
+      setProfileImage(uploadedUrl);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const inputFields = createInputFields(formData, setFormData, formError, false, true);
   return (
     <>
       <GlobalStyle />
       <Container>
-        <Header onSave={handleSave} />
+        <Header onSave={handleSave} isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
         <Content>
           <ProfileContent>
             <ImageWrapper>
-              <Image src={Profile} alt='프로필' width='64px' height='64px' radius='50%' />
-              <EditButton onClick={() => alert('프로필 수정 클릭')}>+</EditButton>
+              <Image
+                src={previewImage || Profile}
+                alt='프로필'
+                width='64px'
+                height='64px'
+                radius='50%'
+              />
+              {isEditMode && (
+                <>
+                  <ProfileButton onClick={handleProfileClick}>+</ProfileButton>
+                  <input
+                    type='file'
+                    accept='image/*'
+                    style={{ display: 'none' }}
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                  />
+                </>
+              )}
             </ImageWrapper>
             {['nickname', 'bio'].map((field) => (
               <Input
@@ -179,22 +252,40 @@ const Mypage = () => {
                 onChange={(e) => setFormData((prev) => ({ ...prev, [field]: e.target.value }))}
                 errorState={field === 'nickname' ? formError.nickname : ''}
                 showHint={field === 'nickname'}
+                disabled={!isEditMode}
               />
             ))}
           </ProfileContent>
-          {inputFields.map((field) => (
-            <div key={field.name}>
-              <Text>{field.label}</Text>
-              <Input
-                placeholder={field.placeholder}
-                type={field.type}
-                name={field.name}
-                value={field.value}
-                onChange={field.onChange}
-                errorState={field.error}
-              />
-            </div>
-          ))}
+          {isKakao && (
+            <>
+              <Text>소셜 로그인</Text>
+              <SocialBox disabled>
+                <KakaoIcon />
+                카카오 로그인
+              </SocialBox>
+            </>
+          )}
+          {inputFields
+            .filter((field) => {
+              if (isKakao && (field.name === 'password' || field.name === 'confirmPassword')) {
+                return false;
+              }
+              return true;
+            })
+            .map((field) => (
+              <div key={field.name}>
+                <Text>{field.label}</Text>
+                <Input
+                  placeholder={field.placeholder}
+                  type={field.type}
+                  name={field.name}
+                  value={field.value}
+                  onChange={field.onChange}
+                  errorState={field.error}
+                  disabled={!isEditMode}
+                />
+              </div>
+            ))}
         </Content>
       </Container>
     </>

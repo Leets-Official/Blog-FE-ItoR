@@ -1,108 +1,26 @@
-import styled from 'styled-components';
-import { Header, Toast } from '@/components';
+import { Header, BlogImageUpload, BlogPostContent } from '@/components';
 import { useState } from 'react';
-import { AddPhoto } from '@/assets';
 import GlobalStyle from '@/styles/global';
 import { useNavigate } from 'react-router-dom';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 70px;
-`;
-
-const AddPhotoButton = styled.div`
-  display: flex;
-  align-items: center;
-  color: #909090;
-  gap: 4px;
-  padding: 10px;
-  margin-top: 5px;
-  font-size: 14px;
-
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-
-const Line = styled.div`
-  width: 100vw;
-  height: 1px;
-  background-color: #f5f5f5;
-  margin-top: 5px;
-`;
-
-const TitleWrapper = styled.div`
-  max-width: 800px;
-  width: 100%;
-  margin: 70px auto 50px;
-
-  @media screen {
-    padding-left: 20px;
-  }
-`;
-
-const TitleInput = styled.input`
-  width: 100%;
-  height: 50px;
-  font-size: 24px;
-  color: black;
-  font-weight: 500;
-  line-height: 160%;
-  letter-spacing: -0.25%;
-  border: none;
-  outline: none;
-
-  &::placeholder {
-    color: #909090;
-    font-size: 18px;
-    font-weight: 600;
-  }
-`;
-
-const Content = styled.div`
-  max-width: 800px;
-  width: 100%;
-  margin: 60px auto;
-
-  @media screen {
-    padding-left: 20px;
-  }
-`;
-
-const ContentText = styled.textarea`
-  min-height: 70px;
-  width: 100%;
-  font-size: 14px;
-  color: #696969;
-  font-weight: 300;
-  line-height: 160%;
-  letter-spacing: -0.5%;
-  word-break: keep-all;
-  border: none;
-  resize: none;
-  outline: none;
-
-  &::placeholder {
-    color: #b3b3b3;
-  }
-`;
+import { blogPost } from '@/api/post';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Container, Line, TitleWrapper, TitleInput } from '@/styles/BlogStyles';
+import { useToast } from '@/context/ToastContext';
 
 const BlogWrite = () => {
-  const [content, setContent] = useState('');
-  const [toastData, setToastData] = useState({ show: false, type: 'error', message: '' });
+  const [title, setTitle] = useState('');
+  const [contents, setContents] = useState([{ contentOrder: 1, content: '', contentType: 'TEXT' }]);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
-  const onToast = () => {
-    if (!content.trim()) {
-      setToastData({
-        show: true,
-        type: 'error',
-        message: '내용을 입력해주세요',
-      });
-      setTimeout(() => setToastData((prev) => ({ ...prev, show: false })), 2000);
-    } else {
+  const goPost = useMutation({
+    mutationFn: () => {
+      const sortedContents = [...contents].sort((a, b) => a.contentOrder - b.contentOrder);
+      return blogPost(title, sortedContents);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['postList']);
       navigate(`/`, {
         state: {
           toastData: {
@@ -112,31 +30,37 @@ const BlogWrite = () => {
           },
         },
       });
+    },
+    onError: () => {
+      showToast('error', '블로그 저장에 실패했습니다.');
+    },
+  });
+
+  const handlePost = () => {
+    if (!title.trim()) {
+      showToast('error', '제목을 입력해주세요');
+      return;
     }
+    const textContent = contents.some((c) => c.contentType === 'TEXT' && c.content.trim());
+    if (!textContent) {
+      showToast('error', '내용을 입력해주세요');
+      return;
+    }
+    goPost.mutate();
   };
 
   return (
     <>
       <GlobalStyle />
-      <Header onToast={onToast} />
+      <Header onPost={handlePost} />
       <Container>
         <Line />
-        <AddPhotoButton>
-          <AddPhoto />
-          사진 추가하기
-        </AddPhotoButton>
+        <BlogImageUpload contents={contents} setContents={setContents} showToast={showToast} />
         <TitleWrapper>
-          <TitleInput placeholder='제목' />
+          <TitleInput placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)} />
         </TitleWrapper>
         <Line />
-        <Content>
-          <ContentText
-            placeholder='어떠한 것을 깨달았나요?'
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </Content>
-        <Toast show={toastData.show} text={toastData.message} type={toastData.type} />
+        <BlogPostContent contents={contents} setContents={setContents} />
       </Container>
     </>
   );

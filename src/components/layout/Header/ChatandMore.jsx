@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ChatIcon, MoreIcon } from '@/assets';
 import { Modal } from '@/components';
 import styled from 'styled-components';
+import { deletePost } from '@/api/post';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Container = styled.div`
   display: flex;
@@ -55,7 +57,7 @@ const MenuBox = styled.div`
 const TextItem = styled.div`
   font-size: 14px;
   padding: 6px 0;
-  color: ${(props) => props.color || 'black'};
+  color: red;
   cursor: pointer;
 
   &:hover {
@@ -66,11 +68,21 @@ const TextItem = styled.div`
 const StyledLink = styled(Link)`
   text-decoration: none;
   width: 100%;
+  font-size: 14px;
+  padding: 6px 0;
+  color: black;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.6;
+  }
 `;
 
-const ChatandMore = () => {
+const ChatandMore = ({ postId, isOwner }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const openTooltip = () => {
     setShowTooltip((prev) => !prev);
@@ -83,20 +95,45 @@ const ChatandMore = () => {
     }
   };
 
+  const { mutate: handleDeletePost } = useMutation({
+    mutationFn: () => {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        throw new Error();
+      }
+      return deletePost(postId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['postList'] });
+      navigate(`/`, {
+        state: {
+          toastData: {
+            show: true,
+            type: 'positive',
+            message: '삭제되었습니다!',
+          },
+        },
+      });
+    },
+    onError: () => {
+      setModalOpen(false);
+    },
+  });
+
   return (
     <>
       <Container>
         <StyledChatIcon onClick={scrollToComment} />
-        <StyledMoreIcon onClick={openTooltip} />
-        {showTooltip && (
-          <MenuBox>
-            <StyledLink to='./edit'>
-              <TextItem color='black'>수정하기</TextItem>
-            </StyledLink>
-            <TextItem color='red' onClick={() => setModalOpen(true)}>
-              삭제하기
-            </TextItem>
-          </MenuBox>
+        {isOwner && (
+          <>
+            <StyledMoreIcon onClick={openTooltip} />
+            {showTooltip && (
+              <MenuBox>
+                <StyledLink to='./edit'>수정하기</StyledLink>
+                <TextItem onClick={() => setModalOpen(true)}>삭제하기</TextItem>
+              </MenuBox>
+            )}
+          </>
         )}
       </Container>
       <Modal
@@ -107,6 +144,7 @@ const ChatandMore = () => {
         closeText='취소'
         bgColor='#FF3F3F'
         onClose={() => setModalOpen(false)}
+        onConfirm={handleDeletePost}
       />
     </>
   );

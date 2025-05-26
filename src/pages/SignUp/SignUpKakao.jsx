@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { Header, Image, Button, Input, Modal, SignUpHeader } from '@/components';
-import { AddPhoto, KakaoIcon } from '@/assets';
+import { Header, Button, Input, Modal, SignUpHeader, SignUpProfile } from '@/components';
+import { KakaoIcon } from '@/assets';
 import GlobalStyle from '@/styles/global';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { KakaoSignUp } from '@/api/SignUp';
 import { useMutation } from '@tanstack/react-query';
-import { createInputFields } from '@/constant/SignupFields';
+import { createInputFields } from '@/utils/SignupFields';
 import { onValidation } from '@/utils/validation';
 import { Container, Content, Text, SocialBox } from '@/styles/SignupStyles';
+import { useToast } from '@/context/ToastContext';
 
 const SignUpKakao = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const { showToast } = useToast();
   const location = useLocation();
   const { kakaoId, nickname, picture } = location.state || {};
   const [formData, setFormData] = useState({
@@ -22,6 +24,7 @@ const SignUpKakao = () => {
   });
 
   const [formError, setFormError] = useState({});
+  const [profileImage, setProfileImage] = useState('');
   const navigate = useNavigate();
 
   const onModalConfirm = () => {
@@ -34,7 +37,7 @@ const SignUpKakao = () => {
       KakaoSignUp({
         email: formData.email,
         nickname: formData.nickname,
-        profilePicture: picture || '',
+        profilePicture: profileImage || picture,
         birthDate: formData.birth,
         name: formData.name,
         introduction: formData.bio,
@@ -46,10 +49,11 @@ const SignUpKakao = () => {
         console.log(data.message);
       } else {
         setModalOpen(true);
+        showToast('positive', '회원가입이 완료되었습니다.');
       }
     },
-    onError: (error) => {
-      alert(error.message);
+    onError: () => {
+      showToast('error', '회원가입에 실패했습니다.');
     },
   });
 
@@ -68,18 +72,7 @@ const SignUpKakao = () => {
         <Header />
         <SignUpHeader />
         <Content>
-          <Text>프로필 사진</Text>
-          <Image src={picture} alt='프로필' width='90px' height='90px' radius='50%' />
-          <Button
-            width='145px'
-            height='27px'
-            borderStyle='1px solid #E6E6E6'
-            color='#9e9e9e'
-            radius='3px'
-            icon={AddPhoto}
-          >
-            프로필 사진 추가
-          </Button>
+          <SignUpProfile setProfileImage={setProfileImage} picture={picture} />
           <Text>소셜 로그인</Text>
           <SocialBox disabled>
             <KakaoIcon />

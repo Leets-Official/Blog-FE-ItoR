@@ -20,3 +20,10 @@ export const updatePassword = async (password) => {
   const response = await Axios.patch('/users/password', { password });
   return response.data;
 };
+
+export const updatePicture = async (fileUrl) => {
+  const response = await Axios.patch('/users/picture', {
+    profilePicture: fileUrl,
+  });
+  return response.data;
+};

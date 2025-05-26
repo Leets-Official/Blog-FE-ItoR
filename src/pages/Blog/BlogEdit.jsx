@@ -1,150 +1,83 @@
-import styled from 'styled-components';
-import { Header, Toast, dummyData } from '@/components';
-import { useState } from 'react';
-import { AddPhoto } from '@/assets';
+import { Header, BlogImageUpload, BlogPostContent } from '@/components';
+import { useState, useEffect } from 'react';
 import GlobalStyle from '@/styles/global';
 import { useNavigate, useParams } from 'react-router-dom';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 70px;
-`;
-
-const AddPhotoButton = styled.button`
-  display: flex;
-  align-items: center;
-  color: #909090;
-  gap: 4px;
-  padding: 10px;
-  margin-top: 5px;
-  font-size: 14px;
-  background-color: white;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.7;
-  }
-`;
-
-const Line = styled.div`
-  width: 100vw;
-  height: 1px;
-  background-color: #f5f5f5;
-  margin-top: 5px;
-`;
-
-const TitleWrapper = styled.div`
-  max-width: 800px;
-  width: 100%;
-  margin: 70px auto 50px;
-
-  @media screen {
-    padding-left: 20px;
-  }
-`;
-
-const TitleInput = styled.input`
-  width: 100%;
-  height: 50px;
-  font-size: 24px;
-  color: black;
-  font-weight: 500;
-  line-height: 160%;
-  letter-spacing: -0.25%;
-  border: none;
-  outline: none;
-
-  &::placeholder {
-    color: #909090;
-    font-size: 18px;
-    font-weight: 600;
-  }
-`;
-
-const Content = styled.div`
-  max-width: 800px;
-  width: 100%;
-  margin: 60px auto;
-
-  @media screen {
-    padding-left: 20px;
-  }
-`;
-
-const ContentText = styled.textarea`
-  min-height: 70px;
-  width: 100%;
-  font-size: 14px;
-  color: #696969;
-  font-weight: 300;
-  line-height: 160%;
-  letter-spacing: -0.5%;
-  word-break: keep-all;
-  border: none;
-  resize: none;
-  outline: none;
-
-  &::placeholder {
-    color: #b3b3b3;
-  }
-`;
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { getPostDetail, updatePost } from '@/api/post';
+import { Container, Line, TitleWrapper, TitleInput } from '@/styles/BlogStyles';
+import { useToast } from '@/context/ToastContext';
 
 const BlogEdit = () => {
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [title, setTitle] = useState('');
+  const [contents, setContents] = useState([]);
   const { id } = useParams();
-  const post = dummyData.find((p) => p.id === Number(id));
-
-  const [title, setTitle] = useState(post?.title || '');
-  const [content, setContent] = useState(post?.content || '');
-
-  const [toastData, setToastData] = useState({ show: false, type: 'error', message: '' });
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
-  const onToast = () => {
-    if (!content.trim()) {
-      setToastData({
-        show: true,
-        type: 'error',
-        message: '내용을 입력해주세요',
-      });
-      setTimeout(() => setToastData((prev) => ({ ...prev, show: false })), 2000);
-    } else {
+  const { data } = useQuery({
+    queryKey: ['postId', id],
+    queryFn: () => getPostDetail(id),
+  });
+
+  //data 받으면 제목과 내용 초기화
+  const post = data?.data;
+  useEffect(() => {
+    if (post) {
+      const sorted = post.contents.sort((a, b) => a.contentOrder - b.contentOrder);
+      setTitle(post.title);
+      setContents(sorted);
+    }
+  }, [data]);
+
+  const goUpdate = useMutation({
+    mutationFn: () => {
+      const sortedContents = [...contents].sort((a, b) => a.contentOrder - b.contentOrder);
+      return updatePost(id, title, sortedContents);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['postId', id] });
       navigate(`/detail/${id}`, {
         state: {
           toastData: {
             show: true,
             type: 'positive',
-            message: '저장되었습니다!',
+            message: '수정되었습니다!',
           },
         },
       });
+    },
+    onError: () => {
+      showToast('error', '블로그 수정에 실패했습니다.');
+    },
+  });
+
+  const handleUpdate = () => {
+    if (!title.trim()) {
+      showToast('error', '제목을 입력해주세요');
+      return;
     }
+    const textContent = contents.some((c) => c.contentType === 'TEXT' && c.content.trim());
+    if (!textContent) {
+      showToast('error', '내용을 입력해주세요');
+      return;
+    }
+    goUpdate.mutate();
   };
 
   return (
     <>
       <GlobalStyle />
-      <Header onToast={onToast} />
+      <Header onSave={handleUpdate} isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
       <Container>
         <Line />
-        <AddPhotoButton>
-          <AddPhoto />
-          사진 추가하기
-        </AddPhotoButton>
+        <BlogImageUpload contents={contents} setContents={setContents} showToast={showToast} />
         <TitleWrapper>
           <TitleInput placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)} />
         </TitleWrapper>
         <Line />
-        <Content>
-          <ContentText
-            placeholder='어떠한 것을 깨달았나요?'
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </Content>
-        <Toast show={toastData.show} text={toastData.message} type={toastData.type} />
+        <BlogPostContent contents={contents} setContents={setContents} />
       </Container>
     </>
   );

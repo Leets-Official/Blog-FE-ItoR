@@ -37,7 +37,7 @@ const SideBarIconClick = styled(SideBarIcon)`
   }
 `;
 
-const Header = ({ onSave, onToast }) => {
+const Header = ({ onSave, onToast, onPost, postId, isOwner, isEditMode, setIsEditMode }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLogoutModal, setIsLogoutModal] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
@@ -62,11 +62,18 @@ const Header = ({ onSave, onToast }) => {
   let headerContent = null;
 
   if (isDetailPage) {
-    headerContent = <ChatandMore />;
+    headerContent = <ChatandMore postId={postId} isOwner={isOwner} />;
   } else if (isWritePage) {
-    headerContent = <DeleteandLog onToast={onToast} />;
+    headerContent = <DeleteandLog onToast={onToast} onPost={onPost} />;
   } else if (isMypage || isEditPage) {
-    headerContent = <EditLog onSave={onSave} onToast={onToast} />;
+    headerContent = (
+      <EditLog
+        onSave={onSave}
+        onToast={onToast}
+        isEditMode={isEditMode}
+        setIsEditMode={setIsEditMode}
+      />
+    );
   } else if (!isSignupPage) {
     headerContent = <CreateLog />;
   }
@@ -88,7 +95,7 @@ const Header = ({ onSave, onToast }) => {
       />
       <HeaderContainer>
         <IconWrapper>
-          <SideBarIconClick onClick={setIsSidebarOpen} />
+          <SideBarIconClick onClick={toggleSidebar} />
           <GITLOGO onClick={() => navigate('/')} />
         </IconWrapper>
         {headerContent}
