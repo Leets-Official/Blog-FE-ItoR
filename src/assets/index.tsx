@@ -10,7 +10,7 @@ import ErrorOutline from '@/assets/icons/error_outline.svg?react';
 import FolderOpen from '@/assets/icons/folder_open.svg?react';
 import GITLOG from '@/assets/icons/GITLOG.svg?react';
 import Kakao from '@/assets/icons/kakao.svg?react';
-import Left from '@/assets/icons/Left.svg?react';
+import Left from '@/assets/icons/left.svg?react';
 import MoreVert from '@/assets/icons/more_vert.svg?react';
 import NavigateBefore from '@/assets/icons/navigate_before.svg?react';
 import Plus from '@/assets/icons/plus.svg?react';
