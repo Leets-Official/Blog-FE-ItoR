@@ -6,3 +6,5 @@ import BlogDetail from '@/pages/blogDetail';
 import MyPageSetting from '@/pages/my/setting';
 
 export { HomePage, MyPage, Signup, Post, BlogDetail, MyPageSetting };
+
+// 배포했어욤
