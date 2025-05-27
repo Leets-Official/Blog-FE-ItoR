@@ -13,7 +13,7 @@ export const FooterWrapper = styled.div`
   justify-content: center;
   width: 100vw;
   background-color: ${({ theme }) => theme.COLORS.gray[96]};
-  margin: 72px 0 60px 0;
+  margin: 72px 0 60px;
   padding: 60px 0;
 `;
 
