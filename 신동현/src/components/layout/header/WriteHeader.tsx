@@ -27,7 +27,8 @@ const WriteHeader = ({ onPublish }: WriteHeaderProps) => {
         color="#FF3F3F"
         backgroundColor="#FFFFFF"
         onClick={() => {
-          navigate(-1);
+          navigate("/");
+          window.location.reload();
         }}
       > 삭제하기
       </Button>

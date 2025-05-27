@@ -51,8 +51,7 @@ const SocialBoxTitle = styled.div`
   color: #909090;
 `;
 
-const KaKaoForm = () => {
-  const name = localStorage.getItem("name");
+const KaKaoUpdateForm = () => {
   const socialContext = useContext(SocialControlContext) as { control: Control<z.infer<typeof signUpSocialSchema>> };
   const { control } = socialContext;
   return (
@@ -66,20 +65,11 @@ const KaKaoForm = () => {
           </SocialBoxContext>
         </SocialBox>
       </SocialBoxContainer>
-      <Input title="이메일" type="email" placeholder="이메일" control={control} name="email" />
-      <SocialBoxContainer>
-        <SocialBoxTitle>이름</SocialBoxTitle>
-        <SocialBox>
-          <SocialBoxContext>
-            {name}
-          </SocialBoxContext>
-        </SocialBox>
-      </SocialBoxContainer>
-      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" control={control} name="birth"/>
-      <Input title="닉네임" type="text" placeholder="닉네임" control={control} name="nickname"/>
-      <Input title="한 줄 소개" type="text" placeholder="한 줄 소개" control={control} name="bio"/>
+      <Input title="이메일" type="email" placeholder="111@naver.com" disabled={true} control={control} name="email" />
+      <Input title="이름" type="text" placeholder="신동동" disabled={true} control={control} name="birth" />
+      <Input title="생년월일" type="text" placeholder="YYYY-MM-DD" disabled={true} control={control} name="birth" />
     </InputContainer>
   )
 }
 
-export default KaKaoForm;
+export default KaKaoUpdateForm;

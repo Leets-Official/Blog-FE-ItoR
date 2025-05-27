@@ -18,7 +18,7 @@ const StyledButton = styled.button<{
   height?: string;
   fontSize?: string;
   color?: string;
-  backgroundColor?: string;
+  $backgroundColor?: string;
   fontWeight?: string;
   disabled?: boolean;
 }>`
@@ -28,7 +28,7 @@ const StyledButton = styled.button<{
   font-size: ${(props) => props.fontSize || "15px"};
   font-weight: ${(props) => props.fontWeight || "400"};
   color: ${(props) => props.color};
-  background-color: ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.$backgroundColor};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,7 +61,7 @@ const Button = ({
       height={height}
       fontSize={fontSize}
       color={color}
-      backgroundColor={backgroundColor}
+      $backgroundColor={backgroundColor}
       onClick={onClick}
       disabled={disabled}
       {...rest}

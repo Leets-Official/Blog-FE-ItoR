@@ -81,12 +81,12 @@ const LoginedSideBar = () => {
   return (
     <Container>
       <ProfileContainer>
-        <Button onClick={() => { navigate("/mypage") }} icon={profilePicture ? <Image src={profilePicture} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
+        <Button onClick={() => { navigate(`/mypage/${nickName}`) }} icon={profilePicture ? <Image src={profilePicture} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />} width="40px" height="40px"></Button>
         <Nickname>{nickName}</Nickname>
         <Bio>{bio}</Bio>
       </ProfileContainer>
       <ButtonContainer>
-        <SideBarButton onClick={() => { }} type="blue">나의 깃로그</SideBarButton>
+        <SideBarButton onClick={() => { navigate(`/mypage/${nickName}`) }} type="blue">나의 깃로그</SideBarButton>
         <SideBarButton onClick={() => { navigate("/write") }} type="blue">깃로그 쓰기</SideBarButton>
       </ButtonContainer>
       <FooterButtonContainer>

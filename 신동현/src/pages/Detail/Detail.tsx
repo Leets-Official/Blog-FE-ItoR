@@ -1,15 +1,16 @@
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { Profile } from "@/assets";
+import { useEffect } from "react";
 import DetailContent from "./DetailContent";
 import DetailComment from "./DetailComment";
 import DetailCommentInput from "./DetailCommentInput";
 import { getPostDetail } from "@/api/post/post";
-import Image from "@/components/ui/Image";
-import { PostContent } from "@/assets/type/PostContent";
-import { PostComment } from "@/assets/type/PostCommnet";
 import Header from "@/components/layout/header/Header";
+import UserInfo from "@/components/layout/common/UserInfo";
+import { isOwnerAtom, postCommentAtom, postContentAtom } from "@/Atoms/atoms";
+import { useAtom, useSetAtom } from "jotai";
+import { PostContent } from "@/type/Post/Post";
+import { useQuery } from "@tanstack/react-query";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -53,99 +54,62 @@ const FooterContainer = styled.div`
   }  
 `;
 
-const WriterProfileImageContainer = styled.div`
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-`;
-
-const WriterTextContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-const WriterNickname = styled.p`
-  font-size: 24px;
-  font-weight: 500;
-  color: #000000;
-  margin: 0;
-`;
-
-const WriterBio = styled.p`
-  font-size: 14px;
-  font-weight: 300;
-  color: #333333;
-  margin: 0;
-`;
-
-
-
 const Detail = () => {
-  const [isOwner, setIsOwner] = useState(false);
-  const [postContent, setPostContent] = useState<PostContent>({
-    title: "",
-    contentOrder: 0,
-    content: "",
-    contentType: "",
-    nickName: "",
-    profileUrl: "",
-    createdAt: "",
-    commentCount: 0,
-  });
-  const [postComment, setPostComment] = useState<PostComment[]>([]);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const setIsOwner = useSetAtom(isOwnerAtom);
+  const [postContent, setPostContent] = useAtom(postContentAtom);
+  const setPostComment = useSetAtom(postCommentAtom);
 
   const { id } = useParams();
 
+  const queryKey = ['postDetail', id];
+  const queryFn = () => getPostDetail(id as string);
+
+  const { data, isLoading, isError } = useQuery<{ data: PostContent }>({
+    queryKey,
+    queryFn
+  });
+
   useEffect(() => {
-    const fetchBlogDetail = async () => {
-      if (!id) return;
-      try {
-        const response = await getPostDetail(id);
-        if (response.code === 200) {
-          const data = response.data;
-          setPostComment(data.comments);
-          setPostContent({
-            title: data.title,
-            contentOrder: data.contents[0].contentOrder,
-            content: data.contents[0].content,
-            contentType: data.contents[0].contentType,
-            nickName: data.nickName,
-            profileUrl: data.profileUrl,
-            createdAt: data.createdAt,
-            commentCount: data.commentCount,
-          });
-          setIsOwner(response.data.isOwner);
-        }
-      } catch (error: any) {
-        console.error(error);
-      }
-    };
-    fetchBlogDetail();
-  }, []);
+    if (!data?.data) return;
+    
+    setPostComment(data.data.comments);
+    setPostContent({
+      postId: data.data.postId,
+      title: data.data.title,
+      contents: data.data.contents.map((content) => ({
+        contentOrder: content.contentOrder,
+        content: content.content,
+        contentType: content.contentType,
+      })),
+      isOwner: data.data.isOwner,
+      comments: data.data.comments,
+      nickName: data.data.nickName,
+      profileUrl: data.data.profileUrl,
+      createdAt: data.data.createdAt,
+    });
+    setIsOwner(data.data.isOwner);
+  }, [data]);
+
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error</div>
 
   return (
     <>
-      <Header type="detail" isOwner={isOwner} />
+      <Header type="detail"/>
       <Wrapper>
         <Container>
-          <DetailContent postContent={postContent} />
-          <DetailComment postComment={postComment} />
+          <DetailContent/>
+          <DetailComment/>
           <DetailCommentInput />
         </Container>
       </Wrapper>
       <Footer>
         <FooterContainer>
-          <WriterProfileImageContainer>
-            {postContent.profileUrl ? <Image src={postContent.profileUrl} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />}
-          </WriterProfileImageContainer>
-          <WriterTextContainer>
-            <WriterNickname>{postContent.nickName}</WriterNickname>
-            {/* <WriterBio>한 줄 소개</WriterBio> */}
-          </WriterTextContainer>
+          <UserInfo
+            userProfileImage={postContent.profileUrl}
+            userName={postContent.nickName}
+            userBio={"한 줄 소개"}
+          />
         </FooterContainer>
       </Footer>
     </>

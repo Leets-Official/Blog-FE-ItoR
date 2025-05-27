@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Root, Home, SignUp, SignUpDetail, Mypage, KakaoLoginLoading, Detail, Write, WriteForm, Update, NotFound, UpdateForm, KaKaoForm, EmailForm } from "./pages";
+import { Root, Home, SignUp, SignUpDetail, KakaoLoginLoading, Detail, Write, Update, NotFound, KaKaoForm, EmailForm, MyPageDetail, MyPage, EmailUpdateForm } from "./pages";
+import KaKaoUpdateForm from "./pages/MyPage/KakaoUpdateForm";
 
 const Router = createBrowserRouter([
   {
@@ -20,12 +21,12 @@ const Router = createBrowserRouter([
         children: [
           {
             path: "email",
-            element: <EmailForm/>,
+            element: <EmailForm />,
           },
           {
             path: "kakao",
-            element: <KaKaoForm/>,
-          },          
+            element: <KaKaoForm />,
+          },
         ]
       },
       {
@@ -35,26 +36,28 @@ const Router = createBrowserRouter([
       {
         path: "/write",
         element: <Write />,
-        children: [
-          {
-            path: "",
-            element: <WriteForm />,
-          },
-        ]
       },
       {
         path: "/update/:id",
         element: <Update />,
-        children: [
-          {
-            path: "",
-            element: <UpdateForm />,
-          },
-        ]
       },
       {
-        path: "/mypage",
-        element: <Mypage />,
+        path: "/mypage/:userNickname",
+        element: <MyPage />,
+      },
+      {
+        path: "/mypage/detail",
+        element: <MyPageDetail />,
+        children: [
+          {
+            path: "email",
+            element: <EmailUpdateForm />,
+          },
+          {
+            path: "kakao",
+            element: <KaKaoUpdateForm />,
+          },
+        ]
       },
       {
         path: "/oauth/kakao/success",

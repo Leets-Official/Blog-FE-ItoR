@@ -1,7 +1,7 @@
 import Input from "@/components/ui/Input"
 import { signUpEmailSchema } from "@/schema/auth";
 import styled from "styled-components";
-import { EmailControlContext } from "./SignUpDetail";
+import { EmailControlContext } from "@/contexts/EmailControlContext";
 import { Control } from "react-hook-form";
 import { z } from "zod";
 import { useContext } from "react";

@@ -1,10 +1,12 @@
 import { deleteComment } from "@/api/post/post";
-import { More_vert } from "@/assets";
+import { GITLOG, More_vert } from "@/assets";
 import Button from "@/components/ui/Button/Button";
 import Modal from "@/components/ui/Modal/Modal";
 import Toast from "@/components/ui/Toast";
 import { useState } from "react";
 import styled from "styled-components";
+import { Comment } from "@/type/Post/Post";
+import dayjs from "dayjs";
 
 const Wrapper = styled.div`
   max-width: 668px;
@@ -40,7 +42,7 @@ const Nickname = styled.div`
   font-size: 14px;
 `;
 
-const Date = styled.div`
+const DateText = styled.div`
   font-size: 12px;
   font-weight: 300;
   color: #909090;
@@ -65,15 +67,10 @@ const CommentContentText = styled.p`
 
 
 interface CommentItemProps {
-  commentId: string;
-  profileImage: React.ReactNode;
-  nickname: string;
-  date: string;
-  content: string;
-  isMyComment: boolean;
+  comment: Comment;
 }
 
-const CommentItem = ({ commentId, profileImage, nickname, date, content, isMyComment }: CommentItemProps) => {
+const CommentItem = ({ comment }: CommentItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null); 
   const openModal = () => {
@@ -85,7 +82,7 @@ const CommentItem = ({ commentId, profileImage, nickname, date, content, isMyCom
   }
 
   const onDeleteComment = async () => {
-    const response = await deleteComment(commentId);
+    const response = await deleteComment(comment.commentId);
     if (response.error) {
       console.error(response.message);
     } else {
@@ -101,14 +98,14 @@ const CommentItem = ({ commentId, profileImage, nickname, date, content, isMyCom
       {toast && <Toast key={toast.message} message={toast.message} type={toast.type} />}
       <WriteInfoContainer>
         <ProfileContainer>
-          {profileImage}
+          <GITLOG width="20px" height="20px" fill="#333333" />
         </ProfileContainer>
         <LeftContainer>
-          <Nickname>{nickname}</Nickname>
-          <Date>{date}</Date>
+          <Nickname>{comment.nickName}</Nickname>
+          <DateText>{dayjs(Date.now()).format("YYYY-MM-DD")}</DateText>
         </LeftContainer>
         <RightContainer>
-          {isMyComment && (
+          {comment.isOwner && (
             <Button
               width="40px"
               height="40px"
@@ -122,7 +119,7 @@ const CommentItem = ({ commentId, profileImage, nickname, date, content, isMyCom
         </RightContainer>
       </WriteInfoContainer>
       <CommentContent>
-        <CommentContentText>{content}</CommentContentText>
+        <CommentContentText>{comment.content}</CommentContentText>
       </CommentContent>
       <Modal open={isModalOpen} onClose={closeModal} title="댓글을 삭제할까요?" onCancel={closeModal} onConfirm={onDeleteComment} cancelText="취소" confirmText="삭제하기" cancelType="default" confirmType="negative" />
     </Wrapper>

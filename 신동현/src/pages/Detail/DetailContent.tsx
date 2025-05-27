@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import WriterInfoContainer from "@/components/layout/common/WriterInfoContainer";
 import { Profile } from "@/assets";
 import dayjs from "dayjs";
-import { PostContent } from "@/assets/type/PostContent";
 import Image from "@/components/ui/Image";
+import WriterInfo from "@/components/layout/common/WriterInfo";
+import { postContentAtom } from "@/Atoms/atoms";
+import { useAtomValue } from "jotai";
 
 const ContentContainer = styled.div`
   width: 100%;
@@ -21,6 +22,7 @@ const ContentTitle = styled.h2`
 const Content = styled.p`
   font-size: 14px;
   font-weight: 301;
+  margin : 0;
 `;
 
 const Hr = styled.hr`
@@ -30,23 +32,33 @@ const Hr = styled.hr`
   border-color: #cccccc;
 `;
 
-interface DetailContentProps {
-  postContent: PostContent;
-}
-
-const DetailContent = ({ postContent }: DetailContentProps) => {
+const DetailContent = () => {
+  const postContent = useAtomValue(postContentAtom);
 
   return (
     <ContentContainer>
       <ContentTitle>{postContent.title}</ContentTitle>
-      <WriterInfoContainer
+      <WriterInfo
         userProfileImage={postContent.profileUrl ? <Image src={postContent.profileUrl} alt="profile" width="20px" height="20px" style={{ borderRadius: "50%" }} /> : <Profile width="20px" height="20px" />}
         userName={postContent.nickName}
         writeDate={dayjs(postContent.createdAt).format("MMM DD.YYYY.").toString()}
-        commentCount={postContent.commentCount}
+        commentCount={postContent.comments.length}
       />
       <Hr />
-      <Content>{postContent.content}</Content>
+      {postContent.contents.map((content) => 
+        content.contentType === "TEXT" ? (
+          <Content key={content.content}>{content.content}</Content>
+        ) : (
+          <Image 
+            key={content.content} 
+            src={content.content} 
+            alt="image" 
+            width="100%" 
+            height="auto" 
+            style={{ objectFit: 'contain' }}
+          />
+        )
+      )}
     </ContentContainer>
   );
 };

@@ -2,17 +2,20 @@ import { useNavigate, Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Button from "@/components/ui/Button/Button";
 import { Add_photo, Profile } from "@/assets";
-import { createContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Modal from "@/components/ui/Modal/Modal";
 import ActionButton from "@/components/ui/Button/ActionButton";
 import { signUpEmailSchema, signUpSocialSchema } from "@/schema/auth";
-import { Control, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { EmailSignUp, KakaoSignUp } from "@/api/signUp/signUp";
 import Toast from "@/components/ui/Toast";
 import { getPresignedUrl, uploadImage } from "@/api/convertImage";
-
+import { EmailControlContext } from "@/contexts/EmailControlContext";
+import { SocialControlContext } from "@/contexts/SocialControlContext";
+import { useMutation } from "@tanstack/react-query";
+import { KakaoSignUpData, SignUpData } from "@/type/User/SignUp";
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -133,10 +136,6 @@ const ProfileButton = styled(Button)`
   background-color: transparent;
 `;
 
-export const EmailControlContext = createContext<{ control: Control<z.infer<typeof signUpEmailSchema>> } | null>(null);
-export const SocialControlContext = createContext<{ control: Control<z.infer<typeof signUpSocialSchema>> } | null>(null);
-
-
 const SignUpDetailForm = () => {
   const profilePicture = localStorage.getItem("profilePicture");
   const name = localStorage.getItem("name");
@@ -196,6 +195,30 @@ const SignUpDetailForm = () => {
     }
   };
 
+  const emailSignUpMutation = useMutation({
+    mutationFn: (data: SignUpData) => EmailSignUp(data),
+    onSuccess: () => {
+      setToast({ message: "회원가입에 성공했습니다!", type: "success" });
+      openConfirmModal();
+    },
+    onError: (error) => {
+      setToast({ message: "회원가입에 실패했습니다.", type: "error" });
+      console.log(error);
+    }
+  });
+
+  const kakaoSignUpMutation = useMutation({
+    mutationFn: (data: KakaoSignUpData) => KakaoSignUp(data),
+    onSuccess: () => {
+      setToast({ message: "회원가입에 성공했습니다!", type: "success" });
+      openConfirmModal();
+    },
+    onError: (error) => {
+      setToast({ message: "회원가입에 실패했습니다.", type: "error" });
+      console.log(error);
+    }
+  });
+
   const onSubmit = async (data: z.infer<typeof signUpEmailSchema> | z.infer<typeof signUpSocialSchema>) => {
     let presignedImage: string = "";
 
@@ -216,43 +239,31 @@ const SignUpDetailForm = () => {
     }
 
     if (type === "email") {
-      const response = await EmailSignUp(
-        (data as z.infer<typeof signUpEmailSchema>).email.toString(),
-        (data as z.infer<typeof signUpEmailSchema>).nickname.toString(),
-        (data as z.infer<typeof signUpEmailSchema>).password.toString(),
-        presignedImage,
-        (data as z.infer<typeof signUpEmailSchema>).birth.toString(),
-        (data as z.infer<typeof signUpEmailSchema>).name.toString(),
-        (data as z.infer<typeof signUpEmailSchema>).bio.toString(),
-      );
+      const emailSignUpData = {
+        email: (data as z.infer<typeof signUpEmailSchema>).email.toString(),
+        nickname: (data as z.infer<typeof signUpEmailSchema>).nickname.toString(),
+        password: (data as z.infer<typeof signUpEmailSchema>).password.toString(),
+        profilePicture: presignedImage,
+        birth: (data as z.infer<typeof signUpEmailSchema>).birth.toString(),
+        name: (data as z.infer<typeof signUpEmailSchema>).name.toString(),
+        introduction: (data as z.infer<typeof signUpEmailSchema>).bio.toString(),
+      }      
 
-      if (response.error) {
-        setToast({ message: response.message, type: "error" });
-      } else {
-        setToast({ message: "회원가입에 성공했습니다!", type: "success" });
-        openConfirmModal();
-      }
+      emailSignUpMutation.mutate(emailSignUpData);
     } else {
       const kakaoId = localStorage.getItem("kakaoId");
 
-      const response = await KakaoSignUp(
-        (data as z.infer<typeof signUpSocialSchema>).email.toString(),
-        (data as z.infer<typeof signUpSocialSchema>).nickname.toString(),
-        presignedImage === "" ? profilePicture as string : presignedImage,
-        (data as z.infer<typeof signUpSocialSchema>).birth.toString(),
-        name as string,
-        (data as z.infer<typeof signUpSocialSchema>).bio.toString(),
-        kakaoId as string,
-      );
+      const kakaoSignUpData = {
+        email: (data as z.infer<typeof signUpSocialSchema>).email.toString(),
+        nickname: (data as z.infer<typeof signUpSocialSchema>).nickname.toString(),
+        profilePicture: presignedImage === "" ? profilePicture as string : presignedImage,
+        birth: (data as z.infer<typeof signUpSocialSchema>).birth.toString(),
+        name: name as string,
+        introduction: (data as z.infer<typeof signUpSocialSchema>).bio.toString(),
+        kakaoId: kakaoId as string,
+      };
 
-      if (response.error) {
-        setToast({ message: response.message, type: "error" });
-      } else {
-        setToast({ message: "회원가입에 성공했습니다!", type: "success" });
-        console.log(response);
-        openConfirmModal();
-      }
-      console.log(data);
+      kakaoSignUpMutation.mutate(kakaoSignUpData);
     }
   }
 
@@ -273,7 +284,6 @@ const SignUpDetailForm = () => {
     closeConfirmModal();
     navigate("/?type=login", { replace: true });
   }
-
 
   return (
     <Wrapper>

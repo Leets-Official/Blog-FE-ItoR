@@ -8,6 +8,7 @@ import Button from "@/components/ui/Button/Button";
 import MyPageHeader from "./MyPageHeader";
 import { useContext } from "react";
 import { SideBarContext } from "@/pages/Root";
+import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   margin-top: 0px;
@@ -42,29 +43,38 @@ const RightContainer = styled.div`
 interface HeaderProps {
   type : "main" | "write" | "detail" | "mypage";
   onPublish?: () => void;
-  isOwner?: boolean;
 }
 
-const Header = ({ type, onPublish, isOwner }: HeaderProps) => {
+const Header = ({ type, onPublish }: HeaderProps) => {
   const { isSideBarOpen, setIsSideBarOpen } = useContext(SideBarContext);
   const isLogin = localStorage.getItem("refreshToken") ? true : false;
+  const navigate = useNavigate();
 
   const setSideBarOpen = () => {
     setIsSideBarOpen(!isSideBarOpen);
+  }
+
+  const handleLogoClick = () => {
+    if (isLogin) {
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
+    window.location.reload();
   }
 
   return (
     <>
       <HeaderContainer>
         <LeftContainer>
-          <Button onClick={setSideBarOpen} icon={<Hamburger width="24px" height="24px" fill="#333333" />} backgroundColor="#FFFFFF"></Button>
-          <GITLOG width="77px" height="40px" fill="black" />
+          <Button onClick={setSideBarOpen} icon={<Hamburger width="24px" height="24px" fill="#333333" />} backgroundColor="#FFFFFF" />
+          <Button onClick={handleLogoClick} icon={<GITLOG width="77px" height="40px" fill="black" />} backgroundColor="#FFFFFF" />
         </LeftContainer>
         <RightContainer>
           {type === "main" && <MainHeader />}
           {type === "write" && <WriteHeader onPublish={onPublish} />}
-          {type === "detail" && <DetailHeader isOwner={isOwner || false} />}
-          {type === "mypage" && <MyPageHeader />}
+          {type === "detail" && <DetailHeader/>}
+          {type === "mypage" && onPublish && <MyPageHeader onPublish={onPublish} />}
         </RightContainer>
       </HeaderContainer>
       {isSideBarOpen && <SideBar isOpen={isSideBarOpen} onClose={setSideBarOpen} isLogin={isLogin} />}

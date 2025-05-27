@@ -1,9 +1,16 @@
 import {RouterProvider} from "react-router-dom";
 import router from "./Router";
-function App() {
+import GlobalStyle from "./styles/Global";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
+
+function App() {
   return (
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
 

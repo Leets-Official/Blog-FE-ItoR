@@ -1,6 +1,6 @@
-import { PostComment } from "@/assets/type/PostCommnet";
+import { postCommentAtom } from "@/Atoms/atoms";
 import CommentItem from "@/components/layout/comment/CommentItem";
-import dayjs from "dayjs";
+import { useAtomValue } from "jotai";
 
 import styled from "styled-components";
 
@@ -51,11 +51,9 @@ const CommentEmpty = styled.p`
   margin : 0;
 `;
 
-interface DetailCommentProps {
-  postComment: PostComment[];
-}
 
-const DetailComment = ({ postComment }: DetailCommentProps) => {
+const DetailComment = () => {
+  const postComment = useAtomValue(postCommentAtom);
   return (
     <CommentContainer>
       <CommentTitleContainer>
@@ -70,7 +68,7 @@ const DetailComment = ({ postComment }: DetailCommentProps) => {
       ) : (
         <CommentListContainer>
           {postComment.map((comment) => (
-            <CommentItem key={comment.commentId} commentId={comment.commentId} profileImage={comment.profileUrl} nickname={comment.nickName} date={dayjs(comment.createdAt).format("MMM DD.YYYY.").toString()} content={comment.content} isMyComment={comment.isOwner} />
+            <CommentItem key={comment.commentId} comment={comment} />
           ))}
         </CommentListContainer>
       )}

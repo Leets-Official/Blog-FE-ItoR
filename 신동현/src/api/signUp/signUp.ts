@@ -1,13 +1,13 @@
 import { api } from "../api";
-
-const EmailSignUp = async (email: string, nickname: string, password: string, profilePicture: string, birthDate: string, name: string, introduction: string) => {
+import { KakaoSignUpData, SignUpData } from "@/type/User/SignUp";
+const EmailSignUp = async ({email, nickname, password, profilePicture, birth, name, introduction}: SignUpData) => {
   try {
     const response = await api.post("/auth/register", {
       email,
       nickname,
       password,
       profilePicture,
-      birthDate,
+      birthDate : birth,
       name,
       introduction,
     });
@@ -21,13 +21,13 @@ const EmailSignUp = async (email: string, nickname: string, password: string, pr
   }
 };
 
-const KakaoSignUp = async (email: string, nickname: string, profilePicture: string, birthDate: string, name: string, introduction: string, kakaoId: string) => {
+const KakaoSignUp = async ({email, nickname, profilePicture, birth, name, introduction, kakaoId}: KakaoSignUpData) => {
   try {
     const response = await api.post("/auth/register-oauth", {
       email,
       nickname,
       profilePicture,
-      birthDate,
+      birthDate : birth,
       name,
       introduction,
       kakaoId,
