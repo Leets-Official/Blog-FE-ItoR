@@ -1,2 +1,2 @@
-export * from '@/constants/signupFields.constant';
-export * from '@/constants/settingField.constant';
+export * from '@/constants/signupFields.constants';
+export * from '@/constants/settingField.constants';

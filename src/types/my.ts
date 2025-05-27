@@ -5,4 +5,5 @@ export interface MyFormData {
   profileImageUrl: string;
   birthDate: string;
   name: string;
+  password?: string;
 }

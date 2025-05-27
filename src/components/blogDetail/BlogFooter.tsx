@@ -4,7 +4,7 @@ import { Button, Image } from '@/components';
 import { Text } from '@/components/home/PostItem';
 import { useUser } from '@/context/UserContext';
 import { DefaultProfileSvg, SettingSvg } from '@/assets';
-import { ButtonWrapper } from '../signup/SignupField';
+import { ButtonWrapper } from '@/styles/common.styled';
 import theme from '@/styles/theme.styled';
 import { useLocation, useNavigate } from 'react-router-dom';
 
