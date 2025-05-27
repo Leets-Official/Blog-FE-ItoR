@@ -140,7 +140,11 @@ const SignupField: React.FC<SignupFieldProps> = ({ signupType }) => {
       if (isEmailSignup) {
         emailSignupMutation.mutate(signupData);
       } else {
-        kakaoSignupMutation.mutate(signupData as KakaoSignupSchema);
+        kakaoSignupMutation.mutate({
+          ...(data as KakaoSignupSchema),
+          profilePicture,
+          kakaoId: Number(kakaoId),
+        });
       }
     }
   };
