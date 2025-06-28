@@ -40,7 +40,17 @@ const UserInfo = ({ userProfileImage, userName, userBio }: UserInfoProps) => {
   return (
     <>
       <ProfileImageContainer>
-        {userProfileImage ? <Image src={userProfileImage} alt="profile" width="64px" height="64px" style={{ borderRadius: "50%" }} /> : <Profile width="64px" height="64px" />}
+        {userProfileImage ? (
+          <Image
+            src={userProfileImage}
+            alt="profile"
+            width="64px"
+            height="64px"
+            style={{ borderRadius: '50%' }}
+          />
+        ) : (
+          <Profile width="64px" height="64px" />
+        )}
       </ProfileImageContainer>
       <TextContainer>
         <Nickname>{userName}</Nickname>

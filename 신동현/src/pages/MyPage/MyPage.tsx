@@ -58,7 +58,7 @@ const MyPage = () => {
   useEffect(() => {
     if (data) {
       let count = 0;
-      data?.data.post.map((post: PostContent) => {
+      data?.post.map((post: PostContent) => {
         if (post.isOwner) {
           count++;
         }

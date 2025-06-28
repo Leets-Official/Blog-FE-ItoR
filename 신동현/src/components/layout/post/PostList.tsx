@@ -17,14 +17,14 @@ const PostList = ({ totalPostCount, loadMyPage = false }: PostListProps) => {
     const response = await getPostList(10, page - 1);
     if (loadMyPage) {
       const postList: PostContent[] = [];
-      response.data.post.map((post: PostContent) => {
+      response.post.map((post: PostContent) => {
         if (post.isOwner) {
           postList.push(post);
         }
       });
       setPostList(postList);
     } else {
-      setPostList(response.data.post);
+      setPostList(response.post);
     }
   }
 

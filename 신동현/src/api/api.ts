@@ -79,7 +79,7 @@ api.interceptors.response.use(
         console.error('failed to refresh token: ', refreshError);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        // window.location.href = '/';
+        window.location.href = '/';
       }
     }
 
