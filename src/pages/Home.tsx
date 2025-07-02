@@ -22,14 +22,11 @@ const Home = () => {
   const queryKey = ['posts', currentPage, token];
   const queryFn = () => fetcher(currentPage, pageSize);
 
-  const { data, isLoading, error } = useQuery<BlogPostListResponse>({
+  const { data } = useQuery<BlogPostListResponse>({
     queryKey,
     queryFn,
     placeholderData: (previousData) => previousData,
   });
-
-  if (isLoading) return <div>로딩 중...</div>;
-  if (error) return <div>게시글을 불러오는 데 실패했습니다.</div>;
 
   return (
     <HomeContainer>
